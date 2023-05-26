@@ -1,0 +1,28 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start center">
+  <div class="header" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1>Memo Internal</h1>
+    <button mat-mini-fab click="refresh()" color="warn">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </div>
+  <div class="content" >
+    <div *ngFor="let o of chat" style="width: 100%;" fxLayout="column" fxLayoutAlign="center center">
+      <div [ngClass]="{'you' : o.insert_user === this.me[0].user_id, 'others' :  o.insert_user !== this.me[0].user_id}">
+        <p>{{o.desc}}</p>
+        <span style="float: right;
+        color: #aaa; font-size: 10px;">{{o.created_at}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <!-- <textarea placeholder="Type message.." [(ngModel)]="sendchat"></textarea> -->
+    <mat-form-field style="width: 100%;" appearance="outline">
+      <!-- <mat-label>Leave a comment</mat-label> -->
+      <textarea matInput placeholder="Type message.." [(ngModel)]="sendchat" rows="1"></textarea>
+    </mat-form-field>
+    <div style="width: 20px;"></div>
+    <button mat-mini-fab color="accent" (click)="send()">
+      <mat-icon>play_circle_filled_white</mat-icon>
+    </button>
+  </div>
+</div>

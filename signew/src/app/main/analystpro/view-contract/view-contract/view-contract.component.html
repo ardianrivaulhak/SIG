@@ -1,0 +1,983 @@
+<div
+    *ngIf="this.dataview"
+    id="lab-pengujian"
+    class="page-layout carded fullwidth inner-scroll"
+    style="overflow: auto; height: 90vh"
+>
+    <!-- CONTENT -->
+
+    <!-- INVOICE -->
+    <div *ngIf="this.dataview.length > 0">
+        <div
+            class="content"
+            *ngFor="let dataview of this.dataview"
+            style="padding: 50px"
+        >
+            <div
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
+                <h2 style="font-weight: bold">{{ dataview.contract_no }}</h2>
+                <span
+                    *ngIf="this.datainvoice.length > 0"
+                    style="
+                        padding: 5;
+                        color: red;
+                        font-size: 10px;
+                        font-style: italic;
+                    "
+                >
+                    invoice sudah terbuat di
+                    {{ this.datainvoice[0].no_invoice }}
+                </span>
+                <span style="font-size: 12px; font-weight: bold"
+                    >{{ dataview.customers_handle.customers.customer_name }} -
+                    {{ dataview.customers_handle.contact_person.name }}</span
+                >
+                <span style="font-size: 12px; font-weight: bold"
+                    >{{ dataview.customers_handle.email }} /
+                    {{
+                        dataview.customers_handle.phone
+                            ? "+62 " + dataview.customers_handle.phone
+                            : "-"
+                    }}
+                    /
+                    {{
+                        dataview.customers_handle.telp
+                            ? "+62 " + dataview.customers_handle.telp
+                            : "-"
+                    }}</span
+                >
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="center center"
+                    fxFlex
+                    style="padding-top: 10px"
+                >
+                    <div class="border-search">
+                        <input
+                            type="text"
+                            placeholder="Search Sample"
+                            (keyup.enter)="searchsample()"
+                            [(ngModel)]="samplename"
+                            style="width: 100%; text-align: center"
+                        />
+                    </div>
+                    <div style="width: 20px"></div>
+                    <button
+                        mat-mini-fab
+                        color="primary"
+                        (click)="searchsample()"
+                        style="align-self: center"
+                    >
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mat-elevation-z8" style="margin: 30px 0px">
+                <mat-table
+                    class="lab-table"
+                    #table
+                    [dataSource]="dataSource"
+                    [@animateStagger]="{ value: '50' }"
+                    fusePerfectScrollbar
+                >
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="no">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul">No</span></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource; let l = index">
+                            <p class="text-truncate isi">
+                                {{ l + 1 }}
+                            </p>
+                            <mat-icon
+                                *ngIf="dataSource.complain.length > 0"
+                                style="
+                                    font-size: 16px;
+                                    color: rgb(197, 194, 0);
+                                    margin: 0px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                "
+                                >copyright</mat-icon
+                            >
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nosample">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >No Sample</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <p class="text-truncate isi">
+                                {{ dataSource.no_sample }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="samplename">
+                        <mat-header-cell
+                            [hidden]="hidingprice"
+                            *matHeaderCellDef
+                            ><span class="judul"
+                                >Sample Name</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell
+                            [hidden]="hidingprice"
+                            *matCellDef="let dataSource"
+                        >
+                            <div
+                                class="text-truncate isi"
+                                title="{{ dataSource.sample_name }}"
+                            >
+                                {{ dataSource.sample_name }}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="tgl_lab">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Due Date</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <p class="text-truncate isi">
+                                {{ dataSource.tgl_selesai }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Status Pengujian</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <div
+                                class="box-0"
+                                *ngIf="dataSource.id_statuspengujian == 1"
+                            >
+                                <p class="text-truncate isi">Normal</p>
+                            </div>
+                            <div
+                                class="box-1"
+                                *ngIf="dataSource.id_statuspengujian == 2"
+                            >
+                                <p class="text-truncate isi">Urgent</p>
+                            </div>
+                            <div
+                                class="box-2"
+                                *ngIf="dataSource.id_statuspengujian == 3"
+                            >
+                                <p class="text-truncate isi">Very Urgent</p>
+                            </div>
+                            <div
+                                class="box-3"
+                                *ngIf="dataSource.id_statuspengujian == 4"
+                            >
+                                <p class="text-truncate isi">Costum 2 Hari</p>
+                            </div>
+                            <div
+                                class="box-4"
+                                *ngIf="dataSource.id_statuspengujian == 5"
+                            >
+                                <p class="text-truncate isi">Costum 1 Hari</p>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="biaya">
+                        <mat-header-cell
+                            [hidden]="hidingprice"
+                            *matHeaderCellDef
+                            ><span class="judul">Harga</span></mat-header-cell
+                        >
+                        <mat-cell
+                            [hidden]="hidingprice"
+                            *matCellDef="let dataSource"
+                        >
+                            <p class="text-truncate isi">
+                                Rp.{{
+                                    dataSource.price > 0
+                                        ? dataSource.price.toLocaleString()
+                                        : 0
+                                }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="infocert">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Cert Info</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <p class="text-truncate isi">
+                                {{ dataSource.info_cert }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status_lab">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Status Lab</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <div *ngIf="dataSource.status_lab.length > 0">
+                                <div
+                                    style="
+                                        background-color: #2e8609;
+                                        width: 50px;
+                                        height: 15px;
+                                        padding: 2px;
+                                        border-radius: 5px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    "
+                                    *ngIf="dataSource.status_lab[0].status == 1"
+                                >
+                                    <button
+                                        class="text-truncate isi"
+                                        mat-icon-button
+                                        [mdePopoverTriggerFor]="appPopover"
+                                        mdePopoverTriggerOn="hover"
+                                        #popoverTrigger="mdePopoverTrigger"
+                                        style="color: white; font-weight: bold"
+                                    >
+                                        Done
+                                    </button>
+                                    <mde-popover
+                                        #appPopover="mdePopover"
+                                        [mdePopoverOverlapTrigger]="false"
+                                    >
+                                        <mat-card style="max-width: 400px">
+                                            <mat-card-content>
+                                                <div
+                                                    style="
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: center;
+                                                        align-items: flex-start;
+                                                    "
+                                                >
+                                                    <span class="fs-10">{{
+                                                        dataSource.status_lab[0]
+                                                            .inserted_at
+                                                    }}</span>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </mde-popover>
+                                </div>
+                                <div
+                                    style="
+                                        background-color: #8d6000;
+                                        width: 50px;
+                                        height: 15px;
+                                        padding: 2px;
+                                        border-radius: 5px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    "
+                                    *ngIf="dataSource.status_lab[0].status == 0"
+                                >
+                                    <p
+                                        class="text-truncate isi"
+                                        style="color: white; font-weight: bold"
+                                    >
+                                        Not Yet
+                                    </p>
+                                </div>
+                            </div>
+                            <div *ngIf="dataSource.status_lab.length < 1">
+                                <div
+                                    style="
+                                        background-color: #8d6000;
+                                        width: 50px;
+                                        height: 15px;
+                                        padding: 2px;
+                                        border-radius: 5px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    "
+                                >
+                                    <p
+                                        class="text-truncate isi"
+                                        style="color: white; font-weight: bold"
+                                    >
+                                        Not Yet
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="discount">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Status Cert</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <div *ngIf="dataSource.status_cert !== null">
+                                <div
+                                    *ngIf="
+                                        dataSource.status_cert.condition_cert
+                                            .length > 0
+                                    "
+                                    style="
+                                        width: 100%;
+                                        display: flex;
+                                        justify-content: space-between;
+                                        flex-direction: row;
+                                        align-items: center;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            background-color: #2e8609;
+                                            width: 50px;
+                                            height: 15px;
+                                            padding: 2px;
+                                            border-radius: 5px;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        "
+                                        *ngIf="
+                                            dataSource.status_cert
+                                                .condition_cert[
+                                                dataSource.status_cert
+                                                    .condition_cert.length - 1
+                                            ].status == 4
+                                        "
+                                    >
+                                        <button
+                                            class="text-truncate isi"
+                                            mat-icon-button
+                                            [mdePopoverTriggerFor]="appPopover"
+                                            mdePopoverTriggerOn="hover"
+                                            #popoverTrigger="mdePopoverTrigger"
+                                            style="
+                                                color: white;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            Done
+                                        </button>
+                                        <mde-popover
+                                            #appPopover="mdePopover"
+                                            [mdePopoverOverlapTrigger]="false"
+                                        >
+                                            <mat-card style="max-width: 400px">
+                                                <mat-card-content>
+                                                    <div
+                                                        style="
+                                                            display: flex;
+                                                            flex-direction: column;
+                                                            justify-content: center;
+                                                            align-items: flex-start;
+                                                        "
+                                                    >
+                                                        <span class="fs-10">{{
+                                                            dataSource
+                                                                .status_cert
+                                                                .condition_cert[
+                                                                dataSource
+                                                                    .status_cert
+                                                                    .condition_cert
+                                                                    .length - 1
+                                                            ].inserted_at
+                                                        }}</span>
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </mde-popover>
+                                    </div>
+
+                                    <div
+                                        style="
+                                            background-color: #2e8609;
+                                            width: 50px;
+                                            height: 15px;
+                                            padding: 2px;
+                                            border-radius: 5px;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        "
+                                        *ngIf="
+                                            dataSource.status_cert
+                                                .condition_cert[
+                                                dataSource.status_cert
+                                                    .condition_cert.length - 1
+                                            ].status == 3
+                                        "
+                                    >
+                                        <button
+                                            class="text-truncate isi"
+                                            mat-icon-button
+                                            [mdePopoverTriggerFor]="appPopover"
+                                            mdePopoverTriggerOn="hover"
+                                            #popoverTrigger="mdePopoverTrigger"
+                                            style="
+                                                color: white;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            Draft
+                                        </button>
+
+                                        <mde-popover
+                                            #appPopover="mdePopover"
+                                            [mdePopoverOverlapTrigger]="false"
+                                        >
+                                            <mat-card style="max-width: 400px">
+                                                <mat-card-content>
+                                                    <div
+                                                        style="
+                                                            display: flex;
+                                                            flex-direction: column;
+                                                            justify-content: center;
+                                                            align-items: flex-start;
+                                                        "
+                                                    >
+                                                        <span class="fs-10">{{
+                                                            dataSource
+                                                                .status_cert
+                                                                .condition_cert[
+                                                                dataSource
+                                                                    .status_cert
+                                                                    .condition_cert
+                                                                    .length - 1
+                                                            ].inserted_at
+                                                        }}</span>
+                                                    </div>
+                                                </mat-card-content>
+                                            </mat-card>
+                                        </mde-popover>
+                                    </div>
+                                    <div
+                                        style="
+                                            background-color: #6e8100;
+                                            width: 50px;
+                                            height: 15px;
+                                            padding: 2px;
+                                            border-radius: 5px;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        "
+                                        *ngIf="
+                                            dataSource.status_cert
+                                                .condition_cert[
+                                                dataSource.status_cert
+                                                    .condition_cert.length - 1
+                                            ].status == 1 ||
+                                            dataSource.status_cert
+                                                .condition_cert[
+                                                dataSource.status_cert
+                                                    .condition_cert.length - 1
+                                            ].status == 2
+                                        "
+                                    >
+                                        <p
+                                            class="text-truncate isi"
+                                            style="
+                                                color: white;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            On Going
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    *ngIf="
+                                        dataSource.status_cert.condition_cert
+                                            .length < 1
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            background-color: #8d6000;
+                                            width: 50px;
+                                            height: 15px;
+                                            padding: 2px;
+                                            border-radius: 5px;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                        "
+                                    >
+                                        <p
+                                            class="text-truncate isi"
+                                            style="
+                                                color: white;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            Not Yet
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="dataSource.status_cert == null">
+                                <div
+                                    style="
+                                        background-color: #8d6000;
+                                        width: 50px;
+                                        height: 15px;
+                                        padding: 2px;
+                                        border-radius: 5px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    "
+                                >
+                                    <p
+                                        class="text-truncate isi"
+                                        style="color: white; font-weight: bold"
+                                    >
+                                        Not Yet
+                                    </p>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span class="judul">Action</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let dataSource">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="gotoModalViewDetail(dataSource.id)"
+                                >
+                                    <span>Lihat</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="
+                                        gotosampleinformation(dataSource.id)
+                                    "
+                                >
+                                    <span>Sample Information</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="getModalAddPhoto(dataSource)"
+                                >
+                                    <span>Photo Sample</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="ComplainData(dataSource)"
+                                    [disabled]="
+                                        dataSource.complain.length > 0
+                                            ? false
+                                            : true
+                                    "
+                                >
+                                    <span>Lihat Complain</span>
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row
+                        *matHeaderRowDef="displayedColumns; sticky: true"
+                    ></mat-header-row>
+                    <mat-row
+                        *matRowDef="let dataSource; columns: displayedColumns"
+                        class="lod"
+                    >
+                    </mat-row>
+                </mat-table>
+                <!-- 
+                <mat-paginator
+                    #paginator
+                    [length]="total"
+                    [pageSize]="pageSize"
+                    [showFirstLastButtons]="true"
+                    (page)="paginated($event)"
+                >
+                </mat-paginator> -->
+            </div>
+
+            <div
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                "
+            >
+                <span class="size-16-bold">External Description</span>
+                <span class="size-16-bold custom-span">{{
+                    dataview.desc ? dataview.desc : "-"
+                }}</span>
+            </div>
+            <div *ngIf="!hidingprice">
+                <mat-card-title> Pricing </mat-card-title>
+                <mat-card-content
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                    "
+                >
+                    <table class="pricing-table">
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Total Biaya Pengujian
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    totalbiaya > 0
+                                        ? totalbiaya.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="3"
+                                style="text-align: left; font-weight: bold"
+                            ></td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Discount
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    dataview.payment_condition.discount_lepas >
+                                    0
+                                        ? dataview.payment_condition.discount_lepas.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Biaya Sampling
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    samplingprice
+                                        ? samplingprice.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Biaya AKG
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    akgprice > 0 ? akgprice.toLocaleString() : 0
+                                }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Sub Total
+                            </td>
+                            <td style="text-align: right">
+                                Rp. {{ this.getSubTotal().toLocaleString() }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                PPN
+                                {{
+                                    (
+                                        (this.getppn(dataview) /
+                                            this.getSubTotal()) *
+                                        100
+                                    ).toFixed()
+                                }}
+                                %
+                            </td>
+                            <td style="text-align: right">
+                                Rp. {{ this.getppn(dataview).toLocaleString() }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Total Cost.
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    (
+                                        this.getSubTotal() +
+                                        this.getppn(dataview)
+                                    ).toLocaleString()
+                                }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="3"
+                                style="text-align: left; font-weight: bold"
+                            ></td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Uang Muka
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    dataview.payment_condition.downpayment
+                                        ? dataview.payment_condition.downpayment.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Sisa Pembayaran
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    (
+                                        this.getSubTotal() +
+                                        this.getppn(dataview) -
+                                        dataview.payment_condition.downpayment
+                                    ).toLocaleString()
+                                }}
+                            </td>
+                        </tr>
+                    </table>
+                </mat-card-content>
+            </div>
+            <div
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    margin-top: 40px;
+                    gap: 20px;
+                "
+            >
+                <!-- <button mat-raised-button color="primary" *ngIf="this.sendresult.length > 0" (click)="ComplainData()">
+                <div *ngIf="!this.loadingcomplain">Complain Data</div>
+                <div
+                    *ngIf="this.loadingcomplain"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: row;
+                    "
+                >
+                    <mat-spinner
+                        [color]="'accent'"
+                        diameter="20"
+                    ></mat-spinner>
+                    <span style="margin-left: 10px">Please Wait</span>
+                </div>
+            </button> -->
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="downloadparameter()"
+                >
+                    <div *ngIf="!this.loadingparameter">Download Parameter</div>
+                    <div
+                        *ngIf="this.loadingparameter"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: row;
+                        "
+                    >
+                        <mat-spinner
+                            [color]="'accent'"
+                            diameter="20"
+                        ></mat-spinner>
+                        <span style="margin-left: 10px">Please Wait</span>
+                    </div>
+                </button>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="hidingprice"
+                    (click)="download()"
+                >
+                    <div *ngIf="!this.loading">Download Contract</div>
+                    <div
+                        *ngIf="this.loading"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: row;
+                        "
+                    >
+                        <mat-spinner
+                            [color]="'accent'"
+                            diameter="20"
+                        ></mat-spinner>
+                        <span style="margin-left: 10px">Please Wait</span>
+                    </div>
+                </button>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="hidingprice"
+                    (click)="preview()"
+                >
+                    <div *ngIf="!this.loadingprev">Preview Contract</div>
+                    <div
+                        *ngIf="this.loadingprev"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: row;
+                        "
+                    >
+                        <mat-spinner
+                            [color]="'accent'"
+                            diameter="20"
+                        ></mat-spinner>
+                        <span style="margin-left: 10px">Please Wait</span>
+                    </div>
+                </button>
+                <button
+                    *ngIf="approvebutton"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="hidingprice"
+                    (click)="approveContract()"
+                >
+                    <div *ngIf="!this.loadingprevapp">Approve Contract</div>
+                    <div
+                        *ngIf="this.loadingprevapp"
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-direction: row;
+                        "
+                    >
+                        <mat-spinner
+                            [color]="'accent'"
+                            diameter="20"
+                        ></mat-spinner>
+                        <span style="margin-left: 10px">Please Wait</span>
+                    </div>
+                </button>
+                <div class="chat-popup" id="myForm">
+                    <div class="form-container">
+                        <h1>Description Internal</h1>
+
+                        <label for="msg"><b>Message</b></label>
+                        <div
+                            style="
+                                max-height: 330px;
+                                min-height: 330px;
+                                overflow: auto;
+                            "
+                        >
+                            <div #isichat id="remove"></div>
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: row;
+                                justify-content: space-around;
+                                align-items: center;
+                            "
+                        >
+                            <textarea
+                                placeholder="Type message.."
+                                [(ngModel)]="sendchat"
+                            ></textarea>
+                            <button
+                                mat-mini-fab
+                                color="accent"
+                                (click)="send()"
+                            >
+                                <mat-icon>play_circle_filled_white</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button mat-raised-button color="warn" (click)="openchat()">
+                    Memo Internal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

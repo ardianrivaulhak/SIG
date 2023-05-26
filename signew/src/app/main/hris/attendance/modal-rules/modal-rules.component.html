@@ -1,0 +1,114 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="overflow: auto; height: 93vh;"> 
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 40%;">
+        <button mat-raised-button color="primary" (click)="addRow()">Tambah Timetable</button>
+        <button mat-raised-button color="primary" (click)="settimetable()">Set Timetable</button>
+    </div>
+    <form *ngIf="rulesForm" [formGroup]="rulesForm" style="width: 98%; height: 80%; overflow: auto;">
+        <table
+            id="timetable"
+            *ngIf="
+                this.rulesForm.controls.rules_attendance['controls'].length > 0
+            "
+        >
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Name</th>
+                    <th>Jam Masuk</th>
+                    <th>Jam Pulang</th>
+                    <th>Tolerance</th>
+                    <th>WorkTime</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="rules_attendance">
+                <tr
+                    *ngFor="
+                        let a of this.rulesForm.controls.rules_attendance[
+                            'controls'
+                        ];
+                        let e = index
+                    "
+                    [formGroupName]="e"
+                >
+                    <td>
+                        <button mat-icon-button color="warn" (click)="deleteRow(e, a.value)">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input
+                                matInput
+                                placeholder="Name Timetable"
+                                formControlName="name"
+                            />
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hours</mat-label>
+                            <input
+                                matInput
+                                placeholder="Jam Masuk"
+                                formControlName="jam_masuk"
+                            />
+                            <mat-hint>Format HH:MM:SS Ex. 08:00:00</mat-hint>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hours</mat-label>
+                            <input
+                                matInput
+                                placeholder="Jam Pulang"
+                                formControlName="jam_keluar"
+                            />
+                            <mat-hint>Format HH:MM:SS Ex. 17:00:00</mat-hint>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tolerance</mat-label>
+                            <input
+                                matInput
+                                placeholder="Tolerance Time"
+                                formControlName="tolerance_time"
+                                type="number"
+                            />
+                            <mat-hint>Put Number Only</mat-hint>
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Work Time</mat-label>
+                            <input
+                                matInput
+                                placeholder="Work Time"
+                                formControlName="worktime"
+                            />
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 20%; margin-top: 10px"
+    >
+        <button mat-raised-button color="primary" (click)="saveData()">Save</button>
+        <button mat-raised-button color="danger" (click)="close()">Cancel</button>
+    </div>
+</div>
+<div
+    *ngIf="this.rulesForm.controls.rules_attendance['controls'].length === 0"
+    style="
+        width: 100%;
+        text-align: center;
+    "
+>
+    <medium>Please Wait ...</medium>
+</div>
+

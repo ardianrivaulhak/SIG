@@ -1,0 +1,25 @@
+<div fxLayout="column" fxLayoutAlign="center center" *ngIf="this.datapaket.length > 0" style="width: 100%;">
+    <h3>{{this.datapaket[0].kode_paketuji}} - {{this.datapaket[0].nama_paketuji}}</h3>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Parameter Name</th>
+                    <th>Lab</th>
+                    <th>Lod</th>
+                    <th>Metode</th>
+                    <th>Standart</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let a of datapaket[0].paketparameter; let z = index">
+                <tr>
+                    <td>{{z+1}}</td>
+                    <td>{{a.parameteruji.name_id}}</td>
+                    <td style="text-align: right;">{{a.lab.nama_lab}}</td>
+                    <td style="text-align: center;">{{a.lod.nama_lod}}</td>
+                    <td style="text-align: center;">{{a.metode.metode}}</td>
+                    <td style="text-align: center;">{{a.standart.nama_standart}}</td>
+                </tr>
+            </tbody>
+        </table>
+</div>

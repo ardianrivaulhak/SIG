@@ -1,0 +1,494 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px">
+    <ngx-spinner
+        bdColor="rgba(255,255,255,1)"
+        size="medium"
+        color="#000"
+        type="ball-clip-rotate-multiple"
+        [fullScreen]="false"
+    ></ngx-spinner>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="20px"
+        style="margin-bottom: 20px"
+    >
+        <div
+            style="
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                align-items: center;
+                width: 100%;
+            "
+        >
+            <button mat-raised-button color="primary" (click)="goback()">
+                «
+            </button>
+            <button mat-raised-button color="primary" (click)="addmoreparam()">
+                Add More Parameter
+            </button>
+            <div
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-start;
+                    flex-direction: column;
+                "
+            >
+                <span style="font-size: 12px"
+                    >Complain No {{ this.complain_no }}</span
+                >
+                <span style="font-size: 9px; font-style: italic"
+                    >{{ this.comp_date }} - {{ this.est_date }}</span
+                >
+            </div>
+        </div>
+
+        <div
+            style="width: 100%"
+            fxLayoutAlign="end center"
+            fxLayoutGap="20px"
+            *ngIf="this.addnewparam"
+        >
+            <ng-select
+                appendTo="body"
+                appearance="fill"
+                [items]="this.dataparameter"
+                bindLabel="name_id"
+                bindValue="id_parameteruji"
+                placeholder="Select Parameter"
+                dropdownPosition="bottom"
+                [(ngModel)]="this.datasent.parameteruji"
+                (change)="setValueSelect($event, e)"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 60%;
+                    font-size: 12px;
+                "
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <div title="{{ item.name_id }} [ {{ item.hasiluji }} ]">
+                        {{ item.name_id }} [ {{ item.hasiluji }} ]
+                    </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <div title="{{ item.name_id }} [ {{ item.hasiluji }} ]">
+                        {{ item.name_id }} [ {{ item.hasiluji }} ]
+                    </div>
+                </ng-template>
+            </ng-select>
+            <button mat-mini-fab color="warn" (click)="actmoreparam()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="10px"
+        style="margin-bottom: 20px"
+    >
+        <button
+            mat-raised-button
+            color="warn"
+            (click)="deleteParameter()"
+            *ngIf="this.deletedcan > 0"
+        >
+            <mat-icon>delete_outline</mat-icon>
+            <span>
+                {{
+                    this.deletedcan > 0 ? "( " + this.deletedcan + " )" : ""
+                }}</span
+            >
+        </button>
+
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="savingParameter()"
+            [disabled]="saveenable"
+        >
+            Save
+            <span>
+                {{
+                    this.totalchecked > 0 ? "( " + this.totalchecked + " )" : ""
+                }}</span
+            >
+        </button>
+
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="setStatus(1)"
+            [disabled]="saveenable"
+        >
+            Set Ongoing
+            <span>
+                {{
+                    this.totalchecked > 0 ? "( " + this.totalchecked + " )" : ""
+                }}</span
+            >
+        </button>
+
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="setStatus(0)"
+            [disabled]="saveenable"
+        >
+            Set Pending
+            <span>
+                {{
+                    this.totalchecked > 0 ? "( " + this.totalchecked + " )" : ""
+                }}</span
+            >
+        </button>
+<!-- 
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="setStatus(2)"
+            [disabled]="saveenable"
+        >
+            Set Done
+            <span>
+                {{
+                    this.totalchecked > 0 ? "( " + this.totalchecked + " )" : ""
+                }}</span
+            >
+        </button> -->
+    </div>
+    <div
+        style="
+            max-height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            width: auto;
+        "
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollUpDistance]="1.5"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll($event)"
+        [scrollWindow]="false"
+    >
+        <table id="customers" *ngIf="data.length > 0">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <div
+                            style="
+                                width: 100%;
+                                display: flex;
+                                justify-content: center;
+                            "
+                        >
+                            <mat-checkbox
+                                class="checkbox-control"
+                                color="primary"
+                                (change)="check($event.checked, 'all')"
+                            ></mat-checkbox>
+                        </div>
+                    </th>
+                    <th align="center">Status</th>
+                    <th align="center">Parameter</th>
+                    <th align="center">Lab</th>
+                    <th align="center">Result</th>
+                    <th align="center">Complain Result</th>
+                    <th align="center">Unit</th>
+                    <th align="center">Metode</th>
+                    <th align="center">Status Complain</th>
+                    <th align="center">Expectation</th>
+                    <th align="center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let a of data; let e = index">
+                    <td align="center">
+                        <mat-checkbox
+                            [checked]="a.checked"
+                            (change)="check($event.checked, e)"
+                        ></mat-checkbox>
+                    </td>
+                    <td>
+                        <span
+                            *ngIf="
+                                a.status.length == 0 && a.status_parameter == 0
+                            "
+                            >Pending</span
+                        >
+                        <span
+                            *ngIf="
+                                a.status.length > 0 &&
+                                a.status[0].position == 2 &&
+                                a.status[0].status == 0
+                            "
+                            >on Lab</span
+                        >
+                        <span
+                            *ngIf="
+                                a.status.length > 0 && a.status[0].position == 3
+                            "
+                            >on Preparation</span
+                        >
+                        <span
+                            *ngIf="
+                                a.status.length > 0 &&
+                                a.status[0].position == 2 &&
+                                a.status[0].status == 1
+                            "
+                            >Lab Done</span
+                        >
+                        <span
+                            *ngIf="
+                                a.status.length == 0 && a.status_parameter == 1
+                            "
+                            >Stay Still</span
+                        >
+                    </td>
+                    <td width="20%">
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                width: 100%;
+                            "
+                        >
+                            <span style="flex: 2">{{ a.parameter }}</span>
+                            <button
+                                mat-icon-button
+                                [mdePopoverTriggerFor]="infochat"
+                                mdePopoverTriggerOn="hover"
+                                #popoverTrigger="mdePopoverTrigger"
+                            >
+                                <mat-icon>message</mat-icon>
+                            </button>
+                            <mde-popover
+                                #infochat="mdePopover"
+                                [mdePopoverOverlapTrigger]="false"
+                            >
+                                <mat-card style="max-width: 400px">
+                                    <mat-card-content>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                flex-direction: column;
+                                                width: 100%;
+                                            "
+                                        >
+                                            <span>{{ a.memo }}</span>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </mde-popover>
+                        </div>
+                        <!-- <div *ngIf="a.status_parameter == 1">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="this.dataparameter"
+                                bindLabel="name_id"
+                                bindValue="id"
+                                placeholder="Select Parameter"
+                                dropdownPosition="bottom"
+                                [(ngModel)]="this.datasent.parameteruji"
+                                (change)="setValueSelect($event, e)"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 100%;
+                                    font-size: 12px;
+                                "
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                >
+                                    <div
+                                        title="{{ item.name_id }} [ {{
+                                            item.hasiluji
+                                        }} ]"
+                                    >
+                                        {{ item.name_id }} [
+                                        {{ item.hasiluji }} ]
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <div
+                                        title="{{ item.name_id }} [ {{
+                                            item.hasiluji
+                                        }} ]"
+                                    >
+                                        {{ item.name_id }} [
+                                        {{ item.hasiluji }} ]
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </div> -->
+                    </td>
+                    <td>{{ a.nama_lab }}</td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: flex-start;
+                                width: 100%;
+                                flex-direction: column;
+                            "
+                        >
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>Hasil</td>
+                                    <td>:</td>
+                                    <td>{{ a.hasiluji }}</td>
+                                </tr>
+                                <tr>
+                                    <td>AR</td>
+                                    <td>:</td>
+                                    <td>
+                                        {{
+                                            a.actual_result
+                                                ? a.actual_result
+                                                : "-"
+                                        }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td width="15%">
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                            *ngIf="a.complain_result"
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: flex-start;
+                                    width: 100%;
+                                    flex-direction: column;
+                                "
+                            >
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>Hasil</td>
+                                        <td>:</td>
+                                        <td>{{ a.complain_result }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AR</td>
+                                        <td>:</td>
+                                        <td>
+                                            {{
+                                                a.complain_arresult
+                                                    ? a.complain_arresult
+                                                    : "-"
+                                            }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <button
+                                mat-icon-button
+                                color="primary"
+                                (click)="gotomodalcomplain(e)"
+                            >
+                                <mat-icon style="font-size: 16px"
+                                    >edit</mat-icon
+                                >
+                            </button>
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                            *ngIf="!a.complain_result"
+                        >
+                            <button
+                                mat-stroked-button
+                                color="primary"
+                                (click)="gotomodalcomplain(e)"
+                            >
+                                Add Complain Result
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        {{ a.nama_unit }}
+                    </td>
+                    <td align="center">
+                        {{ a.metode }}
+                    </td>
+                    <td align="center">
+                        <select
+                            [(ngModel)]="a.status_complain"
+                            style="width: 90%; padding: 5px"
+                        >
+                            <option value="0">Verified</option>
+                            <option value="1">Not Verified</option>
+                            <option value="2">Adjusted</option>
+                            <option value="3">Changed</option>
+                            <option value="4">Retest</option>
+                        </select>
+                    </td>
+                    <td align="center">
+                        <textarea [(ngModel)]="a.expectation" style="padding: 5px"></textarea>
+                    </td>
+                    <td align="center">
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                                width: 100%;
+                            "
+                        >
+                            <div class="qc" *ngIf="a.status_parameter == 1">
+                                qc
+                            </div>
+                            <div class="cust" *ngIf="a.status_parameter == 0">
+                                cust
+                            </div>
+                            <span *ngIf="a.prepstatus == 0">Investigation</span>
+                            <span *ngIf="a.prepstatus == 1">Uji Ulang</span>
+                            <span *ngIf="a.prepstatus == 2"
+                                >Tidak Uji Ulang</span
+                            >
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div
+            *ngIf="data.length < 1"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+            "
+        >
+            <img style="width: 20%" src="assets/images/gif/selectfile.gif" />
+            <span>Data Not found</span>
+        </div>
+    </div>
+    <div style="height: 30px"></div>
+</div>

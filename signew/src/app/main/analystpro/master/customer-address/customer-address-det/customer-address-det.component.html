@@ -1,0 +1,113 @@
+<div  class="page-layout carded fullwidth inner-scroll">
+    <!-- <form name=customersAddressForm [formGroup]=customersAddressForm class="product w-100-p" fxLayout="column" fxFlex> -->
+    <div id="customersaddress" class="page-layout carded fullwidth inner-scroll">
+        <div class="top-bg primary"></div>
+        <!-- / TOP BACKGROUND -->
+    
+        <!-- CENTER -->
+        <div class="center" style="overflow: auto;">
+    
+            <!-- HEADER -->
+            <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+    
+                <div fxLayout="row" fxLayoutAlign="start center">
+    
+                    <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/customeraddress'">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+    
+                    <div *ngIf="this.idCustomerAddress === 'add'">
+                        <div fxLayout="column" fxLayoutAlign="start start"
+                            [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                <div class="text-customer h2">
+                                    Add Data
+                                </div>
+        
+                                <div class="subtitle secondary-text">
+                                    <span>add new Customers Address</span>
+                                </div>                    
+                        </div>
+                    </div>
+    
+                    <div *ngIf="this.idCustomerAddress !== 'add'">
+                        <div fxLayout="column" fxLayoutAlign="start start"
+                            [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                <div class="text-customer h2">
+                                    Edit Data
+                                </div>
+        
+                                <div class="subtitle secondary-text">
+                                    <span>edit data Customers Address</span>
+                                </div>                    
+                        </div>
+                    </div>
+                    
+                </div>
+                <button mat-raised-button
+                        class="save-product-button" 
+                        (click)="saveNewForm()" 
+                        *ngIf="hide && this.idCustomerAddress === 'add'" >
+                        <mat-icon>save</mat-icon>
+                </button>
+                <button mat-raised-button
+                        class="save-product-button" 
+                        (click)="enableForm()" 
+                        *ngIf="hide && this.idCustomerAddress !== 'add'">
+                        <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-raised-button
+                        class="save-product-button" 
+                        (click)="disableForm()" 
+                        *ngIf="!hide && this.idCustomerAddress !== 'add'">
+                        <mat-icon>chevron_left</mat-icon>
+                    <span>Cancel</span>
+                </button>
+            </div>
+            <div class="content-card" style="overflow: auto;">
+                <mat-progress-bar
+              color="primary"
+              mode="indeterminate"
+              value="50" *ngIf="load">
+          </mat-progress-bar>
+                <div class="content" >
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                                    <ng-select appearance="outline" appendTo="body"
+                                            [items]="customersdata" bindLabel="customer_name" bindValue="id_customer"
+                                            placeholder="Select Customer" 
+                                            (scrollToEnd)="onScrollToEnd('customer')" 
+                                            (search)="onSearch($event,'customer')"
+                                            [loading]="load" 
+                                            [(ngModel)]="customerid"
+                                            (change)="getVal($event)" 
+                                            dropdownPosition="bottom"
+                                            [disabled]="customerdisable">
+                                        </ng-select>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Address</mat-label>
+                                        <textarea matInput placeholder="Description" [(ngModel)]="alamatid" name="desc" rows="2" [disabled]="customerdisable">
+                                                            </textarea>
+                                    </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!hide">
+                            <button mat-raised-button 
+                            color="accent" 
+                            style="margin-right: 5px;" 
+                            (click)="saveForm()" 
+                            [disabled]="load">
+                            <mat-icon>save</mat-icon>
+                            Save</button>
+                            <button mat-raised-button 
+                            color="warn" 
+                            style="margin-left: 5px;" 
+                            (click)="deleteForm()" 
+                            [disabled]="load">
+                            <mat-icon>delete</mat-icon>
+                            Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- </form> -->
+    </div>

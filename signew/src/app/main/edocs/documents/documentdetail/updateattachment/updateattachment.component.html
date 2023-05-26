@@ -1,0 +1,77 @@
+<mat-card class="mat-elevation-z0" >            
+    <h3 style="font-weight:bold ; margin-top: 30px;">Edit Documents</h3>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+            <mat-label>Title</mat-label>
+            <input style="color: rgb(71, 68, 68);" [(ngModel)]="this.formEdit.document_title" matInput>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+            <mat-label>Document Number</mat-label>
+            <input style="color: black;" [(ngModel)]="this.formEdit.document_number" matInput>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="20">
+            <mat-label>Issue Number</mat-label>
+            <input style="color: black;" [(ngModel)]="this.formEdit.issue_number" matInput>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="30">
+            <mat-label>Date of Issue</mat-label>
+            <input matInput 
+                [(ngModel)]="this.formEdit.date_of_issue"
+                [matDatepicker]="issuedate">
+            <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+            <mat-datepicker #issuedate></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="20">
+            <mat-label>Revision Number</mat-label>
+            <input style="color: black;" [(ngModel)]="this.formEdit.revision_number" matInput>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="30">
+            <mat-label>Date of Revision</mat-label>
+            <input matInput 
+                [(ngModel)]="this.formEdit.date_of_revision"
+                [matDatepicker]="revision">
+            <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+            <mat-datepicker #revision></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="20">
+            <mat-label>Total Pages</mat-label>
+            <input style="color: black;" [(ngModel)]="this.formEdit.total_pages" matInput>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom:15px;" >
+        <mat-form-field appearance="outline" style="font-size: 11px;" floatLabel="always" fxFlex="100">
+            <mat-label>Infomarion(optional)</mat-label>
+            <textarea matInput placeholder="Infomation" [(ngModel)]="this.formEdit.information" name="desc" rows="7">
+            </textarea>
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end end" style="margin-bottom:15px;" >
+        <button mat-stroked-button color="primary" 
+        style="margin-right: 10px;"
+        (click)="closeModal(true)"
+        matTooltip="upload">
+           <mat-icon>chevron_left</mat-icon> Close
+       </button>
+        <button mat-flat-button color="primary"
+        (click)="save()"
+         matTooltip="upload">update
+        </button>
+    </div>
+</mat-card>

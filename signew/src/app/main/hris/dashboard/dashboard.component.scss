@@ -1,0 +1,107 @@
+@media only screen and (min-width: 200px) {
+    .dashboard-attendace {
+        height: 93vh;
+        overflow: auto;
+    }
+
+    @media only screen and (max-width: 600px) {
+      div[fxLayout] {
+        flex-direction: column;
+      }
+    }
+    
+    @media (min-width: 600px) {
+        .content-mat-card {
+            grid-template-columns: repeat(4, 1fr);
+            padding: 16px;
+        }
+    }
+
+    .ngxline-responsive {
+        width: 100%;
+    }
+
+    .day-card {
+        font-weight: bold;
+    }
+
+    @media (min-width: 200px) {
+        .day-card {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .graph {
+        padding: 14px;
+    }
+
+
+    .content > view-button {
+        justify-content: flex-end;
+    }
+
+    .stats-cards {
+        .mat-card {
+            overflow: hidden;
+        }
+    }
+
+    .toplate{
+        overflow: auto;
+        height: 500px
+        ;
+    }
+    // table top late
+    .mat-table {
+        width: 100%;
+        overflow: auto;
+        
+    }
+
+    .linechart{
+        height: 500px;
+        overflow: auto;
+    }
+
+
+    .text-7xl {
+        font-size: 4rem;
+    }
+
+    .sm:text-8xl {
+        font-size: 4rem;
+    }
+
+    .font-bold {
+        font-weight: bold;
+    }
+
+    .tracking-tight {
+        letter-spacing: -0.05em;
+    }
+
+    .leading-none {
+        line-height: 1;
+    }
+
+    .text-blue-500 {
+        color: #3b83f7;
+        font-size: 40px;
+    }
+
+    .text-red-500 {
+        color: #ef4545;
+        font-size: 40px;
+    }
+
+    .text-yellow-500 {
+        color: #f49f0b;
+        font-size: 40px;
+    }
+
+    .text-green-500 {
+        color: #23c45e;
+        font-size: 40px;
+    }
+    
+}

@@ -1,0 +1,12 @@
+<div id="gallery">
+    <mat-grid-list  [cols]="1" rowHeight='350px'> 
+            <mat-grid-tile>          
+                <div class="slider-container" style="margin: 20px 10px;">
+                       <div class="slide"> 
+                           <img *ngIf="this.dataPhoto[0].data.photo" style="max-width: 100%; height: 300px;" [src]="picture(this.dataPhoto[0].data.photo )" /> 
+                           <img *ngIf="!this.dataPhoto[0].data.photo" style="max-width: 100%; height: 300px;" src="{{this.dataPhoto[0].data}}" /> 
+                        </div>
+                </div> 
+            </mat-grid-tile> 
+    </mat-grid-list> 
+</div>

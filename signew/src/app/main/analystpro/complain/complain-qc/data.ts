@@ -1,0 +1,23 @@
+export var formComplain = {
+    status: null,
+    no_complain: null,
+    complain_date: null,
+    estimate_date: null,
+    no_sample: null,
+    sample_name: null,
+    lhu_number: null,
+    contract_no: null,
+    customer_name: null,
+    email: null,
+    name_id: null,
+    hasiluji: null,
+    actual_result: null,
+    id_unit: null,
+    id_parameteruji: null,
+    complain_desc: null,
+    nama_lab: null,
+    id_lab: null,
+    message_email: null,
+    expetation: null,
+    
+}

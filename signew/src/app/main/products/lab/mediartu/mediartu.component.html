@@ -1,0 +1,280 @@
+<div id="product_lab" class="page-layout simple" style="overflow: auto; height: 100%;">
+    <div class="content">
+        <mat-card class="mat-elevation-z0"  style="width: 90%; margin: 20px auto 10px auto;" >
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center"style="margin-bottom: 10px;" >
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Invoice</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Category</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Customer</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Status</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Create By</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-flat-button color="primary"  fxFlex="12"  fxFlex.xs="15" style="height: 40px; width:250px; margin-right:15px; width: 70%;" >
+                            Filter
+                        </button>
+                        <button mat-stroked-button color="primary" fxFlex="12"  fxFlex.xs="15" style="height: 40px; width: 70%;">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            
+        </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0"  style="width: 90%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:20px;">
+                    <span style="font-size:16px; font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md> Media RTU  
+                    </span>
+                    <span *ngIf="this.checkList.length > 0">&nbsp;|&nbsp; </span>
+                    <button mat-icon-button color="white" 
+                    class="contract-certficate"
+                    matTooltip="No Action"
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="cancelChecklist()"
+                    style="margin-left: -2px;">
+                        <mat-icon>fullscreen_exit</mat-icon>
+                   </button>
+                    <button mat-icon-button color="white" 
+                    class="contract-certficate"
+                    matTooltip="Approve"
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="approve()"
+                    style="margin-left: -2px;">
+                        <mat-icon>check_circle</mat-icon>
+                   </button> 
+                </div>
+               
+            </div>
+            <mat-table class="mediartu-table" #table [dataSource]="labData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar  *ngIf="this.labData.length > 0 && !loadingfirst">
+            <!-- Column -->
+            <ng-container matColumnDef="contract_number">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_number">Contract Number</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ labData.contract_product.contract_number }}">{{  labData.contract_product.contract_number }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="product">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="product">Product</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{  labData.master_media_rtu.product_name }}">{{ labData.master_media_rtu.product_name }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="no_katalog">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="no_katalog">Catalogue</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <span class="text-truncate" matTooltip="{{ labData.master_media_rtu.no_katalog }}">{{ labData.master_media_rtu.no_katalog }}</span>
+                </mat-cell>
+            </ng-container>
+
+
+              <!-- Column -->
+              <ng-container matColumnDef="kode_media">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="kode_media">Media Code</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ labData.master_media_rtu.kode_media }}">{{ labData.master_media_rtu.kode_media }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+               <!-- Column -->
+            <ng-container matColumnDef="kemasan">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="kemasan">Packaging</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ labData.master_media_rtu.kemasan }}">{{ labData.master_media_rtu.kemasan }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="unit">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                    <mat-cell *matCellDef="let labData">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ labData.unit }}">{{ labData.unit }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+            
+
+             <!-- Column -->
+             <ng-container matColumnDef="estimasi">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="estimasi">est</mat-header-cell>
+                <mat-cell *matCellDef="let labData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ labData.contract_product.estimasi | date }}">{{ labData.contract_product.estimasi | date }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>    
+    
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="action" fxHide fxShow.gt-md>Action</mat-header-cell>
+                <mat-cell *matCellDef="let labData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                            <mat-icon  class="secondary-text">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <button mat-menu-item aria-label="copy" (click)="goToContract(labData.id_product_contract)">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Contract</span>
+                            </button>
+                            <button  mat-menu-item aria-label="copy" 
+                            class="btn-icon-control"
+                            matTooltip="Sample"
+                            (click)="goDetail(labData.id)"
+                            aria-label="Sample"  
+                            matTooltip="details">
+                                <mat-icon>edit</mat-icon>
+                                <span>Update</span>
+                            </button>
+                            <button  mat-menu-item aria-label="copy" 
+                            class="btn-icon-control"
+                            matTooltip="Sample"
+                            (click)="sendingProduct(labData)"
+                            aria-label="Sample"  
+                            matTooltip="details">
+                                <mat-icon>timeline</mat-icon>
+                                <span>Progress Product</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" (click)="sendedProduct(labData.id_product_contract)">
+                                <mat-icon>format_list_numbered</mat-icon>
+                                <span>Sendig Product</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" (click)="attachment(labData)">
+                                <mat-icon>attach_file</mat-icon>
+                                <span>Attachment</span>
+                            </button>
+                            <button  mat-menu-item  class="btn-icon-control" color="primary" [matMenuTriggerFor]="moreMenuLabel" aria-label="More"
+                            (click)="$event.stopPropagation();">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Label</span>
+                            </button>
+                                <mat-menu #moreMenuLabel="matMenu">
+                                    <button  mat-menu-item aria-label="copy" 
+                                    class="btn-icon-control"
+                                    matTooltip="Sample"
+                                    (click)="goLabelMini(labData)"
+                                    aria-label="Sample"  
+                                    matTooltip="details">
+                                        <mat-icon>picture_as_pdf</mat-icon>
+                                        <span>Label 12x7 cm</span>
+                                    </button>
+                                    <button  mat-menu-item aria-label="copy" 
+                                    class="btn-icon-control"
+                                    matTooltip="Sample"
+                                    (click)="goLabelMax(labData)"
+                                    aria-label="Sample"  
+                                    matTooltip="details">
+                                        <mat-icon>picture_as_pdf</mat-icon>
+                                        <span>Label 10x12 cm</span>
+                                    </button>
+                                </mat-menu>
+                            <button  mat-menu-item aria-label="copy" 
+                            class="btn-icon-control"
+                            matTooltip="Sample"
+                            (click)="goCoa(labData)"
+                            aria-label="Sample"  
+                            matTooltip="details">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>COA</span>
+                            </button>
+                            <br>
+                            <button  mat-menu-item aria-label="copy" 
+                            class="btn-icon-control"
+                            matTooltip="Sample"
+                            (click)="ApproveMedia(labData.id)"
+                            aria-label="Sample"
+                            style="color: green;"  
+                            matTooltip="details">
+                                <mat-icon style="color: green;">check_circle</mat-icon>
+                                <span>Approve</span>
+                            </button>
+                        </mat-menu>  
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let financeProduct; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+        <div>
+            <mat-paginator
+                [length]="this.total"
+                [pageSize]="this.to"
+                [pageIndex]="this.current_page"
+                hidePageSize="true"
+                (page)="pageEvent = $event; paginated($event)"
+            >
+            </mat-paginator>
+        </div>
+        <div *ngIf="loadingfirst && this.labData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.labData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        </mat-card>
+
+    </div>
+</div>

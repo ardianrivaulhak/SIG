@@ -1,0 +1,100 @@
+<div *ngIf="MouForm" style="margin-top: 20px">
+        <mat-card-title> Status Pengujian Detail </mat-card-title>
+
+        <mat-card-content>
+            <form name="MouForm" [formGroup]="MouForm">
+                <mat-table
+                    #table
+                    style="width: 100%"
+                    [dataSource]="this.MouForm.controls.status['controls']"
+                    formArrayName="status"
+                >
+                    <mat-header-row *matHeaderRowDef="display"></mat-header-row>
+                    <mat-row
+                        *matRowDef="let row; let i = index; columns: display"
+                    ></mat-row>
+                    <ng-container matColumnDef="title">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell
+                            *matCellDef="let v; let e = index"
+                            [formGroupName]="e"
+                            style="height: 80px"
+                        >
+                            <h3 *ngIf="v.value.id_status_pengujian == 1">
+                                Normal
+                            </h3>
+                            <h3 *ngIf="v.value.id_status_pengujian == 2">
+                                Urgent
+                            </h3>
+                            <h3 *ngIf="v.value.id_status_pengujian == 3">
+                                Very Urgent
+                            </h3>
+                            <h3 *ngIf="v.value.id_status_pengujian == 4">
+                                Custom 2 Hari
+                            </h3>
+                            <h3 *ngIf="v.value.id_status_pengujian == 5">
+                                Custom 1 Hari
+                            </h3>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="values">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell
+                            *matCellDef="let row; let e = index"
+                            [formGroupName]="e"
+                            style="height: 100%"
+                        >
+                            <div
+                                fxLayout="column"
+                                fxLayoutAlign="center center"
+                            >
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100%"
+                                >
+                                    <mat-label>Values</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="values"
+                                        required
+                                    />
+                                </mat-form-field>
+                                
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="discount">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell
+                            *matCellDef="let row; let e = index"
+                            [formGroupName]="e"
+                            style="height: 100%"
+                        >
+                            <div
+                                fxLayout="column"
+                                fxLayoutAlign="center center"
+                            >
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100%"
+                                >
+                                    <mat-label>Discount</mat-label>
+                                    <input
+                                        matInput
+                                        formControlName="discount"
+                                        required
+                                    />
+                                </mat-form-field>
+                                
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                </mat-table>
+            </form>
+        </mat-card-content>
+         <mat-card-footer fxLayout="row" fxLayoutAlign="flex-end center" style="width: 100%;">
+             <button mat-raised-button color="primary" (click)="saveFrom()">Save</button>
+             <div style="width: 20px;"></div>
+             <button mat-raised-button color="warn" (click)="exit()">Cancel</button>
+         </mat-card-footer>
+</div>

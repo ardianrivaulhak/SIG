@@ -1,0 +1,35 @@
+<div fxLayout="column" fxLayoutAlign="center center" *ngIf="this.datavalue.length > 0">
+    <h3>{{this.datavalue[0].package_code}} - {{this.datavalue[0].package_name}}</h3>
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Subpackage Name</th>
+                    <th>Lab</th>
+                    <th>Price</th>
+                    <th>n</th>
+                    <th>c</th>
+                    <th>m</th>
+                    <th>M</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let a of datavalue[0].subspecific; let z = index">
+                <tr>
+                    <td>{{z+1}}</td>
+                    <td>{{a.subpackage_name}}</td>
+                    <td>{{a.detail_specific[0].lab.nama_lab}}</td>
+                    <td style="text-align: right;">{{a.price.toLocaleString()}}</td>
+                    <td style="text-align: center;">{{a.detail_specific.length}}</td>
+                    <td style="text-align: center;">{{a.perka ? a.perka.c : '-'}}</td>
+                    <td style="text-align: center;">
+                        <div *ngIf="a.perka" [innerHTML]="this.changingvalue(a.perka.m)"></div>
+                        <span *ngIf="!a.perka">-</span>
+                    </td>
+                    <td style="text-align: center;">
+                        <div *ngIf="a.perka" [innerHTML]="this.changingvalue(a.perka.mm)"></div>
+                        <span *ngIf="!a.perka">-</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</div>

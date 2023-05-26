@@ -1,0 +1,39 @@
+<mat-form-field appearance="outline">
+    <mat-label>Choose an option</mat-label>
+    <mat-select [(ngModel)]="valuenpwpktp">
+        <mat-option value="ktp">KTP</mat-option>
+        <mat-option value="npwp">NPWP</mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline">
+    <mat-label
+        >{{
+            this.valuenpwpktp ? this.valuenpwpktp.toUpperCase() : ""
+        }}
+        Number</mat-label
+    >
+    <input matInput [(ngModel)]="numbernpwpktp" />
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="namanpwp" />
+</mat-form-field>
+
+<mat-form-field appearance="outline">
+    <mat-label>Address</mat-label>
+    <textarea matInput [(ngModel)]="alamatnpwp"></textarea>
+</mat-form-field>
+<div
+    style="
+        display: flex;
+        margin-top: 20px;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        gap: 5px
+    "
+>
+    <button mat-stroked-button color="primary" (click)="save()">Save</button>
+    <button mat-stroked-button color="warn" (click)="close()">Cancel</button>
+</div>

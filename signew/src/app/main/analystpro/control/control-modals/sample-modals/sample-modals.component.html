@@ -1,0 +1,45 @@
+<div  *ngIf="sampleForm" class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <form name="sampleForm" [formGroup]="sampleForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="mat-primary m-0" *ngIf="this.sampleData.length > 0 && this.data.select == 'nonchecklist'">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           {{ sampleData[0].no_sample }}
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-toolbar matDialogTitle class="mat-primary m-0" *ngIf="this.data.select == 'checklist'">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Lab Estimate
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+       
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Lab Estimation</mat-label>
+                    <input matInput [matDatepicker]="picker" name="tgl_estimasi_lab" formControlName="tgl_estimasi_lab" >
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                <mat-error>
+                    Lab Estimation is Required
+                </mat-error>
+            </mat-form-field>       
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-flat-button color="accent" aria-label="Submit" (click)="saveForm()">
+          Submit
+        </button>
+        <button mat-flat-button color="warn" aria-label="Close"  (click)="closeModal(true)">
+            Close
+        </button>
+    </div>
+    </form>
+  </div>

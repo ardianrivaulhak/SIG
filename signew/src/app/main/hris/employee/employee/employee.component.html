@@ -1,0 +1,218 @@
+<mat-card style="margin: 15px">
+    <div style="height: 100%; overflow: auto">
+        <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+            <mat-grid-tile>
+                <mat-form-field appearance="outline" style="font-size: 11px">
+                    <mat-label>Search for Employee</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="this.datasend.search"
+                        (input)="onSearchChange($event.target.value)"
+                        placeholder="Put an Employee Name"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline" style="font-size: 11px">
+                    <mat-label>Select Bagian</mat-label>
+                    <mat-select
+                        [(value)]="selectedBagian"
+                        (selectionChange)="getbagian($event.value)"
+                    >
+                        <mat-option
+                            *ngFor="let item of bagian"
+                            [value]="item.id_div"
+                            >{{ item.division_name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline" style="font-size: 11px">
+                    <mat-label>Select Status</mat-label>
+                    <mat-select
+                        [(value)]="selectedStatus"
+                        (selectionChange)="getValStatus($event.value)"
+                    >
+                        <mat-option
+                            *ngFor="let status of employeestatus"
+                            [value]="status.id"
+                            >{{ status.status }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div class="button1" style="margin-right: 11px">
+                    <button
+                        mat-flat-button
+                        style="font-size: 11px"
+                        color="primary"
+                        [@animate]="{
+                            value: '*',
+                            params: { delay: '200ms', x: '-25px' }
+                        }"
+                        [routerLink]="'/hris/add-employee'"
+                    >
+                        <mat-icon>add_box</mat-icon>
+                        <span> Add New</span>
+                    </button>
+                </div>
+                <div class="button2">
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        style="font-size: 11px"
+                        [matMenuTriggerFor]="menu2"
+                    >
+                        <span>Export</span>
+                    </button>
+                    <mat-menu #menu2="matMenu">
+                        <button
+                            mat-menu-item
+                            (click)="dataexport('stkaryawan')"
+                        >
+                            <span>Data Status Karyawan</span>
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="dataexport('prbadikaryawan')"
+                        >
+                            <span>Data Pribadi Karyawan</span>
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="dataexport('administrasikaryawan')"
+                        >
+                            <span>Data Nomer Administrasi Karyawan</span>
+                        </button>
+                        <button mat-menu-item (click)="dataexport('all')">
+                            <span>All Data</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-table
+            class="lab-table"
+            #table
+            [dataSource]="employee"
+            [@animateStagger]="{ value: '50' }"
+            fusePerfectScrollbar
+        >
+            <!-- Active Column -->
+            <ng-container matColumnDef="no">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let a; let i = index">
+                    <img class="gender-border" [src]="setPhoto(a)" />
+                </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="employee_name">
+                <mat-header-cell *matHeaderCellDef>Employee</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <div fxLayout="column" fxLayoutAlign="center flex-start">
+                        <span style="font-weight: bold">{{
+                            a.employee_name.includes(" ")
+                                ? a.employee_name.split(" ")[0] +
+                                  " " +
+                                  a.employee_name.split(" ")[1]
+                                : a.employee_name
+                        }}</span>
+                        <span style="font-size: 10px">{{
+                            a.nik ? a.nik : "-"
+                        }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="departement">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Level</mat-header-cell
+                >
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">
+                        {{ a.level ? a.level.level_name.split(" ")[0] : "-" }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+
+            <ng-container matColumnDef="division">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Sub Div</mat-header-cell
+                >
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">
+                        {{ a.subagian ? a.subagian.name : "-" }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="age">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Birthdate</mat-header-cell
+                >
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">
+                        {{ a.city.city_name.toLowerCase() }},
+                        {{ this.changingdate(a.tgl_lahir) }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Div</mat-header-cell
+                >
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">
+                        {{ a.bagian ? a.bagian.division_name : "-" }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>
+                    <div
+                        style="
+                            display: flex;
+                            width: 100%;
+                            justify-content: center;
+                        "
+                    >
+                        <span>Action</span>
+                    </div>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <!-- <button mat-stroked-button (click)="lihat(a)">View Details</button> -->
+                    <button
+                        mat-stroked-button
+                        [routerLink]="'/hris/employee/' + a.employee_id"
+                    >
+                        View Details
+                    </button>
+                    <!-- <button mat-stroked-button (click)="addnew(a)">Edit</button> -->
+                    <!-- <button mat-stroked-button (click)="deleteaction(a)">Delete</button> -->
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+            ></mat-header-row>
+            <mat-row *matRowDef="let a; columns: displayedColumns"> </mat-row>
+        </mat-table>
+
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+</mat-card>

@@ -1,0 +1,160 @@
+<div *ngIf="contactForm" class="page-layout carded fullwidth inner-scroll">
+    <form name="contactForm" [formGroup]="contactForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+        <div id="contactperson-det" class="page-layout carded fullwidth inner-scroll">
+            <div class="top-bg primary"></div>
+
+            <div class="center" style="overflow: auto;" *ngIf="contactForm">
+
+                <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/contact-person'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+
+                        <div *ngIf="this.idContact === 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                <div class="text-customer h2">
+                                    Add Data
+                                </div>
+
+                                <div class="subtitle secondary-text">
+                                    <span>add new contact person</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="this.idContact !== 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                                <div class="text-customer h2">
+                                    Edit Data
+                                </div>
+
+                                <div class="subtitle secondary-text">
+                                    <span>edit data contact person</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button mat-raised-button class="save-product-button" (click)="saveNewForm()"
+                        *ngIf="hide && this.idContact === 'add'" [disabled]="contactForm.invalid">
+                        <mat-icon>save</mat-icon>
+                        <span>Save</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" (click)="enableForm()"
+                        *ngIf="hide && this.idContact !== 'add'">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" (click)="disableForm()"
+                        *ngIf="!hide && this.idContact !== 'add'">
+                        <mat-icon>chevron_left</mat-icon>
+                        <span>Cancel</span>
+                    </button>
+
+                </div>
+                <div class="content-card" style="overflow: auto;">
+                    <mat-progress-bar color="primary" mode="indeterminate" value="50" *ngIf="load">
+                    </mat-progress-bar>
+
+                    <div class="content">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+
+                            
+
+                            <mat-grid-list cols="3" rowHeight="100px" gutterSize="10px">
+                                <mat-grid-tile colspan="2">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput placeholder="Name" name="name" formControlName="name" minlength="1"
+                                            required>
+                                        <mat-error>
+                                            Name is Required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Gender</mat-label>
+                                        <mat-select formControlName="gender" name="food" required>
+                                            <mat-option value="L">Male</mat-option>
+                                            <mat-option value="F">Female</mat-option>
+                                          </mat-select>
+                                        <mat-error>
+                                            Gender Name is Required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Phone Number</mat-label>
+                                        <input matInput placeholder="Telp Number" name="telpnumber" formControlName="telpnumber"
+                                            minlength="1" type="number">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Mobile Number</mat-label>
+                                        <input matInput placeholder="Phone Number" name="phonenumber"
+                                            formControlName="phonenumber" minlength="1" type="number">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Fax</mat-label>
+                                        <input matInput placeholder="Fax" name="fax" formControlName="fax" rows="3" type="text">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput formControlName="email">
+                                        <mat-error *ngIf="contactForm.get('email').hasError('required')">
+                                            Email is required
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="!contactForm.get('email').hasError('required') &&
+                                            contactForm.get('email').hasError('email')">
+                                            Please enter a valid email address
+                                        </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile colspan="2">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Desc</mat-label>
+                                        <textarea matInput placeholder="Desc" name="desc" formControlName="desc" rows="1">
+                                        </textarea>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                        </div>
+
+                        <div class="button-action" fxLayout="row" fxLayoutAlign="center center" *ngIf="!hide">
+
+                            <button mat-raised-button color="primary" style="margin-right: 5px;" (click)="saveForm()"
+                                [disabled]="load">
+                                <mat-icon>add_box</mat-icon>
+                                Save
+                            </button>
+
+                            <button mat-raised-button color="warn" style="margin-left: 5px;" (click)="deleteForm()"
+                                [disabled]="load">
+                                <mat-icon>delete</mat-icon>
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>

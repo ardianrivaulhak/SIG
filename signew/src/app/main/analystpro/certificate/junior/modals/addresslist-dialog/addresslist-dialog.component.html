@@ -1,0 +1,28 @@
+<div  class="dialog-content-wrapper mat-primary m-0" *ngIf="this.addressData.length > 0">   
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <div id="leftContainer" fxFlex="90%">
+                <span class="title dialog-title"  [@animate]="{value:'*',params:{delay:'90ms',x:'-25px'}}">
+                    Address List
+                </span>
+                <div class="subheadings" [@animate]="{value:'*',params:{delay:'120ms',x:'-25px'}}" style="margin-top: -15px;">
+                    <span style="font-size:10px; font-weight: 700;" [@animate]="{value:'*',params:{delay:'120ms',x:'-25px'}}">
+                        {{ this.addressData[0].kontrakuji.customers_handle.customers.customer_name }} 
+                    </span>
+                </div>
+            </div>
+            <div id="rightContainer" fxFlex="10%">
+             
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar >
+        <mat-list role="list" *ngFor="let addressData of this.addressData[0].kontrakuji.customers_handle.address_customer">
+            <mat-list-item role="listitem" style="margin-bottom: 20px;">
+                {{ this.addressData.address }}
+                <button mat-raised-button color="primary" class="mat-primary"  [cdkCopyToClipboard]="this.addressData.address"><mat-icon>file_copy</mat-icon></button>
+            </mat-list-item>
+        </mat-list>       
+    </div>    
+</div>

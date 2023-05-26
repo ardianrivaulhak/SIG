@@ -1,0 +1,97 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label> <mat-icon>search</mat-icon>Search Position</mat-label>
+            <input
+                matInput
+                [(ngModel)]="search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+        <button
+            mat-flat-button
+            color="primary"
+            style="margin-right: 10px; margin-bottom: 10px"
+            matTooltip="Add Position"
+            (click)="addnew()"
+        >
+            <mat-icon>add_box</mat-icon>
+        </button>
+    </div>
+    <mat-table
+        class="lab-table"
+        [dataSource]="dataposition"
+        [@animateStagger]="{ value: '50' }"
+        fusePerfectScrollbar
+        matSort
+        (matSortChange)="sortData($event)"
+        #table
+    >
+        <ng-container matColumnDef="no">
+            <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+            <mat-cell *matCellDef="let a; let i = index">
+                <p class="text-truncate">{{ i + 1 }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="position_name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header="position_name">Position Name</mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate" title="{{ a.position_name }}">{{ a.position_name }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="head_position">
+            <mat-header-cell *matHeaderCellDef mat-sort-header="position_head">Superior</mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate" title="{{ a.position_head?.position_name }}">
+                    {{ a.position_head?.position_name }}
+                </p>
+            </mat-cell>
+        </ng-container>
+<!-- 
+        <ng-container matColumnDef="division">
+            <mat-header-cell *matHeaderCellDef mat-sort-header="division_name">Division</mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.division?.division_name }}</p>
+            </mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="subdiv">
+            <mat-header-cell *matHeaderCellDef mat-sort-header="subdiv_name">Sub Division</mat-header-cell>
+            <mat-cell *matCellDef="let a" title="{{ a.subdiv?.name }}">
+                <p class="text-truncate">{{ a.subdiv?.name }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef style="text-align: center"
+                >Action</mat-header-cell
+            >
+            <mat-cell *matCellDef="let a">
+                <button mat-icon-button color="primary" (click)="addnew(a)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <div>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="deleteaction(a)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+        ></mat-header-row>
+        <mat-row *matRowDef="let a; columns: displayedColumns"> </mat-row>
+    </mat-table>
+</mat-card>

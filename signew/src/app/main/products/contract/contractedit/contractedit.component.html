@@ -1,0 +1,382 @@
+<div id="contract-add" fxLayout="column" fxLayoutAlign="space-between none" >
+    <div>
+        <mat-card class="card-action">
+            <mat-card-title>Contracts</mat-card-title>
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                <h2 class="text-title">Select Product</h2>
+                <mat-form-field appearance="outline" style="font-size: 11px;">
+                    <mat-label>Product</mat-label>
+                    <input matInput  [(ngModel)]="dataForm.product" name="product" readonly="true" >
+                </mat-form-field>
+                <h2 class="text-title">Indentity</h2>
+                <mat-form-field appearance="outline" style="font-size: 11px;">
+                    <mat-label>Contract Number</mat-label>
+                    <input matInput  [(ngModel)]="dataForm.contract_number" name="name" readonly="true">
+                </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <ng-select appendTo="body" 
+                    bindLabel="customer_name" 
+                    class="auto-grow"
+                    [items]="customersData" 
+                    [(ngModel)]="this.dataForm.id_customer"
+                    bindValue="id_customer" 
+                    fxFlex="33" fxHide fxShow.gt-xs
+                    appearance="outline" 
+                    placeholder="Customer"
+                    name="id_customer"
+                    dropdownPosition="bottom"  
+                    style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.customer_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.customer_name}}
+                        </ng-template>
+                    </ng-select> 
+                    
+                    <ng-select appendTo="body" 
+                    bindLabel="contact_name" 
+                    class="auto-grow"
+                    bindValue="id_contact"
+                    [items]="contactData" 
+                    [(ngModel)]="this.dataForm.id_cp"
+                    fxFlex="33" fxHide fxShow.gt-xs
+                    appearance="outline" 
+                    placeholder="Contact Person"
+                    name="contactperson"
+                    dropdownPosition="bottom"  
+                    style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.contact_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.contact_name}}
+                        </ng-template>
+                    </ng-select> 
+
+                    
+
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="15">
+                        <mat-label>Telp Number</mat-label>
+                        <input matInput [(ngModel)]="this.dataForm.telp" name="name">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="15">
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput [(ngModel)]="this.dataForm.mobile"  name="mobile">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <ng-select appendTo="body" 
+                    bindLabel="address" 
+                    class="auto-grow"
+                    bindValue="id_address" 
+                    [items]="addressData"
+                    [(ngModel)]="this.dataForm.id_address"
+                    fxFlex="89" fxHide fxShow.gt-xs
+                    appearance="outline" 
+                    placeholder="Address"
+                    name="address"
+                    dropdownPosition="bottom"  
+                    style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.address}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.address}}
+                        </ng-template>
+                    </ng-select> 
+                    <button fxFlex fxFlex="10" mat-flat-button color="accent" style="margin-bottom : 10px;"><mat-icon>add_circle</mat-icon> add</button>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="29">
+                        <mat-label>Date of receipt</mat-label>
+                        <input matInput [matDatepicker]="picker"  (dateChange)="getDateEstimate($event)"  [(ngModel)]="dataForm.tgl_terima" name="tgl_terima">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="29">
+                        <mat-label>Estimate</mat-label>
+                        <input matInput [matDatepicker]="pickere"  [(ngModel)]="dataForm.estimasi" name="estimasi">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="pickere"></mat-datepicker-toggle>
+                        <mat-datepicker #pickere></mat-datepicker>
+                    </mat-form-field>
+                </div>  
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px; width: 100%;">
+                        <mat-label>Desc</mat-label>
+                        <textarea matInput  rows="5"  [(ngModel)]="dataForm.desc" name="desc"></textarea>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="59">
+                        <mat-label>Offer number</mat-label>
+                        <input matInput  [(ngModel)]="dataForm.penawaran" name="penawaran">
+                    </mat-form-field>
+                </div>        
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px; width: 100%;">
+                        <mat-label>Internal Memo</mat-label>
+                        <textarea matInput  [(ngModel)]="dataForm.memo_internal" name="memo_internal" rows="5"></textarea>
+                    </mat-form-field>
+                </div>
+                <br>
+                <h2 class="text-title">Select Product</h2>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <ng-select appendTo="body" 
+                    [items]="productData" 
+                    bindLabel="product_name" 
+                    class="auto-grow"
+                    bindValue="id" 
+                    fxFlex="59" fxHide fxShow.gt-xs
+                    appearance="outline" 
+                    placeholder="products"
+                    name="product"
+                    dropdownPosition="bottom"  
+                    [readonly]="selectDisable"
+                    (scrollToEnd)="onScrollToEnd('product')" 
+                    (search)="onsearchselect($event,'product')"
+                    (change)="getValueProducts($event)"
+                    style="display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.product_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.product_name}}
+                        </ng-template>
+                    </ng-select> 
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="20">
+                        <mat-label>Price</mat-label>
+                        <input matInput  [(ngModel)]="product_form.price" name="price" readonly="true" >
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="20">
+                        <mat-label>Unit</mat-label>
+                        <input matInput  [(ngModel)]="product_form.unit" (keyup)="changeUnit(product_form.unit)" name="unit" type="number">
+                    </mat-form-field>        
+                  
+                </div> 
+                <div fxLayout="row" fxLayoutAlign="end  center" >                 
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="41">
+                        <mat-label>Subtotal</mat-label>
+                        <input matInput  [(ngModel)]="product_form.subtotal" name="subtotal" readonly="true">
+                    </mat-form-field>   
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end  center" > 
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="41" >
+                        <mat-label>Discount</mat-label>
+                        <input matInput  type="number" [(ngModel)]="product_form.discount" (keyup)="changediscount(product_form.discount)"  [readonly]="discdisabled" name="discount" >
+                    </mat-form-field> 
+                </div><br>
+                <div fxLayout="row" fxLayoutAlign="end  center" > 
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="41" >
+                        <mat-label>Total</mat-label>
+                        <input matInput  [(ngModel)]="product_form.total"  readonly="true" name="total" >
+                    </mat-form-field>  
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end  center" > 
+                    <button fxFlex fxFlex="10" mat-flat-button color="accent" style="margin-bottom : 10px;" (click)="submitValueProduct()"><mat-icon>add_circle</mat-icon> add</button>
+                </div>
+
+                <table style="width: 100%; font-size: 9px;" #tableproducts class="invoice-table" mat-table
+                    class="mat-elevation-z8" [dataSource]="this.dataForm.products" *ngIf="this.dataForm.products.length > 0">
+
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No </th>
+                        <td mat-cell *matCellDef="let e; let i=index;">
+                            <p style="font-size: 11px;">{{i + 1}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kode_media">
+                        <th mat-header-cell *matHeaderCellDef> Media Code </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p style="font-size: 11px; white-space: nowrap;">{{e.kode_media}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="product_name" >
+                        <th mat-header-cell *matHeaderCellDef> Product Name </th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.product_name}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="no_katalog">
+                        <th mat-header-cell *matHeaderCellDef>Catalogue</th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p style="font-size: 11px;">{{e.no_katalog}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Price</th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.price | currency:"Rp "}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef> Unit</th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.unit}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="subtotal">
+                        <th mat-header-cell *matHeaderCellDef> Subtotal</th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.subtotal | currency:"Rp "}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="discount">
+                        <th mat-header-cell *matHeaderCellDef> Discount</th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.discount | currency:"Rp "}}</p>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef> Total</th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p style="font-size: 11px;">{{e.total | currency:"Rp "}}</p>
+                        </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let e; let i = index">
+                            <button mat-icon-button color="warn" (click)="deleteSelectProduct(i)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>   
+                  
+                <br>
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 20px;">
+                    <mat-accordion style="width:100%;"  [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                        <mat-expansion-panel >
+                          <mat-expansion-panel-header>
+                            <mat-panel-title style="font-weight: 800;">
+                              Pay
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          
+                            <h2 class="text-title">Other Payment</h2>
+                            <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 20px;">
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="29">
+                                    <mat-label>Shipping Pay</mat-label>
+                                    <input matInput type="number" [(ngModel)]="this.dataForm.shipping_cost" name="shipping_cost" (change)="subTotal()">
+                                </mat-form-field>
+                            </div>
+                            
+                            <h2 class="text-title">Payment</h2>
+                          <div fxLayout="row" fxLayoutAlign="space-between  center" >
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="29">
+                                <mat-label>Payment</mat-label>
+                                <input matInput type="number" [(ngModel)]="dataForm.payment" name="payment" (keyup)="payment($event)" (click)="totalsPrice()">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="29">
+                                <mat-label>Bank </mat-label>
+                                <mat-select [(ngModel)]="dataForm.bank" name="bank">
+                                    <mat-option *ngFor="let a of bankAccount" value="{{a.id}}">
+                                    {{a.bank_name}} ( {{a.serial_number}} )
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="29">
+                                <mat-label>Pay Date</mat-label>
+                                <input matInput [matDatepicker]="pickdate"  [(ngModel)]="dataForm.tgl_bayar" name="tgl_bayar">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="pickdate"></mat-datepicker-toggle>
+                                <mat-datepicker #pickdate></mat-datepicker>
+                            </mat-form-field>
+                          </div>   
+                          <div fxLayout="row" fxLayoutAlign="space-between  center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px; width: 100%;">
+                                    <mat-label>Payment Information</mat-label>
+                                    <textarea matInput  [(ngModel)]="dataForm.info_payment" name="info_payment" rows="5"></textarea>
+                                </mat-form-field>
+                          </div>                    
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                </div>
+                <h2 class="text-title">Info Payment</h2>
+                <table class="info-payment">
+                    <tr>
+                      <td>Price Products</td>
+                      <td>:</td>
+                      <td style="text-align:right;">{{ this.dataForm.price_product | currency:"Rp " }}</td>
+                    </tr>
+                    <tr>
+                      <td>Discount</td>
+                      <td>:</td>
+                      <td style="text-align:right;"> {{ this.dataForm.discount  | currency:"Rp "}}</td>
+                    </tr>
+                    <tr>
+                      <td>Shipping Cost</td>
+                      <td>:</td>
+                      <td style="text-align:right;"> {{ this.dataForm.shipping_cost  | currency:"Rp "}}</td>
+                    </tr>
+                    <tr>
+                      <td>Sub Total</td>
+                      <td>:</td>
+                      <td style="text-align:right;">{{ this.dataForm.subtotal | currency:"Rp "}}</td>
+                    </tr>
+                    <tr>
+                      <td>PPN 11%</td>
+                      <td>:</td>
+                      <td style="text-align:right;" >{{ this.dataForm.ppn | currency:"Rp " }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total</td>
+                      <td>:</td>
+                      <td style="text-align:right;">{{ this.dataForm.total | currency:"Rp " }}</td>
+                    </tr>
+                    <tr>
+                        <td>Payment</td>
+                        <td>:</td>
+                        <td style="text-align:right;"> {{ this.dataForm.payment  | currency:"Rp " }}</td>
+                    </tr>
+                    <tr>
+                        <td>Remaining Payment</td>
+                        <td>:</td>
+                        <td style="text-align:right;">{{ this.dataForm.remainingpay | currency:"Rp " }}</td>
+                    </tr>
+                  </table>
+            </mat-card-content>
+            <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+                <button mat-flat-button color="warn" style="margin-right: 10px;">Close</button>
+                <button mat-flat-button 
+                [disabled]="load == true"
+                color="accent" 
+                (click)="saveContract()">
+                <mat-icon *ngIf="load == true">
+                    <mat-spinner diameter="20"></mat-spinner>
+                </mat-icon>
+                Save  </button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

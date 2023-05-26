@@ -1,0 +1,14 @@
+::ng-deep
+  .mat-calendar-body
+  > tr
+  > td:nth-child(1)
+  > .mat-calendar-body-cell-content,
+::ng-deep
+  .mat-calendar-body
+  > tr
+  > td:nth-child(7)
+  > .mat-calendar-body-cell-content {
+  color: red !important;
+  }
+
+  ::ng-deep .mat-form-field-underline { display: none; } 

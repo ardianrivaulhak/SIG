@@ -1,0 +1,168 @@
+app-parameteruji-det {
+
+    width: 100% !important; 
+    height: 100% !important;
+    padding: 5px !important;
+
+    #parameterujidet {
+        width: 100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        height: 80vh;
+    
+    
+        mat-form-field {
+            width: 100%;
+            font-size: 12px !important;
+        }
+    
+        .mat-input-element:disabled {
+            color: black !important;
+        }
+    
+        ::ng-deep .mat-select-disabled .mat-select-value {
+            color: black !important;
+        }
+    
+        .mat-header-cell {
+            text-align: center;
+            background-color: rgb(30, 33, 41);
+            color: navajowhite !important;
+        }
+        .mat-cell {
+            padding-top: 5px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+        }  
+    
+        .box-normal {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  rgb(93, 255, 101); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+    
+            .text-truncate{
+                color: #7d6608 ;
+                font-size: 10px;
+            }
+        }
+    
+        .box-urgent {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  #f72323; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+    
+            .text-truncate{
+                color: white ;
+                font-size: 10px;
+            }
+        }
+    
+        .sample {
+            width: 100%;
+            align-items: center;
+            input {
+                font-size: 10px;
+                width: 120px !important;
+                height: 100%;
+            }
+        
+            .mat-column-no{
+                max-width: 30px;
+            }
+        
+            .mat-column-price{
+                justify-content: center;
+            }
+        
+            mat-menu{
+                button {
+                    mat-icon {
+                        font-size: 5px;
+                    }
+                
+                    span {
+                        font-size: 10px;
+                    }
+                }
+            }
+        
+            
+            
+        }
+    
+        .header {
+    
+            .product-image {
+                overflow: hidden;
+                width: 80px;
+                min-width: 80px;
+                max-width: 80px;
+                height: 80px;
+                min-height: 80px;
+                max-height: 80px;
+                border-radius: 4px;
+    
+                img {
+                    height: 100%;
+                    width: auto;
+                    max-width: none;
+                }
+            }
+    
+            .subtitle {
+                margin: 6px 0 0 0;
+                font-size: 700;
+            }
+        }
+    
+        .content {
+    
+            .mat-tab-group,
+            .mat-tab-body-wrapper,
+            .tab-content{
+                flex: 1 1 auto;
+                max-width: 100%;
+            }
+    
+            .mat-tab-body-content {
+                display: flex;
+            }
+    
+            .mat-tab-label {
+                height: 64px;
+            }
+    
+            .product-image {
+                overflow: hidden;
+                width: 128px;
+                height: 128px;
+                margin-right: 16px;
+                margin-bottom: 16px;
+                border-radius: 4px;
+    
+                img {
+                    height: 100%;
+                    width: auto;
+                    max-width: none;
+                }
+            }
+    
+            // Temporary prefix alignment fix
+            .mat-form-field-appearance-outline .mat-form-field-prefix,
+            .mat-form-field-appearance-outline .mat-form-field-suffix {
+                top: 0;
+            }
+        }
+    
+    }
+
+}

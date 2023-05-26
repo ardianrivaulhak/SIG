@@ -1,0 +1,117 @@
+<div  *ngIf="descForm" class="dialog-content-wrapper mat-primary m-0">
+
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Add New Group
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+
+        <form fxLayout="column" fxLayoutAlign="start"
+              fxFlex="1 0 auto" name="descForm" [formGroup]="descForm">
+
+             <div class="h4 mb-24 font-weight-800">Group Form</div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                <mat-form-field appearance="outline" fxFlex="33">
+                    <mat-label>Group Name</mat-label>
+                    <input matInput formControlName="group_name" required>
+                    <mat-error>Group Name is required!</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="34" class="px-8">
+                    <mat-label>PIC</mat-label>
+                    <input matInput formControlName="pic" required>
+                    <mat-error>PIC is required!</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="33">
+                    <mat-label>Sub Division</mat-label>
+                    <input matInput #postalCode
+                           formControlName="id_sub_division"  required>
+                    <mat-error>Sub Division is required!</mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto" >
+
+                <mat-form-field appearance="outline" fxFlex="100">
+                    <mat-label>Information</mat-label>
+                    <textarea matInput formControlName="description" required>
+                    </textarea>
+                    <mat-error>Information is required!</mat-error>
+                </mat-form-field>
+
+            </div>
+
+            <div class="h4 mb-24 font-weight-800">Group Member</div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                <mat-form-field appearance="outline" fxFlex="33">
+                    <mat-label>Group Name</mat-label>
+                    <input matInput formControlName="group_name" required>
+                    <mat-error>Group Name is required!</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="34" class="px-8">
+                    <mat-label>PIC</mat-label>
+                    <input matInput formControlName="pic" required>
+                    <mat-error>PIC is required!</mat-error>
+                </mat-form-field>
+
+                <div class="example-button-row" fxFlex="33" class="px-8">
+                    <button mat-fab color="accent" aria-label="Example icon button with a bookmark icon">
+                        <mat-icon>bookmark</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+
+            <mat-table [dataSource]="addData">
+                <!-- coloumn -->
+                <ng-container matColumnDef="employee">
+                  <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                  <mat-cell *matCellDef="let addData"> {{addData.username}} </mat-cell>
+                </ng-container>
+              
+                <!-- coloumn -->
+                <ng-container matColumnDef="nip">
+                  <mat-header-cell *matHeaderCellDef> NIP </mat-header-cell>
+                  <mat-cell *matCellDef="let addData"> {{addData.age}} </mat-cell>
+                </ng-container>
+              
+                 <!-- coloumn -->
+                 <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let addData"> {{addData.title}} </mat-cell>
+                  </ng-container>
+              
+                <!-- coloumn -->
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let catalogueData; columns: displayedColumns;"></mat-row>
+            </mat-table>
+        </form>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="accent" class="mat-accent" aria-label="Submit">
+            <mat-icon>save</mat-icon>
+          SUBMIT
+        </button>
+        <button mat-button class="mat-accent" aria-label="Close">
+            CLOSE
+        </button>
+    </div>
+  </div>

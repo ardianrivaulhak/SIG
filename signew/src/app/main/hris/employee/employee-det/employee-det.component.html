@@ -1,0 +1,347 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="employeeForm"
+        [formGroup]="employeeForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+        <mat-grid-list cols="2" rowHeight="110px" gutterSize="10px">
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>NIK</mat-label>
+                    <input
+                        matInput
+                        placeholder="Nomor Induk Karyawan"
+                        formControlName="nik"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Employee Name</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put a Name"
+                        formControlName="employee_name"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Phone</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put a phone"
+                        formControlName="phone"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put an Email"
+                        formControlName="email"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Division</mat-label>
+                    <mat-select
+                        formControlName="division"
+                        placeholder="Set Division"
+                    >
+                        <mat-option
+                            *ngFor="let o of bagian"
+                            value="{{ o.id_div }}"
+                            >{{ o.division_name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Departement</mat-label>
+                    <mat-select
+                        formControlName="dept"
+                        placeholder="Set Departement"
+                    >
+                        <mat-option
+                            *ngFor="let o of datadept"
+                            value="{{ o.id }}"
+                            >{{ o.dept_code }} - {{ o.dept_name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Sub Division</mat-label>
+                    <mat-select
+                        formControlName="subdiv"
+                        placeholder="Set Sub Division"
+                    >
+                        <mat-option
+                            *ngFor="let o of subdiv"
+                            value="{{ o.id_subagian }}"
+                            >{{ o.name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Level</mat-label>
+                    <mat-select formControlName="level" placeholder="Set Level">
+                        <mat-option
+                            *ngFor="let o of level"
+                            value="{{ o.id_level }}"
+                            >{{ o.level_name }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appendTo="body"
+                    [items]="position"
+                    bindLabel="position_name"
+                    bindValue="id_position"
+                    formControlName="position"
+                    appearance="outline"
+                    placeholder="Jabatan"
+                    dropdownPosition="bottom"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                    "
+                >
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Gender</mat-label>
+                    <mat-select
+                        formControlName="gender"
+                        placeholder="Set Gender"
+                    >
+                        <mat-option value="Male">Male</mat-option>
+                        <mat-option value="Female">Female</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                        appearance="outline"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Tgl Masuk</mat-label>
+                        <input
+                            matInput
+                            formControlName="tgl_masuk"
+                            [matDatepicker]="picker2"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker2"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appendTo="body"
+                    [items]="city"
+                    bindLabel="city_name"
+                    bindValue="id_city"
+                    formControlName="tempatlahir"
+                    appearance="outline"
+                    placeholder="tempat"
+                    dropdownPosition="bottom"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                    "
+                >
+                </ng-select>
+                <div style="width: 10px"></div>
+                <div fxFlex="40">
+                    <mat-form-field
+                        appearance="outline"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Tgl Lahir</mat-label>
+                        <input
+                            matInput
+                            formControlName="tgl_lahir"
+                            [matDatepicker]="picker"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Martial Status</mat-label>
+                    <mat-select
+                        formControlName="martial_status"
+                        placeholder="Select a Status"
+                    >
+                        <mat-option value="Menikah">Menikah</mat-option>
+                        <mat-option value="Belum Menikah"
+                            >Belum Menikah</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Employee Status</mat-label>
+                    <mat-select
+                        formControlName="employee_status"
+                        placeholder="Select a Employee Status"
+                    >
+                        <mat-option value="4">PKL / Magang</mat-option>
+                        <mat-option value="3">Honorer</mat-option>
+                        <mat-option value="2">Kontrak</mat-option>
+                        <mat-option value="1">Tetap</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Religion</mat-label>
+                    <mat-select
+                        formControlName="religion"
+                        placeholder="Select Religi"
+                    >
+                        <mat-option value="Islam">Islam</mat-option>
+                        <mat-option value="Katolik">Katolik</mat-option>
+                        <mat-option value="Kristen">Kristen</mat-option>
+                        <mat-option value="Hindu">Hindu</mat-option>
+                        <mat-option value="Budha">Budha</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="2">
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Alamat</mat-label>
+                    <textarea
+                        matInput
+                        placeholder="Isi Alamat"
+                        formControlName="alamat"
+                        rows="8"
+                    ></textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div
+                    style="
+                        width: 125px;
+                        display: flex;
+                        border-radius: 10px;
+                        justify-content: center;
+                        border: 1px solid lightgray;
+                    "
+                >
+                    <img
+                        *ngIf="this.employeeForm.value.photo"
+                        src="{{ this.employeeForm.value.photo }}"
+                        style="object-fit: cover; width: 100px; height: auto"
+                    />
+                    <input
+                        #_fileInput
+                        type="file"
+                        accept="image/*"
+                        (change)="uploadGambar($event)"
+                        hidden
+                    />
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="_fileInput.click()"
+                >
+                    <span>Upload Photo</span>
+                </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 20px">
+        <button mat-raised-button color="primary" (click)="serviceAct()">
+            Save
+        </button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

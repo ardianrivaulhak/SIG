@@ -1,0 +1,89 @@
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;" *ngIf="this.parameterForm" style="overflow: hidden; height: 100%;">
+  <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Update Bulk Parameters</div>
+  <div style="border-bottom: 2px solid #fbfbfb;"></div>
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+    <form  name="parameterForm" [formGroup]="parameterForm">
+      <div fxLayout="row" fxLayoutAlign="start center" >
+          <ng-select 
+          appendTo="body" 
+          fxFlex="50"
+          [items]="parameter" 
+          bindLabel="name" 
+          bindValue="name"
+          formControlName="parameterselect" 
+          placeholder="Parameter" 
+          dropdownPosition="bottom" 
+          appearance="outline"
+          style="display: flex;
+                  justify-content: center;
+                  align-items: center; width: 100%">
+          </ng-select>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'parameter_id')"> </mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Parameter Id</mat-label>
+              <input matInput formControlName="parameter_id" >
+          </mat-form-field>
+
+          <mat-checkbox  fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'parameter_en')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30"  style="font-size: 11px">
+              <mat-label>Parameter En</mat-label>
+              <input matInput formControlName="parameter_en" >
+          </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'hasiluji')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;  margin-right: 10px;">
+            <mat-label>Result</mat-label>
+            <input matInput formControlName="hasiluji" >
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'unit')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Unit</mat-label>
+              <input matInput formControlName="unit" >
+          </mat-form-field>
+
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'standart')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Standart</mat-label>
+              <input matInput formControlName="standart" >
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'lod')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;margin-right: 10px;">
+              <mat-label>LOD</mat-label>
+              <input matInput formControlName="lod" >
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'metode')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+              <mat-label>Method</mat-label>
+              <input matInput formControlName="metode" >
+          </mat-form-field>
+      </div>
+
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+      <button mat-raised-button 
+      fxFlex="12"  fxFlex.xs="12" 
+      color="primary" 
+      style="margin-right:10px; width:250px;" 
+      class="mat-primary" 
+      (click)="saveForm()" >
+        Submit
+      </button>
+      <button mat-stroked-button 
+      fxFlex="12"  fxFlex.xs="12"
+      style="margin-right:50px; width:250px;"
+      color="primary" (click)="closeDialog(true)" aria-label="Close">
+          Close
+      </button>
+    </div>
+</div>

@@ -1,0 +1,251 @@
+<div class="dialog-content-wrapper mat-primary m-0"  style="overflow: hidden; height: 100%;" >
+    <!-- add  -->
+    <mat-toolbar matDialogTitle >
+         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+                <span class="title dialog-title"> 
+                    Priview {{ this.data.data.complain_tech.length > 0 ? 'Technical Complain' :  this.data.data.complain_tech.length > 0 ? 'Non Technical Complain' : 'No Data'}}
+                </span>
+                <div *ngIf="this.dataComplain">
+                    <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                    (click)="$event.stopPropagation();">
+                        <mat-icon  class="secondary-text">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item aria-label="cancel"
+                        (click)="editPage()"  
+                        [disabled]="this.dataComplain.status_technical[this.dataComplain.status_technical.length - 1].position == 2"
+                        *ngIf="this.dataComplain.complain.status == 1">
+                            <mat-icon>edit</mat-icon>
+                            <span>Edit</span>
+                        </button>
+                        <button mat-menu-item aria-label="cancel"  
+                        [disabled]="this.dataComplain.status_technical[this.dataComplain.status_technical.length - 1].position == 2"
+                        *ngIf="this.dataComplain.complain.status == 1"
+                        (click)="cancelData(this.dataComplain)">
+                            <mat-icon>cancel</mat-icon>
+                            <span>Cancel</span>
+                        </button>
+                        <button mat-menu-item aria-label="back" 
+                        *ngIf="this.dataComplain.complain.status == 3"
+                        (click)="backData(this.dataComplain)">
+                            <mat-icon>redo</mat-icon>
+                            <span>Back</span>
+                        </button>
+                    </mat-menu>
+                    <button mat-icon-button color="primary" (click)="closeModal(true)">
+                        <mat-icon  class="secondary-text">cancel</mat-icon>
+                    </button>
+                </div>
+         </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div fxLayout="row" fxLayoutAlign="end center" >
+            <button mat-button color="primary" *ngIf="!this.activeBtn">View Mode</button>
+            <button mat-button color="primary" matTooltip="Close Edit Mode" *ngIf="this.activeBtn" (click)="editPage()">Edit Mode</button>
+        </div>
+        <div *ngIf="this.dataComplain">
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Complain Number</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.complain_no }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Contract Number</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.kontrak_uji.contract_no }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Lhu Number</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.complain.transaction_certificate.lhu_number }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Sample Number</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.complain.transaction_certificate.no_sample }}</p>
+                </div>
+                
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Customer</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.kontrak_uji.customers_handle.customers.customer_name  }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Contact Person</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.kontrak_uji.customers_handle.contact_person.name }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Email</span>
+                    <p style="font-size:11px;">{{ this.dataComplain.kontrak_uji.customers_handle.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 30px;">
+            <span style="font-weight: 700; margin-top: 30px; margin-bottom: 30px;">Parameter</span>
+            <div *ngIf=" this.activeBtn == true" >
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <form name="addParameter"  class="product w-100-p" > 
+                        <ng-select appendTo="body" 
+                        [items]="this.parameterarray" 
+                        bindLabel="name_id" 
+                        bindValue="id" 
+                        appearance="outline" 
+                        (change)="getDataParmater($event)"
+                        placeholder="Complain Type"
+                        fxFlex="30"
+                        dropdownPosition="bottom"
+                        [(ngModel)]="this.parameterEdit.parameter"
+                        name="parameter"
+                        style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <div title="{{item.parameteruji_id}} [ {{item.hasiluji}} ]">{{item.parameteruji_id}} [ {{item.hasiluji}} ]</div>
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            <div title="{{item.parameteruji_id}} [ {{item.hasiluji}} ]">{{item.parameteruji_id}} [ {{item.hasiluji}} ]</div>
+                        </ng-template>
+                    </ng-select> 
+
+                    <mat-form-field appearance="outline" fxFlex="10" style="font-size: 12px; margin-right: 10px;">
+                        <mat-label>Lab</mat-label>
+                        <input matInput [(ngModel)]="this.parameterEdit.lab" readonly name="lab" required>
+                        <mat-error>Lab is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="10" style="font-size: 12px; margin-right: 10px;">
+                        <mat-label>Earlier Results</mat-label>
+                        <input matInput [(ngModel)]="this.parameterEdit.beforeresult" readonly name="beforeresult" required>
+                        <mat-error>Earlier Results is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="10" style="font-size: 12px; margin-right: 10px;">
+                        <mat-label>Unit</mat-label>
+                        <input matInput [(ngModel)]="this.parameterEdit.unit" readonly name="unit" required>
+                        <mat-error>Unit is required!</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 12px; margin-right: 10px;" fxFlex="20" fxHide fxShow.gt-xs>
+                        <mat-label>Status</mat-label>
+                        <mat-select placeholder="Status"                               
+                            name="complain"
+                            [(ngModel)]="parameterEdit.complain"
+                            class="select-me"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center; 
+                            color:white !important;">
+                            <mat-option *ngFor="let val of complainlist" [value]="val.id">
+                                {{ val.val }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="19" style="font-size: 12px" >
+                        <mat-label>Expectation</mat-label>
+                        <input matInput [(ngModel)]="this.parameterEdit.expectation" name="expectation" required>
+                        <mat-error>Expectation is required!</mat-error>
+                    </mat-form-field>
+
+                    </form>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end center">
+                    <button mat-raised-button color="primary" (click)="saveForm()" aria-label="Submit" style="margin-right: 10px;">
+                        Add
+                    </button>
+                    <button mat-stroked-button color="primary" (click)="resetForm()" aria-label="Close">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <mat-table class="cert-table" #table [dataSource]="dataParameterComplain" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar 
+            style="margin-top: 30px;"
+            *ngIf="this.dataParameterComplain.length > 0" > 
+
+                <!-- Column -->
+                <ng-container matColumnDef="parameter">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="parameter">Parameter</mat-header-cell>
+                    <mat-cell *matCellDef="let dataParameterComplain">
+                        <p class="text-truncate" matTooltip="{{ dataParameterComplain.certificate_parameter.parameteruji_id }}">
+                            {{ dataParameterComplain.certificate_parameter.parameteruji_id }} 
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                <!-- Column -->
+                <ng-container matColumnDef="lab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="lab">Lab</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <div fxLayout="column">
+                            <p class="text-truncate" matTooltip="{{ complainData.lab.nama_lab }}">{{ complainData.lab.nama_lab }} </p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="result">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="result">Result</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                            <p class="text-truncate" matTooltip="{{ complainData.certificate_parameter.hasiluji }}">{{ complainData.certificate_parameter.hasiluji }} </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="unit">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">          
+                        <p class="text-truncate" matTooltip="{{ complainData.id_unit }}">{{ complainData.id_unit }} </p>            
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="complain">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="complain">Complain</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <p class="text-truncate" *ngIf="complainData.complain_desc == 1" matTooltip="Hasil ketinggian">Hasil ketinggian</p>
+                        <p class="text-truncate" *ngIf="complainData.complain_desc == 2" matTooltip="Hasil kerendahan">Hasil kerendahan</p>
+                        <p class="text-truncate" *ngIf="complainData.complain_desc == 3" matTooltip="Tidak sesuai spec">Tidak sesuai spec</p> 
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="expectation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="expectation">Expectation</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <p class="text-truncate"  matTooltip="{{ complainData.expectation }}">{{ complainData.expectation}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Column -->
+                  <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="action">Action</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        
+                        <button mat-icon-button color="primary" [disabled]="!this.activeBtn" (click)="removeParameterinComplain(complainData.id)">
+                            <mat-icon>delete_forever</mat-icon>
+                          </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let complainData; columns: displayedColumns;" 
+                class="standart">
+                </mat-row>
+            </mat-table>
+
+            <!-- <div>
+                <mat-paginator
+                [length]="this.total"
+                [pageSize]="this.to"
+                [pageIndex]="this.current_page"
+                hidePageSize="true"
+                (page)="pageEvent = $event; paginated($event)">
+                </mat-paginator>
+            </div> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<mat-dialog-content class="mat-typography">
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        style="width: 100%"
+        *ngIf="this.selectparameteruji.length > 0"
+        fxLayoutGap="10px"
+    >
+        <ng-select
+            appendTo="body"
+            [items]="selectparameteruji"
+            appearance="outline"
+            placeholder="Select Parameter"
+            bindLabel="parametername"
+            bindValue="id_paramater_uji"
+            dropdownPosition="bottom"
+            (change)="getValueChange($event)"
+            (clear)="resetdata()" 
+            style="width: 70%; align-self: center"
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                {{ item.parametercode }} - {{ item.parametername }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                {{ item.parametercode }} - {{ item.parametername }}
+            </ng-template>
+        </ng-select>
+        <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="onSearchChange($event.target.value)"
+                    style="align-self: center"
+                    disabled
+                >
+                    <mat-icon>search</mat-icon>
+                </button>
+        <button mat-raised-button (click)="resetdata()">Reset</button>
+        <span>Checked : {{this.totalchecked}}</span>
+    </div>
+    <table *ngIf="this.datapaket.length > 0" class="parameter">
+        <thead>
+            <tr>
+                <th>
+                    <mat-checkbox
+                        class="checkbox-control"
+                        color="primary"
+                        [(ngModel)]="checkall"
+                        (change)="checkedEvent($event.checked, 'all')"
+                    ></mat-checkbox>
+                </th>
+                <th (click)="sort()" style="cursor: pointer;">Name</th>
+                <th>Lab</th>
+                <th>Satuan</th>
+                <th>LOD</th>
+                <th>Metode</th>
+                <th>Standart</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let z of this.datapaket; let i = index">
+            <tr>
+                <td>
+                    <div fxLayoutAlign="center center" style="width: 100%">
+                        <mat-checkbox
+                            class="checkbox-control"
+                            [checked]="z.checked"
+                            color="primary"
+                            (change)="checkedEvent($event.checked, z.id)"
+                        ></mat-checkbox>
+                    </div>
+                </td>
+                <td>
+                    <div
+                        style="width: 100%"
+                        fxLayout="column"
+                        fxLayoutAlign="center start"
+                        gxLayoutGap="10px"
+                    >
+                        <span>{{ z.parameteruji[0].parameter_code }}</span>
+                        <span>{{ z.parameteruji[0].name_id }}</span>
+                    </div>
+                </td>
+                <td>{{ z.lab.nama_lab }}</td>
+                <td>{{ z.unit.nama_unit }}</td>
+                <td>{{ z.lod.nama_lod }}</td>
+                <td>{{ z.metode.metode }}</td>
+                <td>{{ z.standart.nama_standart }}</td>
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+    <mat-dialog-actions align="end">
+        <button mat-raised-button color="primary" (click)="setParameter()">Set</button>
+        <button mat-raised-button color="Warn" (click)="close()">Cancel</button>
+      </mat-dialog-actions>

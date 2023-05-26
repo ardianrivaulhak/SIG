@@ -1,0 +1,121 @@
+<!-- <div fxFlex fxLayout="column" fxLayoutAlign="center center" style="width: 100%; gap: 10px;">
+    <div style="padding: 10px" fxLayout="row"  fxLayoutAlign="flex-start center" style="width: 100%; gap: 10px">
+        <button mat-raised-button color="primary" (click)="addDataDayoff()">Add</button>
+    </div>
+    <table id="dayoff" *ngIf="this.datadayoff.length > 0">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    
+        <tbody *ngFor="let o of datadayoff; let i = index">
+            <tr>    
+                <td>{{i + 1}}</td>
+                <td>{{o.date | date}}</td>
+                <td>{{o.status == 'L' ? 'Libur' : o.status == 'C' ? 'Cuti' : 'Info'}}</td>
+                <td>{{o.desc}}</td>
+                <td>{{o.type == 'S' ? 'Static' : 'Dynamic'}}</td>
+                <td>
+                   <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%; gap: 5px">
+                    <button mat-mini-fab color="accent" (click)="editData(o)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-mini-fab color="warn" (click)="deleteData(o)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+<div id="calender" class="page-calender" style="overflow: auto; height: 93vh; background-color: #f7f7f7">
+	<mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;">
+		<!-- Header Table -->
+		<div fxLayout="row" fxLayoutAlign="space-between center" >
+			<div style="margin-bottom:40px;">
+				<span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxShow.gt-md>Calender Day Off</span>
+			</div>
+			<div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+				<button mat-icon-button color="white" 
+                        class="add-leave"
+                        matTooltip="Add Leave"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        (click)="addDataDayoff()"
+                        >
+                            <mat-icon>library_add</mat-icon>
+                    </button>
+		   </div>
+		</div>
+		<!-- Closed Header Table -->
+
+		<div style="margin-bottom:40px; overflow-x: auto;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+              <mat-table #table [dataSource]="datadayoff" class="table-leave" fxFlex="100%" fxFlex.gt-sm="100%">
+                <ng-container matColumnDef="no">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> No </mat-header-cell>
+                    <mat-cell *matCellDef="let o; let i = index" style="display: flex; justify-content: left;"> {{i + 1}} </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let o" style="display: flex; justify-content: left;"> {{o.date | date}} </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> Status </mat-header-cell>
+                    <mat-cell *matCellDef="let o" style="display: flex; justify-content: left;"> {{o.status == 'L' ? 'Libur' : o.status == 'C' ? 'Cuti' : 'Info'}} </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> Description </mat-header-cell>
+                    <mat-cell *matCellDef="let o" style="display: flex; justify-content: left;"> {{o.desc}} </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="type">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> Type </mat-header-cell>
+                    <mat-cell *matCellDef="let o" style="display: flex; justify-content: left;"> {{o.type == 'S' ? 'Static' : 'Dynamic'}} </mat-cell>
+                </ng-container>
+        
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef style="color: white; display: flex; justify-content: left;"> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let o" style="display: flex; justify-content: left;">
+                        <div fxLayout="row" fxLayoutAlign="left" style="width: 100%; gap: 5px">
+                            <button mat-icon-button color="primary" (click)="editData(o)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deleteData(o)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+        
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+
+              <!-- Name Column -->
+			</div>
+	</mat-card>
+</div>
+<div
+    *ngIf="this.datadayoff.length === 0"
+    style="
+        width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+        display: block;
+        text-align: center;
+    "
+>
+    <medium>Please Wait ...</medium>
+</div>

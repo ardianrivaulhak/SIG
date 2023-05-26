@@ -1,0 +1,308 @@
+@import "src/@fuse/scss/fuse";
+
+app-detailinvoiceproduct{ 
+    height: 100% !important;
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    
+    }
+
+    #detailinvoiceproduct { 
+        overflow: auto;
+        height: 100%;
+
+        .card-action {
+            width: 90%;
+            margin: 20px auto;
+
+            .myFilter .mat-select-trigger {
+                max-height: 80vh;
+              }
+        
+            .ng-select .ng-select-container {
+                min-height: 48px;
+                font-size: 11px !important;
+                margin-bottom: 2px;
+              }
+            
+              .ng-dropdown-panel {
+                min-width: 100%;
+                min-height: 100%;
+            }
+
+            mat-card-title {
+                font-size: 21px;
+                font-weight: 800;
+            }
+
+            .text-title {
+                font-size: 14px;
+                font-weight: 800;
+            }
+
+            .info-payment {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 11px;
+
+                td, th {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                  }
+                  
+                  tr:nth-child(even) {
+                    background-color: #dddddd;
+                  }
+            }
+           
+        }
+
+        .mediartu-table {
+            flex: 1 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, .12);
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            
+    
+            .mat-header-row {
+                min-height: 64px;
+                font-size: 12px;
+                background-color: #2C3333;
+    
+                .mat-sort-header-button{
+                    color: #fff;
+                    font-weight: 800;
+                }
+    
+                .mat-checkbox .mat-checkbox-frame {
+                    border-color: #fff;
+                }
+            }
+            
+    
+            .standart {
+                position: relative;
+                cursor: pointer;
+                height: 75px;
+                align-items: none;
+            }
+    
+            .standart:nth-child(even) {
+                background-color: #f7f7f7;
+            }
+            
+    
+    
+            .mat-cell {
+                min-width: 0;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                
+            }
+    
+            .mat-column-id {
+                flex: 0 1 84px;
+            }
+    
+            .mat-column-image {
+                flex: 0 1 84px;
+    
+                .customers-image {
+                    width: 52px;
+                    height: 52px;
+                    border: 1px solid rgba(0, 0, 0, .12);
+                }
+            }
+    
+            .mat-column-buttons {
+                flex: 0 1 80px;
+            }
+    
+            .quantity-indicator {
+                display: inline-block;
+                vertical-align: middle;
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+                margin-right: 8px;
+    
+                & + span {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+    
+            .active-icon {
+                border-radius: 50%;
+            }
+    
+            .filters {
+                width: 100%;
+                max-width: 1040px;
+                margin: 24px auto;
+                padding: 0 20px;
+                background-color: #fff;
+    
+                @include media-breakpoint('xs') {
+                    margin: 0 auto;
+                }
+    
+                .course-search {
+                    width: 320px;
+    
+                    @include media-breakpoint('gt-xs') {
+                        margin-right: 16px;
+                    }
+                }
+            }
+    
+            .mat-column-product_name {
+                word-wrap: break-word !important;
+                white-space: normal !important;
+                flex: 0 0 30% !important;
+                width: 30% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+    
+                .text-truncate {
+                    font-weight: 900;
+                    font-size: 11px;
+                }
+            }
+    
+            .mat-column-price {
+                word-wrap: break-word !important;
+                white-space: normal !important;
+                flex: 0 0 15% !important;
+                width: 15% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+    
+                .text-truncate {
+                    font-weight: 900;
+                    font-size: 11px;
+                }
+            }
+    
+    
+            .mat-column-unit {
+                word-wrap: break-word !important;
+                white-space: normal !important;
+                flex: 0 0 10% !important;
+                width: 10% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                padding-right: 5px;
+                .text-truncate {
+                    font-size: 11px;
+                    word-wrap: normal;
+                    white-space: normal !important;
+                }
+            }
+    
+    
+            .mat-column-subtotal {
+                word-wrap: break-word !important;
+                white-space: normal !important;
+                flex: 0 0 15% !important;
+                width: 15% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                padding-right: 5px;
+                .text-truncate {
+                    font-size: 11px;
+                    word-wrap: normal;
+                    white-space: normal !important;
+                }
+            }
+    
+            
+            .mat-column-discount {
+                word-wrap: break-word !important;
+                white-space: normal !important;
+                flex: 0 0 15% !important;
+                width: 15% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+                padding-right: 5px;
+                .text-truncate {
+                    font-size: 11px;
+                    word-wrap: normal;
+                    white-space: normal !important;
+                }
+            }
+    
+            .mat-column-total {
+                word-wrap: break-word !important;
+                white-space: unset !important;
+                flex: 0 0 15% !important;
+                width: 15% !important;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                
+                word-break: break-word;
+                    
+                -ms-hyphens: auto;
+                -moz-hyphens: auto;
+                -webkit-hyphens: auto;
+                hyphens: auto;
+    
+                .text-truncate {
+                    font-size: 11px;
+                }
+            }
+    
+    
+          
+    
+            
+        }
+        
+    }
+}

@@ -1,0 +1,142 @@
+<div class="mat-elevation-z8" style="width: auto; height: 100%; border-radius: 15px;">
+    <mat-card>
+        <mat-card-title>
+                Photo Sample Detail
+            </mat-card-title>
+        <mat-card-content>
+            <hr style="color: white;">
+            <div  style="margin-bottom: 10px;">
+                <div style="display: flex; 
+                            flex-direction: row; 
+                            align-items: center; 
+                            justify-content: space-between; 
+                            font-size: 12px; 
+                            margin: 5px; 
+                            height: 40px;">
+                    <span style="display: flex; flex: 1">Input Photo Sample</span>
+                    <div style="flex: 1; display: flex; justify-content: center; align-items: center;">
+                        <button mat-button color="accent" [disabled]="this.pasteallbutton"
+                            (click)="pasteall()">Paste
+                            all</button>
+                        <!-- <span style="font-size: 8px;"> {{this.copyvalue ? '( 1 Recorded )' : null}} </span> -->
+                    </div>
+                    <div
+                        style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; flex: 1">
+                        <div style="display: flex; justify-content: center; align-items: center; cursor: pointer;"
+                            (click)="tambah()">
+                            <svg-icon src="assets/icons/custom/plus.svg"
+                                [svgStyle]="{ 'width.px':20, 'fill': '#034d03 ', 'display': 'flex', 'align-self':'center', 'margin': '5px' }">
+                            </svg-icon>
+                        </div>
+                        <input style="height: 25px;
+                                border: 1px solid #737373;
+                                width: 35%;
+                                border-radius: 5px; 
+                                margin: 5px; 
+                                text-align: center;" value="{{datasample2.length}}"
+                            (change)="changeval($event)" />
+                        <div style="display: flex; justify-content: center; align-items: center; cursor: pointer;"
+                            (click)="kurang()">
+                            <svg-icon src="assets/icons/custom/close.svg"
+                                [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center', 'margin': '5px' }">
+                            </svg-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="color: white;">
+            <div >
+                <table style="width: 100%;" class="sample" mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No </th>
+                        <td mat-cell *matCellDef="let e; let i=index;">
+                            <input matInput required value="{{e.no}}">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phtSample">
+                        <th mat-header-cell *matHeaderCellDef> Photo Sample </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <div *ngIf="PhotoForm" style="width: 400px;">
+                                <form name="PhotoForm" [formGroup]="PhotoForm">
+                                    <div >
+                                        <div style="flex: 2;overflow-x: auto;scrollbar-width: thin; display: flex; justify-content: start; align-items: start;" formArrayName="foto">
+                                            <div class="box-photo" style="background-color: #09d261;" (click)="addfoto()" >
+                                                <mat-icon style="width: 15px;">add_circle_outline</mat-icon> 
+                                            </div>  
+                                            
+                                            <div *ngFor="let u of PhotoForm.controls['foto'].controls; let indexPoint=index">
+                                                <div class="box-photo" [matMenuTriggerFor]="menu" 
+                                                    [formGroupName]="indexPoint" >
+                                                    <mat-icon style="width: 15px;" *ngIf="!u.value.photo">add_a_photo</mat-icon> 
+
+                                                        <div *ngIf="u.value.photo">
+                                                            <img *ngIf="u.value.photo.toLowerCase().indexOf('.') > -1" src="{{this.urlnow + this.contract_no + '/' + this.no_sample + '/' + u.value.photo}}"
+                                                                style=" flex: 1; height: 100%; border-radius: 10px; object-fit: cover"
+                                                                />
+                                                            <img  *ngIf="u.value.photo.toLowerCase().indexOf('.') < 1" src="{{u.value.photo}}"
+                                                            style=" flex: 1; height: 100%; border-radius: 10px; object-fit: cover"
+                                                                />
+                                                        </div>
+                                                    
+                                                </div>
+                                            
+                                                <mat-menu #menu="matMenu"  > 
+                                                    <button mat-menu-item [formGroupName]="indexPoint" 
+                                                    (click)="openmodalphoto(u,pointIndex)">
+                                                        <mat-icon>file_copy</mat-icon>
+                                                        <span>Take Picture</span>
+                                                    </button>  
+                                                    <input #_fileInput type="file" accept="image/*" (change)="uploadGambar($event,u.value.id)" hidden>
+                                                    <button mat-menu-item
+                                                    (click)="_fileInput.click()">
+                                                        <mat-icon>file_copy</mat-icon>
+                                                        <span>Upload Image</span>
+                                                    </button> 
+                                                </mat-menu>
+                                            </div>
+                                        </div> 
+                                    </div>   
+                                </form>
+                            </div> 
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="samplename">
+                        <th mat-header-cell *matHeaderCellDef> Sample Name </th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <input matInput required value="{{e.samplename}}"
+                                (change)="getValueSample($event,g)">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let e; let i = index">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="copythis(e)" [disabled]="e.samplename ? false : true">
+                                    <mat-icon>file_copy</mat-icon>
+                                    <span>Copy</span>
+                                </button>
+                                <button mat-menu-item [disabled]="this.pastevalue" (click)="pastethis(i)">
+                                    <mat-icon>file_copy</mat-icon>
+                                    <span>Paste</span>
+                                </button> 
+                                <button mat-menu-item (click)="deleteRow(i)">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Delete</span>
+                                </button>
+                            </mat-menu>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <mat-paginator [pageSizeOptions]="[5]" [hidePageSize]="true" showFirstLastButtons (page) = "paginated($event)">
+                    </mat-paginator>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

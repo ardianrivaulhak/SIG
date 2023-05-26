@@ -1,0 +1,74 @@
+<div class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Report Excel
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        
+        <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+            <div fxLayout="row" fxLayoutAlign="center center" >
+                <mat-form-field appearance="outline" class="example-form-field">
+                    <mat-label>From</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="from"
+                        [matDatepicker]="dp2"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="dp2"
+                        style="font-size: 13px"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #dp2
+                    ></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="example-form-field" style="margin-left: 10px;">
+                    <mat-label>To</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="to"
+                        [matDatepicker]="dp3"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="dp3"
+                        style="font-size: 13px"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #dp3
+                    ></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <button mat-flat-button color="accent" aria-label="Submit" (click)="exportexcelFaktur()">
+                <div *ngIf="!this.loadingprev" style="padding: 10px">Set</div>
+                <div
+                    *ngIf="this.loadingprev"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: row;
+                        padding: 10px
+                    "
+                >
+                    <mat-spinner
+                        [color]="'accent'"
+                        diameter="20"
+                    ></mat-spinner>
+                    <span style="margin-left: 10px">Please Wait</span>
+                </div>
+            </button>
+           
+    </div>
+  </div>

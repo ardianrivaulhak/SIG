@@ -1,0 +1,248 @@
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <div class="header">
+        <div fxLayout="row" fxLayoutAlign="space-between center" >
+            <div>
+                <h3 style="font-weight: bold;">{{ this.data_complain.technical.complain.transaction_certificate.sample_name }}</h3>
+                <span>{{ this.data_complain.technical.complain.transaction_certificate.no_sample }}</span>
+            </div>
+            <div>
+            </div>
+        </div>
+      
+    </div>
+    <div class="content">
+        <mat-accordion style="width:100%;"  [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title style="font-weight: 800;">
+                  After Retest
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div fxLayout="row" fxLayoutAlign="space-evenly center"  *ngIf="this.complainData.length > 0" >
+                <mat-card style="width: 98%; margin-right: 10px;">
+                    <mat-table class="after-table" #table [dataSource]="complainData" matSort (matSortChange)="sortData($event)"
+                    [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.complainData.length > 0" > 
+            
+                            <!-- Column -->
+                            <ng-container matColumnDef="parameter">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header="parameter">Parameter</mat-header-cell>
+                                <mat-cell *matCellDef="let complainData">
+                                    <div fxLayout="column">
+                                        <span class="text-truncate" matTooltip="{{ complainData.technical_detail_one.certificate_parameter.parameteruji_id }}">{{ complainData.technical_detail_one.certificate_parameter.parameteruji_id }}</span>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+            
+                            <!-- Column -->
+                            <ng-container matColumnDef="hasil">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header="hasil">Result</mat-header-cell>
+                                <mat-cell *matCellDef="let complainData">
+                                    <div fxLayout="column">
+                                        <span class="text-truncate" matTooltip="{{ complainData.hasiluji }}">{{ complainData.hasiluji }}</span>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+                        
+                        <!-- Column -->
+                        <ng-container matColumnDef="lod">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="lod">LOD</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                <div fxLayout="column">
+                                    <span class="text-truncate" matTooltip="{{ complainData.lod == null ? '-' : complainData.lod.nama_lod }}">{{ complainData.lod == null ? '-' :  complainData.lod.nama_lod }}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+            
+            
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="unit">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                    <p class="text-truncate" matTooltip="{{ complainData.unit == null ? '-' :  complainData.unit.nama_unit }}">{{ complainData.unit == null ? '-' :  complainData.unit.nama_unit }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="metode">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="metode">Method</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                    <p class="text-truncate" matTooltip="{{ complainData.metode == null ? '-' :   complainData.metode.metode  }}">{{ complainData.metode == null ? '-' :   complainData.metode.metode  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        
+                        <!-- Column -->
+                        <ng-container matColumnDef="simplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="simplo">Simplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                <p class="text-truncate" matTooltip="{{ complainData.simplo == null ? '-' : complainData.simplo  }}">{{ complainData.metode == null ? '-' : complainData.simplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="duplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="duplo">Duplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                <p class="text-truncate" matTooltip="{{ complainData.duplo == null ? '-' : complainData.duplo  }}">{{ complainData.duplo == null ? '-' : complainData.duplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="triplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="triplo">Triplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                <p class="text-truncate" matTooltip="{{ complainData.triplo == null ? '-' :  complainData.triplo  }}">{{ complainData.triplo == null ? '-' :  complainData.triplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="memo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="memo">Memo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">
+                                <p class="text-truncate" matTooltip="{{ complainData.memo == null ? '-' : complainData.memo  }}">{{ complainData.memo == null ? '-' : complainData.memo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                         <!-- Column -->
+                         <ng-container matColumnDef="confirmation">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="confirmation">Confirmation</mat-header-cell>
+                            <mat-cell *matCellDef="let complainData">                               
+                                <p class="text-truncate" matTooltip="{{ complainData.selectcust == 1 ? 'retest results' : 'initial results'  }}">{{ complainData.selectcust == 1 ? 'retest results' : 'initial results'  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+            
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                        <mat-row *matRowDef="let complainData; columns: displayedColumns;" 
+                        class="standart">
+                        </mat-row>
+                    </mat-table>
+                    <div *ngIf="this.loadingfirst && this.complainData.length === 0">
+                        <img  src="assets/images/ellips-load.gif" style="width: 10%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                    </div>
+                </mat-card>
+              </div>                       
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title style="font-weight: 800;">
+                   Before  Retest
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div fxLayout="row" fxLayoutAlign="space-evenly center"  *ngIf="this.complainDataBefore.length > 0" >
+                  <mat-card style="width: 98%; ">
+                    <mat-table class="after-table" #table [dataSource]="complainDataBefore" matSort (matSortChange)="sortData($event)"
+                    [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.complainDataBefore.length > 0 && this.data_complain.status == 0" > 
+        
+                        <!-- Column -->
+                        <ng-container matColumnDef="parameter">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="parameter">Parameter</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <div fxLayout="column">
+                                    <span class="text-truncate" matTooltip="{{ complainDataBefore.parameteruji_id }}">{{ complainDataBefore.parameteruji_id }}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+            
+                            <!-- Column -->
+                            <ng-container matColumnDef="hasil">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header="hasil">Result</mat-header-cell>
+                                <mat-cell *matCellDef="let complainDataBefore">
+                                    <div fxLayout="column">
+                                        <span class="text-truncate" matTooltip="{{ complainDataBefore.hasiluji }}">{{ complainDataBefore.hasiluji }}</span>
+                                    </div>
+                                </mat-cell>
+                            </ng-container>
+                        
+                        <!-- Column -->
+                        <ng-container matColumnDef="lod">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="lod">LOD</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <div fxLayout="column">
+                                    <span class="text-truncate" matTooltip="{{ complainDataBefore.lod }}">{{ complainDataBefore.lod }}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+            
+            
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="unit">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                    <p class="text-truncate" matTooltip="{{ complainDataBefore.unit }}">{{ complainDataBefore.unit }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="metode">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="metode">Method</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                    <p class="text-truncate" matTooltip="{{ complainDataBefore.metode  }}">{{ complainDataBefore.metode  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        
+                        <!-- Column -->
+                        <ng-container matColumnDef="simplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="simplo">Simplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <p class="text-truncate" matTooltip="{{ complainDataBefore.simplo  }}">{{ complainDataBefore.simplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="duplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="duplo">Duplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <p class="text-truncate" matTooltip="{{ complainDataBefore.duplo  }}">{{ complainDataBefore.duplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="triplo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="triplo">Triplo</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <p class="text-truncate" matTooltip="{{ complainDataBefore.triplo  }}">{{ complainDataBefore.triplo  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+                        <!-- Column -->
+                        <ng-container matColumnDef="memo">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="memo">Format</mat-header-cell>
+                            <mat-cell *matCellDef="let complainDataBefore">
+                                <p class="text-truncate" matTooltip="{{ complainDataBefore.format_hasil  }}">{{ complainDataBefore.format_hasil  }}</p>
+                            </mat-cell>
+                        </ng-container>
+            
+            
+                        <mat-header-row *matHeaderRowDef="displayedBeforeColumns; sticky:true"></mat-header-row>
+                        <mat-row *matRowDef="let complainData; columns: displayedBeforeColumns;" 
+                        class="standart">
+                        </mat-row>
+                    </mat-table>
+                    <div *ngIf="this.loadingfirst && this.complainDataBefore.status == 0">
+                        <img  src="assets/images/ellips-load.gif" style="width: 10%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                    </div>
+                  </mat-card>
+                </div>                       
+              </mat-expansion-panel>
+          </mat-accordion>
+            <div fxLayout="row" fxLayoutAlign="end center" style="margin-top: 10px;">
+                <button mat-raised-button color="primary" 
+                    [disabled]="this.loadingfirst || this.data_complain.status == 1" 
+                    (click)="ApproveData()"
+                    style="margin-right: 20px;">
+                    <mat-icon>check_circle</mat-icon> 
+                    Approve
+                </button>
+                <button mat-stroked-button 
+                    color="primary" 
+                    [disabled]="this.loadingfirst" 
+                    (click)="closeDialog(true)">
+                    <mat-icon>cancel</mat-icon> 
+                    Close
+                </button>
+            </div>
+</div>

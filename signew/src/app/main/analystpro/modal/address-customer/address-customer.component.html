@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Set New Address for {{this.cust_name}}</h1>
+<div mat-dialog-content>
+    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+        <mat-label>Description</mat-label>
+        <textarea matInput rows="1" [(ngModel)]="desc"></textarea>
+      </mat-form-field>
+      <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+        <mat-label>Address</mat-label>
+        <textarea matInput rows="2" [(ngModel)]="address"></textarea>
+      </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="accent" (click)="save()">
+    <mat-progress-spinner
+    style="margin: 8px;"
+    [color]="accent"
+    [mode]="'indeterminate'"
+    diameter="20"
+    *ngIf="loading">
+</mat-progress-spinner><span *ngIf="!loading">Save</span></button>
+</div>

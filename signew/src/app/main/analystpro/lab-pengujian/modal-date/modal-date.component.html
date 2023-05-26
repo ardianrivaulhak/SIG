@@ -1,0 +1,78 @@
+
+    <div style="margin-left: 30px;">
+        <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+            <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
+                <mat-form-field appearance="fill"style="width: 90% !important;" *ngIf="this.status !== 'kontrakuji'">
+                    <mat-label>From</mat-label>
+                    <input matInput [(ngModel)]="date" [matDatepicker]="dp2">
+                    <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                    <mat-datepicker #dp2></mat-datepicker>
+                </mat-form-field> 
+                <div style="width: 20px"></div>
+                <!-- <mat-form-field appearance="fill" style="width: 90% !important;" *ngIf="this.status === 'spk'">
+                    <mat-label>Waktu</mat-label>
+                    <mat-select [(ngModel)]="waktu">
+                      <mat-option [value]="pagi">
+                        Pagi
+                      </mat-option>
+                      <mat-option [value]="siang">
+                        Siang
+                      </mat-option>
+                      <mat-option [value]="sore">
+                        Sore
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                  <mat-form-field appearance="fill" style="width: 90% !important;" *ngIf="this.status !== 'kontrakuji'">
+                    <mat-label>To</mat-label>
+                    <input matInput [(ngModel)]="date2" [matDatepicker]="dp3">
+                    <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                    <mat-datepicker #dp3></mat-datepicker>
+                </mat-form-field>
+
+                <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="datacontract"
+                bindLabel="contract_no"
+                bindValue="id_kontrakuji"
+                placeholder="Select Contract"
+                dropdownPosition="bottom"
+                [(ngModel)]="kontrakuji"
+                (search)="onsearchselect($event, 'contract')"
+                (scrollToEnd)="onScrollToEndSelect('contract')"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+                *ngIf="this.status === 'kontrakuji'"
+            >
+            </ng-select> 
+            <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="datacontract"
+                bindLabel="contract_no"
+                bindValue="id_kontrakuji"
+                placeholder="Select Contract"
+                dropdownPosition="bottom"
+                [(ngModel)]="kontrakuji"
+                (search)="onsearchselect($event, 'contract')"
+                (scrollToEnd)="onScrollToEndSelect('contract')"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+                *ngIf="this.status === 'complain'"
+            >
+            </ng-select> 
+            </div>
+            <button style="width: 90%; margin-top: 30px;" mat-raised-button (click)="save()">Export</button>
+        </div>
+    </div>

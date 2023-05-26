@@ -1,0 +1,198 @@
+<div
+    *ngIf="this.dataInfo.length > 0"
+    style="
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+    "
+>
+    <div style="font-weight: bold; padding: 5px; font-size: 14px">
+        Contract Status
+    </div>
+    <div class="penggaris"></div>
+    <h2>Customer Service</h2>
+    <table class="customers">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Date</th>
+                <th>User</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody
+            *ngFor="
+                let o of this.dataInfo[0]['kontrakstatus_cs'];
+                let i = index
+            "
+        >
+            <tr>
+                <td>{{ i + 1 }}</td>
+                <td>{{ o.inserted_at }}</td>
+                <td>{{ o.user.employee_name }}</td>
+                <td align="center">
+                    <span>{{ o.status == 0 ? "Pending" : "Approved" }}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="this.dataInfo[0]['kontrakstatus_kendali'].length > 0" style="width: 100%;">
+        <h2>Kendali</h2>
+        <table class="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody
+                *ngFor="
+                    let o of this.dataInfo[0]['kontrakstatus_kendali'];
+                    let i = index
+                "
+            >
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ o.inserted_at }}</td>
+                    <td>{{ o.user.employee_name }}</td>
+                    <td align="center">
+                        <span>{{
+                            o.status == 0 ? "Pending" : "Approved"
+                        }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="this.dataInfo[0]['kontrakstatus_prep'].length > 0" style="width: 100%;">
+        <h2>Preparation</h2>
+        <table class="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody
+                *ngFor="
+                    let o of this.dataInfo[0]['kontrakstatus_prep'];
+                    let i = index
+                "
+            >
+                <tr *ngIf="o.user.employee_name !==
+                this.dataInfo[0]['kontrakstatus_kendali'][0].user
+                    .employee_name">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ o.inserted_at }}</td>
+                    <td>
+                        {{
+                            o.user.employee_name ===
+                            this.dataInfo[0]["kontrakstatus_kendali"][0].user
+                                .employee_name
+                                ? "-"
+                                : o.user.employee_name
+                        }}
+                    </td>
+                    <td align="center">
+                        <span>{{ o.status == 0 ? " Pending" : "Done" }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="this.dataInfo[0]['kontrakstatus_lab'].length > 0" style="width: 100%;">
+        <h2>in Lab</h2>
+        <table class="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody
+                *ngFor="
+                    let o of this.dataInfo[0]['kontrakstatus_lab'];
+                    let i = index
+                "
+            >
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ o.inserted_at }}</td>
+                    <td>{{ o.user.employee_name }}</td>
+                    <td align="center">
+                        <span>{{
+                            o.status == 0 ? "Pending" : "Approved"
+                        }}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="this.certInfo.length > 0 " style="width: 100%;">
+        <h2>in Certificate</h2>
+        <table class="customers">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>LHU</th>
+                    <th>Sample No</th>
+                    <th>Date</th>
+                    <th>User</th>
+                    <th>Team</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody
+                *ngFor="
+                    let o of this.certInfo;
+                    let i = index
+                "
+            >
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ o.lhu_number }}</td>
+                    <td>{{ o.no_sample }}</td>
+                    <td>{{ o.inserted_at | date }}</td>
+                    <td>{{ o.employee_name }}</td>
+                    <td>{{ o.group_name }}</td>
+                    <td align="center">
+                        <!-- <span>{{
+                            o.status == 0 ? "Create" : "Draft/Release"
+                        }}</span> -->
+                        <span *ngIf="o.status == 1" >Create</span>
+                        <span *ngIf="o.status == 2" >Approve</span>
+                        <span *ngIf="o.status == 3" >Draft</span>
+                        <span *ngIf="o.status == 4" >Certificate</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<div
+    *ngIf="this.dataInfo.length < 1"
+    style="
+        height: 30vh;
+        overflow: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    "
+>
+    <img
+        src="assets/images/gif/loading.gif"
+        style="width: 200px; height: auto"
+    />
+</div>

@@ -1,0 +1,302 @@
+<div *ngIf="SampleForm" style="overflow: hidden; height: 100%;">
+    <form name="SampleForm" [formGroup]="SampleForm">
+        <h2 mat-dialog-title>{{this.samplename ? this.samplename : '-'}}</h2>
+        <mat-dialog-content class="mat-typography" style="height: 100%;">
+            <div style="display: flex; flex-direction: column; width: 100%; height: auto">
+
+                <div style="height: 20px;"></div>
+
+                <mat-grid-list cols="4" rowHeight="100px">
+                    <mat-grid-tile>
+                        <ng-select appendTo="body" [items]="tujuanpengujian" bindLabel="name" bindValue="id"
+                            placeholder="Tujuan Pengujian" formControlName="tujuanpengujian"
+                            (clear)="resetCalculations()" dropdownPosition="bottom" style="width: 95%">
+                        </ng-select>
+                    </mat-grid-tile>
+                    <!-- <mat-grid-tile>
+                        <ng-select appendTo="body" [items]="statuspengujian" bindLabel="status" bindValue="id"
+                            placeholder="Status Pengujian" formControlName="statuspengujian" dropdownPosition="bottom"
+                            style="width: 95%" (change)="getValPengujian($event)">
+                        </ng-select>
+                    </mat-grid-tile> -->
+                    <!-- <mat-grid-tile>
+                        <ng-select appendTo="body" [items]="catalogueData" formControlName="catalogue"
+                            bindLabel="catalogue_name" bindValue="id_catalogue" placeholder="Select Catalogue"
+                            dropdownPosition="bottom" (change)="getValCatalogue($event)" style="width: 90%">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <b>{{item.catalogue_code}}</b>&nbsp;-&nbsp;{{item.catalogue_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                <b>{{item.catalogue_code}}</b>&nbsp;-&nbsp;{{item.catalogue_name}}
+                            </ng-template>
+                        </ng-select>
+                    </mat-grid-tile> -->
+                    <mat-grid-tile>
+                        <ng-select appendTo="body"  [items]="subCatalogueData" formControlName="subcatalogue"
+                            bindLabel="sub_catalogue_name" bindValue="id_sub_catalogue" 
+                            placeholder="Select Kategori Sample" dropdownPosition="bottom"
+                            (scrollToEnd)="onScrollToEnd('subcatalogue')" (change)="getValSubCatalogue($event)"
+                            (search)="onSearchi($event,'subcatalogue')" (clear)="resetAll('subcatalogue')"
+                            (close)="resetAll('subcatalogue')" style="width: 90%">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <b>{{item.sub_catalogue_code}}</b>&nbsp;-&nbsp;{{item.sub_catalogue_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                <b>{{item.sub_catalogue_code}}</b>&nbsp;-&nbsp;{{item.sub_catalogue_name}}
+                            </ng-template>
+                        </ng-select>
+                    </mat-grid-tile>
+                    <!-- <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important;">
+                            <mat-label>Tanggal Input</mat-label>
+                            <input matInput [matDatepicker]="tgl_input" formControlName="tgl_input">
+                            <mat-datepicker-toggle matSuffix [for]="tgl_input">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tgl_input></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important;">
+                            <mat-label>Tanggal Selesai</mat-label>
+                            <input matInput [matDatepicker]="tgl_selesai"
+                                formControlName="tgl_selesai">
+                            <mat-datepicker-toggle matSuffix [for]="tgl_selesai"></mat-datepicker-toggle>
+                            <mat-datepicker #tgl_selesai></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important;">
+                            <mat-label>Tanggal Estimasi Lab</mat-label>
+                            <input matInput [matDatepicker]="tgl_estimasi_lab"
+                                formControlName="tgl_estimasi_lab">
+                            <mat-datepicker-toggle matSuffix [for]="tgl_estimasi_lab"></mat-datepicker-toggle>
+                            <mat-datepicker #tgl_estimasi_lab></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile> -->
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important;">
+                            <mat-label>Tanggal Produksi</mat-label>
+                            <input matInput [matDatepicker]="tglprod" formControlName="tgl_produksi">
+                            <mat-datepicker-toggle matSuffix [for]="tglprod">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #tglprod></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important;">
+                            <mat-label>Tanggal Kadaluarsa</mat-label>
+                            <input matInput [matDatepicker]="tgl_kadaluarsa"
+                                formControlName="tgl_kadaluarsa">
+                            <mat-datepicker-toggle matSuffix [for]="tgl_kadaluarsa"></mat-datepicker-toggle>
+                            <mat-datepicker #tgl_kadaluarsa></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>  
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>Factory Name</mat-label>
+                            <input matInput formControlName="factoryname">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>Trade Mark</mat-label>
+                            <input matInput formControlName="trademark">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>Lot Number</mat-label>
+                            <input matInput formControlName="lotno">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>Jenis Kemasan</mat-label>
+                            <input matInput formControlName="jeniskemasan">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>Batch Number</mat-label>
+                            <input matInput formControlName="batchno">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>No Notifikasi</mat-label>
+                            <input matInput formControlName="no_notifikasi">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>No Pengajuan</mat-label>
+                            <input matInput formControlName="no_pengajuan">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>No Registrasi</mat-label>
+                            <input matInput formControlName="no_registrasi">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 95% !important; align-self: center;">
+                            <mat-label>No Principal Code</mat-label>
+                            <input matInput formControlName="no_principalCode">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <!-- <div formArrayName="sample" *ngIf="checkedSample"></div> -->
+                
+                <div fxFlex="1 0 auto" fxLayout="column" style="margin-top: 15px;">
+                    <!-- <mat-grid-list cols="2" rowHeight="70px">
+                        <mat-grid-tile>
+                            <ng-select appendTo="body" [items]="dataSelect" bindLabel="name" bindValue="name"
+                                placeholder="Select Sample" formControlName="valuePaket" dropdownPosition="bottom" (change)="getDataSelect($event)"
+                                style="width: 90%">
+                            </ng-select>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                           <div style="display: flex; flex-direction: row; width:100%; justify-content: center; align-items: center;">
+                            
+                            <div [hidden]="this.hidePaket" style="width: 100%;">
+                                <ng-select appendTo="body" [items]="dataPaketuji" bindLabel="nama_paketuji"
+                                    bindValue="id" placeholder="Select Paket" dropdownPosition="bottom"
+                                    (scrollToEnd)="OnScrollEnd('paketparameter')" formControlName="paketparameter" (change)="getValPaketuji($event)"
+                                    (search)="onSearchPaketParameter($event)" (clear)="clearSelect('paketparameter')"
+                                    (close)="closeSelect('paketparameter')" style="width: 100%; align-self: center;">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        <b>{{item.nama_paketuji}}</b>&nbsp;-&nbsp;{{item.price_is.toLocaleString()}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <b>{{item.nama_paketuji}}</b>&nbsp;-&nbsp;{{item.price_is.toLocaleString()}}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <div [hidden]="this.hidePaketPKM" style="width: 100%;">
+                                <ng-select appendTo="body" [items]="dataPaketPKM" bindLabel="package_name"
+                                    bindValue="id" placeholder="Select Paket PKM" dropdownPosition="bottom"
+                                    (scrollToEnd)="OnScrollEnd('paketPKM')" formControlName="paketPKM" (change)="getValPaketPKM($event)"
+                                    (search)="onSearchPaketPKM($event)" (clear)="clearSelect('paketPKM')"
+                                    (close)="closeSelect('paketPKM')" style="width: 100%; align-self: center;">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        <b>{{item.package_code}}</b>&nbsp;-&nbsp;{{item.package_name}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <b>{{item.package_code}}</b>&nbsp;-&nbsp;{{item.package_name}}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <div [hidden]="this.hideParameteruji" style="width: 100%;">
+                                <mat-grid-list cols="2" rowHeight="70px">
+                                    <mat-grid-tile>
+                                        <ng-select appendTo="body" [items]="dataFormatHasil" bindLabel="hasil" bindValue="id"
+                                            placeholder="Select Format Hasil" dropdownPosition="bottom"
+                                            formControlName="FormatHasil"
+                                            (change)="getValformatHasil($event)"
+                                            style="width: 80%; align-self: center;">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                {{item.hasil}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                {{item.hasil}}
+                                            </ng-template>
+                                        </ng-select>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <ng-select appendTo="body" [items]="dataParameter" bindLabel="name_id" bindValue="id"
+                                            placeholder="Select Parameter" dropdownPosition="bottom"
+                                            formControlName="parameteruji"
+                                            (scrollToEnd)="OnScrollEnd('parameteruji')" (change)="getValParameter($event)"
+                                            (search)="onSearchParameter($event)" (clear)="clearSelect('parameteruji')"
+                                            (close)="closeSelect('parameteruji')" style="width: 100%; align-self: center;">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                <b>{{item.name_id}}</b>&nbsp;-&nbsp;{{item.price ? item.price.toLocaleString() : 'NOT SET'}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <b>{{item.name_id}}</b>&nbsp;-&nbsp;{{item.price ? item.price.toLocaleString() : 'NOT SET'}}
+                                            </ng-template>
+                                        </ng-select>
+                                        <div *ngIf="this.statussample">
+                                            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="hapussemua()">
+                                                <mat-icon>delete</mat-icon>
+                                              </button>
+                                        </div>
+                                    </mat-grid-tile> 
+                                </mat-grid-list>
+                            </div>
+                               
+                           </div>
+                        </mat-grid-tile>
+                    </mat-grid-list> -->
+                    <div style="height: 40px;"></div>
+                    <div *ngIf="paketParameter.length > 0">
+                       
+                        <div class="mat-elevation-z8">
+                            <mat-table #table [dataSource]="paketParameter" fusePerfectScrollbar >
+                                <!-- Position Column -->
+                                <ng-container matColumnDef="name_id">
+                                    <mat-header-cell *matHeaderCellDef>Parameter
+                                        Name</mat-header-cell>
+                                    <mat-cell *matCellDef="let paketParameter">
+                                        <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                                            <span style="font-weight: bold;">{{paketParameter.name_id}}</span>
+                                            <span>{{paketParameter.name_en}}</span>
+                                        </div>
+                                    </mat-cell>
+                                </ng-container>
+    
+                                <!-- Name Column -->
+                                <ng-container matColumnDef="lab">
+                                    <mat-header-cell *matHeaderCellDef>Format Hasil
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let paketParameter">
+                                        <p class="text-truncate">{{paketParameter.format_hasil}}</p>
+                                    </mat-cell>
+                                </ng-container>
+
+    
+                                <ng-container matColumnDef="status">
+                                    <mat-header-cell *matHeaderCellDef>Status
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let paketParameter">
+                                        <p class="text-truncate">{{paketParameter.status}}</p>
+                                    </mat-cell>
+                                </ng-container>
+    
+                                <ng-container matColumnDef="action">
+                                    <mat-header-cell *matHeaderCellDef>
+                                        Action
+                                    </mat-header-cell>
+                                    <mat-cell *matCellDef="let row">
+                                        <button mat-icon-button color="primary" (click)="test(row)">
+                                            <svg-icon src="assets/icons/custom/close.svg"
+                                                [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center' }">
+                                            </svg-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+    
+    
+                                <mat-header-row *matHeaderRowDef="displayedColumns;">
+                                </mat-header-row>
+                                <mat-row *matRowDef="let paketParameter; columns: displayedColumns;" class="lab" (click)="testingclick(paketParameter)">
+                                </mat-row>
+                            </mat-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-dialog-content>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 25px;">
+             <!-- <span style="margin: 15px">Total Rp. <b>{{this.totalcalculated ? this.totalcalculated.toLocaleString() : 0}}</b></span> -->
+            <button mat-button (click)="this.toggleParameter()">Save</button>
+        </div>
+        <!-- <mat-dialog-actions align="start">
+            <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+        </mat-dialog-actions>
+        <mat-dialog-actions align="end">
+            <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Save</button>
+        </mat-dialog-actions> -->
+    </form>
+</div>

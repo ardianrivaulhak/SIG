@@ -1,0 +1,133 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="width: 100%;" *ngIf="!loadingupload">
+    <p *ngIf="this.status">{{ this.status == 'mou' ? this.nocustmou : this.contract_no }} - Attachment</p>
+<div style="display: flex; flex-direction: row;"  >
+    <div *ngIf="this.datacontract.length > 0" style="display: flex; flex-direction: row; width: 100%">
+        <div *ngFor="let u of this.datacontract" style="padding: 5px; width: 100px">
+        <div title="{{u.filename}}">
+        <img
+            [src]="setPhoto(u)"
+            *ngIf="u.type == 'image'"
+            style="
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu2"
+        />
+        <img
+            src="assets/images/avatars/document.png"
+            *ngIf="u.type == 'file'"
+            style="
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu2"
+        />
+        </div>
+        <mat-menu #menu2="matMenu">
+            <button mat-menu-item (click)="opendetailphoto(u)">
+                {{u.type == 'image' ? 'See Photo' : 'Download File'}} 
+            </button>
+            <button mat-menu-item (click)="delete(u)">Delete {{u.type == 'image' ? 'Picture' : 'File'}}</button>
+        </mat-menu>
+        </div>
+    </div>
+    <div *ngIf="this.datamou.length > 0" style="display: flex; flex-direction: row; width: 100%">
+        <div *ngFor="let u of this.datamou" style="padding: 5px; width: 100px">
+        <div title="{{u.filename}}">
+        <img
+            [src]="setPhoto(u)"
+            *ngIf="u.type == 'image'"
+            style="
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu2"
+        />
+        <img
+            src="assets/images/avatars/document.png"
+            *ngIf="u.type == 'file'"
+            style="
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu2"
+        />
+        </div>
+        <mat-menu #menu2="matMenu">
+            <button mat-menu-item (click)="opendetailphoto(u)">
+                {{u.type == 'image' ? 'See Photo' : 'Download File'}} 
+            </button>
+            <button mat-menu-item (click)="delete(u)">Delete {{u.type == 'image' ? 'Picture' : 'File'}}</button>
+        </mat-menu>
+        </div>
+    </div>
+
+    <div *ngIf="this.datapenawaran.length > 0" style="display: flex; flex-direction: row; width: 100%">
+        <div *ngFor="let u of this.datapenawaran" style="padding: 5px; width: 100px">
+        <div title="{{u.attachment}}">
+        <img
+            src="assets/images/avatars/document.png"
+            style="
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu2"
+        />
+        </div>
+        <mat-menu #menu2="matMenu">
+            <button mat-menu-item (click)="opendetailpenawaran(u)">
+                Download File
+            </button>
+            <button mat-menu-item (click)="delete(u)">Delete File</button>
+        </mat-menu>
+        </div>
+    </div>
+
+    <div style="padding: 5px" *ngIf="this.status !== 'finder'">
+        <div
+            style="
+                width: 80px;
+                height: 80px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid rgb(163, 163, 163);
+                cursor: pointer;
+            "
+            [matMenuTriggerFor]="menu"
+        >
+            <img
+                src="assets/icons/custom/plus.svg"
+                style="width: 30px; height: 30px"
+            />
+        </div>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="webcam()" [disabled]="this.status == 'kontrak' ? false : true">Take A picture</button>
+            <input
+                #_fileInput
+                type="file"
+                (change)="uploadGambar($event)"
+                hidden
+            />
+            <button mat-menu-item (click)="_fileInput.click()">
+                <span>Upload File</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>
+<div style="display: flex; flex-direction: column;" *ngIf="loadingupload">
+    <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+</div>
+<!-- <button mat-raised-button (click)="sendData()">Save</button> -->
+</div>

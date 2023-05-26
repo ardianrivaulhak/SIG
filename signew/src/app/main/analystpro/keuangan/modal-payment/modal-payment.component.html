@@ -1,0 +1,92 @@
+<h2>Add Form Payment</h2>
+<hr>
+
+<div style=" margin-top: 30px;">
+    <mat-grid-list cols="2" rowHeight='100px'>
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;"  appearance="outline">
+                <mat-label>Customer</mat-label>
+                <input style="color: black;" disabled="true" [(ngModel)]="customer" matInput>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;"  appearance="outline">
+                <mat-label>Contact Person</mat-label>
+                <input style="color: black;" disabled="true" [(ngModel)]="contactPerson" matInput>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list cols="2" rowHeight='100px' >
+        <mat-grid-tile> 
+            <ng-select 
+                appearance="outline" 
+                    appendTo="body" 
+                    [items]="dataBank" 
+                    bindLabel="bank_name" 
+                    bindValue="id" 
+                    [clearable]="false"  
+                    placeholder="Select Bank" 
+                    (change)="getValBank($event)" 
+                    [(ngModel)]="bank"
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.bank_code}} - {{item.bank_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.bank_code}} - {{item.bank_name}}
+                        </ng-template>
+                    </ng-select> 
+        </mat-grid-tile>
+        <mat-grid-tile> 
+            <mat-form-field style="width: 90% !important; width: 90%">
+                <mat-label>Tanggal Payment</mat-label>
+                <input matInput [(ngModel)]="tanggal" [matDatepicker]="dp2">
+                <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                <mat-datepicker #dp2></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list> 
+
+    <mat-grid-list cols="1" rowHeight='2:0.4'>
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;"  appearance="outline">
+                <mat-label>Total Harga</mat-label>
+                <input currencyMask [options]="{ prefix: '', thousands: '.', precision: 0 }" style="color: black;" disabled="true" [(ngModel)]="total_harga" matInput>
+            </mat-form-field>
+        </mat-grid-tile> 
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight='2:0.4' *ngIf="this.btnUpdate === true">
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;"  appearance="outline">
+                <mat-label>Sisa Pembayaran</mat-label>
+                <input currencyMask [options]="{ prefix: '', thousands: '.', precision: 0 }" style="color: black;" disabled="true" [(ngModel)]="sisa_pembayaran" matInput>
+            </mat-form-field>
+        </mat-grid-tile> 
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight='2:0.4' >
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;"  appearance="outline">
+                <mat-label>Price</mat-label>
+                <input currencyMask [options]="{ prefix: '', thousands: '.', precision: 0 }" style="color: black;" [(ngModel)]="price" matInput>
+            </mat-form-field>
+        </mat-grid-tile> 
+    </mat-grid-list>
+
+    
+
+    <button *ngIf="this.btnSave === true"
+    style="width: 100%; background-color: #039be5; color: white;"
+    mat-raised-button (click)="savePayment()">
+    Save
+    </button>
+
+    <button *ngIf="this.btnUpdate === true"
+    style="width: 100%; background-color: #039be5; color: white;"
+    mat-raised-button (click)="updatePayment()">
+    Update
+    </button>
+</div>

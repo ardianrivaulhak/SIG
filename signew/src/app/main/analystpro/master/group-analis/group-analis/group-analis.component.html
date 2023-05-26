@@ -1,0 +1,180 @@
+<div id="group-analis" class="page-layout carded fullwidth inner-scroll">
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header primary"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center"
+        >
+            <!-- APP TITLE -->
+            <div
+                class="logo mb-24 mb-md-0"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+            >
+                <mat-icon
+                    class="logo-icon s-32 mr-16"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '50ms', scale: '0.2' }
+                    }"
+                >
+                    credit_card
+                </mat-icon>
+                <span
+                    class="logo-text h1"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '100ms', x: '-25px' }
+                    }"
+                >
+                    Group Analyst
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div
+                class="search-wrapper mx-32 mx-md-0"
+                [@animate]="{
+                    value: '*',
+                    params: { delay: '150ms', x: '-25px' }
+                }"
+            >
+                <div
+                    class="search"
+                    fxFlex
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                >
+                    <mat-icon>search</mat-icon>
+                    <input
+                        (input)="onSearchChange($event.target.value)"
+                        #filter
+                        placeholder="Search for a Team Name"
+                    />
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div *ngIf="this.access.length > 0">
+                <button
+                    mat-raised-button
+                    (click)="addModals()"
+                    class="add-product-button fuse-white mt-24 mt-md-0"
+                    [@animate]="{
+                        value: '*',
+                        params: { delay: '200ms', x: '-25px' }
+                    }"
+                    *ngIf="this.access[0].create === 1"
+                >
+                    <mat-icon>add_box</mat-icon>
+                    <span> Add New</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" style="height: 70vh; overflow-y: auto">
+            <mat-table
+                class="lab-table"
+                #table
+                [dataSource]="groupData"
+                matSort
+                (matSortChange)="sortData($event)"
+                [@animateStagger]="{ value: '50' }"
+                fusePerfectScrollbar
+            >
+                <!-- Column -->
+                <ng-container matColumnDef="team_name">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header="team_name"
+                        >Team Name</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let groupData">
+                        <p class="text-truncate">{{ groupData.group_name }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="pic">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="pic"
+                        >PIC</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let groupData">
+                        <p class="text-truncate">
+                            {{
+                                groupData.pic == null
+                                    ? null
+                                    : groupData.pic.employee_name
+                            }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="description">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        mat-sort-header="description"
+                        >Description</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let groupData">
+                        <p class="text-truncate">{{ groupData.description }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="action"
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let groupData">
+                        <button
+                            style="
+                                margin-right: 10px;
+                                background-color: #2196f3;
+                            "
+                            mat-mini-fab
+                            (click)="editModals(groupData.id)"
+                        >
+                            <mat-icon> edit </mat-icon>
+                        </button>
+                        <button mat-mini-fab color="warn">
+                            <mat-icon> delete_outline </mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="displayedColumns; sticky: true"
+                ></mat-header-row>
+                <mat-row *matRowDef="let groupData; columns: displayedColumns">
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator
+                #paginator
+                [length]="total"
+                [pageIndex]="from"
+                [pageSize]="to"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page)="paginated($event)"
+            >
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,53 @@
+<mat-table #table [dataSource]="sampledata" [@animateStagger]="{value:'50'}" style="height: 70vh; overflow-y: auto;">
+    
+    <ng-container matColumnDef="sample_name">
+      <mat-header-cell *matHeaderCellDef>Name Sample</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData">{{ sampleData.sample_name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="no_sample">
+      <mat-header-cell *matHeaderCellDef>Name Sample</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData">{{ sampleData.no_sample }}</mat-cell>
+    </ng-container>
+  
+    <ng-container matColumnDef="tgl_input">
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Tanggal Input</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData" fxHide fxShow.gt-md>{{ sampleData.tgl_input }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="tgl_selesai">
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Tanggal Selesai</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData" fxHide fxShow.gt-md>{{ sampleData.tgl_selesai }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Price</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData" fxHide fxShow.gt-md>{{ sampleData.price }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action" >
+      <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md>Action</mat-header-cell>
+      <mat-cell *matCellDef="let sampleData; let i = index;">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="copythis(e)" >
+                  <mat-icon>file_copy</mat-icon>
+                  <span>Add Bobot</span>
+              </button>
+              <button mat-menu-item (click)="sendMessage(sampleData.id)"  >
+                  <mat-icon>launch</mat-icon>
+                  <span>Show Parameter</span>
+              </button>
+          </mat-menu>
+      </mat-cell>
+  </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let sampledata; columns: displayedColumns;"
+    [@animate]="{value:'*',params:{y:'100%'}}"
+    [ngClass]="{'selected' : sampledata == selected}">
+   </mat-row>
+  
+</mat-table>

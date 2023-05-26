@@ -1,0 +1,60 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="subdivisionForm"
+        [formGroup]="subdivisionForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label>Sub Division Name</mat-label>
+            <input
+                matInput
+                placeholder="Put Sub Division Name"
+                formControlName="subdivision_name"
+            />
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label style="color: black">Division</mat-label>
+            <mat-select formControlName="id_div" placeholder="Set Division">
+                <mat-option [value]="o.id_div" *ngFor="let o of datadiv">{{
+                    o.division_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+            *ngIf="this.company_id == 1"
+        >
+            <mat-label style="color: black">Company</mat-label>
+            <mat-select
+                formControlName="company_name"
+                placeholder="Set Company"
+            >
+                <mat-option [value]="o.id" *ngFor="let o of sisterCompany">{{
+                    o.company_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="serviceAct()">
+            Save
+        </button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

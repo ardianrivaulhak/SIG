@@ -1,0 +1,199 @@
+<div id="kendali" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary-700"></div>
+    <!-- / TOP BACKGROUND -->
+
+   <!-- CENTER -->
+   <div class="center">
+
+      <!-- HEADER -->
+      <div class="header primary-700"
+      fxLayout="column" fxLayoutAlign="center center"
+      fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-24 mb-md-0"
+            fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            credit_card
+          </mat-icon>
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              Controller
+          </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+      <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+          <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon>search</mat-icon>
+              <input 
+              (input)="onSearchChange($event.target.value)"
+              #filter 
+              placeholder="Marketing Number" > 
+          </div>
+      </div>
+      <!-- / SEARCH -->
+
+      <!-- SEARCH -->
+      <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>toc</mat-icon>
+            <input 
+            (input)="onSearchChange($event.target.value)"
+            #filter 
+            placeholder="Sample Number" > 
+        </div>
+    </div>
+    <!-- / SEARCH -->
+
+      <!-- SEARCH -->
+      <div class="select-search mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center" >
+            <mat-icon>arrow_drop_down</mat-icon>
+            <mat-select placeholder="Category">
+                <mat-option *ngFor="let contractcategory of contractcategory" [value]="contractcategory.id">
+                    {{ contractcategory.title }}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <!-- / SEARCH -->
+
+    <!-- SEARCH -->
+    <div class="select-search mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>arrow_drop_down</mat-icon>
+            <mat-select placeholder="Status">
+                <mat-option *ngFor="let statusPengujian of statusPengujian" [value]="statusPengujian.id">
+                    {{ statusPengujian.name }}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <!-- / SEARCH -->
+
+      
+    </div>
+    <!-- / HEADER -->
+
+      <!-- CONTENT CARD -->
+    <div class="content-card" style="height: 70vh; overflow-y: auto;">
+        
+        <mat-table class="kendali-table" #table [dataSource]="kendaliData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+           
+            <!-- Column -->
+            <ng-container matColumnDef="contract_no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract Number</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate">{{kendaliData.kontrakuji.contract_no}}</p>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="category_code">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="category_code">Category</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate">{{kendaliData.kontrakuji.contract_category.title}}</p>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer_name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer_name">Customer Name</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate">{{kendaliData.kontrakuji.customers_handle.customers.customer_name}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="status_pengujian">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="status_pengujian">Status</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <!-- <p class="text-truncate">{{kendaliData.statuspengujian.name}}</p> -->
+                    <div class="box-normal" *ngIf="kendaliData.kontrakuji.statuspengujian.id == 1">
+                        <p class="text-truncate">Normal</p>
+                    </div>
+                    <div class="box-urgent" *ngIf="kendaliData.kontrakuji.statuspengujian.id == 2">
+                        <p class="text-truncate">Urgent</p>
+                    </div>
+                    <div class="box-very-urgent" *ngIf="kendaliData.kontrakuji.statuspengujian.id == 3">
+                        <p class="text-truncate">Very Urgent</p>
+                    </div>
+                    <div class="box-custom" *ngIf="kendaliData.kontrakuji.statuspengujian.id == 4">
+                        <p class="text-truncate">Custom</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Column -->
+            <ng-container matColumnDef="tanggal_terima">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tanggal_terima">Date of Receipt</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate">
+                        <span class="material-icons">
+                            date_range
+                        </span>
+                        {{kendaliData.kontrakuji.tanggal_terima | date}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="tanggal_selesai">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tanggal_selesai">Date of Completion</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate">
+                        <span class="material-icons">
+                            date_range
+                        </span>
+                        {{kendaliData.kontrakuji.tanggal_selesai | date}}</p>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Weight Column -->
+            <ng-container matColumnDef="icon">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="icon"></mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData; let indexOfelement=index;">
+                    <div fxFlex="row" fxLayoutAlign="end center" *ngIf="this.access.length > 0">
+                        <button mat-icon-button aria-label="info" (click)="openDialog(indexOfelement)">
+                            <mat-icon>info</mat-icon>
+                        </button>
+                        <button mat-icon-button aria-label="info" [routerLink]="'/analystpro/kendali/'+kendaliData.id_condition_contract">
+                            <mat-icon>subject</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Approve" style="background-color: #7ea04d; width:20px; height: 20px;" 
+                        (click)="changeStatus(kendaliData.id)"
+                        mat-mini-fab>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let kendaliData; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator
+            [length]="total"
+            [pageIndex]="from"
+            [pageSize]="to"
+            [hidePageSize]="true"
+            [showFirstLastButtons]="true"
+            (page) = "paginated($event)">
+
+        </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+    
+</div>

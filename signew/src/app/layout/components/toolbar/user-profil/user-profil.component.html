@@ -1,0 +1,167 @@
+<div id="profile" *ngFor="let user of this.dataUser" class="page-layout simple tabbed">
+
+    <!-- HEADER -->
+    <div class="header p-24" style="display: flex; flex-direction: row; width: 100%; justify-content: flex-start; align-items: center;">
+        <img class="profile-image avatar huge" style="object-fit: cover;" [src]="setPhoto(user)"
+         [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+         <div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+            <div class="name" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                {{user.employee_name}}
+            </div>
+            <div class="category" style='color: #fff'>
+                {{user.nik}} - {{user.bagian.division_name}}
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <mat-tab-group dynamicHeight="true">
+
+            <mat-tab label="About Me">
+                <div id="about" style="height: 33vh;" fusePerfectScrollbar >
+                    <table class="empl">
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td>:
+                                {{user.tgl_lahir}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>:
+                                {{user.gender}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Religion</td>
+                            <td>: 
+                               {{user.religion}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Marital Status</td>
+                            <td>:
+                               {{user.martial_status}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone</td>
+                            <td>:
+                                0{{user.phone}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>:
+                                {{user.alamat}}
+                            </td>
+                        </tr>
+                    </table>
+                    <!--   
+                    <mat-grid-list cols='5' rowHeight="100px"> 
+                        <mat-grid-tile>
+                        <div class="info-line" >
+                            <div class="title">Tanggal Lahir :</div>
+                            <div class="info">{{user.tgl_lahir}}</div>
+                        </div>
+                        </mat-grid-tile> 
+                        <mat-grid-tile> 
+                            <div class="info-line">
+                                <div class="title">Agama :</div>
+                                <div class="info">{{user.religion}}</div>
+                            </div>
+                        </mat-grid-tile> 
+                        <mat-grid-tile> 
+                            <div class="info-line">
+                                <div class="title">Status :</div>
+                                <div class="info">{{user.martial_status}}</div>
+                            </div>
+                        </mat-grid-tile> 
+                        <mat-grid-tile> 
+                        <div class="info-line" >
+                            <div class="title">Phone :</div>
+                            <div class="info">{{user.phone}}</div>
+                        </div> 
+                        </mat-grid-tile>
+                        <mat-grid-tile> 
+                        <div class="info-line">
+                            <div class="title">Kota :</div>
+                            <div class="info">{{user.city.city_name}}</div>
+                        </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <mat-grid-list cols='2' rowHeight="100px">
+                        <mat-grid-tile style="margin-left: 50px"> 
+                            <div class="info-line">
+                                <div class="title">Alamat :</div>
+                                <div class="info location" fxLayout="row" fxLayoutAlign="start center" > 
+                                    <span>{{user.alamat}}</span>
+                                </div>
+                            </div> 
+                        </mat-grid-tile>  
+                    </mat-grid-list> -->
+        
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Change Password">
+                <div id="reset-password-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+         
+                    <form name="resetPasswordForm" [formGroup]="resetPasswordForm" novalidate>
+        
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email">
+                            <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+                            <mat-error *ngIf="resetPasswordForm.get('email').hasError('required')">
+                                Email is required
+                            </mat-error>
+                            <mat-error *ngIf="resetPasswordForm.get('email').hasError('email')">
+                                Please enter a valid email address
+                            </mat-error>
+                        </mat-form-field> -->
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput type="password" formControlName="password">
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <mat-error>
+                                Password is required
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password (Confirm)</mat-label>
+                            <input matInput type="password" formControlName="passwordConfirm">
+                            <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                            <mat-error *ngIf="resetPasswordForm.get('passwordConfirm').hasError('required')">
+                                Password confirmation is required
+                            </mat-error>
+                            <mat-error *ngIf="!resetPasswordForm.get('passwordConfirm').hasError('required') &&
+                                               resetPasswordForm.get('passwordConfirm').hasError('passwordsNotMatching')">
+                                Passwords must match
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <button (click)="changePass()" mat-raised-button class="submit-button" color="accent"
+                            [disabled]="!resetPasswordForm.get('password').hasError('required') &&
+                                        !resetPasswordForm.get('passwordConfirm').hasError('required') ? false : true" aria-label="RESET MY PASSWORD">
+                            Set Password
+                        </button>
+                    </form> 
+        
+                </div>
+            </mat-tab>
+ 
+
+        </mat-tab-group>
+
+    </div>
+    <!-- / CONTENT -->
+
+</div>

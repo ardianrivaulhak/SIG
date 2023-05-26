@@ -1,0 +1,30 @@
+<table id="customers">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Parameter</th>
+            <th>Complain Result</th> 
+            <th>Satuan</th>                       
+            <th>LAB</th>
+            <th>Metode</th>
+            <th>LOD</th>
+            <th>Standart</th>
+            <th>Desc</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let o of datacomplain[0].complain; let i = index;">
+       <tr>
+           <td>{{i+1}}</td>
+           <td>{{o.parameteruji.name_id}}</td>
+           <td>
+              {{o.complain_result}}
+           </td>
+           <td>{{o.unit ? o.unit.nama_unit : '-'}}</td>
+           <td>{{o.lab ? o.lab.nama_lab : '-'}}</td>
+           <td>{{o.metode ? o.metode.metode : '-'}}</td>
+           <td>{{o.lod ? o.lod.nama_lod : '-'}}</td>
+           <td>{{o.standart ? o.standart.nama_standart : '-'}}</td>
+           <td> {{o.memo ? o.memo : '-'}} </td>
+       </tr>
+    </tbody>
+</table>

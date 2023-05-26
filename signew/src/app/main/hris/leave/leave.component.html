@@ -1,0 +1,196 @@
+<div id="leave" class="page-leave" style="overflow: auto; height: 93vh; background-color: #f1f5f9">
+	<!-- Mat Filter -->
+    <!-- <div class="content">
+        <mat-card
+            class="mat-elevation-z0 rounded-2x1" 
+            style="width: 98%; margin: 15px auto 10px auto; height: 200px;"
+        >
+                <mat-grid-list cols="3" rowHeight="10rem">
+                    <mat-grid-tile>
+                        <mat-form-field
+                            appearance="outline"
+                            style="font-size: 12px; width: 100%; margin-right: 10px;"
+                        >
+                            <mat-label>Employee Name</mat-label>
+                            <input matInput />
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field
+                            appearance="outline"
+                            style="font-size: 12px; width: 100%; margin-right: 10px;"
+                        >
+                            <mat-label>Month and Year</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="dp"
+                                [formControl]="date"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="dp"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker
+                                #dp
+                                startView="multi-year"
+                                (monthSelected)="setMonthAndYear($event, dp)"
+                            ></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field
+                            appearance="outline"
+                            style="font-size: 12px; width: 100%;"
+                        >
+                            <mat-label>Type leave</mat-label>
+                            <mat-select>
+                                <mat-option
+                                    *ngFor="let food of foods"
+                                    [value]="food.value"
+                                >
+                                    {{ food.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+			<div fxLayout="row" fxLayoutAlign="end center">
+				<button mat-raised-button 
+				color="primary"  
+				fxFlex="15"  fxFlex.xs="15" 
+				style="height: 40px; width:250px; margin-right:15px;"
+				>
+					Search
+				</button>
+				<button mat-stroked-button 
+				color="primary" 
+				fxFlex="15" fxFlex.xs="15" 
+				style="height: 40px;" 
+				>
+					Reset
+				</button>
+			</div>  
+        </mat-card>
+    </div> -->
+	<!-- Closed Mat-Filter -->
+
+	
+	<mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;">
+		<!-- Header Table -->
+		<div fxLayout="row" fxLayoutAlign="space-between center" >
+			<div style="margin-bottom:40px;">
+				<span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxShow.gt-md>Leave History</span>
+			</div>
+			<div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+				<button mat-icon-button color="white" 
+                        class="add-leave"
+                        matTooltip="Add Leave"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        [routerLink]="'/hris/leave/add'"
+                        >
+                            <mat-icon>library_add</mat-icon>
+                    </button>
+		   </div>
+		</div>
+		<!-- Closed Header Table -->
+
+		<div style="margin-bottom:40px; overflow-x: auto;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+			<mat-table [dataSource]="this.dataleave" class="table-leave" fxFlex="100%" fxFlex.gt-sm="100%">
+				<ng-container matColumnDef="employee_name">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Name </mat-header-cell>
+				  <mat-cell *matCellDef="let a" style="font-size: smaller; color: black; display: flex; justify-content: center;"> {{a.employee.employee_name}} </mat-cell>
+			</ng-container>
+			  
+				<ng-container matColumnDef="division_name">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Division </mat-header-cell>
+				  <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> {{a.employee.bagian.division_name}} </mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="inserted_at">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;">Submit Date</mat-header-cell>
+				  <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> 
+                    <div fxLayout="column">
+                        <span>{{a.inserted_at}} </span>
+                    </div>
+                </mat-cell>
+				</ng-container>
+                <ng-container matColumnDef="statusattendance">
+                    <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;">Attendance Request </mat-header-cell>
+                    <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> 
+                    <div fxLayout="column">   
+                        <span>{{a.statusattendance.status_name}}</span> 
+                    </div>
+                    </mat-cell>
+                </ng-container>
+				<ng-container matColumnDef="details">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Detail </mat-header-cell>
+				  <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;">
+                    <button 
+                    mat-icon-button
+                    [routerLink]="'/hris/leave/leave-detail'">
+                      <mat-icon>open_in_new</mat-icon>
+                    </button></mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="status_condition">
+					<mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Status Approval </mat-header-cell>
+					<mat-cell *matCellDef="let element" style="font-size: smaller; display: flex; justify-content: center;">
+						<div style="
+                        height: 15px;
+                        width: 15px;
+                        border-radius: 50%;
+                        margin-right: 5px;
+                        ">
+                    </div>
+                    <p class="text-truncate" 
+                    style="background-color: #2ecc71; color: #2ecc71; border-radius: 10px; font-weight: bolder; padding: 7px; margin-right: 5px;">              
+                    </p>
+                    <p class="text-truncate" 
+                    style="background-color: #2ecc71; color: #2ecc71; border-radius: 10px; font-weight: bolder; padding: 7px; margin-right: 5px;">              
+                    </p>
+                <p class="text-truncate" 
+                    style="background-color: #d0d4d1; color: #d0d4d1; border-radius: 10px; font-weight: bolder; padding: 7px; ">              
+                    </p> </mat-cell>
+				</ng-container>
+                <ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Action </mat-header-cell>
+					<mat-cell *matCellDef="let element" style="font-size: smaller; display: flex; justify-content: center;">
+                       <mat-icon style="color: #2ecc71;">check_circle_outline</mat-icon><mat-icon style="color: red;">highlight_off</mat-icon>	
+                    </mat-cell>
+				</ng-container>
+				
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			  </mat-table>	
+              <!-- Name Column -->
+			</div>
+			<div fxLayout="row" fxLayoutAlign="end end">                
+                
+				<!-- <mat-paginator
+					[length]="this.total"
+					[pageSize]="this.to"
+					[pageIndex]="this.current_page"
+					hidePageSize="true"
+					(page)="pageEvent = $event; paginated($event)"
+				>
+				</mat-paginator> -->
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+                </mat-paginator>
+		</div>
+	</mat-card>
+</div>
+
+<div
+    *ngIf="this.dataleave.length === 0"
+    style="
+        width: 65%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: auto;
+        margin-bottom: auto;
+        display: block;
+        text-align: center;
+    "
+>
+    <medium>Please Wait ...</medium>
+</div>

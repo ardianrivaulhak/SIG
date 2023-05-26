@@ -1,0 +1,89 @@
+<div *ngIf="subcatalogueForm" class="page-layout carded fullwidth inner-scroll">
+    <form name="subcatalogueForm" [formGroup]="subcatalogueForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <div id="subcatalogue" class="page-layout carded fullwidth inner-scroll">
+        <div class="top-bg primary"></div>
+        <!-- / TOP BACKGROUND -->
+    
+        <!-- CENTER -->
+        <div class="center" style="overflow: auto;">
+    
+            <!-- HEADER -->
+            <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+    
+                <div fxLayout="row" fxLayoutAlign="start center">
+    
+                    <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/subcatalogue'">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+    
+                    <div fxLayout="column" fxLayoutAlign="start start" style="margin-left: 15px">
+                        <div class="subtitle secondary-text">
+                            <h3>Sub Catalogue Detail</h3>
+                        </div>
+                    </div>
+                    
+                </div>
+                <button mat-flat-button
+                        class="save-product-button" (click)="saveNewForm()" *ngIf="hide && this.id_sub_catalogue === 'add'" [disabled]="subcatalogueForm.invalid">
+                    <span>Save</span>
+                </button>
+                <button mat-flat-button
+                        class="save-product-button" (click)="enableForm()" *ngIf="hide && this.id_sub_catalogue !== 'add'">
+                    <span>Edit</span>
+                </button>
+                <button mat-flat-button
+                        class="save-product-button" (click)="disableForm()" *ngIf="!hide && this.id_sub_catalogue !== 'add'">
+                    <span>Cancel</span>
+                </button>
+            </div>
+            <div class="content-card" style="overflow: auto;">
+                <mat-progress-bar
+                color="primary"
+                mode="indeterminate"
+                value="50" *ngIf="load">
+                </mat-progress-bar>
+                <div class="content" *ngIf="subcatalogueForm">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <mat-grid-list [cols]='2' rowHeight='100px' gutterSize='10px'>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Sub Catalogue Name</mat-label>
+                                        <input matInput placeholder="Sub Catalogue Name"
+                                               name="sub_catalogue_name"
+                                               formControlName="sub_catalogue_name"
+                                               required minlength="1">
+                                               <mat-error>
+                                                   Name is Required
+                                               </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-select formControlName="id_catalogue" placeholder="Catalogue Name" required>
+                                            <mat-option *ngFor="let d of catalogue" [value]="d.id_catalogue">
+                                                {{d.catalogue_name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Description</mat-label>
+                                <textarea matInput placeholder="Description"
+                                                  name="description"
+                                                  formControlName="description"
+                                                  rows="2">
+                                        </textarea>
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!hide">
+                            <button mat-flat-button color="primary" style="margin-right: 5px;" (click)="saveForm()" [disabled]="load">Save</button>
+                            <button mat-flat-button color="warn" style="margin-left: 5px;" (click)="deleteForm()" [disabled]="load">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+    

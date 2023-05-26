@@ -1,0 +1,104 @@
+ <div class="dialog-content-wrapper mat-primary m-0"  style="overflow: hidden; height: 100%;" >
+   <!-- add  -->
+    <mat-toolbar matDialogTitle >
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+                Add Complaint
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+   
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form name="complainForm"  class="product w-100-p" fxLayout="column" fxFlex>    
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <ng-select 
+            appendTo="body" 
+            [items]="datacontract" 
+            bindLabel="contract_no" 
+            bindValue="id_kontrakuji"
+            [ngModelOptions]="{standalone: true}" 
+            appearance="outline" 
+            [(ngModel)]="this.form_data.idContract"
+            (scrollToEnd)="onScrollToEnd('no_kontrak')"
+            placeholder="Select Contract" 
+            (change)="getValKontrak($event)"
+            (search)="onsearchselect($event,'kontrak')" dropdownPosition="bottom"
+            fxFlex="60">
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.contract_no}}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.contract_no}}
+                </ng-template>
+            </ng-select>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">        
+            <ng-select 
+            appendTo="body" 
+            [items]="dataLhu" 
+            bindLabel="lhu_number" 
+            bindValue="id"
+            [(ngModel)]="this.form_data.idLhu"
+            [ngModelOptions]="{standalone: true}" 
+            (change)="getLhu($event)"
+            appearance="outline" 
+            placeholder="Select LHU" 
+            dropdownPosition="bottom"
+            fxFlex="60">
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.lhu_number}}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.lhu_number}}
+                </ng-template>
+            </ng-select>
+        </div>
+        
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" style="font-size: 12px" fxFlex="30" fxHide fxShow.gt-xs>
+                <mat-label>Type</mat-label>
+                <mat-select 
+                    [(ngModel)]="this.form_data.type"
+                    name="type"
+                    placeholder="Type" 
+                    class="select-me"
+                    style="display: flex;
+                    justify-content: center;
+                    align-items: center; 
+                    color:white !important;"
+                    >
+                    <mat-option *ngFor="let typeStat of typeStat" [value]="typeStat.value">
+                        {{ typeStat.title }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" style="font-size: 12px" class="pr-4">
+                <mat-label>Subject</mat-label>
+                <input matInput [(ngModel)]="this.form_data.subject" name="subject" required>
+                <mat-error>Subject is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" style="font-size: 12px">
+                <mat-label>Message</mat-label>
+                <textarea matInput rows="10" [(ngModel)]="this.form_data.message" name="message"></textarea>
+            </mat-form-field>
+        </div>
+        </form>
+    </div>    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" style="background-color: #F7F7F7;">
+        <button mat-raised-button color="primary" aria-label="Submit" (click)="checkDataLhu()">
+            Submit
+        </button>
+        <button mat-stroked-button color="primary" aria-label="Close"  (click)="closeModal(true)">
+              Close
+        </button>
+    </div>
+    
+  </div>

@@ -1,0 +1,4 @@
+<span *ngIf="this.dataInformation.length > 0">{{dataInformation[0].contract_id}}</span>
+<div *ngFor="let a of this.dataInformation[0].kontrakstatus_lab">
+    <span>{{a.contract_id}}</span>
+</div>

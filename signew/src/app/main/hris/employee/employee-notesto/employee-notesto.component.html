@@ -1,0 +1,15 @@
+<mat-form-field appearance="fill">
+    <mat-label>Category</mat-label>
+    <mat-select [(ngModel)]="datasent.category">
+      <mat-option *ngFor="let u of datacategory" [value]="u.id">{{u.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Notes</mat-label>
+    <textarea matInput [(ngModel)]="datasent.desc" rows="5"></textarea>
+  </mat-form-field>
+
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 20px">
+    <button mat-raised-button color="primary" (click)="saving()">Save</button>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

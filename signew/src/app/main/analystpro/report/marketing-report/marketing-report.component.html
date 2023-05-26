@@ -1,0 +1,115 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px">
+    <div
+        style="
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
+        "
+    >
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            style="width: 100%"
+        >
+            <h1 class="subjudul">Category Customer</h1>
+            <div class="lineborder"></div>
+        </div>
+
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="end center"
+            fxLayoutGap="5px"
+            style="width: 100%; margin: 10px 0px"
+        ></div>
+        <mat-progress-bar
+            class="example-margin"
+            [color]="accent"
+            mode="indeterminate"
+            *ngIf="this.loading"
+        >
+        </mat-progress-bar>
+        <mat-table
+            class="lab-table mat-elevation-z8"
+            #table
+            [dataSource]="markForm"
+            [@animateStagger]="{ value: '50' }"
+            fusePerfectScrollbar
+        >
+            <!-- Active Column -->
+            <ng-container matColumnDef="cust">
+                <mat-header-cell *matHeaderCellDef>Cust</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8">{{ e.cust }}</p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8" style="font-weight: bold">Total</p>
+                </mat-footer-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="total_contract">
+                <mat-header-cell *matHeaderCellDef
+                    >Contract Summary</mat-header-cell
+                >
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8">
+                        {{ e.total_contract.toLocaleString() }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8 flex-end" style="font-weight: bold">
+                        {{
+                            this.markForm.length > 0
+                                ? getTotalContract().toLocaleString()
+                                : 0
+                        }}
+                    </p>
+                </mat-footer-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="revenue">
+                <mat-header-cell *matHeaderCellDef>Revenue</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8 flex-end">
+                        {{ e.biaya.toLocaleString() }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8 flex-end" style="font-weight: bold">
+                        {{
+                            this.markForm.length > 0
+                                ? getTotalRevenue().toLocaleString()
+                                : 0
+                        }}
+                    </p>
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Category</mat-header-cell
+                >
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8 flex-end">
+                        {{ e.cat }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+            ></mat-header-row>
+            <mat-row *matRowDef="let e; columns: displayedColumns"> </mat-row>
+            <mat-footer-row
+                *matFooterRowDef="displayedColumns"
+            ></mat-footer-row>
+        </mat-table>
+    </div>
+</div>

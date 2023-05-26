@@ -1,0 +1,65 @@
+<div
+    style="
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    "
+>
+    <ng-select
+        appearance="outline"
+        appendTo="body"
+        [items]="datametode"
+        bindLabel="metode"
+        bindValue="id"
+        placeholder="Select Metode"
+        dropdownPosition="bottom"
+        [(ngModel)]="paraminfo.metode"
+        style="width: 100%; align-self: center"
+    >
+    </ng-select>
+    <ng-select
+        appearance="outline"
+        appendTo="body"
+        [items]="datalod"
+        bindLabel="nama_lod"
+        bindValue="id"
+        placeholder="Select LOD"
+        dropdownPosition="bottom"
+        [(ngModel)]="paraminfo.lod"
+        style="width: 100%; align-self: center"
+    >
+    </ng-select>
+    <ng-select
+        appearance="outline"
+        appendTo="body"
+        [items]="dataunit"
+        bindLabel="nama_unit"
+        bindValue="id_unit"
+        placeholder="Select Unit"
+        dropdownPosition="bottom"
+        [(ngModel)]="paraminfo.satuan"
+        style="width: 100%; align-self: center"
+    >
+    </ng-select>
+    <mat-form-field appearance="outline" style="width: 100%">
+        <mat-label>LOQ</mat-label>
+        <input matInput [(ngModel)]="paraminfo.loq" />
+    </mat-form-field>
+    <div
+        style="
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 0px 20px;
+            align-items: center;
+        "
+    >
+       
+        <button mat-raised-button color="primary" (save)="saving()">Save</button>
+        <button mat-raised-button color="warn">Cancel</button>
+    </div>
+</div>

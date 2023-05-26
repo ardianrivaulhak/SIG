@@ -1,0 +1,55 @@
+<div class="report-attendance" style="height: 97vh; overflow: auto">
+    <div class="filter">
+        <mat-card
+            class="report-filter"
+            style="width: 98%; margin: 20px auto 10px auto"
+        >
+            <mat-grid-list cols="2" gutterSize="7px" rowHeight="100px">
+                <mat-grid-tile>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Select Month</mat-label>
+                        <mat-select [(ngModel)]="monthSelect">
+                            <mat-option
+                                *ngFor="let o of bulan"
+                                value="{{ o.id }}"
+                                >{{ o.bulan }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Set Year</mat-label>
+                        <input
+                            matInput
+                            placeholder="Set Year Ex. 2012"
+                            [(ngModel)]="yearSelect"
+                            type="number"
+                        />
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+
+            <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                style="width: 100%; margin-top: 10px"
+            >
+                <button mat-raised-button color="primary" (click)="saveData()">
+                    Download
+                </button>
+                <div style="width: 20px"></div>
+                <button mat-raised-button color="danger" (click)="close()">
+                    Cancel
+                </button>
+            </div></mat-card
+        >
+    </div>
+    <div class="data">
+        <mat-card
+            class="report-data"
+            style="width: 98%; margin: 20px auto 10px auto"
+            >asdqweqsda</mat-card
+        >
+    </div>
+</div>

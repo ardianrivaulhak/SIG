@@ -1,0 +1,548 @@
+<div
+    id="customers-det"
+    class="page-layout simple"
+    *ngIf="customerForm"
+    style="overflow: auto; height: 100%; background-color: #f7f7f7"
+>
+    <div class="content">
+        <form
+            name="customerForm"
+            [formGroup]="customerForm"
+            class="product w-100-p"
+            fxLayout="column"
+            fxFlex
+        >
+            <mat-card
+                class="mat-elevation-z0"
+                style="width: 90%; margin: 20px auto 10px auto"
+            >
+                <h2 style="font-weight: bolder" *ngIf="this.idCust === 'add'">
+                    Add Customer
+                </h2>
+                <h2 style="font-weight: bolder" *ngIf="this.idCust != 'add'">
+                    Edit Customer
+                </h2>
+                <h3 style="font-weight: bold">Identity</h3>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 12px"
+                        fxFlexf
+                        fxFlex="50"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Customer Name</mat-label>
+                        <input
+                            matInput
+                            placeholder="Customer Name"
+                            name="customer_name"
+                            formControlName="customer_name"
+                            required
+                            minlength="1"
+                        />
+                        <mat-error> Customer Name is Required </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="datacountries"
+                        bindLabel="country_name"
+                        bindValue="id"
+                        fxFlex
+                        fxFlex="33"
+                        formControlName="countries"
+                        (search)="onsearchselect($event, 'countries')"
+                        placeholder="Select Countries"
+                        (change)="checkdata($event)"
+                        dropdownPosition="bottom"
+                        (scrollToEnd)="onScrollToEnd('countries')"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                        "
+                    >
+                        <ng-template
+                            ng-option-tmp
+                            let-item="item"
+                            let-index="index"
+                        >
+                            {{ item.country_code }} - {{ item.country_name }}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.country_code }} - {{ item.country_name }}
+                        </ng-template>
+                    </ng-select>
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="prov"
+                        bindLabel="name"
+                        bindValue="id"
+                        fxFlex
+                        fxFlex="33"
+                        [clearable]="false"
+                        formControlName="province"
+                        placeholder="Provinces"
+                        (search)="onsearchselect($event, 'province')"
+                        (change)="searchProvince($event)"
+                        dropdownPosition="bottom"
+                        *ngIf="this.customerForm.value.countries == 104"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                        "
+                    >
+                        <ng-template
+                            ng-option-tmp
+                            let-item="item"
+                            let-index="index"
+                        >
+                            {{ item.name }}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    </ng-select>
+
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="reg"
+                        bindLabel="name"
+                        bindValue="id"
+                        fxFlex
+                        fxFlex="33"
+                        formControlName="regencies"
+                        [clearable]="false"
+                        placeholder="Regencies"
+                        *ngIf="this.customerForm.value.countries == 104"
+                        dropdownPosition="bottom"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                        "
+                    >
+                        <ng-template
+                            ng-option-tmp
+                            let-item="item"
+                            let-index="index"
+                        >
+                            {{ item.name }}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.name }}
+                        </ng-template>
+                    </ng-select>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-form-field
+                        appearance="outline"
+                        fxFlex
+                        fxFlex="50"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Description</mat-label>
+                        <textarea
+                            matInput
+                            placeholder="Description"
+                            name="description"
+                            formControlName="description"
+                            rows="3"
+                        >
+                        </textarea>
+                    </mat-form-field>
+                </div>
+            </mat-card>
+
+            <mat-card
+                class="mat-elevation-z0"
+                style="width: 90%; margin: 20px auto 10px auto"
+            >
+                <h3 style="font-weight: bold">File Identity</h3>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                    style="margin-bottom: 10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        fxFlex
+                        fxFlex="10"
+                        floatLabel="always"
+                        class="w-100-p"
+                        style="font-size: 12px"
+                    >
+                        <mat-label>File</mat-label>
+                        <mat-select
+                            name="file"
+                            [(ngModel)]="this.dataIdentity.file"
+                            [ngModelOptions]="{ standalone: true }"
+                        >
+                            <mat-option
+                                *ngFor="let g of identities"
+                                [value]="g.value"
+                            >
+                                {{ g.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 12px"
+                        fxFlex
+                        fxFlex="20"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Number</mat-label>
+                        <input
+                            matInput
+                            placeholder="File Number"
+                            name="number"
+                            [(ngModel)]="this.dataIdentity.number"
+                            [ngModelOptions]="{ standalone: true }"
+                            minlength="1"
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 12px"
+                        fxFlex
+                        fxFlex="30"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Name</mat-label>
+                        <input
+                            matInput
+                            placeholder="File Name"
+                            name="name"
+                            [(ngModel)]="this.dataIdentity.name"
+                            [ngModelOptions]="{ standalone: true }"
+                            minlength="1"
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 12px"
+                        fxFlex
+                        fxFlex="39"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Address</mat-label>
+                        <input
+                            matInput
+                            placeholder="File Address"
+                            name="address"
+                            [(ngModel)]="this.dataIdentity.address"
+                            [ngModelOptions]="{ standalone: true }"
+                            minlength="1"
+                        />
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="end end"
+                    style="margin-bottom: 20px"
+                >
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        fxFlex="15"
+                        fxFlex.xs="15"
+                        (click)="addButton()"
+                        style="height: 40px; width: 250px; margin-right: 15px"
+                    >
+                        Add
+                    </button>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                    style="margin-bottom: 20px"
+                >
+                    <mat-table
+                        class="npwp-table"
+                        #table
+                        [dataSource]="dataNpwp"
+                        [@animateStagger]="{ value: '50' }"
+                        fusePerfectScrollbar
+                        *ngIf="this.dataNpwp.length > 0"
+                    >
+                        <!-- Column -->
+                        <ng-container matColumnDef="file">
+                            <mat-header-cell *matHeaderCellDef
+                                >File</mat-header-cell
+                            >
+                            <mat-cell *matCellDef="let element">
+                                <div
+                                    class="box-normal"
+                                    *ngIf="element.file == 'NPWP'"
+                                >
+                                    <span
+                                        class="text-truncate"
+                                        matTooltip="{{ element.file }}"
+                                        style="margin-top: 5px"
+                                    >
+                                        {{ element.file }}
+                                    </span>
+                                </div>
+                                <div
+                                    class="box-urgent"
+                                    *ngIf="element.file == 'KTP'"
+                                >
+                                    <span
+                                        class="text-truncate"
+                                        matTooltip="{{ element.file }}"
+                                        style="margin-top: 5px"
+                                    >
+                                        {{ element.file }}
+                                    </span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Column -->
+                        <ng-container matColumnDef="number">
+                            <mat-header-cell *matHeaderCellDef
+                                >Number</mat-header-cell
+                            >
+                            <mat-cell *matCellDef="let element">
+                                <span
+                                    class="text-truncate"
+                                    matTooltip="{{ element.number }}"
+                                    style="margin-top: 5px"
+                                >
+                                    {{ element.number }}
+                                </span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Column -->
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef
+                                >Name</mat-header-cell
+                            >
+                            <mat-cell *matCellDef="let element">
+                                <span
+                                    class="text-truncate"
+                                    matTooltip="{{ element.name }}"
+                                    style="margin-top: 5px"
+                                >
+                                    {{ element.name }}
+                                </span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Column -->
+                        <ng-container matColumnDef="address">
+                            <mat-header-cell *matHeaderCellDef
+                                >Address</mat-header-cell
+                            >
+                            <mat-cell *matCellDef="let element">
+                                <span
+                                    class="text-truncate"
+                                    matTooltip="{{ element.address }}"
+                                    style="margin-top: 5px"
+                                >
+                                    {{ element.address }}
+                                </span>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Column -->
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef
+                                >#</mat-header-cell
+                            >
+                            <mat-cell *matCellDef="let element; let i = index">
+                                <button
+                                    mat-icon-button
+                                    color="primary"
+                                    [matMenuTriggerFor]="moreMenu"
+                                    aria-label="More"
+                                    (click)="$event.stopPropagation()"
+                                >
+                                    <mat-icon class="secondary-text"
+                                        >more_vert</mat-icon
+                                    >
+                                </button>
+                                <mat-menu #moreMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        aria-label="copy"
+                                        (click)="uptdateData(element, i)"
+                                    >
+                                        <span>Update</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        aria-label="copy"
+                                        (click)="deletedSelectData(element, i)"
+                                    >
+                                        <span>Delete</span>
+                                    </button>
+                                </mat-menu>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!--- Note that these columns can be defined in any order.
+                              The actual rendered columns are set as a property on the row definition" -->
+                        <mat-header-row
+                            *matHeaderRowDef="displayedColumns; sticky: true"
+                        ></mat-header-row>
+                        <mat-row
+                            *matRowDef="let element; columns: displayedColumns"
+                            class="standart"
+                            matRipple
+                        ></mat-row>
+                    </mat-table>
+                </div>
+            </mat-card>
+
+            <mat-card
+                class="mat-elevation-z0"
+                style="width: 90%; margin: 20px auto 10px auto"
+            >
+                <h3 style="font-weight: bold">Finance Information</h3>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                    style="margin-bottom: 20px"
+                >
+                    <mat-radio-group
+                        aria-label="Select an option"
+                        formControlName="status_cust"
+                    >
+                        <mat-radio-button value="UMKM">UMKM</mat-radio-button
+                        >&nbsp;&nbsp;&nbsp;
+                        <mat-radio-button value="NONUMKM"
+                            >NON UMKM</mat-radio-button
+                        >
+                    </mat-radio-group>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <mat-form-field
+                        appearance="outline"
+                        fxFlex
+                        fxFlex="33"
+                        floatLabel="always"
+                        class="w-100-p"
+                        style="margin-right: 20px"
+                    >
+                        <mat-label>Termin</mat-label>
+                        <mat-select formControlName="termin">
+                            <mat-option
+                                *ngFor="let g of termin"
+                                [value]="g.value"
+                            >
+                                {{ g.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        appearance="outline"
+                        xFlex
+                        fxFlex="33"
+                        floatLabel="always"
+                        class="w-100-p"
+                    >
+                        <mat-label>Status</mat-label>
+                        <mat-select formControlName="status_invoice">
+                            <mat-option *ngFor="let g of status" [value]="g.id">
+                                {{ g.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="userFinance"
+                        bindLabel="employee_name"
+                        bindValue="employee_id"
+                        [clearable]="false"
+                        xFlex
+                        fxFlex="33"
+                        formControlName="id_ar"
+                        placeholder="Select AR"
+                        dropdownPosition="top"
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 100%;
+                        "
+                    >
+                        <ng-template
+                            ng-option-tmp
+                            let-item="item"
+                            let-index="index"
+                        >
+                            {{ item.employee_name }}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{ item.employee_name }}
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </mat-card>
+            <mat-card
+                class="mat-elevation-z0"
+                style="width: 90%; margin: 20px auto 30px auto"
+            >
+                <div fxLayout="row" fxLayoutAlign="end center">
+                    <button
+                        mat-flat-button
+                        [routerLink]="'/analystpro/customers'"
+                        color="warn"
+                        style="margin-right: 10px"
+                    >
+                        Back to Home
+                    </button>
+                    <button
+                        mat-flat-button
+                        (click)="saveNewForm()"
+                        *ngIf="hide && this.idCust === 'add'"
+                        [disabled]="customerForm.invalid"
+                        color="accent"
+                    >
+                        <mat-icon *ngIf="load == true">
+                            <mat-spinner diameter="20"></mat-spinner>
+                        </mat-icon>
+                        Create
+                    </button>
+                    <button
+                        mat-flat-button
+                        (click)="saveForm()"
+                        *ngIf="this.idCust !== 'add'"
+                        [disabled]="customerForm.invalid"
+                        color="accent"
+                    >
+                        <mat-icon *ngIf="load == true">
+                            <mat-spinner diameter="20"></mat-spinner>
+                        </mat-icon>
+                        Save
+                    </button>
+                </div>
+            </mat-card>
+        </form>
+    </div>
+</div>

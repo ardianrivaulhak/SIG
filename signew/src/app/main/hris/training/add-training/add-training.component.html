@@ -1,0 +1,99 @@
+<mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+    <h2
+        class="text-title"
+        style="margin-top: 20px; font-size: 18px; font-weight: 700"
+    >
+        Training
+    </h2>
+</mat-card-content>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="50"
+    >
+        <mat-label style="color: black">Select Employee</mat-label>
+        <mat-select>
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label style="color: black">Type Training</mat-label>
+        <mat-select>
+            <mat-option value="1">Online</mat-option>
+            <mat-option value="2">Offline</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px" fxFlex="50"
+    >
+        <mat-label style="color: black">Place</mat-label>
+        <input style="color: black" matInput />
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label style="color: black">Institute</mat-label>
+        <input style="color: black" matInput />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100">
+        <mat-label style="color: black">Training Title</mat-label>
+        <input style="color: black" matInput />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="50"
+    >
+        <mat-label>Date</mat-label>
+        <input required matInput [matDatepicker]="dp1" />
+        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+        <mat-datepicker #dp1></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label>Till Date</mat-label>
+        <input required matInput [matDatepicker]="dp2" />
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px"
+        floatLabel="always"
+        fxFlex="100"
+    >
+        <mat-label>Description</mat-label>
+        <textarea matInput rows="6" minlength="50"> </textarea>
+    </mat-form-field>
+</div>
+<mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+    <div fxLayout="row" fxLayoutAlign="end">
+        <button
+            mat-raised-button
+            color="primary"
+            fxFlex="15"
+            fxFlex.xs="15"
+            style="height: 40px; width: 250px; margin-right: 10px"
+        >
+            Save
+        </button>
+        <button
+            mat-stroked-button
+            color="primary"
+            fxFlex="15"
+            fxFlex.xs="15"
+            style="height: 40px"
+        >
+            Cancel
+        </button>
+    </div>
+</mat-card-content>

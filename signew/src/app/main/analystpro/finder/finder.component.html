@@ -1,0 +1,797 @@
+<div
+    id="finder"
+    class="page-layout blank fullwidth inner-scroll p-24"
+    style="overflow: auto !important; height: 85vh !important"
+    *ngIf="this.mine.length > 0"
+>
+    <div
+        style="
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        "
+    >
+        <div
+            style="
+                width: 300px;
+                height: 40px;
+                border-radius: 20px;
+                border: 1px solid lightgray;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            "
+        >
+            <mat-icon>search</mat-icon>
+            <input
+                style="width: 100%"
+                [(ngModel)]="dataFilter.search"
+                (keyup.enter)="searching()"
+                #filter
+                placeholder="Search for Contract / Sample"
+            />
+        </div>
+        <div style="width: 30px"></div>
+        <button mat-mini-fab color="primary" (click)="searching()">
+            <mat-icon>search</mat-icon>
+        </button>
+        <div style="width: 40px"></div>
+        <button
+            [matMenuTriggerFor]="menu"
+            mat-raised-button
+            *ngIf="
+                this.mine[0].id_bagian == 6 ||
+                this.mine[0].id_bagian == 11 ||
+                this.mine[0].id_bagian == 13
+            "
+        >
+            Export
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="getDataExcel()">
+                <span>Export Data Contract By Date</span>
+            </button>
+            <button mat-menu-item (click)="getDataContractByFilter()">
+                <span>Export Data Contract By Filter</span>
+            </button>
+        </mat-menu>
+    </div>
+    <mat-grid-list cols="4" rowHeight="100px" gutterSize="15px">
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="contractCategory"
+                bindLabel="title"
+                bindValue="id"
+                [(ngModel)]="dataFilter.contract_category"
+                appearance="outline"
+                (clear)="reset('Category')"
+                placeholder="Contract Category"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="customer"
+                bindLabel="customer_name"
+                bindValue="id_customer"
+                (scrollToEnd)="onScrollToEnd('customer')"
+                (clear)="reset('customer')"
+                (search)="onsearchselect($event, 'cust')"
+                [(ngModel)]="dataFilter.customers"
+                appearance="outline"
+                placeholder="Select By Customers"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="no_po"
+                bindLabel="no_po"
+                bindValue="no_po"
+                [(ngModel)]="dataFilter.no_po"
+                (scrollToEnd)="onScrollToEnd('po')"
+                (search)="onsearchselect($event, 'po')"
+                appearance="outline"
+                placeholder="Select By No Po"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="width: 100%"
+            >
+            </ng-select>
+            <!-- <ng-select
+                appendTo="body"
+                [items]="customer"
+                bindLabel="customer_name"
+                bindValue="id_customer"
+                (scrollToEnd)="onScrollToEnd('customer')"
+                (clear)="reset('customer')"
+                (search)="onsearchselect($event, 'cust')"
+                [(ngModel)]="dataFilter.customers"
+                appearance="outline"
+                placeholder="Select By Customers"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select> -->
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="no_penawaran"
+                bindLabel="no_penawaran"
+                bindValue="no_penawaran"
+                [(ngModel)]="dataFilter.no_penawaran"
+                (scrollToEnd)="onScrollToEnd('penawaran')"
+                (search)="onsearchselect($event, 'penawaran')"
+                appearance="outline"
+                placeholder="Select By No Penawaran"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="datauser"
+                bindLabel="employee_name"
+                bindValue="user_id"
+                (clear)="reset('user')"
+                appearance="outline"
+                [(ngModel)]="dataFilter.user_created"
+                placeholder="Select User Created"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appearance="outline"
+                appendTo="body"
+                [items]="datastatuskontrak"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="dataFilter.statuskontrak"
+                placeholder="Select Status Contract"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="datasales"
+                bindLabel="employee_name"
+                bindValue="employee_id"
+                (clear)="reset('employee')"
+                appearance="outline"
+                [(ngModel)]="dataFilter.pic"
+                placeholder="Select PIC"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                (search)="onsearchselect($event, 'sales')"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Tgl Selesai</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="dataFilter.tgl_selesai"
+                    (dateChange)="tglEstimasiLabChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <div
+        class="mat-elevation-z8"
+        *ngIf="datacontract"
+        style="width: 100%; overflow: auto"
+    >
+        <mat-table class="lab-table" #table [dataSource]="datacontract">
+            <!-- Position Column -->
+            <ng-container matColumnDef="no" sticky>
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row; let u = index">
+                    <div
+                        fxLayout="row"
+                        fxLayoutAlign="start center"
+                        style="width: 100%"
+                    >
+                        <mat-icon
+                            *ngIf="row.kontrakujifinder.hold == 'Y'"
+                            style="
+                                font-size: 16px;
+                                color: rgb(151, 3, 3);
+                                margin: 0px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                            >lock</mat-icon
+                        >
+                        <mat-icon
+                            *ngIf="row.kontrakujifinder.hold == 'N'"
+                            style="
+                                font-size: 16px;
+                                color: rgb(4, 154, 165);
+                                margin: 0px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                            >lock_open</mat-icon
+                        >
+                        <mat-icon
+                            *ngIf="row.kontrakujifinder.st_complain == 1"
+                            style="
+                                font-size: 16px;
+                                color: rgb(197, 194, 0);
+                                margin: 0px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                            >copyright</mat-icon
+                        >
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="contract_no" sticky>
+                <mat-header-cell *matHeaderCellDef>Contract No</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div
+                        fxLayout="column"
+                        fxLayoutAlign="center start"
+                        style="width: 90%"
+                    >
+                        <span class="fs-10">{{
+                            row.kontrakujifinder.contract_no
+                        }}</span>
+                        <div
+                            fxLayout="row"
+                            fxLayoutAlign="space-between center"
+                            style="width: 100%"
+                        >
+                            <span class="fs-10">{{
+                                row.kontrakujifinder.category
+                            }}</span>
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <!-- <ng-container matColumnDef="no_po">
+                    <mat-header-cell *matHeaderCellDef>No. PO</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <div
+                            fxLayout="column"
+                            fxLayoutAlign="center start"
+                            title="{{
+                                row.kontrakujifinder.no_po
+                                    ? row.kontrakujifinder.no_po.toUpperCase()
+                                    : '-'
+                            }}"
+                        >
+                            <span class="fs-10">{{
+                                row.kontrakujifinder.no_po
+                                    ? row.kontrakujifinder.no_po
+                                    : "-"
+                            }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container> -->
+
+            <ng-container matColumnDef="no_penawaran">
+                <mat-header-cell *matHeaderCellDef>Info</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div
+                        fxLayout="column"
+                        fxLayoutAlign="center start"
+                        title="{{
+                            row.kontrakujifinder.no_penawaran
+                                ? row.kontrakujifinder.no_penawaran.toUpperCase()
+                                : '-'
+                        }}"
+                    >
+                        <span
+                            class="fs-10"
+                            title="{{
+                                row.kontrakujifinder.no_penawaran
+                                    ? row.kontrakujifinder.no_penawaran.toUpperCase()
+                                    : '-'
+                            }}"
+                            >{{
+                                row.kontrakujifinder.no_penawaran
+                                    ? row.kontrakujifinder.no_penawaran.toUpperCase()
+                                    : "-"
+                            }}</span
+                        >
+                        <span
+                            class="fs-10"
+                            title="{{
+                                row.kontrakujifinder.no_po
+                                    ? row.kontrakujifinder.no_po
+                                    : '-'
+                            }}"
+                            >{{
+                                row.kontrakujifinder.no_po
+                                    ? row.kontrakujifinder.no_po
+                                    : "-"
+                            }}</span
+                        >
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef>Customers</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        style="width: 100%"
+                    >
+                        <button
+                            mat-icon-button
+                            [mdePopoverTriggerFor]="appPopover"
+                            mdePopoverTriggerOn="hover"
+                            #popoverTrigger="mdePopoverTrigger"
+                        >
+                            <mat-icon>info</mat-icon>
+                        </button>
+                        <mde-popover
+                            #appPopover="mdePopover"
+                            [mdePopoverOverlapTrigger]="false"
+                        >
+                            <mat-card style="max-width: 400px">
+                                <mat-card-content>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: center;
+                                            align-items: flex-start;
+                                        "
+                                    >
+                                        <span class="fs-10">{{
+                                            row.kontrakujifinder.telp
+                                        }}</span>
+                                        <span class="fs-10">{{
+                                            row.kontrakujifinder.phone
+                                        }}</span>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </mde-popover>
+                        <div
+                            fxLayout="column"
+                            fxLayoutAlign="center flex-start"
+                            *ngIf="row.kontrakujifinder.customer_name"
+                            style="width: 100%"
+                        >
+                            <span class="fs-10" style="font-weight: bold">{{
+                                row.kontrakujifinder.customer_name
+                            }}</span>
+                            <span class="fs-10">{{
+                                row.kontrakujifinder.email
+                            }}</span>
+                        </div>
+                    </div>
+                    <span
+                        class="fs-10"
+                        *ngIf="!row.kontrakujifinder.customer_name"
+                        >-</span
+                    >
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="contactperson">
+      <mat-header-cell *matHeaderCellDef>Contact Person</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <div fxLayout="column" fxLayoutAlign="center flex-start" *ngIf="row.name">
+          <span class="fs-10">{{row.name}} - {{row.phone}}</span>
+          <span class="fs-10">{{row.email}}</span>
+        </div>
+        <span class="fs-10" *ngIf="!row.name">-</span>
+      </mat-cell>
+  </ng-container> -->
+
+            <!-- Active Column -->
+            <ng-container matColumnDef="created">
+                <mat-header-cell *matHeaderCellDef>Dibuat Oleh</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div fxLayout="column" fxLayoutAlign="center flex-start">
+                        <div
+                            fxLayout="row"
+                            fxLayoutAlign="center center"
+                            fxLayoutGap="2px"
+                        >
+                            <span class="fs-10" style="font-weight: bold">{{
+                                row.user ? row.user.employee_name : "-"
+                            }}</span>
+                        </div>
+                        <span class="fs-10" style="font-style: italic">{{
+                            row.kontrakujifinder.picsales
+                                ? row.kontrakujifinder.picsales
+                                : "-"
+                        }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="pic">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="width: 100%; align-self: center"
+                        >PIC</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let row">
+                        <div
+                            fxLayout="column"
+                            fxLayoutAlign="center center"
+                            style="width: 80%"
+                        >
+                            <span
+                                style="
+                                    padding: 0px 5px;
+                                    font-size: 9px;
+                                    font-weight: bold;
+                                "
+                                >{{
+                                    row.kontrakujifinder.picsales
+                                        ? row.kontrakujifinder.picsales
+                                        : "-"
+                                }}</span
+                            >
+                        </div>
+                    </mat-cell>
+                </ng-container> -->
+
+            <ng-container matColumnDef="tgl_selesai">
+                <mat-header-cell *matHeaderCellDef>Tgl Selesai</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div fxLayout="column" fxLayoutAlign="center flex-start">
+                        <span class="fs-10">
+                            {{ row.kontrakujifinder.tgl_selesai }}
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <div
+                        fxLayout="row"
+                        fxLayoutAlign="flex-end center"
+                        fxLayoutGap="5px"
+                        style="width: 100%"
+                    >
+                        <div *ngIf="!row.kontrakujifinder.condition_cert_one">
+                            <div
+                                *ngIf="row.status == 1"
+                                style="
+                                    background-color: #8d6000;
+                                    width: 50px;
+                                    height: 15px;
+                                    padding: 2px;
+                                    border-radius: 5px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                "
+                            >
+                                <p
+                                    class="text-truncate isi"
+                                    style="
+                                        color: white;
+                                        font-weight: bold;
+                                        font-size: 10px;
+                                    "
+                                >
+                                    On Going
+                                </p>
+                            </div>
+                            <div
+                                *ngIf="row.status == 0"
+                                style="
+                                    background-color: #7e2400;
+                                    width: 50px;
+                                    height: 15px;
+                                    padding: 2px;
+                                    border-radius: 5px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                "
+                            >
+                                <p
+                                    class="text-truncate isi"
+                                    style="
+                                        color: white;
+                                        font-weight: bold;
+                                        font-size: 10px;
+                                    "
+                                >
+                                    Pending
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            *ngIf="
+                                row.kontrakujifinder.condition_cert_one &&
+                                row.kontrakujifinder.condition_cert_one
+                                    .status !== 4 &&
+                                row.kontrakujifinder.condition_cert_one
+                                    .status !== 3
+                            "
+                            style="
+                                background-color: #8d6000;
+                                width: 50px;
+                                height: 15px;
+                                padding: 2px;
+                                border-radius: 5px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                        >
+                            <p
+                                class="text-truncate isi"
+                                style="
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 10px;
+                                "
+                            >
+                                On Going
+                            </p>
+                        </div>
+                        <div
+                            *ngIf="
+                                row.kontrakujifinder.condition_cert_one &&
+                                row.kontrakujifinder.condition_cert_one
+                                    .status == 4
+                            "
+                            style="
+                                background-color: #00440b;
+                                width: 50px;
+                                height: 15px;
+                                padding: 2px;
+                                border-radius: 5px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                        >
+                            <p
+                                class="text-truncate isi"
+                                style="
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 10px;
+                                "
+                            >
+                                Done
+                            </p>
+                        </div>
+                        <div
+                            *ngIf="
+                                row.kontrakujifinder.condition_cert_one &&
+                                row.kontrakujifinder.condition_cert_one
+                                    .status == 3
+                            "
+                            style="
+                                background-color: #045f44;
+                                width: 50px;
+                                height: 15px;
+                                padding: 2px;
+                                border-radius: 5px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                        >
+                            <p
+                                class="text-truncate isi"
+                                style="
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 10px;
+                                "
+                            >
+                                Draft
+                            </p>
+                        </div>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button
+                                mat-menu-item
+                                (click)="seeDetails(row.contract_id)"
+                            >
+                                <span>Details</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                *ngIf="
+                                    this.mine[0].id_bagian == 6 ||
+                                    this.mine[0].id_bagian == 11 ||
+                                    this.mine[0].id_bagian == 13
+                                "
+                                (click)="
+                                    editPIC(row.contract_id, row.id_pic_sales)
+                                "
+                            >
+                                Edit PIC
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="openAttachMent(row, 'finder')"
+                            >
+                                <span>Attachment</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="info(row.contract_id)"
+                            >
+                                <span>Information</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="formkendali(row.contract_id)"
+                            >
+                                <span>Formulir Kendali</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu="matMenu">
+                        <button
+                            mat-menu-item
+                            (click)="seeDetails(row.contract_id)"
+                        >
+                            <span>Details</span>
+                        </button>
+                        <button
+                            mat-menu-item
+                            *ngIf="
+                                this.mine[0].id_bagian == 6 ||
+                                this.mine[0].id_bagian == 11 ||
+                                this.mine[0].id_bagian == 13
+                            "
+                            (click)="editPIC(row.contract_id, row.id_pic_sales)"
+                        >
+                            Edit PIC
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="openAttachMent(row, 'finder')"
+                        >
+                            <span>Attachment</span>
+                        </button>
+                        <button mat-menu-item (click)="info(row.contract_id)">
+                            <span>Information</span>
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="formkendali(row.contract_id)"
+                        >
+                            <span>Formulir Kendali</span>
+                        </button>
+                    </mat-menu>
+                </mat-cell>
+            </ng-container> -->
+
+            <mat-header-row
+                *matHeaderRowDef="displayedColumns"
+            ></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+        </mat-table>
+        <mat-paginator
+            [length]="this.total"
+            [pageSize]="25"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+    <!-- <div style="display: flex; width: 100%; justify-content: flex-end">
+        <button mat-icon-button (click)="paginated('before')">
+            <mat-icon>navigate_before</mat-icon>
+        </button>
+        <button mat-icon-button (click)="paginated('after')">
+            <mat-icon>navigate_next</mat-icon>
+        </button>
+    </div> -->
+</div>
+<ngx-spinner
+    bdColor="rgba(255,255,255,1)"
+    size="medium"
+    color="#000"
+    type="ball-clip-rotate-multiple"
+    [fullScreen]="false"
+></ngx-spinner>

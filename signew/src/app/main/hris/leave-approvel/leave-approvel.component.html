@@ -1,0 +1,74 @@
+<div id="leave" class="page-leave" style="overflow: auto; height: 93vh; background-color: #f1f5f9">
+	
+	<mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;">
+		<!-- Header Table -->
+		<div fxLayout="row" fxLayoutAlign="space-between center" >
+			<div style="margin-bottom:40px;">
+				<span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxShow.gt-md>Attendance Data - HRD Approval</span>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Search for Employee</mat-label>
+                        <input matInput placeholder="Put an Employee Name">
+                    </mat-form-field>
+            </div>
+		</div>
+		<!-- Closed Header Table -->
+
+		<div style="margin-bottom:40px; overflow-x: auto;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+			<mat-table [dataSource]="dataSource" class="table-leave" fxFlex="100%" fxFlex.gt-sm="100%">
+				<ng-container matColumnDef="name">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: left;"> Name </mat-header-cell>
+				  <mat-cell *matCellDef="let a" style="font-size: smaller; color: black; display: flex; justify-content: left;"> {{a.name}} </mat-cell>
+			    </ng-container>
+			  
+				<ng-container matColumnDef="division">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: left;"> Division </mat-header-cell>
+				  <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: left;"> {{a.division}} </mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="permitdate">
+				  <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: left;">Submit Date</mat-header-cell>
+				  <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: left;"> 
+                    <div fxLayout="column">
+                        <span>{{a.permitdate}} </span>
+                    </div>
+                </mat-cell>
+				</ng-container>
+
+                <ng-container matColumnDef="timeleave">
+                    <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;">Attendance Request </mat-header-cell>
+                    <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> 
+                    <div fxLayout="column">   
+                        <span>{{a.timeleave}}</span> 
+                    </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status_leave">
+                    <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;">Attendance Request </mat-header-cell>
+                    <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> 
+                    <div fxLayout="column">   
+                        <span>{{a.status_leave}}</span> 
+                    </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status_approved">
+                    <mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;">Attendance Request </mat-header-cell>
+                    <mat-cell *matCellDef="let a"  style="font-size: smaller; display: flex; justify-content: center;"> 
+                    <div fxLayout="column">   
+                        <span>{{a.status_approved}}</span> 
+                    </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef  style="color: white; display: flex; justify-content: center;"> Action </mat-header-cell>
+					<mat-cell *matCellDef="let element" style="font-size: smaller; display: flex; justify-content: center;">
+                       <mat-icon style="color: #2ecc71;">check_circle_outline</mat-icon><mat-icon style="color: red;">highlight_off</mat-icon>	
+                    </mat-cell>
+				</ng-container>
+				
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			  </mat-table>	
+			</div>
+	</mat-card>
+</div>

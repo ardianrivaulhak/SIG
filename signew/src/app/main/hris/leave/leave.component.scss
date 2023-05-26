@@ -1,0 +1,55 @@
+@import "src/@fuse/scss/fuse";
+
+.mat-elevation-z8 {
+    width: 100%;
+    flex: 1 1 auto;
+    background-color: transparent;
+  }
+
+.table-leave{
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+  .mat-header-row {
+    min-height: 64px;
+    font-size: 12px;
+    background-color: #1e2129;
+    color: white;
+}
+
+mat-header-cell {
+    color: white;
+}
+
+@media (max-width: 300px) {
+	.content {
+		width: 100%;
+		margin: 15px auto 10px auto;
+	}
+
+	mat-card {
+		width: 100%;
+	}
+
+	mat-form-field {
+		fxFlex: 100%;
+	}
+
+	button {
+		fxFlex: 100%;
+	}
+}
+
+.table-leave {
+    overflow-x: auto;
+    display: block;
+    min-width: 400px;
+  }
+  
+  @media (max-width: 400px) {
+    .table-leave {
+      overflow-x: auto;
+      display: block;
+    }
+  }

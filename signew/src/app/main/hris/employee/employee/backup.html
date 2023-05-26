@@ -1,0 +1,137 @@
+<div id="employee" class="page-layout carded fullwidth">
+    <div class="top-bg primary"></div>
+    <div class="center">
+      <div class="header primary" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+        fxLayoutAlign.gt-sm="center center">
+        <div class="search-wrapper mx-32 mx-md-5">
+          <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>search</mat-icon>
+            <input (input)="onSearchChange($event.target.value)" placeholder="Search Employee">
+          </div>
+        </div>
+        <button mat-fab color="light" aria-label="Example icon button with a bookmark icon" (click)="detail('add')">
+          <mat-icon style="color: blueviolet; 
+                display: flex; 
+                align-self: center;
+                justify-content: center;
+                transform: scale(1.5);">add</mat-icon>
+        </button>
+      </div>
+      <div class="content-card inner-scroll" style="height: 80vh; overflow-y: auto;" infiniteScroll [infiniteScrollDistance]="2"
+      [infiniteScrollUpDistance]="1.5" [infiniteScrollThrottle]="50" (scrolled)="onScroll()" [scrollWindow]="false">
+      <!-- <div *ngIf="this.loading" fxLayoutAlign="center center" fxLayout="column" style="height: 100vh;">
+        <img src="assets/images/backgrounds/loading.gif" style="width: 25%"/>
+        <span>Please Wait ...</span>
+      </div> -->
+        <div>
+          <mat-grid-list [cols]="3" rowHeight="100px" style="overflow: hidden;">
+            <mat-grid-tile>
+                <ng-select appendTo="body" 
+                [items]="level"
+                bindLabel="level_name"
+                bindValue="id_level" 
+                placeholder="Select Level"
+                (change)="getValLevel($event)"
+                dropdownPosition="bottom" 
+                style="display: flex;
+                    justify-content: center;
+                    align-items: center; width: 80%">
+               </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+              <ng-select appendTo="body" 
+                [items]="bagian"
+                bindLabel="division_name"
+                bindValue="id_div" 
+                placeholder="Select Bagian"
+                (change)="getbagian($event)"
+                dropdownPosition="bottom" 
+                style="display: flex;
+                    justify-content: center;
+                    align-items: center; width: 80%">
+               </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select appendTo="body" 
+                [items]="employeestatus"
+                bindLabel="status"
+                bindValue="id" 
+                placeholder="Select Status"
+                (change)="getValStatus($event)"
+                dropdownPosition="bottom" 
+                style="display: flex;
+                    justify-content: center;
+                    align-items: center; width: 80%">
+               </ng-select>
+            </mat-grid-tile>
+          </mat-grid-list> 
+          <!-- <div *ngIf="!this.loading"> -->
+          <span style="margin: 40px; 
+          font-size: 16px; 
+          font-weight: bold;">Showing {{this.total}} employees</span>
+        </div>
+        <div style="padding: 5px; font-size: 16px; font-weight: bold; margin-left: 5px">
+          <mat-grid-list [cols]="breakpoint" rowHeight="170px" (window:resize)="onResize($event)">
+            <mat-grid-tile *ngFor="let e of employee">
+              <div class="fuse-card custom-card" fxLayout="row" fxLayoutAlign="center center" style="cursor: pointer"
+                (click)="detail(e.employee_id)">
+                <div fxLayoutAlign="center center" fxLayout="column" style="flex: 1">
+                  <img class="avatar" src="{{this.urlnow}}assets/img/{{e.photo}}" />
+                  <div class="button-active" fxLayoutAlign="center center">
+                    <span
+                      style="font-weight: bold; color: #fff;">{{
+                        e.bagian ? e.bagian.division_name : 'Not Set'
+                      }}</span>
+                  </div>
+                </div>
+                <div fxLayoutAlign="center start" fxLayout="column" style="flex: 2">
+                  <div class="h2" style="text-overflow: ellipsis; white-space: nowrap;">{{
+                    e.employee_name.includes(' ') ? 
+                    e.employee_name.split(" ")[0]+' '+e.employee_name.split(" ")[1] :
+                    e.employee_name
+                  }}</div>
+                  <div class="h4 secondary-text">{{e.nik}}</div>
+                  <div style="width: 190px; height: 2px; background-color: rgb(100, 100, 100); margin: 5px 0px 5px 0px;">
+                  </div>
+                  <div fxLayoutAlign="center center">
+                    <div class="phone-border" fxLayoutAlign="center center">
+                      <mat-icon style="color: white; 
+                                              display: flex; 
+                                              align-self: center;
+                                              justify-content: center;
+                                              transform: scale(0.4);" svgIcon="phone"></mat-icon>
+                    </div>
+                    <div class="h6 secondary-text">{{e.phone}}</div>
+                  </div>
+                  <div fxLayoutAlign="center center">
+                    <div class="mail-border" fxLayoutAlign="center center">
+                      <mat-icon style="color: white; 
+                                              display: flex; 
+                                              align-self: center;
+                                              justify-content: center;
+                                              transform: scale(0.4);" svgIcon="mail"></mat-icon>
+                    </div>
+                    <div class="h6 secondary-text">{{e.user ? e.user.email : '-'}}</div>
+                  </div>
+                </div>
+                <div fxLayoutAlign="center center" fxLayout="column"
+                  style="flex: 1; background-color: rgba(222, 220, 220,0.5); border-radius: 100% 0 0 100%; width: 100%; height: 100%;">
+                  <div
+                    [ngClass]="{'gender-border-man' : e.gender === 'Male', 'gender-border-woman' : e.gender === 'Female'}"
+                    fxLayoutAlign="center center">
+                    <mat-icon style="color: white; 
+                                      display: flex; 
+                                      align-self: center;
+                                      justify-content: center;
+                                      transform: scale(0.5);"
+                      svgIcon="{{e.gender === 'Female' ? 'gender-woman' : 'gender-man'}}"></mat-icon>
+                  </div>
+                  <div fxLayoutAlign="center center">
+                    <mat-slide-toggle [ngModel]="e.status === 1 ? true : false"></mat-slide-toggle>
+                  </div>
+                </div>
+              </div>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>

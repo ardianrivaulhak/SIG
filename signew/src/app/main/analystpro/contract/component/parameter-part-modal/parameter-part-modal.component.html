@@ -1,0 +1,234 @@
+<div *ngIf="SampleForm" style="margin-top: 10px;">
+    <div>
+        <mat-card-title>
+            Parameter Detail
+        </mat-card-title>
+
+        <mat-card-content >
+            <hr style="color: white;">
+            <form name="SampleForm" [formGroup]="SampleForm">
+                 
+                         
+                <mat-grid-list cols="3" rowHeight="70px">
+                    <mat-grid-tile>
+                        <div  style="display: flex; flex-direction: row; justify-content: start; width: 100%; align-items: start; ">
+                            <div style="flex: 2;overflow-x: auto;scrollbar-width: thin; display: flex; justify-content: start; align-items: start;" formArrayName="foto">
+                                <div class="box-photo" style="background-color: #09d261;" (click)="addfoto()" >
+                                    <mat-icon style="width: 15px;">add_circle_outline</mat-icon> 
+                                </div>  
+                                 
+                                <div *ngFor="let u of SampleForm.controls['foto'].controls; let indexPoint=index">
+                                    <div class="box-photo" [matMenuTriggerFor]="menu" 
+                                        [formGroupName]="indexPoint" >
+                                        <mat-icon style="width: 15px;" *ngIf="!u.value.photo">add_a_photo</mat-icon> 
+        
+                                            <div *ngIf="u.value.photo">
+                                                <img *ngIf="u.value.photo.toLowerCase().indexOf('.') > -1" src="{{this.urlnow + this.contract_no + '/' + this.no_sample + '/' + u.value.photo}}"
+                                                    style=" flex: 1; height: 100%; border-radius: 10px; object-fit: cover"
+                                                    />
+                                                <img  *ngIf="u.value.photo.toLowerCase().indexOf('.') < 1" src="{{u.value.photo}}"
+                                                style=" flex: 1; height: 100%; border-radius: 10px; object-fit: cover"
+                                                    />
+                                            </div>
+                                        
+                                    </div>
+                                   
+                                    <mat-menu #menu="matMenu"  > 
+                                        <button mat-menu-item [formGroupName]="indexPoint" 
+                                        (click)="openmodalphoto(u,pointIndex)">
+                                            <mat-icon>file_copy</mat-icon>
+                                            <span>Take Picture</span>
+                                        </button>  
+                                        <input #_fileInput type="file" accept="image/*" (change)="uploadGambar($event,u.value.id)" hidden>
+                                        <button mat-menu-item
+                                        (click)="_fileInput.click()">
+                                            <mat-icon>file_copy</mat-icon>
+                                            <span>Upload Image</span>
+                                        </button> 
+                                    </mat-menu>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </mat-grid-tile>
+                    <mat-grid-tile> 
+                        <ng-select appendTo="body" [items]="statuspengujian" bindLabel="status" bindValue="id"
+                            placeholder="Status Pengujian" formControlName="statuspengujian" dropdownPosition="bottom"
+                            style="width: 95%" (change)="getValPengujian($event)">
+                        </ng-select> 
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 90% !important;">
+                            <mat-label>Tanggal Input</mat-label>
+                            <input required matInput formControlName="tgl_input" [matDatepicker]="dp2">
+                            <mat-error>
+                                Tanggal Input is Required
+                            </mat-error>
+                                <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                            <mat-datepicker #dp2></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    
+                </mat-grid-list>
+                <mat-grid-list cols="2" rowHeight="70px">
+                    <mat-grid-tile>
+                        <mat-form-field style="width: 90% !important;">
+                            <mat-label>Tanggal Selesai</mat-label>
+                            <input required matInput formControlName="tgl_selesai" [matDatepicker]="dp3">
+                            <mat-error>
+                                Tanggal Selesai is Required
+                            </mat-error>
+                            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                            <mat-datepicker #dp3></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <ng-select appendTo="body" [items]="dataSelect" bindLabel="name" bindValue="name"
+                            placeholder="Select Sample" formControlName="valuePaket" dropdownPosition="bottom" 
+                            (change)="getDataSelect($event)" [clearable]="false"
+                            style="width: 90%">
+                        </ng-select>
+                    </mat-grid-tile> 
+                </mat-grid-list>
+                <mat-grid-list cols="1" rowHeight="70px">
+                    <mar-grid-tile>
+                        <div style="display: flex; flex-direction: row; width:100%; justify-content: center; align-items: center;">
+                        
+                            <div [hidden]="this.hidePaket" style="width: 90%;">
+                                <ng-select appendTo="body" [items]="dataPaketuji" bindLabel="nama_paketuji"
+                                    bindValue="id" placeholder="Select Paket" dropdownPosition="bottom"
+                                    (scrollToEnd)="OnScrollEnd('paketparameter')" formControlName="paketparameter" (change)="getValPaketuji($event)"
+                                    (search)="onSearchPaketParameter($event)" (clear)="clearSelect('paketparameter')"
+                                    (close)="closeSelect('paketparameter')" style="width: 100%; align-self: center;">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        <b>{{item.nama_paketuji}}</b>&nbsp;-&nbsp;{{item.price.toLocaleString()}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <b>{{item.nama_paketuji}}</b>&nbsp;-&nbsp;{{item.price.toLocaleString()}}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <div [hidden]="this.hidePaketPKM" style="width: 90%;">
+                                <ng-select appendTo="body" [items]="dataPaketPKM" bindLabel="package_name"
+                                    bindValue="id" placeholder="Select Paket PKM" dropdownPosition="bottom"
+                                    (scrollToEnd)="OnScrollEnd('paketPKM')" formControlName="paketPKM" 
+                                    (change)="getValPaketPKM($event)"
+                                    (search)="onSearchPaketPKM($event)" (clear)="clearSelect('paketPKM')"
+                                    (close)="closeSelect('paketPKM')" style="width: 100%; align-self: center;">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        <b>{{item.package_code}}</b>&nbsp;-&nbsp;{{item.package_name}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <b>{{item.package_code}}</b>&nbsp;-&nbsp;{{item.package_name}}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                            <div [hidden]="this.hideParameteruji" style="width: 100%;">
+                                <mat-grid-list cols="2" rowHeight="70px">
+                                    <mat-grid-tile>
+                                        <ng-select appendTo="body" [items]="dataFormatHasil" bindLabel="hasil"
+                                            bindValue="id"
+                                            placeholder="Select Format Hasil" dropdownPosition="bottom"
+                                            formControlName="FormatHasil"
+                                            (change)="getValformatHasil($event)"
+                                            style="width: 80%; align-self: center;">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                {{item.hasil}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                {{item.hasil}}
+                                            </ng-template>
+                                        </ng-select>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <ng-select appendTo="body" [items]="dataParameter" bindLabel="name_id" bindValue="id"
+                                            placeholder="Select Parameter" dropdownPosition="bottom"
+                                            formControlName="parameteruji"
+                                            (scrollToEnd)="OnScrollEnd('parameteruji')" (change)="getValParameter($event)"
+                                            (search)="onSearchParameter($event)" (clear)="clearSelect('parameteruji')"
+                                            (close)="closeSelect('parameteruji')" style="width: 100%; align-self: center;">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                <b>{{item.name_id}}</b>&nbsp;-&nbsp;{{item.parameterprice[0].price  ? item.parameterprice[0].price.toLocaleString() : 'NOT SET'}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <b>{{item.name_id}}</b>&nbsp;-&nbsp;{{item.parameterprice[0].price ? item.parameterprice[0].price.toLocaleString() : 'NOT SET'}}
+                                            </ng-template>
+                                        </ng-select>
+                                        <!-- <div *ngIf="this.statussample">
+                                            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="hapussemua()">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div> -->
+                                    </mat-grid-tile> 
+                                </mat-grid-list>
+                            </div>
+                            
+                        </div>
+                    </mar-grid-tile>
+                </mat-grid-list>
+                 
+            </form>
+            <div *ngIf="paketParameter.length > 0">
+                       
+                <div class="mat-elevation-z8">
+                    <mat-table style="height: 260px;" #table [dataSource]="paketParameter" fusePerfectScrollbar >
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="name_id">
+                            <mat-header-cell *matHeaderCellDef>Parameter
+                                Name</mat-header-cell>
+                            <mat-cell *matCellDef="let a">
+                                <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
+                                    <span style="font-weight: bold;">{{a.name_id}}</span>
+                                    <span>{{a.name_en}}</span>
+                                </div>
+                            </mat-cell>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="lab">
+                            <mat-header-cell *matHeaderCellDef>Format Hasil
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let paketParameter">
+                                <p class="text-truncate">{{paketParameter.format_hasil}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="status">
+                            <mat-header-cell *matHeaderCellDef>Status
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let paketParameter">
+                                <p class="text-truncate">{{paketParameter.status}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="action">
+                            <mat-header-cell *matHeaderCellDef>
+                                Action
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">
+                                <button mat-icon-button color="primary" (click)="deleteRow(row)">
+                                    <svg-icon src="assets/icons/custom/close.svg"
+                                        [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center' }">
+                                    </svg-icon>
+                                </button>
+                            </mat-cell>
+                        </ng-container>
+
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns;">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let paketParameter; columns: displayedColumns;" class="lab" (click)="testingclick(paketParameter)">
+                        </mat-row>
+                    </mat-table>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Total Rp. {{this.totalcalculated}}</button> -->
+                <span style="margin: 15px">Total Rp. <b>{{this.totalcalculated ? this.totalcalculated.toLocaleString() : 0}}</b></span>
+                <button mat-button (click)="toggleParameter()">Save</button>
+            </div>
+        </mat-card-content>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+@import "src/@fuse/scss/fuse";
+
+.box-photo {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+    margin: 5px;
+    cursor: pointer;
+}
+
+.sample {
+    width: 100%;
+    align-items: center;
+    input {
+        font-size: 10px;
+        width: 120px !important;
+        height: 100%;
+    }
+
+    .mat-column-no{
+        max-width: 50px;
+    }
+
+    .mat-column-phtSample{
+        max-width: 380px;
+    }
+
+    .mat-column-nosample{
+        max-width: 150px;
+    }
+
+    .mat-column-action{
+        max-width: 50px;
+    }
+
+    mat-menu{
+        button {
+            mat-icon {
+                font-size: 5px;
+            }
+        
+            span {
+                font-size: 10px;
+            }
+        }
+    }   
+}

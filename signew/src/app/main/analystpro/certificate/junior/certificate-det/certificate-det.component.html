@@ -1,0 +1,62 @@
+<div id="certificate-det" class="page-layout carded fullwidth tabbed inner-scroll" *ngIf="dataContract.length > 0">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary-700"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- CONTENT HEADER -->
+        <div class="header primary-700 p-24" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button class="sidebar-toggle" [routerLink]="'/analystpro/certificate'">
+                <mat-icon fill="#fff">arrow_back</mat-icon>
+            </button>
+            <h2 class="m-0 title-header">{{ dataContract[0].contract_no }}</h2>  
+        </div>
+        <!-- / CONTENT HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <mat-tab-group>
+
+                    <mat-tab label="Sample Lab">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <!-- PUT YOUR TAB CONTENT HERE -->
+                            <app-samplelab></app-samplelab>
+                            <!-- / PUT YOUR TAB CONTENT HERE -->
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="LHU">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <!-- PUT YOUR TAB CONTENT HERE -->
+                            <app-lembarhasil></app-lembarhasil>
+                            <!-- / PUT YOUR TAB CONTENT HERE -->
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Cover">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <!-- PUT YOUR TAB CONTENT HERE -->
+                            <p>asdasd</p>
+                            <!-- / PUT YOUR TAB CONTENT HERE -->
+                        </div>
+                    </mat-tab>
+
+                </mat-tab-group>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

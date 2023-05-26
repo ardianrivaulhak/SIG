@@ -1,0 +1,94 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="20px">
+    <h2>Set Employement Detail</h2>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <ng-select
+            appendTo="body"
+            [items]="position"
+            bindLabel="position_name"
+            bindValue="id_position"
+            [(ngModel)]="this.sendingDet.position"
+            placeholder="Select Position"
+            appearance="outline"
+            dropdownPosition="bottom"
+        ></ng-select>
+        <ng-select
+            appendTo="body"
+            [items]="departement"
+            bindLabel="dept_name"
+            bindValue="id"
+            [(ngModel)]="this.sendingDet.dept"
+            placeholder="Select Departement"
+            appearance="outline"
+            dropdownPosition="bottom"
+        ></ng-select>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <ng-select
+            appendTo="body"
+            [items]="subdiv"
+            bindLabel="name"
+            bindValue="id_subagian"
+            [(ngModel)]="this.sendingDet.subdiv"
+            placeholder="Select Sub Division"
+            appearance="outline"
+            dropdownPosition="bottom"
+        >
+    </ng-select>
+
+        <ng-select
+            appendTo="body"
+            [items]="division"
+            bindLabel="division_name"
+            bindValue="id_div"
+            [(ngModel)]="this.sendingDet.division"
+            placeholder="Select Division"
+            appearance="outline"
+            dropdownPosition="bottom"
+        ></ng-select>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center end" fxLayoutGap="20px">
+        <mat-form-field appearance="outline">
+            <mat-label>Desc</mat-label>
+            <textarea matInput [(ngModel)]="this.sendingDet.desc"></textarea>
+          </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <mat-form-field appearance="outline">
+            <mat-label>From</mat-label>
+            <input
+                matInput
+                [matDatepicker]="picker"
+                [(ngModel)]="this.sendingDet.from"
+            />
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>to</mat-label>
+            <input
+                matInput
+                [matDatepicker]="picker2"
+                [(ngModel)]="this.sendingDet.to"
+            />
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+    </div>
+    
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+        <button mat-raised-button color="primary" (click)="savingdata()">
+            Save
+        </button>
+        <button mat-raised-button color="warn" (click)="closeModal()">
+            Cancel
+        </button>
+    </div>
+</div>

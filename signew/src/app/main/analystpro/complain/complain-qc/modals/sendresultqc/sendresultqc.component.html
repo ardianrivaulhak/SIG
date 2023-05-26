@@ -1,0 +1,97 @@
+<div style="display: flex; flex-direction: column; width: 100%; gap: 30px">
+    <div style="overflow: auto">
+        <table id="customers">
+            <tr>
+                <th>No</th>
+                <th>Parameter Name</th>
+                <th>Satuan</th>
+                <th>Result</th>
+                <th>LOD</th>
+                <th>Metode</th>
+                <th>Confirmation</th>
+                <th>Memo</th>
+            </tr>
+            <tr *ngFor="let tr of dataset; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                    <div style="width: 200px">{{ tr.parametername }}</div>
+                </td>
+                <td>
+                    <div style="width: 180px">
+                        <ng-select
+                            appendTo="body"
+                            [items]="dataunit"
+                            bindLabel="nama_unit"
+                            bindValue="id"
+                            [(ngModel)]="tr.id_satuan"
+                            appearance="fill"
+                            dropdownPosition="bottom"
+                            style="width: 100%"
+                        >
+                        </ng-select>
+                    </div>
+                </td>
+                <td>
+                        <input [(ngModel)]="tr.hasiluji" />
+                </td>
+                <td>
+                    <div style="width: 120px">
+                        <ng-select
+                            appendTo="body"
+                            [items]="datalod"
+                            bindLabel="nama_lod"
+                            bindValue="id"
+                            [(ngModel)]="tr.id_lod"
+                            appearance="fill"
+                            dropdownPosition="bottom"
+                            style="width: 100%"
+                        >
+                        </ng-select>
+                    </div>
+                </td>
+                <td>
+                    <div style="width: 200px">
+                        <ng-select
+                            appendTo="body"
+                            [items]="dataMetode"
+                            bindLabel="metode"
+                            bindValue="id"
+                            [(ngModel)]="tr.id_metode"
+                            appearance="fill"
+                            dropdownPosition="bottom"
+                            style="width: 100%"
+                        >
+                        </ng-select>
+                    </div>
+                </td>
+                <td>
+                    <select
+                            [(ngModel)]="tr.statushasil"
+                            style="width: 100%; padding: 5px"
+                            placeholder="Status Hasil"
+                        >
+                            <option value="0">Awal</option>
+                            <option value="1">Ulang</option>
+                        </select>
+                </td>
+                <td>
+                        <textarea [(ngModel)]="tr.memo"></textarea>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <div
+        style="
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+        "
+    >
+        <button mat-raised-button color="primary" (click)="savingdata()">Save</button>
+        <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+    </div>
+</div>

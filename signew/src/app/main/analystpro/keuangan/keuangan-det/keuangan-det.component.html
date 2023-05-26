@@ -1,0 +1,408 @@
+<div id="keuangan" class="page-layout carded fullwidth inner-scroll">        
+    <div class="top-bg primary-700"></div>        
+    <div class="center" style="overflow: auto;" *ngIf="keuanganForm">
+        <div class="header primary-700" fxLayout="row" fxLayoutAlign="space-between center">
+            
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/keuangan'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div *ngIf="this.indexKeuangan === 'add'">
+                    <div fxLayout="column" fxLayoutAlign="start start"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                            <div class="text-customer h2">
+                                New Invoice
+                            </div>                  
+                    </div>
+                </div>
+                <div *ngIf="this.indexKeuangan !== 'add'">
+                    <div fxLayout="column" fxLayoutAlign="start start"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                            <div class="text-customer h2">
+                                Edit Invoice
+                            </div>                   
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button mat-raised-button color="accent" class="mat-primary pr-50" (click)="saveForm()"  aria-label="Submit" 
+                *ngIf="this.indexKeuangan === 'add'" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}" [disabled]="keuanganForm.invalid" style="margin-right: 10px;">
+                Submit
+                </button>
+                <button mat-raised-button class="save-product-button" (click)="enableForm()"
+                    *ngIf="hide && this.indexKeuangan !== 'add'" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                    <mat-icon>edit</mat-icon>
+                    <span> Edit</span>
+                </button>
+                <button mat-raised-button *ngIf="!hide && this.indexKeuangan !== 'add'"
+                    color="accent" 
+                    style="margin-right: 5px;" 
+                    (click)="updateForm()"
+                    [disabled]="load">
+                    <mat-icon>save</mat-icon>
+                    Save
+                </button>  
+                <button mat-raised-button class="save-product-button" (click)="disableForm()"
+                    *ngIf="!hide && this.indexKeuangan !== 'add'" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                    <mat-icon>chevron_left</mat-icon>
+                    <span> Cancel</span>
+                </button>
+            </div>
+
+        </div>
+        
+        <div class="content-card" style="overflow: auto;">
+            <mat-progress-bar color="primary" mode="indeterminate" value="50" *ngIf="load">
+            </mat-progress-bar>
+            
+            <div class="content" style="overflow-y: auto; scrollbar-width: thin;"> 
+                    <div class="h4 m-20 font-weight-800" >Contract Identity</div>
+                    <mat-grid-list cols="3" rowHeight='100px' style="margin-top: 20px;">
+                        <mat-grid-tile>  
+                            <ng-select 
+                                appendTo="body" 
+                                [items]="dataStatus" 
+                                bindLabel="name" 
+                                bindValue="id" 
+                                [(ngModel)]="selectStatus" 
+                                appearance="outline" 
+                                placeholder="Select Status" 
+                                (change)="getValStatus($event)" 
+                                dropdownPosition="bottom" 
+                                style="display: flex;
+                                    justify-content: center;
+                                    align-items: center; width: 90%">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        {{item.name}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        {{item.name}}
+                                    </ng-template>
+                            </ng-select>
+                        </mat-grid-tile> 
+                        <mat-grid-tile> 
+                            <mat-form-field appearance="outline" style="width: 90%; padding-top: 10px; font-size: 15px;">
+                                <mat-label>Choose a date</mat-label>
+                                <input matInput [matDatepicker]="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                              </mat-form-field>
+                        </mat-grid-tile>  
+                       
+                        <mat-grid-tile>  
+                            <ng-select 
+                                appendTo="body" 
+                                [items]="datacontract" 
+                                bindLabel="contract_no" 
+                                bindValue="id_kontrakuji" 
+                                [(ngModel)]="noKontrak"
+                                [multiple]="true"
+                                appearance="outline"
+                                (scrollToEnd)="onScrollToEnd('no_kontrak')" 
+                                placeholder="Select Contract" 
+                                (change)="getValKontrak($event)" 
+                                dropdownPosition="bottom" 
+                                style="display: flex;
+                                    justify-content: center;
+                                    align-items: center; width: 90%">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        {{item.contract_no}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        {{item.contract_no}}
+                                    </ng-template>
+                            </ng-select>
+                        </mat-grid-tile> 
+                    </mat-grid-list>
+
+                    
+                    <div class="h4 m-20 font-weight-800">Sample Data</div>
+                    <div *ngIf="this.hideViewContract === true">
+                    <mat-grid-list cols="1" rowHeight='100px' style="margin-top: -25px;" *ngIf="!hide && this.indexKeuangan !== 'add'" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                        <mat-grid-tile>  
+                            <ng-select 
+                                appendTo="body" 
+                                [items]="datacontract" 
+                                bindLabel="contract_no" 
+                                bindValue="id_kontrakuji" 
+                                [(ngModel)]="selectViewContract" 
+                                appearance="outline"
+                                (scrollToEnd)="onScrollToEnd('no_kontrak')" 
+                                placeholder="Select View Contract" 
+                                (change)="getValviewKontrak($event)" 
+                                dropdownPosition="bottom" 
+                                style="display: flex;
+                                    justify-content: center;
+                                    align-items: center; width: 78%">
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        {{item.contract_no}}
+                                    </ng-template>
+                                    <ng-template ng-label-tmp let-item="item">
+                                        {{item.contract_no}}
+                                    </ng-template>
+                            </ng-select>
+                            <button mat-raised-button
+                            color="accent" 
+                            style="margin-left: 20px;"
+                            (click)="openView()"
+                            [disabled]="load">
+                            <mat-icon>open_in_new</mat-icon>
+                            Open Contract</button>
+                        </mat-grid-tile>  
+                    </mat-grid-list>
+
+                    </div>
+
+                        <div style="overflow-y: auto; scrollbar-width: thin; height: 500px; width: 95%; margin-left: 37px;">
+                            <div class="mat-elevation-z8" style="height: 38vh;">
+                                <table style="width: 100%;" class="sample" mat-table [dataSource]="datasampleSemua">
+                                    <ng-container matColumnDef="no">
+                                        <th mat-header-cell *matHeaderCellDef> No </th>
+                                        <td mat-cell *matCellDef="let e; let i=index;"> 
+                                            <p>{{i + 1}}</p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="nosample">
+                                        <th mat-header-cell *matHeaderCellDef> No Sample </th>
+                                        <td mat-cell *matCellDef="let e;let z=index;">
+                                            <p>{{e.nosample}}</p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="samplename">
+                                        <th mat-header-cell *matHeaderCellDef> Sample Name </th>
+                                        <td mat-cell *matCellDef="let e; let g=index;">
+                                            <p>{{e.samplename}}</p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="statuspengujian">
+                                        <th mat-header-cell *matHeaderCellDef> Status Pengujian </th>
+                                        <td mat-cell *matCellDef="let e;let z=index;">
+                                            <p>{{e.statuspengujian}}</p>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="price">
+                                        <th mat-header-cell *matHeaderCellDef> Price</th>
+                                        <td mat-cell *matCellDef="let e; let g=index;">
+                                            <p>Rp. {{e.price.toLocaleString()}}</p>
+                                        </td>
+                                    </ng-container> 
+                                    <ng-container matColumnDef="action">
+                                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                                        <td mat-cell *matCellDef="let e; let i = index"> 
+                                            <div *ngIf="!hide && this.indexKeuangan !== 'add'" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}"
+                                            style="display: flex; justify-content: center; align-items: center; cursor: pointer;"
+                                                (click)="deleteRow(i)">
+                                                <svg-icon src="assets/icons/custom/close.svg"
+                                                    [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center', 'margin': '5px' }">
+                                                </svg-icon>
+                                            </div>
+                                            <div *ngIf="!hide" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}"
+                                            style="display: flex; justify-content: center; align-items: center; cursor: pointer;"
+                                                (click)="deleteRow(i)">
+                                                <svg-icon src="assets/icons/custom/close.svg"
+                                                    [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center', 'margin': '5px' }">
+                                                </svg-icon>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                </table>
+                            </div>
+                            
+                        </div> 
+                        
+                        <mat-grid-list cols="1">
+                            <mat-grid-tile> 
+                                    <mat-card style="width: 70%; margin-left: 50px; margin-top: -40px; background-color: #1e2129;"> 
+                                        <p style="color: white; font-weight: bolder;">Total Pembayaran : {{ this.datasampleSemua.length != 0 ? this.totalPrice.toLocaleString() : '-'  }}</p>
+                                    </mat-card>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        <div class="h4 m-20 font-weight-800" style="margin-top: 50px;" >Sample Data</div>
+                        <div class="tab-content p-24" style="margin-bottom: 50px;">  
+                            
+                           
+
+                            <form name="keuanganForm" [formGroup]="keuanganForm" class="product w-100-p" fxLayout="column" fxFlex>
+                        
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <ng-select appendTo="body" [items]="customersData" bindLabel="customer_name" bindValue="id_customer"
+                                    appearance="outline" 
+                                    placeholder="Select Customer"
+                                    (scrollToEnd)="onScrollToEnd('customer')" 
+                                    [clearable]="false"
+                                    (change)="getValCustomer($event)" 
+                                    formControlName="id_cust" 
+                                    dropdownPosition="bottom" style=" width: 90%; font-size: 11px;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            {{item.customer_name}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            {{item.customer_name}}
+                                        </ng-template>
+                                    </ng-select> 
+                                </mat-grid-tile>
+                                <mat-grid-tile>   
+                                    <ng-select 
+                                        appendTo="body" 
+                                        [items]="cpData" 
+                                        bindLabel="name" 
+                                        bindValue="id_cp" 
+                                        formControlName="cust_penghubung"
+                                        appearance="outline"
+                                        (scrollToEnd)="onScrollToEnd('CP')" 
+                                        placeholder="Select Contact Person" 
+                                        (change)="getValCP($event)" 
+                                        dropdownPosition="bottom" 
+                                        style="display: flex;
+                                            justify-content: center;
+                                            align-items: center; width: 90%">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                {{item.name}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                {{item.name}}
+                                            </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile>
+                                    <ng-select appearance="outline" style="width: 90%; margin: 5px;" class="wrap" appendTo="body"
+                                                [items]="alamatcustomer" bindLabel="address" bindValue="id_address"
+                                                placeholder="Select Address" formControlName="cust_addres"
+                                                (change)="getValAddress($event)" dropdownPosition="bottom">
+                                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                    {{item.address}}
+                                                </ng-template>
+                                                <ng-template ng-label-tmp let-item="item">
+                                                    {{item.address}}
+                                                </ng-template> 
+                                    </ng-select>  
+                                </mat-grid-tile> 
+                                <div style="display: grid;  margin-left: 510px;width: 430px;">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Other Ref</mat-label>
+                                        <textarea style="height: 200px;" matInput formControlName="other_ref" placeholder="Description" name="desc" rows="2">
+                                        </textarea> 
+                                    </mat-form-field>
+                                </div>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>Nomor Invoice</mat-label>
+                                        <input style="color: black;" formControlName="no_invoice" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile> 
+                                    
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>Kode dan Nomor Seri Faktur Pajak</mat-label>
+                                        <input style="color: black;" formControlName="no_faktur" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile> 
+                                    
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile>  
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>Nomor PO</mat-label>
+                                        <input style="color: black;" formControlName="no_po" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>  
+                                    <ng-select 
+                                        appendTo="body" 
+                                        [items]="dataTaxAddres" 
+                                        bindLabel="address" 
+                                        bindValue="id_taxaddress" 
+                                        formControlName="alamat_pjk"
+                                        appearance="outline"
+                                        (scrollToEnd)="onScrollToEnd('taxAddress')" 
+                                        placeholder="Select Customer Tax Addresses" 
+                                        (change)="getValTaxAddress($event)" 
+                                        dropdownPosition="bottom" 
+                                        style="display: flex;
+                                            justify-content: center;
+                                            align-items: center; width: 90%">
+                                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                                {{item.address}}
+                                            </ng-template>
+                                            <ng-template ng-label-tmp let-item="item">
+                                                {{item.address}}
+                                            </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90% !important; width: 90%" appearance="outline">
+                                        <mat-label>Tanggal Faktur</mat-label>
+                                        <input matInput [(ngModel)]="tgl_faktur" formControlName="tgl_faktur" [matDatepicker]="dp1">
+                                        <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp1></mat-datepicker>
+                                    </mat-form-field> 
+                                </mat-grid-tile>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>Penandatanganan</mat-label>
+                                        <input style="color: black;" formControlName="penandatangan" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>Termin</mat-label>
+                                        <input style="color: black;" formControlName="termin" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90%;"  appearance="outline">
+                                        <mat-label>No. Rekening</mat-label>
+                                        <input style="color: black;" formControlName="no_rekening" matInput>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+
+                            <mat-grid-list cols="2" rowHeight='90px'>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90% !important; width: 90%" appearance="outline">
+                                        <mat-label>Tgl. Jatuh Tempo</mat-label>
+                                        <input matInput [(ngModel)]="tgl_jatuh_tempo" formControlName="tgl_jatuh_tempo" [matDatepicker]="dp2">
+                                        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp2></mat-datepicker>
+                                    </mat-form-field>  
+                                </mat-grid-tile>
+                                <mat-grid-tile> 
+                                    <mat-form-field style="width: 90% !important; width: 90%" appearance="outline">
+                                        <mat-label>Tgl. Berita Acara</mat-label>
+                                        <input matInput [(ngModel)]="tgl_berita_acara" formControlName="tgl_berita_acara" [matDatepicker]="dp3">
+                                        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                        <mat-datepicker #dp3></mat-datepicker>
+                                    </mat-form-field> 
+                                </mat-grid-tile>
+                            </mat-grid-list>
+    
+                            </form>
+                        </div>
+            </div>
+        </div>
+    </div>
+
+</div>

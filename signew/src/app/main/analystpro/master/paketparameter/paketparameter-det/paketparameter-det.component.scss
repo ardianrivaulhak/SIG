@@ -1,0 +1,133 @@
+#paketparameterdet {
+    mat-form-field {
+        width: 100%;
+    }
+    .mat-input-element:disabled {
+        color: black !important;
+    }
+
+    ::ng-deep .mat-select-disabled .mat-select-value {
+        color: rgb(0, 0, 0) !important;
+    }
+
+    
+    .paketparameter {
+        font-size: 10px;
+    }
+
+    .header {
+
+        .product-image {
+            overflow: hidden;
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            height: 80px;
+            min-height: 80px;
+            max-height: 80px;
+            border-radius: 4px;
+
+            img {
+                height: 100%;
+                width: auto;
+                max-width: none;
+            }
+        }
+
+        .subtitle {
+            margin: 6px 0 0 0;
+        }
+    }
+
+    .content {
+
+        .mat-tab-group,
+        .mat-tab-body-wrapper,
+        .tab-content{
+            flex: 1 1 auto;
+            max-width: 100%;
+        }
+
+        .mat-tab-body-content {
+            display: flex;
+        }
+
+        .mat-tab-label {
+            height: 64px;
+        }
+
+        .product-image {
+            overflow: hidden;
+            width: 128px;
+            height: 128px;
+            margin-right: 16px;
+            margin-bottom: 16px;
+            border-radius: 4px;
+
+            img {
+                height: 100%;
+                width: auto;
+                max-width: none;
+            }
+        }
+
+        // Temporary prefix alignment fix
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
+        }
+    }
+
+    .mat-column-no {
+        flex: 0 0 5%;
+    }
+    // .mat-column-name_id {
+    //     flex: 0 0 40%;
+    // }  
+    .mat-column-action {
+        flex: 0 0 3%;
+        font-size: 10px;
+    } 
+    .mat-column-name_id {
+        // flex: 0 0 30%;
+        font-size: 10px;
+    } 
+    .mat-column-lab {
+        font-size: 10px;
+        // flex: 0 0 20%;
+    } 
+
+    .mat-column-lod {
+        font-size: 10px;
+        // flex: 0 0 20%;
+    } 
+
+    .mat-column-unit {
+        font-size: 10px;
+        // flex: 0 0 20%;
+    } 
+
+    .mat-column-metode {
+        font-size: 10px;
+        // flex: 0 0 20%;
+    } 
+
+    .mat-column-standart {
+        font-size: 10px;
+        // flex: 0 0 20%;
+    } 
+
+    .button-action {
+        display: flex; 
+        flex-direction: row; 
+        justify-content: center; 
+        align-items: center; 
+        padding: 10px; 
+        margin: 30px; 
+        width: 100%;
+        button {
+            margin: 0px 10px;
+        }
+    }
+
+}

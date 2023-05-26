@@ -1,0 +1,54 @@
+div {
+    width: 100%;
+}
+table {
+    width: 100%;
+}
+ul {
+    line-height:100%
+}
+.lineborder {
+    flex-grow: 1;
+    height: 5px;
+    background-color: indigo;
+    border-radius: 2px;
+}
+
+.gender-border {
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover;
+}
+
+h1,
+h4 {
+    font-weight: bold;
+}
+
+.empl {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 10px;
+}
+
+.empl td,
+.empl th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.empl tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.empl tr:hover {
+    background-color: #ddd;
+}
+
+.empl th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #e7e7e7;
+    color: rgb(7, 7, 7);
+}

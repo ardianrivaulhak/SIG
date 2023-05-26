@@ -1,0 +1,374 @@
+<div *ngIf="this.certificateForm"class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+  <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Update Bulk Certificate</div>
+  <div style="border-bottom: 2px solid #fbfbfb;"></div>
+
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+      <form name="certificateForm" [formGroup]="certificateForm">
+          <div class="h4 mb-24 font-weight-800">Identity Form</div>
+
+          <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'format')" ></mat-checkbox>
+            <ng-select 
+              appendTo="body" 
+              [items]="formatData" 
+              bindLabel="name" 
+              bindValue="id"
+              (scrollToEnd)="onScrollToEnd('format')" 
+              placeholder="Format" 
+              dropdownPosition="bottom" 
+              name="format" 
+              appearance="outline"
+              formControlName="format"
+              fxFlex="25">
+            </ng-select>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center" >
+
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'coverletter')" ></mat-checkbox>
+            <mat-form-field 
+                appearance="outline" 
+                fxFlex="30" 
+                class="pr-4" 
+                style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Cover Letter Number</mat-label>
+                <input matInput formControlName="cl_number">
+            </mat-form-field>
+
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'lhu_number')"></mat-checkbox>
+            <mat-form-field 
+            appearance="outline" 
+            fxFlex="30" 
+            style="font-size: 11px"
+            class="pl-4">
+                <mat-label>LHU Number</mat-label>
+                <input matInput formControlName="lhu_number">
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'customer_name')"></mat-checkbox>
+            <ng-select appendTo="body" 
+            fxFlex="63"
+            [items]="customerData"
+            bindLabel="customer_name" 
+            bindValue="id_customer"
+            appearance="outline"  
+            placeholder="Select Customer"
+            formControlName="customer_name" 
+            (scrollToEnd)="onScrollToEnd('customers')"
+            (search)="searchCustomer($event, 'customer')"
+            (change)="getValCustomer($event)" 
+            [clearable]="false"
+            dropdownPosition="bottom">
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.customer_name}}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.customer_name}}
+                </ng-template>
+              </ng-select>
+          </div>
+        
+          <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox fxFlex="2" class="mb-24"  (change)="checkBox($event.checked, 'contact_person')"></mat-checkbox>
+            <ng-select appendTo="body" 
+            [items]="contactData"
+            bindLabel="contact_name" 
+            bindValue="id_contact"
+            appearance="outline"  
+            placeholder="Select Contact Person"
+            formControlName="contact_person" 
+            (scrollToEnd)="onScrollToEnd('contact')"
+            (search)="searchCustomer($event, 'contact')"
+            (change)="getValContact($event)" 
+            [clearable]="false"
+            dropdownPosition="bottom"
+            fxFlex="30"
+            style="margin-right: 10px;" >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.contact_name}}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.contact_name}}
+                </ng-template>
+            </ng-select> 
+
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'telephone')"></mat-checkbox>
+
+            <mat-form-field appearance="outline" fxFlex="31" style="font-size: 11px">
+                  <mat-label>Telephone</mat-label>
+                  <input matInput formControlName="customer_telp">
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24"  (change)="checkBox($event.checked, 'address')"></mat-checkbox>
+          <ng-select appendTo="body" 
+          [items]="addressData"
+          bindLabel="address" 
+          bindValue="id_address"
+          appearance="outline"  
+          placeholder="Select Address"
+          formControlName="customer_address" 
+          (scrollToEnd)="onScrollToEnd('customer_address')"
+          (search)="searchCustomer($event, 'customer_address')"
+          (change)="getValAddress($event)" 
+          [clearable]="false"
+            fxFlex="97"
+            dropdownPosition="bottom" >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{item.address}}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{item.address}}
+                </ng-template>
+          </ng-select> 
+        </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox  fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'date_at')" ></mat-checkbox>
+
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+                <mat-label>Certificate Date</mat-label>
+                <input matInput  formControlName="date_cert" [matDatepicker]="date_cert">
+                <mat-datepicker-toggle matSuffix [for]="date_cert"></mat-datepicker-toggle>
+                <mat-datepicker #date_cert></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div class="h4 mb-24 font-weight-800">Sample Identity</div>
+        <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'sample_name')"></mat-checkbox>
+
+            <mat-form-field appearance="outline" fxFlex="100" style="font-size : 11px;">
+                <mat-label>Sample Name</mat-label>
+                <textarea matInput formControlName="sample_name" rows="7"></textarea>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'no_sample')"></mat-checkbox>
+
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size:11px;" >
+              <mat-label>Sample Number</mat-label>
+              <input matInput formControlName="no_sample" required>
+              <mat-error>Sample Number is required!</mat-error>
+          </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'batch_number')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+            <mat-label>Batch Number</mat-label>
+            <input matInput #postalCode formControlName="batch_number" >
+        </mat-form-field>
+
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'sample_code')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+            <mat-label>Sample Code</mat-label>
+            <input matInput #postalCode formControlName="kode_sample" >
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'tgl_mulai')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+          <mat-label>Start Date</mat-label>
+          <input matInput  formControlName="tgl_mulai" [matDatepicker]="start_date">
+          <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+          <mat-datepicker #start_date></mat-datepicker>
+          </mat-form-field>
+
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'tgl_selesai')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>End Date</mat-label>
+              <input matInput  formControlName="tgl_selesai" [matDatepicker]="end_date">
+              <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+              <mat-datepicker #end_date></mat-datepicker>
+            </mat-form-field>
+
+            <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'tgl_input')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+              <mat-label>Input Sample</mat-label>
+            <input matInput  formControlName="tgl_input" [matDatepicker]="tgl_input">
+            <mat-datepicker-toggle matSuffix [for]="tgl_input"></mat-datepicker-toggle>
+            <mat-datepicker #tgl_input></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <mat-checkbox fxFlex="2" class="mb-24"  (change)="checkBox($event.checked, 'merk')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Merk</mat-label>
+                <input matInput formControlName="nama_dagang" >
+            </mat-form-field>
+
+            <mat-checkbox fxFlex="2" class="mb-24"  (change)="checkBox($event.checked, 'lot_number')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Lot Number</mat-label>
+                <input matInput formControlName="lot_number" >
+            </mat-form-field>
+
+            <mat-checkbox fxFlex="2" class="mb-24"  (change)="checkBox($event.checked, 'packaging')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+                <mat-label>Packaging</mat-label>
+                <input matInput formControlName="jenis_kemasan">
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24"(change)="checkBox($event.checked, 'factory')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="61" style="font-size: 11px;">
+              <mat-label>Factory</mat-label>
+              <input matInput formControlName="nama_pabrik" >
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'factory_address')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="97" style="font-size: 11px;">
+                <mat-label>Factory Address</mat-label>
+                <textarea matInput formControlName="alamat_pabrik" rows="7">
+                </textarea>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'no_notifikasi')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Notification</mat-label>
+              <input matInput formControlName="no_notifikasi">
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'no_pengajuan')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Submission</mat-label>
+              <input matInput formControlName="no_pengajuan">
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'no_registrasi')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+              <mat-label>Registrasi</mat-label>
+              <input matInput formControlName="no_registrasi" >
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'no_principalcode')"></mat-checkbox>
+          <mat-form-field appearance="outline"  fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Principal Code</mat-label>
+              <input matInput formControlName="no_principalcode" >
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'production_date')"></mat-checkbox>
+          <mat-form-field appearance="outline"  fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+              <mat-label>Production Date</mat-label>
+              <input matInput formControlName="tgl_produksi"  >
+          </mat-form-field>
+
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'expired_date')"></mat-checkbox>
+          <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;">
+              <mat-label>Expired Date</mat-label>
+              <input matInput formControlName="tgl_kadaluarsa" >
+          </mat-form-field>
+        </div>
+
+        
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'sampling_date')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Sampling Date</mat-label>
+              <input matInput  formControlName="tgl_sampling" [matDatepicker]="tgl_sampling">
+              <mat-datepicker-toggle matSuffix [for]="tgl_sampling"></mat-datepicker-toggle>
+              <mat-datepicker #tgl_sampling></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+          <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'other_information')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="100" style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Other Infomation</mat-label>
+                <textarea matInput formControlName="keterangan_lain" rows="7">
+                </textarea>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" >
+            <mat-checkbox fxFlex="2" class="mb-24" class="example-margin" (change)="checkBox($event.checked, 'print_info')"></mat-checkbox>
+            <mat-form-field appearance="outline" fxFlex="100" style="font-size: 11px; margin-right: 10px;">
+                <mat-label>Print Info</mat-label>
+                <textarea matInput formControlName="print_info" rows="7">
+                </textarea>
+            </mat-form-field>
+      </div>
+      
+      <div class="h4 mb-24 font-weight-800">Sampling Condition</div>
+                
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign="start center">
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'pic')"></mat-checkbox>          
+        <ng-select appendTo="body" 
+          fxFlex="30"
+          [items]="userSamplingData"
+          bindLabel="employee_name" 
+          bindValue="employee_id"
+          appearance="outline"  
+          placeholder="Select User"
+          formControlName="pic" 
+          (scrollToEnd)="onScrollToEnd('pic')" 
+          (search)="searchPIC($event, 'pic')"
+          (change)="getValueUserSampling()"
+          (click)="getValueUserSampling()"
+          [clearable]="false"
+          dropdownPosition="bottom"
+          style="margin-right:10px;">
+              <ng-template ng-option-tmp let-item="item" let-index="index">
+                  {{item.employee_name}}
+              </ng-template>
+              <ng-template ng-label-tmp let-item="item">
+                  {{item.employee_name}}
+              </ng-template>
+          </ng-select>
+      </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'metode')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px; margin-right:10px;">
+            <mat-label>Metode</mat-label>
+            <input matInput formControlName="metode">
+        </mat-form-field>
+
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'location')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="30" style="font-size: 11px;margin-right:10px;">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="location">
+        </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <mat-checkbox fxFlex="2" class="mb-24" (change)="checkBox($event.checked, 'kondisi_lingkungan')"></mat-checkbox>
+        <mat-form-field appearance="outline" fxFlex="61" style="font-size: 11px;margin-right:10px;">
+            <mat-label>Environmental Conditions</mat-label>
+            <textarea matInput formControlName="kondisi_lingkungan" rows="7" >
+            </textarea>
+        </mat-form-field>
+    </div>
+    </form>
+  </div>
+  <div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+    <button mat-raised-button 
+    fxFlex="12"  fxFlex.xs="12" 
+    color="primary" 
+    style="margin-right:10px; width:250px;" 
+    class="mat-primary" 
+    (click)="saveForm()" >
+      Submit
+    </button>
+    <button mat-stroked-button 
+    fxFlex="12"  fxFlex.xs="12"
+    style="margin-right:50px; width:250px;"
+    color="primary" (click)="closeDialog(true)" aria-label="Close">
+        Close
+    </button>
+</div>
+</div>

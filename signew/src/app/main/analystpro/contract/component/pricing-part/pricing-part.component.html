@@ -1,0 +1,129 @@
+<div  class="mat-elevation-z8" style="width: auto; height: 100%; border-radius: 10px;">
+    <mat-card style="width: 100%; height: auto;">
+        <mat-card-title>
+            Pricing
+        </mat-card-title>
+        <mat-card-content style="display: flex;
+        justify-content: center;
+        margin-top: 20px;">
+            <table class="pricing-table">
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Total Biaya Pengujian</td>
+                        <td style="text-align: right;">
+                            Rp. {{this.totalpembayaran ? this.totalpembayaran.toLocaleString() : 0}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: left; font-weight: bold;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Biaya Sampling 
+                        <button mat-icon-button (click)="gotosampling()">
+                            <mat-icon>error</mat-icon>
+                        </button></td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <span>Rp.</span>
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'biaya')" style="width: 200px" 
+                                [(ngModel)]="biayasample" [options]="{ prefix: '', thousands: '.', precision: 0 }" disabled="true">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Biaya AKG 
+                        <button mat-icon-button (click)="gotoakg()">
+                            <mat-icon>error</mat-icon>
+                        </button></td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <span>Rp.</span>
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'akg')" 
+                                style="width: 200px" [(ngModel)]="biayaakg" 
+                                [options]="{ prefix: '', thousands: '.', precision: 0 }" disabled="true">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Discount</td>
+                        <td style="text-align: right;"> 
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'discount')" [(ngModel)]="discount" style=" margin-right: 10px;width: 50px;" [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                                <span style=" margin-right: 50px;">% </span>
+                                <span>Rp.</span>
+                                <input type="text" disabled="true" matInput currencyMask 
+                                (ngModelChange)="mychange($event,'hasilDiscount')" [(ngModel)]="hasilDiscount" 
+                                style="width: 200px" [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">PPN 10%</td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'ppn')" 
+                                [(ngModel)]="ppn" style=" margin-right: 10px;width: 200px" 
+                                [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                                <span>% </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Sub Total</td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <span>Rp.</span>
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'subtotal')" 
+                                [(ngModel)]="subtotal" style="width: 200px" 
+                                [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: left; font-weight: bold;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">PPH 0%</td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <span>% </span>
+                                <input type="text" currencyMask matInput (ngModelChange)="mychange($event,'pph')" 
+                                [(ngModel)]="pph" style="width: 200px" 
+                                [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Uang Muka</td>
+                        <td style="text-align: right;">
+                            <div
+                                style="display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">
+                                <span>Rp.</span>
+                                <input type="text" matInput currencyMask (ngModelChange)="mychange($event,'uangmuka')" 
+                                [(ngModel)]="uangmuka" style="width: 200px" 
+                                [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left; font-weight: bold;">Sisa Pembayaran</td>
+                        <td style="text-align: right;">Rp. {{this.sisapembayaran ? this.sisapembayaran.toLocaleString() : 0}}</td>
+                    </tr>
+            </table>
+        </mat-card-content>
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <button mat-raised-button class="save-product-button" 
+                        (click)="saveForm()"
+                        style="margin-top: 20px; color: white; background-color: #039be5;"
+                        [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                        <mat-icon>save</mat-icon>
+                        <span> Save</span>
+                </button>
+        </div>
+    </mat-card>
+</div>

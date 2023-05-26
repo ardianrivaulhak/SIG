@@ -1,0 +1,29 @@
+<div *ngIf="this.dataarr.length > 0" style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%;">
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>No Sample</th>
+                <th>Parameter</th>
+                <th>Deadline</th>
+                <th>Excuse</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let g of dataarr; let i = index">
+            <tr>
+                <td>{{i + 1}}</td>
+                <td>{{g.no_sample}}</td>
+                <td>{{g.name_id}}</td>
+                <td>{{g.tgl_estimasi_lab}}</td>
+                <td>
+                    <mat-form-field appearance="fill" style="width: 100%">
+                        <mat-label>Excuse</mat-label>
+                        <textarea matInput value="{{g.excuse}}" (input)="setValueExcuse($event, i)"></textarea>
+                      </mat-form-field>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="height: 30px"></div>
+    <button mat-raised-button (click)="savingexcuse()" style="margin: 0px 20px;">Save</button>
+</div>

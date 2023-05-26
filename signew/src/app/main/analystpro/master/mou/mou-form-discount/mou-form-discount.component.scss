@@ -1,0 +1,33 @@
+.begin {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.flex-row-center {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+mat-form-field {
+    width: 100%;
+}
+
+.buttons {
+    width: 50%; 
+    margin: 0px; 
+    height: 60px;
+    margin-bottom: 25px;
+}
+
+.flex-row-center-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}

@@ -1,0 +1,27 @@
+<div *ngIf="this.datacustomerhandle.length > 0">
+    <span>Information About Contact Person that you pick - ( {{this.datacustomerhandle[0].name}} )</span>
+    <div class="row-contactperson-info">
+        <div>
+            <mat-icon>local_phone</mat-icon>
+            <input [ngClass]="(this.toldeditcustomerhandle) ? 'actived-input' : 'disabled-input'"  [disabled]="this.disableditcustomerhandle" [(ngModel)]="telponcustomerhandle"/>
+        </div>
+        <div>
+            <mat-icon>phone_android</mat-icon>
+            <input [ngClass]="(this.toldeditcustomerhandle) ? 'actived-input' : 'disabled-input'"  [disabled]="this.disableditcustomerhandle" [(ngModel)]="phonecustomerhandle"/>
+        </div>
+        <div>
+            <mat-icon>email</mat-icon>
+            <input [ngClass]="(this.toldeditcustomerhandle) ? 'actived-input' : 'disabled-input'"  [disabled]="this.disableditcustomerhandle" [(ngModel)]="emailcustomerhandle"/>
+        </div>
+        <div *ngIf="this.disableditcustomerhandle">
+            <button mat-raised-button (click)="editcustomerhandle()">Edit</button>
+            <div style="width: 5px;"></div>
+            <button mat-raised-button (click)="closesession()">Close</button>
+        </div>
+        <div *ngIf="!this.disableditcustomerhandle">
+            <button mat-raised-button color="danger" (click)="canceleditcustomerhandle()">Cancel</button>
+            <div style="width: 5px;"></div>
+            <button mat-raised-button color="primary" (click)="saveditcustomerhandle()">Save</button>
+        </div>
+    </div>
+</div>

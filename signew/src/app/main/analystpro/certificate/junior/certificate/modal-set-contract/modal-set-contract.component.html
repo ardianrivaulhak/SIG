@@ -1,0 +1,26 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <ng-select
+        appendTo="body"
+        [items]="datacontract"
+        appearance="outline"
+        bindLabel="contract_no"
+        bindValue="id_kontrakuji"
+        [(ngModel)]="contractPick"
+        placeholder="Select Contract"
+        dropdownPosition="bottom"
+        style="width: 100%"
+        (scrollToEnd)="onScrollToEnd('contract')"
+        (search)="onSearchContract($event)"
+        (clear)="clearSelect('contract')"
+    >
+    </ng-select>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="save()">
+            Save
+        </button>
+        <div style="width: 20px;"></div>
+        <button mat-raised-button color="warn" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<p>{{this.nosample}} - {{this.samplename}}</p>
+<div style='display: flex; flex-direction: row; width: 100%'>
+<div *ngFor="let u of this.photo" style="padding: 5px;">
+    <img src="{{u.photo}}" style="width: 100%; height: 100px; object-fit: cover; cursor: pointer;" [matMenuTriggerFor]="menu2"/>
+    <mat-menu #menu2="matMenu">
+        <button mat-menu-item (click)="opendetailphoto(u)">See Photo</button>
+        <button mat-menu-item (click)="delete(u.id)">Delete Picture</button>
+    </mat-menu>
+</div>
+<div style="padding: 5px;">
+    <div style="width: 100px; height: 100px; display: flex; justify-content: center; align-items: center; border: 1px solid rgb(163, 163, 163); cursor: pointer;" [matMenuTriggerFor]="menu">
+        <img src="assets/icons/custom/plus.svg" style="width: 30px; height: 30px;"/>
+    </div>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="webcam()">Take A picture</button>
+        <input #_fileInput type="file" accept="image/*" (change)="uploadGambar($event)" hidden>
+                                        <button mat-menu-item 
+                                        (click)="_fileInput.click()">
+                                            <span>Upload Image</span>
+                                        </button> 
+      </mat-menu>
+</div>
+</div>

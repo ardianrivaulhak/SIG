@@ -1,0 +1,481 @@
+<div id="invoice-addinvoice"  fxLayout="column" fxLayoutAlign="space-between none" style="overflow: auto; height: 100%; background-color: #f7f7f7;" *ngIf="this.invoiceForm">
+    <div class="content">
+        <form name="invoiceForm" [formGroup]="invoiceForm">
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <mat-card-title>
+                <button mat-icon-button 
+                [routerLink]="'/analystpro/finance-invoice'">
+                    <mat-icon style="margin-bottom:10px;">keyboard_arrow_left</mat-icon>
+                  </button>
+                <strong>Add Invoice</strong>
+            </mat-card-title>
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                <h2 class="text-title" style="margin-top:20px; font-size:18px; font-weight: 700;">Contract Identity</h2>
+               
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <ng-select 
+                        appendTo="body" 
+                        [items]="datacontract" 
+                        bindLabel="contract_no" 
+                        bindValue="id_kontrakuji"
+                        [(ngModel)]="noKontrak" 
+                        [ngModelOptions]="{standalone: true}" 
+                        [multiple]="true"
+                        (clear)="reset('kontrak')" 
+                        appearance="outline" 
+                        (scrollToEnd)="onScrollToEnd('no_kontrak')"
+                        placeholder="Select Contract" 
+                        (change)="getValKontrak($event)"
+                        (search)="onsearchselect($event,'kontrak')" 
+                        dropdownPosition="bottom"
+                        fxFlex="41" 
+                        style="
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.contract_no}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.contract_no}}
+                            </ng-template>
+                        </ng-select>
+                        <span *ngIf="this.openNotif" style="font-style: italic; color: red;"> *) Marketing number has been made ({{ this.checkdataContract[0] }})</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <ng-select appendTo="body" 
+                        [items]="customersData" 
+                        bindLabel="customer_name"
+                        bindValue="id_customer" 
+                        appearance="outline" 
+                        placeholder="Select Customer"
+                        (scrollToEnd)="onScrollToEnd('customer')" 
+                        [clearable]="false"
+                        (change)="getValCustomer($event)" 
+                        [(ngModel)]="selectCust"
+                        [ngModelOptions]="{standalone: true}" 
+                        (search)="onsearchselect($event,'customer')"
+                        (clear)="reset('customer')" 
+                        formControlName="id_cust" 
+                        dropdownPosition="bottom" 
+                        fxFlex="41"
+                        style="margin-right:10px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.customer_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.customer_name}}
+                        </ng-template>
+                    </ng-select>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="cpData" 
+                    bindLabel="name" 
+                    bindValue="id_cp"
+                    formControlName="cust_penghubung"
+                    appearance="outline" 
+                    (scrollToEnd)="onScrollToEnd('CP')"
+                    placeholder="Select Contact Person"
+                    (change)="getValCP($event)" 
+                    [(ngModel)]="selectContact"
+                    [ngModelOptions]="{standalone: true}" 
+                    (search)="onsearchselect($event,'cp')"
+                    (clear)="reset('cp')" 
+                    dropdownPosition="bottom"
+                     fxFlex="41">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.name}}
+                            </ng-template>
+                        </ng-select>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <ng-select appearance="outline" 
+                        class="wrap" 
+                        appendTo="body" 
+                        [items]="alamatcustomer"
+                        bindLabel="address" 
+                        bindValue="id_address" 
+                        placeholder="Select Address"
+                        formControlName="cust_addres" 
+                        [(ngModel)]="selectAddress" 
+                        [ngModelOptions]="{standalone: true}"
+                        (search)="onsearchselect($event,'address')" 
+                        (clear)="reset('address')"
+                        (change)="getValAddress($event)" 
+                        dropdownPosition="bottom"
+                        fxFlex="83">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.address}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.address}}
+                        </ng-template>
+                    </ng-select>
+                    </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="this.dataKeuangan.length > 0 ? true : false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <span style="margin-top:20px; font-size:14px; font-weight: 700;">All Memo</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <div fxLayout="row" fxLayoutAlign="space-between start" >
+                    <mat-card style="background-color: #FFD93D;" *ngIf="this.dataKeuangan.length > 0"  fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A; font-size: 20px;">Info Finance</h5>
+                            <mat-list role="list" *ngIf="this.dataKeuangan[0].description_invoice.length > 0">
+                                <mat-list-item style="font-size:16px ;color:#CF0A0A; font-weight: 800; " role="listitem" *ngFor="let item of this.dataKeuangan[0].description_invoice">
+                                    {{ item.desc }}
+                                </mat-list-item>
+                            </mat-list>
+                            <span style="font-size:16px ;color:#CF0A0A;" 
+                            *ngIf="this.dataKeuangan[0].description_invoice.length < 1">
+                            Not Found Info
+                            </span>
+                    </mat-card>
+                    <mat-card style="background-color: #FFD93D;" *ngIf="this.dataKeuangan.length > 0"  fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A; font-size: 20px;">Memo Internal</h5>
+                            <mat-list role="list" *ngIf="this.dataKeuangan[0].description_cs.length > 0">
+                                <mat-list-item style="font-size:16px ;color:#CF0A0A; font-weight: 800; " role="listitem" *ngFor="let item of this.dataKeuangan[0].description_cs">
+                                    {{ item.desc }}
+                                </mat-list-item>
+                            </mat-list>
+                            <span style="font-size:16px ;color:#CF0A0A;" 
+                            *ngIf="this.dataKeuangan[0].description_cs.length < 1">
+                            Not Found Memo
+                            </span>
+                    </mat-card>
+                  </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <h2 class="text-title" style="margin-top:20px;">Invoce</h2>
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom:15px;">
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Format</mat-label>
+                    <mat-select [(ngModel)]="selectFormat" [ngModelOptions]="{standalone: true}" style="font-size:11px;">
+                        <mat-option *ngFor="let d of dataStatus" [value]="d.id">
+                            {{d.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>    
+                
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="splitInvoice" [disabled]="this.noKontrak.length > 1" [ngModelOptions]="{standalone: true}" (change)="changeRadio($event)">    
+                    <mat-radio-button style="margin-right: 50px;" [value]="false">No Split</mat-radio-button>
+                    <mat-radio-button [value]="true">Split</mat-radio-button>
+                </mat-radio-group>            
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom:15px;" >
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Invoice Number</mat-label>
+                    <input style="color: black;" formControlName="no_invoice" matInput>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Purchase Number</mat-label>
+                    <input style="color: black;" formControlName="no_po" matInput>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Termin</mat-label>
+                    <input style="color: black;" formControlName="termin" matInput readonly>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom:15px;">
+                <mat-form-field appearance="outline"  fxFlex="33" style="margin-right:10px; font-size: 11px;">
+                    <mat-label>Invoice Date</mat-label>
+                    <input matInput formControlName="tgl_faktur" [matDatepicker]="dp1" [(ngModel)]="selectDate"
+                        (dateChange)="getDateInvoice($event)">
+                    <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                    <mat-datepicker #dp1></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [(ngModel)]="tgl_jatuh_tempo" formControlName="tgl_jatuh_tempo"
+                        [matDatepicker]="dp2">
+                    <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                    <mat-datepicker #dp2></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field appearance="outline"  style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Tax Invoice Code and Serial Number</mat-label>
+                    <input style="color: black;" formControlName="no_faktur" matInput>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom:15px;" >
+                <mat-form-field appearance="outline" style="font-size: 11px;" floatLabel="always" fxFlex="100">
+                    <mat-label>Other Ref</mat-label>
+                    <textarea matInput formControlName="other_ref" placeholder="Description" name="desc" rows="5">
+                    </textarea>
+                </mat-form-field>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >                
+            <h2 class="text-title" style="margin-top:20px;">Samples</h2>
+            <button mat-flat-button  (click)="downloadExcel()" *ngIf="this.noKontrak.length > 0" color="primary">Download</button>
+            </div>
+            <table style="width: 100%; font-size: 9px;" #table  mat-table
+            class="mat-elevation-z8" [dataSource]="datasampleSemua" *ngIf="this.noKontrak.length > 0">
+            <ng-container matColumnDef="no">
+                <th mat-header-cell *matHeaderCellDef> No </th>
+                <td mat-cell *matCellDef="let e; let i=index;">
+                    <p style="font-size: 11px;">{{i + 1}}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="nosample">
+                <th mat-header-cell *matHeaderCellDef> No Sample </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p style="font-size: 11px; white-space: nowrap;">{{e.nosample}}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="samplename">
+                <th mat-header-cell *matHeaderCellDef> Sample Name </th>
+                <td mat-cell *matCellDef="let e; let g=index;">
+                    <p style="font-size: 11px;">{{e.samplename}}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="statuspengujian">
+                <th mat-header-cell *matHeaderCellDef> Status Pengujian </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p style="font-size: 11px;">{{e.statuspengujian}}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef> Price</th>
+                <td mat-cell *matCellDef="let e; let g=index;">
+                    <p style="font-size: 11px;">{{ e.price | currency:"Rp " }}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <ng-container matColumnDef="discount">
+                <th mat-header-cell *matHeaderCellDef> Discount</th>
+                <td mat-cell *matCellDef="let e; let g=index;">
+                    <div fxLayout="row" fxLayoutAlign="none center" >
+                        <p style="font-size: 11px;">Rp.</p>
+                        <form>                           
+                        <input style="font-size: 11px;"
+                         matInput 
+                         currencyMask 
+                         type="text" 
+                         size="9"
+                         name="discount"
+                          (keyup)="discount(this.datasampleSemua[g].discount)" 
+                          [(ngModel)]="this.datasampleSemua[g].discount"
+                          [options]="{
+                              prefix: '',
+                              thousands: '.',
+                              precision: 0
+                          }">
+                        </form>
+                    </div>
+                  
+                </td>
+                <td mat-footer-cell  *matFooterCellDef style="font-size: 11px; font-weight: bold;"> 
+                    <span *ngIf="this.totDiscount > 0">{{ totDiscount | currency:"Rp " }} / {{ sisa | currency:"Rp " }}</span>
+                    <span *ngIf="notif_dic == true" style="background-color: red; color: white;">exceeds the limit</span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef> Total</th>
+                <td mat-cell *matCellDef="let e; let g=index;">
+                    <p style="font-size: 11px;">{{ e.total | currency:"Rp " }}</p>
+                </td>
+                <td mat-footer-cell *matFooterCellDef style="font-size: 11px; font-weight: bold;"></td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let e; let i = index">
+                    <button mat-icon-button color="warn" [disabled]="this.disableBUtton" (click)="deleteRow(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+                <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row"></tr>
+        </table>
+
+
+        <div *ngIf="this.noKontrak.length === 0"
+            style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img src="assets/images/gif/selectfile.gif" />
+            <small>Sample Not Found</small>
+        </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <h2 class="text-title" style="margin-top:20px;">Price Infomation</h2>
+            <table id="wow" style="font-size: 11px; width: 100%;">
+                <tr>
+                    <td style="width: 25%;">Total Cost of Testing</td>
+                    <td style="width: 5%;">:</td>
+                    <td style="width: 5%;">Rp. </td>
+                    <td style="width: 65%;"><span style="float: right;">{{ this.priceTotalSample | currency:'':'' }}</span></td>
+                </tr>
+                <tr>
+                    <td>Discount</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td style="float: right;">
+                        <span *ngIf="this.splitInvoice == false" style="float: right;">{{ this.discountTotal | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true"   
+                        matInput
+                        currencyMask  
+                        formControlName="discounttotal" 
+                        (keyup)="inputDiscount(this.discountTotal, 'disc')" 
+                        [(ngModel)]="this.discountTotal" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #dddddd;" 
+                        type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sampling Fee</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span *ngIf="this.splitInvoice == false" style="float: right;background-color: #fff;">{{ this.priceSampling | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        matInput
+                        currencyMask  
+                        (keyup)="inputDiscount(this.priceSampling, 'sampling')"  
+                        formControlName="samplingfee"  
+                        [(ngModel)]="this.priceSampling" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #fff;" 
+                        type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>ING fees</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td style="float: right;">
+                        <span *ngIf="this.splitInvoice == false" 
+                        style="float: right;">{{  this.priceAkg | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        matInput
+                        currencyMask 
+                        (keyup)="inputDiscount(this.priceAkg, 'akg')"  
+                        formControlName="ingfees" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        [(ngModel)]="this.priceAkg" 
+                        style="text-align: right; background-color: #dddddd;" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sub Total</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td><span style="float: right;">{{ this.priceSubTotal | currency:'':'' }}</span></td>
+                </tr>
+                <tr>
+                    <td>PPN</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td><span style="float: right;">{{ this.pricePPN | currency:'':'' }}</span></td>
+                </tr>
+                <tr>
+                    <td>Down Payment</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span *ngIf="this.splitInvoice == false" style="float: right;">{{ this.priceDP | currency:'':''  }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        (keyup)="inputDiscount(this.priceDP, 'dp')"  
+                        formControlName="downpayment"  
+                        matInput
+                        currencyMask 
+                        [(ngModel)]="this.priceDP" 
+                         [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #fff;" 
+                        type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Remaining Payment</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span style="float: right; font-weight: bold;">{{ this.remainingpayment | currency:'':''
+                            }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Say</td>
+                    <td>:</td>
+                    <td></td>
+                    <td>
+                        <span style="float: left;"><b>{{ this.terbilangan == null ? '-' : this.terbilangan + '
+                                rupiah ' }}</b></span>
+                    </td>
+                </tr>
+            </table>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto; background-color: #2d323e!important" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <button mat-flat-button color="accent" 
+                    (click)="openInvoice()" 
+                    matTooltip="preview" 
+                    [disabled]="this.dataKeuangan.length > 0 ? false : true"
+                    style="margin-right: 20px;">
+                        <mat-icon> insert_drive_file</mat-icon> Open 
+                    </button>
+        
+                    <button mat-flat-button color="accent" 
+                    (click)="openInvoiceTTD()" 
+                    [disabled]="this.dataKeuangan.length > 0 ? false : true"
+                    matTooltip="preview with signature">
+                        <mat-icon> picture_as_pdf</mat-icon> With Signature
+                    </button>
+                </div>
+                <div>
+                    <button mat-flat-button color="accent" 
+                    (click)="saveForm()"
+                    [disabled]="this.dataKeuangan.length > 0 ? this.loadingDisable == true ? true : false : false || this.loadingDisable"
+                     matTooltip="upload">
+                     <mat-icon *ngIf="this.loadingDisable">
+                        <mat-spinner diameter="20"></mat-spinner>
+                    </mat-icon>
+                        <mat-icon *ngIf="!this.loadingDisable">add_box</mat-icon> Upload
+                    </button>
+                </div>
+            </div>
+        </mat-card>
+    </form>
+    </div>
+</div>
+<div *ngIf="!this.invoiceForm" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+    <img  src="assets/images/gif/loading.gif" />
+    <small>Please Wait ...</small>
+</div>

@@ -1,0 +1,61 @@
+<div class="dialog-content-wrapper mat-primary m-0"  style="overflow: hidden; height: 100%;">
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> Complaint</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div
+    mat-dialog-content
+    class="p-24 m-0"
+    fusePerfectScrollbar
+    fxFlex
+    fxLayout="column"
+    style="gap: 10px;">
+    <!-- teks -->
+    <div fxLayout="column" fxLayoutAlign="start start" >
+
+        <span style="float: center; font-size: 11px; font-weight: 800;">Information Complain</span>
+        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+            <mat-label>Subject Complaint</mat-label>
+            <textarea matInput rows="3" [(ngModel)]="this.data.complain" readonly></textarea>
+        </mat-form-field>   
+
+        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100" >
+            <mat-label>Message</mat-label>
+            <textarea matInput rows="8" [(ngModel)]="this.data.message" readonly></textarea>
+        </mat-form-field> 
+
+        <span style="float: left; font-size: 11px; font-weight: 800;">Select Status</span>
+        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+            <mat-label>Select Action</mat-label>
+            <mat-select [(ngModel)]="this.formdata.status">
+                <mat-option
+                    *ngFor="let selectChange of selectChange"
+                    [value]="selectChange.value"
+                >
+                    {{ selectChange.name }}
+                </mat-option>
+            </mat-select>
+            <mat-error>Select Action is required!</mat-error>
+        </mat-form-field>    
+        
+        <mat-form-field appearance="outline" style="font-size: 12px;  margin-bottom: 25px;" fxFlex fxFlex="100">
+            <mat-label>Rapair</mat-label>
+            <textarea matInput rows="10" [(ngModel)]="this.formdata.repair"></textarea>
+        </mat-form-field>   
+
+    </div>
+    <!-- end teks -->
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end end">
+        <button mat-raised-button color="primary" class="mat-primary"   aria-label="Submit" (click)="saveForm()">
+        Save
+        </button>
+        <button mat-stroked-button color="primary" class="mat-primary"  aria-label="Close" (click)="closeModal(false)">
+        Close
+        </button>
+    </div>
+    
+
+</div>

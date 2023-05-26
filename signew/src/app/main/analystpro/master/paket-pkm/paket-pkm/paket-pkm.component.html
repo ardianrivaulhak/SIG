@@ -1,0 +1,190 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label>
+                <mat-icon>search</mat-icon>Search For A Paket Special</mat-label
+            >
+            <input
+                matInput
+                [(ngModel)]="this.datasent.search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+        <div style="margin-left: 40%">
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                matTooltip="Add Employee"
+                [routerLink]="'/analystpro/paket-special/add'"
+            >
+                <span>Add Paket</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- / TABLE -->
+
+    <div
+        style="
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        "
+    ></div>
+    <div id="table-scroll">
+        <table class="demo">
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center">No</th>
+                    <th style="width: 150px; text-align: center">
+                        Package Code
+                    </th>
+                    <th
+                        style="
+                            width: 100px;
+                            text-align: center;
+                            word-wrap: break-word;
+                        "
+                    >
+                        Package Name
+                    </th>
+                    <th style="width: 150px; text-align: center">Price</th>
+                    <th style="width: 150px; text-align: center">Disc</th>
+                    <th style="width: 150px; text-align: center">Status</th>
+                    <th style="width: 170px; text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of paketpkmData; let a = index">
+                    <td style="text-align: center; font-size: small">
+                        {{ a + 1 }}
+                    </td>
+                    <td style="text-align: center; font-size: small">
+                        {{ row.package_code }}
+                    </td>
+                    <td style="text-align: center">
+                        <div
+                            style="
+                                height: 30%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                word-wrap: break-word;
+                                width: 200px;
+                            "
+                        >
+                            <span
+                                class="text-truncate isi"
+                                style="font-size: small; text-align: left"
+                            >
+                                {{ row.package_name }}
+                            </span>
+                            <span
+                                class="text-truncate isi"
+                                style="
+                                    font-style: italic;
+                                    font-size: small;
+                                    text-align: left;
+                                "
+                                >{{
+                                    row.package_name_en
+                                        ? row.package_name_en
+                                        : "-"
+                                }}</span
+                            >
+                        </div>
+                    </td>
+                    <!-- <td>asdqwe</td> -->
+                    <td style="text-align: right">
+                        {{ "Rp. " + row.totalharga.toLocaleString() }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ row.disc == 1 ? "Yes" : "No" }}
+                    </td>
+                    <td style="text-align: center">
+                        <div class="box-danger" *ngIf="row.status === 0">
+                            <p class="text-truncate">Not Approved</p>
+                        </div>
+                        <div class="box-normal" *ngIf="row.status === 1">
+                            <p class="text-truncate">Approved</p>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button
+                                mat-menu-item
+                                (click)="
+                                    gotodetail(row.mstr_specific_package_id)
+                                "
+                            >
+                                <span>Details</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="update(row)"
+                                [disabled]="
+                                    this.access[0].update == 1 ? false : true
+                                "
+                                (click)="gotoedit(row.mstr_specific_package_id)"
+                            >
+                                <span>Edit</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                [disabled]="
+                                    this.access[0].update == 1 ? false : true
+                                "
+                                (click)="
+                                    approvedPaket(row.mstr_specific_package_id)
+                                "
+                                *ngIf="row.status === 0"
+                            >
+                                <span>Approve</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                [disabled]="
+                                    this.access[0].update == 1 ? false : true
+                                "
+                                (click)="
+                                    unApprovedPaket(
+                                        row.mstr_specific_package_id
+                                    )
+                                "
+                                *ngIf="row.status === 1"
+                            >
+                                <span>Unapprove</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="deletePaket(row.id)"
+                                [disabled]="
+                                    this.access[0].delete !== 1 ? true : false
+                                "
+                            >
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+</mat-card>

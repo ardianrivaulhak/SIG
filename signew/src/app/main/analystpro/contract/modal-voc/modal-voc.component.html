@@ -1,0 +1,28 @@
+<h1>Select Voucher</h1>
+<div mat-dialog-content>
+    <div
+        style="
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            flex-direction: column;
+        "
+    >
+    <mat-form-field appearance="fill">
+        <mat-label>Select Voucher</mat-label>
+        <mat-select [(ngModel)]="voucherStill">
+          <mat-option *ngFor="let k of datavoucher" value="{{k.id}}">{{k.voucher_name}} - {{k.status == 1 ? k.price.toLocaleString() : k.discount + ' %'}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+        <!-- <mat-form-field style="width: 20%" appearance="outline">
+            <mat-label>Jumlah</mat-label>
+            <input matInput type="number" [(ngModel)]="jumlah" />
+        </mat-form-field> -->
+        <button mat-raised-button (click)="satuin()" color="warn" style="margin: 20px">
+            Tambah
+        </button>
+    </div>
+</div>
+

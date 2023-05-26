@@ -1,0 +1,411 @@
+<div id="invoice" class="compact page-layout simple tabbed" fxLayout="row wrap" style="overflow-y: scroll; height: 100vh; padding-bottom: 45px;">
+ 
+  <!-- CONTENT -->
+  <div class="content">
+
+    <mat-tab-group dynamicHeight="true">
+
+        <mat-tab label="Kontrak Pengujian">
+          <div class="p-24">
+          <div class="invoice-container" >
+
+            <!-- INVOICE -->
+            <div id="pdfTable" #pdfTable class="card" style="border-radius: 15px; margin-left: -55px; margin-bottom: 30px; margin-top: -60px;overflow-x: hidden;">
+              <!-- <div #break>  -->
+                <div class="header" style="display: flex; flex-direction: row ; justify-content: space-around; margin: 60px 50px 50px 60px;" *ngIf="this.data.length > 0">
+                    <div style="flex: 1">
+                      <img src="assets/images/logos/siglog.png" style="width: 100px; height: auto" />
+                    </div>
+                    <div style="display: flex; flex-direction: column; flex: 2">
+                        <span style="font-size: 14px; font-weight: bold;">PT SARASWANTI INDO GENETECH</span>
+                        <span style="font-size: 12px;">Graha SIG Jl. Rasamala No. 20 Taman Yasmin</span>
+                        <span style="font-size: 12px;">Bogor 16113 INDONESIA</span>
+                        <span style="font-size: 12px;">Phone +62 251 7532 348 49 ( Hunting ), 0821 1151 6516</span>
+                        <span style="font-size: 12px;">Fax +62 251 7540 927</span>
+                        <a style="font-size: 12px;" href="http://www.siglaboratory.com">http://www.siglaboratory.com</a>
+                    </div>
+                    <div *ngIf="this.barCode" style="display: flex; flex-direction: column; align-items: flex-end; flex: 1">
+                        <span style="font-size: 12px;">No. : 26.1/F-PP/SMM-SIG</span>
+                        <span style="font-size: 10px; font-style: italic;">Revisi 6</span>
+                        <qr-code style="margin-right: 50px;margin-top: -18px;" value="https://sigonline.co.id/" size="100" errorCorrectionLevel="M"></qr-code>
+                    </div>
+                </div>
+                <!-- <div style="height: 30px;"></div> -->
+                <div class="content" >
+        
+                    <div style="display: flex; flex-direction: column; text-align: center;">
+                        <span style="font-size: 16px; font-weight: bold;">KONTRAK PENGUJIAN</span>
+                        <span *ngIf="this.barCode">{{this.dataSuccess['contract-no']}}</span>
+                    </div>
+                    
+                    <div style="margin: 20px 20px 20px 50px; padding: 10px;">
+                      <table class="simple invoice-table-footer" >
+                        <tr>
+                          <td>-</td>
+                          <td style="width: 25%;">Nama Pelanggan</td>
+                          <td style="width: 2%;">:</td>
+                          <td >{{this.data[0].customer_name}}</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td>Personil Penghubung</td>
+                          <td style="width: 2%;">:</td>
+                          <td >{{this.data[0].contact_person}}</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td>Alamat</td>
+                          <td style="width: 2%;">:</td>
+                          <td>{{this.data[0].address_cust}}</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td>No. Telp / Fax / Email</td>
+                          <td style="width: 2%;">:</td>
+                          <td >021 - 8904169 / isp.qastaff@icbp.indofood.co.id</td>
+                        </tr> 
+                        <tr>
+                          <td>-</td>
+                          <td>No Penawaran</td>
+                          <td style="width: 2%;">:</td>
+                          <td >-</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td colspan="3">Informasi Contoh Uji</td>
+                        </tr>
+                      </table>
+                      <table mat-table [dataSource]="dataSource" style="width: 100%;">
+                        <ng-container matColumnDef="no">
+                          <th mat-header-cell *matHeaderCellDef> No. </th>
+                          <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                        </ng-container>
+                    
+                        <!-- Name Column -->
+                        <!-- <ng-container matColumnDef="no_sample">
+                          <th mat-header-cell *matHeaderCellDef> No Identifikasi Sample </th>
+                          <td mat-cell *matCellDef="let element"> {{element.nosample}} </td>
+                        </ng-container> -->
+
+                         <!-- Name Column -->
+                         <ng-container matColumnDef="tglselesai">
+                          <th mat-header-cell *matHeaderCellDef> Tanggal Selesai </th>
+                          <td mat-cell *matCellDef="let element"> 
+                            <p class="text-truncate">
+                              <span class="material-icons">
+                              date_range
+                              </span>
+                              {{element.parameter[0].tgl_selesai | date}} 
+                            </p>
+                          </td>
+                        </ng-container>
+                    
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="jenis_pp">
+                          <th mat-header-cell *matHeaderCellDef> Jenis Produk Pangan </th>
+                          <td mat-cell *matCellDef="let element"> {{element.parameter[0].trademark}} </td>
+                        </ng-container>
+                    
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="namasample">
+                          <th mat-header-cell *matHeaderCellDef> Nama Sample </th>
+                          <td mat-cell *matCellDef="let element"> {{element.samplename.toUpperCase()}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="jeniskemasan">
+                          <th mat-header-cell *matHeaderCellDef> Jenis Kemasan </th>
+                          <td mat-cell *matCellDef="let element"> {{element.parameter[0].jeniskemasan ? element.parameter[0].jeniskemasan.toUpperCase() : "-"}} </td>
+                        </ng-container>
+        
+                        <ng-container matColumnDef="statuspengujian">
+                          <th mat-header-cell *matHeaderCellDef> Status Pengujian </th>
+                          <td mat-cell *matCellDef="let element" >
+                            <span *ngIf="element.parameter[0].statuspengujian === 1">Normal</span>
+                            <span *ngIf="element.parameter[0].statuspengujian === 2">Urgent</span>
+                            <span *ngIf="element.parameter[0].statuspengujian === 3">Very Urgent</span>
+                            <span *ngIf="element.parameter[0].statuspengujian === 4">Custom 2 Hari</span>
+                            <span *ngIf="element.parameter[0].statuspengujian === 5">Custom 1 Hari</span>
+                          </td> 
+                        </ng-container> 
+                    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <div style="height: 20px;"></div>
+                      <table class="simple invoice-table-footer" style="width: 100%;">
+                        <tr>
+                          <td style="width: 4%;">-</td>
+                          <td style="width: 25%;">Biaya Pengujian</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].totalbiayapengujian.toLocaleString()}}</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td style="width: 25%;">Diskon</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].discountlepas.toLocaleString()}}</td>
+                        </tr> 
+                        <tr>
+                          <td>-</td>
+                          <td style="width: 25%;">Biaya Sampling</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].biayasample.length !== 0 ? this.data[0].biayasample[0].total.toLocaleString() : 0}}</td>
+                        </tr>
+                        <tr>
+                          <td>-</td>
+                          <td style="width: 25%;">Biaya AKG</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].totalbiayaakg.toLocaleString()}}</td>
+                        </tr>
+                        <tr> 
+                          <td>-</td>
+                          <td style="width: 25%;">Sub Total</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].subtotal.toLocaleString()}}</td>
+                        </tr>
+                        <tr>
+                          <td colspan="4"></td>
+                        </tr>
+                        <tr>
+                          <td colspan="4"></td>
+                        </tr>
+                        <tr> 
+                          <td>-</td>
+                          <td style="width: 25%;">PPN 10%</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].ppn.toLocaleString()}}</td>
+                        </tr>
+                        <tr> 
+                          <td>-</td>
+                          <td style="width: 25%;">Total biaya pengujian</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp.  {{this.totalPengujian.toLocaleString()}}</td>
+                        </tr>
+                        <tr> 
+                          <td>-</td>
+                          <td style="width: 25%;">Uang muka</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].uangmuka.toLocaleString()}}</td>
+                        </tr>
+                        <tr> 
+                          <td>-</td>
+                          <td style="width: 25%;">Sisa Pembayaran</td>
+                          <td style="width: 2%;">:</td>
+                          <td style="text-align:right">Rp. {{this.data[0].sisapembayaran.toLocaleString()}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <!-- <div style="height: 40px;"></div> -->
+                <div class="footer" >
+                  <div style="display: flex; justify-content: flex-end; padding: 0px 15px 0px 0px;">
+                    <span> {{this.date | date}} </span>
+                  </div>
+                  <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                    <div style="margin-left: 40px;padding: 15px; display: flex; flex-direction: column; align-items: center;">
+                       <span> Pelanggan </span>
+                       <div style="height: 80px;"></div>
+                       <span>{{this.data[0].contact_person}}</span>
+                    </div>
+                    <div style="padding: 15px; display: flex; flex-direction: column; align-items: center;">
+                      <span> Penerima Contoh Uji </span>
+                      <div style="height: 80px;"></div>
+                      <span *ngIf="this.me.length > 0">{{this.me[0].employee_name}}</span>
+                   </div>  
+                  </div>
+                  <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                    <div class="note" >
+                      <div style="margin-left: 55px;width: 340px; height: 150px; border: 1px solid black; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+                      <div style="display: flex; flex-direction: row; font-size: 10px; justify-content: space-evenly; width: 90%; font-weight: bold;">
+                        <span>Nomor Rekening Pembayaran</span> / <span style="font-style: italic;">Bank Account Number ( IDR )</span>
+                      </div>
+                        <div style="display: flex; flex-direction: row; justify-content: space-between; width: 100%; font-size: 10px;">
+                            <div style="margin-left: 15px;display: flex; flex-direction: column; padding: 10px">
+                              <span>PT. Saraswanti Indo Genetech</span>
+                              <span>A/C No. 133-00-0116081-1</span>
+                              <span>Bank Mandiri, Bogor</span>
+                              <span>Swift Code: BMRIIDJA</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; padding: 10px">
+                              <span>PT. Saraswanti Indo Genetech</span>
+                              <span>A/C No. 133-00-0116081-1</span>
+                              <span>Bank Mandiri, Bogor</span>
+                              <span>Swift Code: BMRIIDJA</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span style="margin-left: 55px;font-size: 10px; font-style: italic;">* syarat dan ketentuan pengujian bisa dilihat dihalaman belakang lembar ini</span>
+                  </div>
+                  <div class="note" >
+                    <div style="width: 340px; height: 150px; border: 1px solid black; border-radius: 10px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+                      <div style="display: flex; flex-direction: row; font-size: 12px; justify-content: space-evenly; width: 100%; font-weight: bold;">
+                        <span>Keterangan :</span>
+                      </div>
+                    </div>
+                </div>
+                </div> 
+              </div>
+              <!-- / INVOICE -->
+              <!-- </div> -->
+            </div>
+            <div *ngIf="this.data[0].status === 'add'" >
+              <mat-grid-list cols="3" rowHeight="70px">
+                <mat-grid-tile>
+                  <button *ngIf="this.btnSave === true" mat-raised-button style="width: 95%;background-color: green;" 
+                  [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                  color="warn" (click)="saveContrack()" >Save</button>
+                </mat-grid-tile> 
+                <mat-grid-tile>
+                  <button mat-raised-button [disabled]="this.btnPrint" 
+                  [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                  style="width: 95%;background-color: dimgray;" color="warn" 
+                  (click)="printContrack()">Print</button>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <button mat-raised-button *ngIf="this.btnSave === true"  (click)="backToContrack()" style="width: 95%;" color="warn">Cancel</button>
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div>
+            <div *ngIf="this.data[0].status === 'edit'" >
+              <mat-grid-list cols="3" rowHeight="70px"> 
+                <mat-grid-tile> 
+                  <button *ngIf="this.btnUpdate === true" mat-raised-button style="width: 95%;background-color: green;" 
+                  [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                  color="warn" (click)="update()" >Update</button>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <button mat-raised-button 
+                  [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                  style="width: 95%;background-color: dimgray;" color="warn" 
+                  (click)="printContrack()">Print</button>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                  <button mat-raised-button *ngIf="this.btnUpdate === true"  (click)="backToContrack()" style="width: 95%;" color="warn">Cancel</button>
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div>
+            </div>
+          </div> 
+        </mat-tab>
+
+
+
+
+
+
+        <mat-tab label="Parameter Pengujian">
+            <div class="p-24">
+              <div class="invoice-container" > 
+                <!-- INVOICE -->
+                <div id="pdfTable2" #pdfTable2 class="card" style="border-radius: 15px; margin-left: -55px; margin-bottom: 30px; margin-top: -60px;overflow-x: hidden;">
+                  <!-- <div #break> -->
+                  <div class="header" style="display: flex; flex-direction: row ; justify-content: space-around; margin: 60px 50px 50px 60px;" *ngIf="this.data.length > 0">
+                    <div style="flex: 1">
+                      <img src="assets/images/logos/siglog.png" style="width: 100px; height: auto" />
+                    </div>
+                    <div style="display: flex; flex-direction: column; flex: 2">
+                        <span style="font-size: 14px; font-weight: bold;">PT SARASWANTI INDO GENETECH</span>
+                        <span style="font-size: 12px;">Graha SIG Jl. Rasamala No. 20 Taman Yasmin</span>
+                        <span style="font-size: 12px;">Bogor 16113 INDONESIA</span>
+                        <span style="font-size: 12px;">Phone +62 251 7532 348 49 ( Hunting ), 0821 1151 6516</span>
+                        <span style="font-size: 12px;">Fax +62 251 7540 927</span>
+                        <a style="font-size: 12px;" href="http://www.siglaboratory.com">http://www.siglaboratory.com</a>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; flex: 1">
+                        <span style="font-size: 12px;">No. : 26.1/F-PP/SMM-SIG</span>
+                        <span style="font-size: 10px; font-style: italic;">Revisi 6</span>
+                    </div>
+                  </div>
+                  <div style="height: 30px;"></div>
+                  <div class="content" >
+        
+                    <div style="display: flex; flex-direction: column; text-align: center;">
+                        <span style="font-size: 16px; font-weight: bold;">PARAMETER PENGUJIAN</span>
+                        <span style="font-size: 16px; font-weight: bold;">Lampiran Kontrak Uji Rutin</span>
+                        <!-- <span>{{this.data[0].contract.contract_no}}</span> -->
+                    </div>
+                    
+                    <div style="margin: 20px 20px 20px 55px; padding: 10px;">
+                      
+                      <table border="1" style="margin-bottom: -10px;" class="simple invoice-table" *ngFor="let b of this.dataSource" >
+                        <tbody >
+                        <tr> 
+                          <td colspan="2" style="font-size: 16px; font-weight: bold;" >{{b.samplename}}</td> 
+                        </tr>
+
+                        <tr *ngFor="let z of b.parameter[0].parameter[0].paketparameter; let first = first;"> 
+                          <td style="font-weight: 200;">{{z.name_id}}</td> 
+                          <td *ngIf="first && z.statusId == 'PAKET'" [attr.rowspan]="b.parameter[0].parameter[0].paketparameter.length" style="font-size: 16px; font-weight: bold;"><p style="/*! rotate: 270deg; */ text-align: center;">{{z.status}}</p></td> 
+                        </tr>
+
+                        <tr *ngFor="let z of b.parameter[0].parameter[0].satuanparameter; let first = first;"> 
+                          <td style="font-weight: 200;">{{z.name_id}}</td> 
+                          <td *ngIf="first && z.status == 'NON PAKET'" [attr.rowspan]="b.parameter[0].parameter[0].satuanparameter.length" style="font-size: 16px; font-weight: bold;"><p style="/*! rotate: 270deg; */ text-align: center;">{{z.status}}</p></td> 
+                        </tr>
+
+                        <tr *ngFor="let z of b.parameter[0].parameter[0].paketPKM; let first = first;"> 
+                          <td style="font-weight: 200;">{{z.name_id}}</td> 
+                          <td *ngIf="first && z.status == 'PAKET PKM'" [attr.rowspan]="b.parameter[0].parameter[0].paketPKM.length" style="font-size: 16px; font-weight: bold;">
+                            <p style="/*! rotate: 270deg; */ text-align: center;">{{z.status}}</p>
+                          </td> 
+                        </tr>
+                        
+                        <tr> 
+                          <td colspan="2" style="font-size: 16px; font-weight: bold;" >Total Rp. {{b.parameter[0].totalpembayaran.toLocaleString()}}</td> 
+                        </tr>
+                        
+                        </tbody>
+                      </table> 
+                    </div>
+                  </div>
+                  <!-- </div> -->
+                </div>
+
+                <div *ngIf="this.data[0].status === 'add'" >
+                  <mat-grid-list cols="3" rowHeight="70px">
+                    <mat-grid-tile>
+                      <button *ngIf="this.btnSave === true" mat-raised-button style="width: 95%;background-color: green;" 
+                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                      color="warn" (click)="saveContrack()" >Save</button>
+                    </mat-grid-tile> 
+                    <mat-grid-tile>
+                      <button mat-raised-button [disabled]="this.btnPrint" 
+                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                      style="width: 95%;background-color: dimgray;" color="warn" 
+                      (click)="printContrack()">Print</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                      <button mat-raised-button *ngIf="this.btnSave === true"  (click)="backToContrack()" style="width: 95%;" color="warn">Cancel</button>
+                    </mat-grid-tile>
+                  </mat-grid-list>
+                </div>
+                <div *ngIf="this.data[0].status === 'edit'" >
+                  <mat-grid-list cols="3" rowHeight="70px"> 
+                    <mat-grid-tile> 
+                      <button *ngIf="this.btnUpdate === true" mat-raised-button style="width: 95%;background-color: green;" 
+                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                      color="warn" (click)="update()" >Update</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                      <button mat-raised-button 
+                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}"
+                      style="width: 95%;background-color: dimgray;" color="warn" 
+                      (click)="printContrack()">Print</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                      <button mat-raised-button *ngIf="this.btnUpdate === true"  (click)="backToContrack()" style="width: 95%;" color="warn">Cancel</button>
+                    </mat-grid-tile>
+                  </mat-grid-list>
+                </div>
+
+                
+              </div>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+
+  </div>
+  <!-- / CONTENT -->
+  
+</div>

@@ -1,0 +1,64 @@
+app-marketing-report {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 5px !important;
+
+    .lineborder {
+        flex-grow: 1;
+        height: 5px;
+        background-color: indigo;
+        border-radius: 2px;
+    }
+
+    .subjudul {
+        color: indigo;
+        font-weight: bold;
+    }
+
+    .lab-table {
+        flex: 1 1 70%;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 64px;
+        }
+
+        .mat-column-cust {
+            flex: 0 1 30%;
+        }
+        .mat-column-total_contract {
+            flex: 0 1 20%;
+            justify-content: flex-end;
+        }
+        .mat-column-revenue {
+            flex: 0 1 20%;
+            justify-content: flex-end;
+        }
+
+        .mat-column-category {
+            justify-content: center;
+            flex: 0 1 20%;
+        }
+
+        .mat-column-contracttype {
+            justify-content: flex-start;
+            flex: 0 1 20%;
+            margin: 0px 20px;
+        }
+    }
+
+    .fontsize8 {
+        font-size: 12px;
+    }
+
+    .flex-end {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .mat-form-field-wrapper {
+        padding-bottom: 0px !important;
+    }
+}

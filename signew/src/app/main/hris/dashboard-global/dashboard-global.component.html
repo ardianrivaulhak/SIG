@@ -1,0 +1,40 @@
+<div
+    class="dashboard-global"
+    id="dashboard-global"
+    style="overflow: auto; height: 93vh"
+>
+    <mat-card
+        fxLayout="row"
+        fxFlex="40%"
+        fxLayoutAlign="left"
+        style="width: 100%; margin: 8px; margin-bottom: 15px; overflow: auto; border-radius: 10px;"
+        >Employee</mat-card>
+    <div
+        fxLayout="column"
+        fxFlex="30%"
+    >
+        <mat-card style="height: 50%; margin: 8px; border-radius: 10px;" (click)="navigate()" mat-ripple>Attendance</mat-card>
+        <mat-card style="height: 50%; margin: 8px; margin-bottom: 15px; border-radius: 10px;">Recruitment</mat-card>
+    </div>
+    <div
+        fxLayout="column"
+        fxFlex="30%"
+    >
+        <mat-card style="height: 50%; margin: 8px; border-radius: 10px;">Cost</mat-card>
+        <mat-card style="height: 50%; margin: 8px; margin-bottom: 15px; border-radius: 10px;">Training</mat-card>
+    </div>
+
+    <!-- <ngx-charts-advanced-pie-chart
+    [view]="view"
+    [scheme]="colorScheme"
+    [results]="single"
+    [gradient]="gradient"
+    (select)="onSelect($event)"
+    (activate)="onActivate($event)"
+    (deactivate)="onDeactivate($event)"
+    >
+  </ngx-charts-advanced-pie-chart> -->
+
+
+    
+</div>

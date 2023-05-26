@@ -1,0 +1,20 @@
+<div fxFlex fxLayout="column" style="width: 100%;">
+    <mat-form-field appearance="fill">
+        <mat-label>Follow up</mat-label>
+        <mat-select>
+          <mat-option [value]="setValue(1)">SPV</mat-option>
+          <mat-option [value]="setValue(2)">ASM</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Status Parameter</mat-label>
+        <mat-select>
+          <mat-option [value]="setValue(1)">Uji Ulang</mat-option>
+          <mat-option [value]="setValue(0)">Tidak Uji Ulang</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%; gap: 20px">
+        <button mat-raised-button>Save</button>
+        <button mat-raised-button>Cancel</button>
+      </div>
+</div>

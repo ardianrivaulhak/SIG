@@ -1,0 +1,54 @@
+<div  class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Change Condition</div>
+    <div style="border-bottom: 2px solid #fbfbfb;"></div>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+        <form name="changeForm" [formGroup]="changeForm" class="product w-100-p" fxLayout="column" fxFlex>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field appearance="outline" 
+                floatLabel="always" 
+                fxFlex="40"
+                style="font-size : 11px;">
+                    <mat-label>Condition</mat-label>
+                    <mat-select 
+                    name="condition" formControlName="condition">
+                        <mat-option *ngFor="let chnge of chnge" [value]="chnge.viewValue">
+                            {{ chnge.value }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field 
+                appearance="outline" 
+                floatLabel="always"  
+                style="font-size : 11px;"
+                fxFlex="100">
+                    <mat-label>Reason</mat-label>
+                        <textarea matInput name="reason" formControlName="reason" rows="7" ></textarea>
+                    <mat-error>
+                        Reason is Required
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+        <button mat-raised-button 
+        fxFlex="12"  fxFlex.xs="12" 
+        color="primary" 
+        style="margin-right:10px; width:250px;" 
+        [disabled]="this.disabledBUtton"
+        class="mat-primary" 
+        (click)="saveForm()" >
+          Submit
+        </button>
+        <button mat-stroked-button 
+        fxFlex="12"  fxFlex.xs="12"
+        style="margin-right:50px; width:250px;"
+        color="primary" (click)="closeModal(true)" aria-label="Close">
+            Close
+        </button>
+    </div>
+</div>
+        

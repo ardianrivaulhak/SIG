@@ -1,0 +1,104 @@
+<div *ngIf="contractcategoryForm" class="page-layout carded fullwidth inner-scroll">
+    <form name="contractcategoryForm" [formGroup]="contractcategoryForm" class="product w-100-p" fxLayout="column" fxFlex>
+        <div id="contractcategorydet" class="page-layout carded fullwidth inner-scroll">
+            <div class="top-bg primary"></div>
+            <!-- / TOP BACKGROUND -->
+
+            <!-- CENTER -->
+            <div class="center" style="overflow: auto;">
+
+                <!-- HEADER -->
+                <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/contract-category'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+
+                        <div *ngIf="this.idcontractcategory === 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                    <div class="text-customer h2">
+                                        Add Data
+                                    </div>
+            
+                                    <div class="subtitle secondary-text">
+                                        <span>add new Paket Uji</span>
+                                    </div>                    
+                            </div>
+                        </div>
+    
+                        <div *ngIf="this.idcontractcategory !== 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                    <div class="text-customer h2">
+                                        Edit Data
+                                    </div>
+            
+                                    <div class="subtitle secondary-text">
+                                        <span>edit data Paket Uji</span>
+                                    </div>                    
+                            </div>
+                        </div>
+
+                    </div>
+                    <button mat-raised-button class="save-product-button" (click)="saveNewForm()"
+                        *ngIf="hide && this.idcontractcategory === 'add'"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <mat-icon>save</mat-icon>
+                        <span>Save</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" (click)="updateForm()"
+                        *ngIf="hide && this.idcontractcategory !== 'add'"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                </div>
+                <div class="content-card" style="overflow: auto;">
+                    <mat-progress-bar color="primary" mode="indeterminate" value="50" *ngIf="load">
+                    </mat-progress-bar>
+                    <div class="content" *ngIf="contractcategoryForm">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <mat-grid-list [cols]="2" rowHeight='100px'>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Title</mat-label>
+                                        <input matInput placeholder="Title" name="title" formControlName="title"
+                                            required minlength="1">
+                                            <mat-error>
+                                                Title is Required
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile style="margin-left: 5px">
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Category Code</mat-label>
+                                        <input matInput placeholder="Code" name="category_code" formControlName="category_code"
+                                            required minlength="1">
+                                            <mat-error>
+                                                Category Code is Required
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <!-- <mat-grid-tile>
+                                    <mat-form-field style="width: 30% !important;">
+                                        <mat-select formControlName="active" placeholder="Active" required>
+                                            <mat-option *ngFor="let d of active" [value]="d.value">
+                                                {{d.viewValue}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile> -->
+                            </mat-grid-list>
+
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

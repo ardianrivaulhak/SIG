@@ -1,0 +1,169 @@
+<div
+    class="page-layout blank p-24"
+    fusePerfectScrollbar
+    style="height: 90vh; overflow-y: auto !important"
+    id="html2Pdf"
+>
+    <mat-grid-list rowHeight="3:1" cols="3">
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="employee_data"
+                bindLabel="employee_name"
+                (scrollToEnd)="onScrollToEnd('employee')"
+                bindValue="user_id"
+                placeholder="Select Employee"
+                (change)="getValChange($event, 'employee')"
+                (clear)="reset('employee')"
+                (search)="onSearch($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 80%;
+                "
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <b>{{ item.nik }}</b
+                    >&nbsp;-&nbsp;{{ item.employee_name }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <b>{{ item.nik }}</b
+                    >&nbsp;-&nbsp;{{ item.employee_name }}
+                </ng-template>
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="openDialog()"
+                [disabled]="check()"
+                style="margin-right: 100px"
+            >
+                <mat-icon>add_box</mat-icon>
+            </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <div class="mat-elevation-z8" style="width: 100%" *ngIf="!this.loading">
+        <mat-table
+            class="lab-table"
+            #table
+            [dataSource]="mastermenu"
+            fusePerfectScrollbar
+        >
+            <!-- Position Column -->
+            <ng-container matColumnDef="nik">
+                <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="text-truncate">{{ e.title }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="menu_name">
+                <mat-header-cell *matHeaderCellDef>Apps</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="text-truncate">{{ e.menu_name }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="create">
+                <mat-header-cell *matHeaderCellDef>Create</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <mat-checkbox
+                        class="example-margin"
+                        [checked]="e.create"
+                        (change)="setAll($event.checked, e, 'create')"
+                    >
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="approve">
+                <mat-header-cell *matHeaderCellDef>Approve</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <mat-checkbox
+                        class="example-margin"
+                        [checked]="e.approve"
+                        (change)="setAll($event.checked, e, 'approve')"
+                    >
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="update">
+                <mat-header-cell *matHeaderCellDef>Update</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <mat-checkbox
+                        class="example-margin"
+                        [checked]="e.update"
+                        (change)="setAll($event.checked, e, 'update')"
+                    >
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <mat-header-cell *matHeaderCellDef>Delete</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <mat-checkbox
+                        class="example-margin"
+                        [checked]="e.delete"
+                        (change)="setAll($event.checked, e, 'delete')"
+                    >
+                    </mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <button
+                        mat-icon-button
+                        (click)="delete(e)"
+                        style="color: #fa2828"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-trash-fill"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                                d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                            />
+                        </svg>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+            ></mat-header-row>
+            <mat-row *matRowDef="let e; columns: displayedColumns"> </mat-row>
+        </mat-table>
+    </div>
+    <div *ngIf="this.loading">
+        <div
+            style="
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            "
+        >
+            <img
+                src="assets/images/backgrounds/complete.png"
+                style="width: 40%; height: auto"
+            />
+            <span style="font-size: 16px; font-weight: bold"
+                >Please Select Employee First</span
+            >
+        </div>
+    </div>
+</div>

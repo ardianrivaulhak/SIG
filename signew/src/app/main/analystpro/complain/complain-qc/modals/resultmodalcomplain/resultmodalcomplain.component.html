@@ -1,0 +1,45 @@
+<table class="customers">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>Parameteruji</th>
+        <th>Hasiluji Awal</th>
+        <th>Hasil Uji Ulang</th>
+        <th>Actual Result</th>
+        <th>Actual Complain Result</th>
+        <th>Simplo</th>
+        <th>Duplo</th>
+        <th>Triplo</th>
+        <th>LOD</th>
+        <th>Metode</th>
+        <th>Standart</th>
+        <th>Unit</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let x of this.datacomplainresult; let i = index">
+        <tr>
+            <td>{{i + 1}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.parameteruji.name_id : x.parameteruji.name_id}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.hasiluji : x.hasiluji}}</td>
+            <td>{{x.transactionparameter ? x.complain_result ? x.complain_result : '-' : this.headcomp[0].complain_result ? this.headcomp[0].complain_result : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.actual_result : x.actual_result ? x.actual_result : '-'}}</td>
+            <td>{{x.transactionparameter ? x.actual_complain_result ? x.actual_result_complain : '-' : this.headcomp[0].actual_complain_result ? this.headcomp[0].actual_complain_result : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.simplo ? x.transactionparameter.simplo : '-' : x.simplo ? x.simplo : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.duplo ? x.transactionparameter.duplo : '-' : x.duplo ? x.duplo : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.triplo ? x.transactionparameter.triplo : '-' : x.triplo ? x.triplo : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.lod ? x.transactionparameter.lod.nama_lod : '-' : x.lod ? x.lod.nama_lod : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.metode ? x.transactionparameter.metode.metode : '-' : x.metode ? x.metode.metode : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.standart ? x.transactionparameter.standart.nama_standart : '-' : x.standart ? x.standart.nama_standart : '-'}}</td>
+            <td>{{x.transactionparameter ? x.transactionparameter.unit ? x.transactionparameter.unit.nama_unit : '-' : x.unit ? x.unit.nama_unit : '-'}}</td>
+        </tr>
+    </tbody>
+</table>
+<!-- <div style="padding: 10px 0px;
+width: 100%;
+display: flex;
+justify-content: flex-end;
+align-items: center;">
+    <button mat-raised-button color="primary">Send</button>
+    <div style="width: 5px;"></div>
+    <button mat-raised-button color="warn">Cancel</button>
+</div> -->

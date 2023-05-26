@@ -1,0 +1,122 @@
+@import "src/@fuse/scss/fuse";
+
+.certificate-complain{
+
+    @include media-breakpoint('xs') {
+        //width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 720px;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .after-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        height: 400px;
+
+        .mat-header-row {
+            min-height: 64px;
+            background-color: #1e2129;
+            margin-bottom: 5px;
+            color: #fff;
+            
+            .mat-header-cell{
+                color:#fff;
+                font-size: 14px;
+                font-weight: bolder;
+                
+            }
+            .mat-sort-header-button{
+                color: #fff;
+                font-weight: 800;
+            }
+
+            .mat-checkbox .mat-checkbox-frame {
+                border-color: #fff;
+            }
+        }
+
+        .mat-row{
+            min-height: 30px;
+            font-size: 10px;
+            padding-top: 1px;
+            
+        }
+
+        .standart {
+            position: relative;
+            cursor: pointer;
+            height: 10px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .customers-image {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(0, 0, 0, .12);
+            }
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+
+        .filters {
+            width: 100%;
+            max-width: 1040px;
+            margin: 24px auto;
+            padding: 0 20px;
+            background-color: #fff;
+
+            @include media-breakpoint('xs') {
+                margin: 0 auto;
+            }
+
+            .course-search {
+                width: 320px;
+
+                @include media-breakpoint('gt-xs') {
+                    margin-right: 16px;
+                }
+            }
+        }
+
+
+    }
+}

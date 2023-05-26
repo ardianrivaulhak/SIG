@@ -1,0 +1,246 @@
+<div id="control-parameter" class="page-layout simple" style="height:600px; overflow: auto;">
+    <div class="content" style="overflow: auto;">
+        <mat-card fxLayoutAlign="space-between center">
+            <div *ngIf="this.sampleData.length > 0" style="padding: 10px; margin-top: 20px; margin-left: 10px;" >
+                <span style="font-weight:800; font-size: 14px;"> {{  this.sampleData[0].sample_name  }}</span><br>
+                <small style="font-style: italic; font-size: 10px;">{{ this.sampleData[0].no_sample  }}</small><br>
+                <span style="font-size: 12px;">{{ this.sampleData[0].subcatalogue.sub_catalogue_name }}</span>
+            </div>
+         
+        </mat-card>
+        <mat-card style="margin: 0px;" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >  
+            <div fxLayout="row" fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">          
+                <form name="resultForm" class="product w-100-p" fxLayout="column" >
+                    <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>                     
+                           
+                            <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="30" fxHide fxShow.gt-xs>
+                                <mat-label>Parameter Indonesia</mat-label>
+                                <input matInput 
+                                [(ngModel)]="this.dataFilter.parameter_id"
+                                name="parameter_id"
+                                #filter >
+                            </mat-form-field>                        
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="30">
+                                <mat-label>Parameter English</mat-label>
+                                <input matInput 
+                                [(ngModel)]="this.dataFilter.parameter_en"
+                                name="parameter_en"
+                                #filter >
+                            </mat-form-field>
+
+                            <ng-select appendTo="body" 
+                            [items]="dataLab" 
+                            bindLabel="nama_lab" 
+                            bindValue="id" 
+                            class="auto-grow"
+                            fxFlex="15" fxHide fxShow.gt-xs
+                            appearance="outline" 
+                            placeholder="Lab"
+                            [(ngModel)]="this.dataFilter.lab"
+                            name="lab"
+                            dropdownPosition="bottom" 
+                            (scrollToEnd)="onScrollToEnd('lab')" 
+                            (search)="onsearchselect($event,'lab')"
+                            (clear)="reset('lab')"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center;">
+                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                    {{item.nama_lab}}
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    {{item.nama_lab}}
+                                </ng-template>
+                            </ng-select>    
+                            <button mat-flat-button color="accent"  fxFlex="10"  fxFlex.xs="13" style="height: 40px; width:250px; margin-top: -13px;" (click)="searchButton()" >
+                                Search
+                            </button>
+                            <button mat-flat-button color="warn" fxFlex="10"  fxFlex.xs="13" style="height: 40px; width: 100%; margin-top: -13px;" (click)="cancelSearchMark()" >
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+         
+        </mat-card>
+        <mat-card >
+            <div fxLayout="row" fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" *ngIf="this.sampleData.length > 0">
+                <div>
+                    <span style="font-weight: bold; color: #303030;" fxHide fxShow.gt-md>Parameters &nbsp; | </span>
+
+                    <button mat-icon-button color="primary"  
+                    (click)="this.getModalAddPhoto(sampleData[0])"
+                    matTooltip="Photo Sample"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>filter</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary"  
+                    (click)="this.refresh()"
+                    matTooltip="Refresh"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="primary"  
+                    *ngIf="this.checkList.length > 0"
+                    (click)="this.editParameter(sampleData[0], 'checklist')"
+                    matTooltip="By Sample"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                </div>
+
+                <div [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <mat-paginator
+                    [length]="this.total"
+                    [pageSize]="this.to"
+                    [pageIndex]="this.current_page"
+                    hidePageSize="true"
+                    (page)="pageEvent = $event; paginated($event)"                >
+                </mat-paginator>
+                </div>
+            </div>
+        </mat-card>
+
+        <mat-card *ngIf="this.sampleData.length > 0" >
+            <mat-table class="control-table" #table [dataSource]="parameterData" 
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar matSort (matSortChange)="sortData($event)">
+
+             <!-- Column -->
+             <ng-container matColumnDef="no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="no">No</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData; let i = index" [ngClass]="{'make-red': parameterData.parameter_type == null}">
+                    <p class="text-truncate" matTooltip="{{ i + 1 }}">{{ i + 1 }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="checkbox">
+                <mat-header-cell
+                    *matHeaderCellDef
+                    ><mat-checkbox
+                        class="example-margin"
+                        (change)="setAll($event.checked)"
+                        (change)="someComplete()"
+                    ></mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let parameterData">
+                    <mat-checkbox
+                        class="example-margin"
+                        style="margin-bottom : 5px"
+                        [(ngModel)]="parameterData.completed"
+                        (ngModelChange)="updateAllComplete()"
+                        [disabled]="parameterData.disable"
+                        (change)="
+                            checkBox($event.checked, parameterData.id)
+                        "
+                    ></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="parameter_type">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="parameter_type">Parameter Type</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData"  [ngClass]="{'make-red': parameterData.parameter_type == null}">
+                    <p class="text-truncate" matTooltip="{{ parameterData.parameter_type == null ? '' : parameterData.parameter_type }}">{{ parameterData.parameter_type == null ? '' : parameterData.parameter_type }}</p>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="lod">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="lod">LOD</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData"  [ngClass]="{'make-red': parameterData.nama_lod == null}">
+                    <p class="text-truncate" matTooltip="{{ parameterData.nama_lod == null ? '' : parameterData.nama_lod }}">{{ parameterData.nama_lod == null ? '' :  parameterData.nama_lod }}</p>
+
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="metode">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="metode">Metode</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData" [ngClass]="{'make-red': parameterData.metode == null}">
+                    <p class="text-truncate" matTooltip="{{ parameterData.metode == null ? '' : parameterData.metode }}">{{ parameterData.metode == null ? '' : parameterData.metode }}</p>
+                </mat-cell>
+            </ng-container>
+
+           
+             <!-- Column -->
+             <ng-container matColumnDef="lab">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="lab">Lab</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData"  [ngClass]="{'make-red': parameterData.nama_lab == null}">
+                    <p class="text-truncate" matTooltip="{{ parameterData.nama_lab == null ? '' : parameterData.nama_lab }}">{{ parameterData.nama_lab == null ? '' :  parameterData.nama_lab }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="parameter_name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="parameter_name">Parameter Name</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" style="white-space: normal;"  matTooltip="{{ parameterData.name_id }}">{{ parameterData.name_id }}</span>
+                        <span class="text-truncate"style="white-space: normal;" matTooltip="{{ parameterData.name_en }}"
+                            style="color: f5f5f5; font-size: 10px; font-style: italic;">{{ parameterData.name_en }}
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="unit" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData" [ngClass]="{'make-red': parameterData.nama_unit == null}">
+                    <p class="text-truncate" matTooltip="{{ parameterData.nama_unit == null ? '' : parameterData.nama_unit }}">{{ parameterData.nama_unit == null ? '' :  parameterData.nama_unit }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="paket">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="paket">Paket</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData; let p = index">
+                    <p class="text-truncate" style="white-space: normal;" matTooltip="{{ parameterData.info }}">{{ parameterData.info }}</p>
+                </mat-cell>
+            </ng-container>
+
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header>#</mat-header-cell>
+                <mat-cell *matCellDef="let parameterData; let indexOfelement=index;" >
+                    <div fxFlex="row" fxLayoutAlign="end center">
+                        <button mat-icon-button color="primary"  
+                        class="btn-icon-control" 
+                        style="margin-right: -10px;"
+                        aria-label="Example icon button with a menu icon" 
+                        (click)="editParameter(parameterData.id, 'nonchecklist')"
+                        matTooltip="edit" >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let parameterData; columns: displayedColumns;"  
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+        </mat-card>
+
+        <div *ngIf="loadingfirst && this.sampleData.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.sampleData.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+    </div>
+</div>

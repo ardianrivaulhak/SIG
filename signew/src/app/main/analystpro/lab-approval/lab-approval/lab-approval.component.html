@@ -1,0 +1,470 @@
+<div
+    id="lab-pengujian"
+    class="page-layout carded fullwidth inner-scroll"
+    style="overflow: auto"
+>
+    <!-- CENTER -->
+    <div class="center" style="background-color: white; height: 90vh">
+        <!-- HEADER -->
+        <div style="height: 30px"></div>
+
+        <mat-grid-list cols="3" rowHeight="75px" gutterSize="10px">
+            
+            <mat-grid-tile colspan="3">
+                <div
+                style="
+                    height: 100px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
+                <div
+                    style="
+                        width: 300px;
+                        height: 40px;
+                        border-radius: 20px;
+                        border: 1px solid lightgray;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 10px;
+                    "
+                >
+                    <mat-icon>search</mat-icon>
+                    <input
+                        style="width: 100%"
+                        [(ngModel)]="search_contract"
+                        (keyup.enter)="testing()"
+                        #filter
+                        placeholder="Search for Contract / Sample"
+                    />
+                </div>
+                <div style="width: 30px"></div>
+                <button mat-mini-fab  color="primary" (click)="testing()">
+                  <mat-icon>search</mat-icon>
+                </button>
+                <div style="width: 20px;"></div>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="this.loading ? true : false"
+                    (click)="exportsampleaccepted()"
+                >
+                    {{
+                        this.loading
+                            ? "Please Wait ..."
+                            : "Export Info Accepted Sample"
+                    }}
+                </button>
+                <div style="width: 20px;"></div>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="this.loading ? true : false"
+                    (click)="exportparameterinfo()"
+                >
+                    {{
+                        this.loading
+                            ? "Please Wait ..."
+                            : "Export Parameter"
+                    }}
+                </button>
+                </div>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appearance="fill"
+                    appendTo="body"
+                    [items]="contractcategory"
+                    bindLabel="title"
+                    bindValue="id"
+                    placeholder="Type Contract"
+                    (change)="getValTypeCont($event)"
+                    [(ngModel)]="typecontract"
+                    dropdownPosition="bottom"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                    "
+                >
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appendTo="body"
+                    appearance="fill"
+                    [items]="customer"
+                    bindLabel="customer_name"
+                    bindValue="id_customer"
+                    (scrollToEnd)="onScrollToEnd('customer')"
+                    (search)="onSearchi($event, 'customer')"
+                    (clear)="reset('customer')"
+                    placeholder="Select By Customers"
+                    (change)="getValCust($event)"
+                    dropdownPosition="bottom"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                    "
+                >
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Due Date</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="picker"
+                        [(ngModel)]="dataFilter.date"
+                        (dateChange)="tglEstimasiLabChange()"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            
+        </mat-grid-list>
+
+        <div style="height: 70px"></div>
+        <!-- CONTENT CARD -->
+        <div
+            class="content inner-scroll"
+            style="
+                height: 90%;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                width: 100%;
+            "
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll($event)"
+            [scrollWindow]="false"
+        >
+            <div style="padding: 10px">
+                <mat-table
+                    #table
+                    [dataSource]="datacontract"
+                    (scroll)="onTableScroll($event)"
+                    matSort
+                    (matSortChange)="sortData($event)"
+                >
+                    <mat-header-row
+                        *matHeaderRowDef="displayedColumns; sticky: true"
+                    ></mat-header-row>
+                    <mat-row
+                        *matRowDef="let datacontract; columns: displayedColumns"
+                        class="contract"
+                    >
+                    </mat-row>
+
+                    <ng-container matColumnDef="check_box" sticky>
+                        <mat-header-cell *matHeaderCellDef>
+                            No.</mat-header-cell
+                        >
+                        <mat-cell
+                            *matCellDef="let row; let e = index"
+                            style="height: 80px"
+                        >
+                            <p class="text-truncate">{{ e + 1 }}</p>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef
+                            >Action</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <button mat-icon-button color="warn" (click)="gotodetail(datacontract)">
+                                <mat-icon>launch</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="contract_no">
+                        <mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header="contract_no"
+                            >Contract Number</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <div
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: flex-start;
+                                    flex-direction: column;
+                                "
+                            >
+                                <span style="font-weight: bold">{{
+                                    datacontract.contract_no
+                                }}</span>
+                                <span style="font-weight: bold">{{
+                                    datacontract.title
+                                }}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!--                 
+                        <ng-container matColumnDef="tanggal_selesai">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="tanggal_selesai">Tanggal Selesai </mat-header-cell>
+                            <mat-cell *matCellDef="let datacontract">
+                                <p class="text-truncate">
+                                    <span class="material-icons">
+                                        date_range
+                                    </span>
+                                    {{datacontract.tanggal_selesai | date}}</p>
+                            </mat-cell>
+                        </ng-container> -->
+
+                    <!-- <ng-container matColumnDef="contract_category">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="contract_category">Contract Type</mat-header-cell>
+                            <mat-cell *matCellDef="let datacontract">
+                                <p class="text-truncate">{{datacontract.contract_category.title}}</p>
+                            </mat-cell>
+                        </ng-container> -->
+
+                    <ng-container matColumnDef="customers">
+                        <mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header="customers"
+                            >Cust.</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <div fxLayout="column">
+                                <span class="text-truncate">{{
+                                    datacontract.customer_name
+                                }}</span>
+                                <span
+                                    class="text-truncate"
+                                    style="
+                                        color: f5f5f5;
+                                        font-size: 10px;
+                                        font-style: italic;
+                                    "
+                                    >{{ datacontract.name }}</span
+                                >
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tanggal_selesai">
+                        <mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header="tanggal_selesai"
+                            >Due Date</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <span
+                                class="text-truncate"
+                                style="font-size: 12px; font-weight: bold"
+                                >{{ datacontract.tgl_selesai | date }}</span
+                            >
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tetes">
+                        <mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header="tetes"
+                            >Info</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <div
+                                fxLayout="column"
+                                style="font-size: 10px; width: 90%"
+                            >
+                                <div
+                                    class="status-normal"
+                                    *ngIf="datacontract.normal > 0"
+                                >
+                                    <span>Normal</span>
+                                    <span>{{ datacontract.normal }}</span>
+                                </div>
+                                <div style="height: 3px"></div>
+                                <div
+                                    class="status-urgent"
+                                    *ngIf="datacontract.urgent > 0"
+                                >
+                                    <span>Urgent</span>
+                                    <span>{{ datacontract.urgent }}</span>
+                                </div>
+                                <div style="height: 3px"></div>
+                                <div
+                                    class="status-veryurgent"
+                                    *ngIf="datacontract.very_urgent > 0"
+                                >
+                                    <span>Very Urgent</span>
+                                    <span>{{ datacontract.very_urgent }}</span>
+                                </div>
+                                <div style="height: 3px"></div>
+                                <div
+                                    class="status-custom2hr"
+                                    *ngIf="datacontract.custom2hari > 0"
+                                >
+                                    <span>Custom 2 Hari</span>
+                                    <span>{{ datacontract.custom2hari }}</span>
+                                </div>
+                                <div style="height: 3px"></div>
+                                <div
+                                    class="status-custom1hr"
+                                    *ngIf="datacontract.custom1hari > 0"
+                                >
+                                    <span>Custom 1 Hari</span>
+                                    <span>{{ datacontract.custom1hari }}</span>
+                                </div>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- <ng-container matColumnDef="keterangan">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                            <mat-cell *matCellDef="let datacontract">
+                                <p>{{datacontract.accepted.length +' / '+ (datacontract.pending.length + datacontract.done.length)}}</p>
+                            </mat-cell>
+                        </ng-container> -->
+<!-- 
+                    <ng-container matColumnDef="progress">
+                        <mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header="progress"
+                            >Progress</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let datacontract">
+                            <div
+                                class="status-veryurgent"
+                                *ngIf="datacontract.pending < 1"
+                            >
+                                <span>Complete</span>
+                            </div>
+                            <div
+                                class="status-custom2hr"
+                                *ngIf="datacontract.pending > 0"
+                            >
+                                <span>Incomplete</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container> -->
+                </mat-table>
+                <div
+                    *ngIf="loadingfirst && this.datacontract.length === 0"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height: 40vh;
+                        flex-direction: column;
+                    "
+                >
+                    <img
+                        style="width: 10%"
+                        src="assets/images/gif/loading.gif"
+                    />
+                    <span>Please Wait</span>
+                </div>
+
+                <div
+                    *ngIf="!loadingfirst && datacontract.length === 0"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height: 40vh;
+                        flex-direction: column;
+                    "
+                >
+                    <img
+                        style="width: 20%"
+                        src="assets/images/gif/selectfile.gif"
+                    />
+                    <span>Data Not found</span>
+                </div>
+            </div>
+        </div>
+        <!-- <div
+            style="
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            "
+        >
+            <button
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                [disabled]="approven"
+                (click)="approvedata()"
+            >
+                {{ this.selectstatusApprove == 2 ? "Unapprove" : "Approve" }}
+                {{
+                    this.jumlahapprove < 1 ? "" : "(" + this.jumlahapprove + ")"
+                }}
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                [disabled]="this.setsavevalue < 1 ? 'true' : 'false'"
+                (click)="savedata()"
+            >
+                Save
+                {{ this.setsavevalue < 1 ? "" : "(" + this.setsavevalue + ")" }}
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                (click)="pastedata('all', 'all')"
+                [disabled]="this.disablepasteall"
+            >
+                Paste All
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                (click)="gotoModulExportSPK()"
+            >
+                Export to Analyst
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                (click)="gotoModulFormatHasil()"
+            >
+                Download Format Hasil Uji
+            </button>
+            <input
+                #_fileInput
+                hidden
+                type="file"
+                (change)="onFileChange($event)"
+            />
+            <button
+                *ngIf="this.datasent.parameterstatus === 1"
+                mat-raised-button
+                color="primary"
+                style="margin: 0px 10px 0px 10px"
+                (click)="_fileInput.click()"
+            >
+                Import Hasil Uji
+            </button>
+        </div> -->
+    </div>
+
+    <!-- End CENTER -->
+</div>

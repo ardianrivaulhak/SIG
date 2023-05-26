@@ -1,0 +1,42 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="SisterCompanyForm"
+        [formGroup]="SisterCompanyForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Company Name</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put Company Name"
+                        formControlName="company_name"
+                    />
+                </mat-form-field>
+                <mat-form-field
+                appearance="outline"
+                floatLabel="always"
+                class="w-100-p"
+            >
+                <mat-label>Desc</mat-label>
+                <textarea
+                    matInput
+                    placeholder="Description"
+                    formControlName="desc"
+                ></textarea>
+            </mat-form-field>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="serviceAct()">Save</button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

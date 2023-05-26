@@ -1,0 +1,135 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px">
+    <div
+        style="
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
+        "
+    >
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            style="width: 100%"
+        >
+            <h1 class="subjudul">Jumlah Sample & Parameter / Bulan</h1>
+            <div class="lineborder"></div>
+        </div>
+
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="end center"
+            fxLayoutGap="5px"
+            style="width: 100%; margin: 10px 0px"
+        >
+            <mat-form-field
+                appearance="fill"
+                class="fontsize8"
+                style="width: 20%"
+            >
+                <mat-label>Month and Year</mat-label>
+                <input matInput [matDatepicker]="dp" [(ngModel)]="this.date" />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="dp"
+                ></mat-datepicker-toggle>
+                <mat-datepicker
+                    #dp
+                    startView="multi-year"
+                    (monthSelected)="setMonthAndYear($event, dp)"
+                ></mat-datepicker>
+            </mat-form-field>
+            <button mat-stroked-button color="accent" (click)="export()" [disabled]="this.loading">Export</button>
+        </div>
+        <mat-progress-bar
+            class="example-margin"
+            [color]="accent"
+            mode="indeterminate"
+            *ngIf="this.loading"
+        >
+        </mat-progress-bar>
+        <mat-table
+            class="lab-table mat-elevation-z8"
+            #table
+            [dataSource]="labform"
+            [@animateStagger]="{ value: '50' }"
+            fusePerfectScrollbar
+        >
+            <!-- Active Column -->
+            <ng-container matColumnDef="bulan">
+                <mat-header-cell *matHeaderCellDef>Bulan</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8">{{ e.bulan }}</p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="kode_sample">
+                <mat-header-cell *matHeaderCellDef>Kode Sample</mat-header-cell>
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8">{{ e.kode_sample }}</p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8" style="font-weight: bold">
+                        Total
+                    </p>
+                </mat-footer-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="jumlah_parameter">
+                <mat-header-cell *matHeaderCellDef
+                    >Jml Parameter</mat-header-cell
+                >
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8 flex-end">
+                        {{ e.jumlah_parameter.toLocaleString() }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8 flex-end" style="font-weight: bold">
+                        {{this.labform.length > 0 ? gettotalujmlahparameter().toLocaleString() : 0}}
+                    </p>
+                </mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="jumlah_sample">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Jml Sample</mat-header-cell
+                >
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8 flex-end" >
+                        {{ e.jumlah_sample.toLocaleString() }}
+                    </p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>
+                    <p class="fontsize8 flex-end" style="font-weight: bold">
+                        {{this.labform.length > 0 ? gettotalujmlahsample().toLocaleString() : 0}}
+                    </p>
+                </mat-footer-cell>
+
+            </ng-container>
+
+            <ng-container matColumnDef="contracttype">
+                <mat-header-cell *matHeaderCellDef style="text-align: center"
+                    >Contract Type</mat-header-cell
+                >
+                <mat-cell *matCellDef="let e">
+                    <p class="fontsize8">{{ e.contracttype }}</p>
+                </mat-cell>
+                <mat-footer-cell *matFooterCellDef>  </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row
+                *matHeaderRowDef="displayedColumns; sticky: true"
+            ></mat-header-row>
+            <mat-row *matRowDef="let e; columns: displayedColumns"> </mat-row>
+            <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
+        </mat-table>
+    </div>
+</div>

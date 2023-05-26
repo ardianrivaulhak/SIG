@@ -1,0 +1,50 @@
+<!-- <div class="dialog-content-wrapper mat-primary m-0" >
+ 
+    <mat-toolbar matDialogTitle class="mat-primary m-0" >
+        <div id="leftContainer" fxFlex="90%">
+            <span class="title dialog-title">
+                Revision History
+            </span>
+            <div class="subheadings" [@animate]="{value:'*',params:{delay:'120ms',x:'-25px'}}" style="margin-top: -15px;">
+                <span style="font-size:12px; font-weight: 700;" [@animate]="{value:'*',params:{delay:'120ms',x:'-25px'}}">
+                 
+                </span>
+            </div>
+        </div>
+        <div id="rightContainer" fxFlex="10%">
+         
+        </div>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+     
+    </div>
+  </div> -->
+
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Revision History</div>
+    <div style="border-bottom: 2px solid #fbfbfb;"></div>
+
+    <div mat-dialog-content fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+        <mat-list role="list" *ngFor="let item of revisionData; let i = index">
+            <mat-list-item style="width: 100%;" fxLayout="row" fxLayoutAlign="space-between center" role="listitem" >
+                <span style="font-weight: bold;">{{ i + 1 + ' . ' +  item.lhu_number + ' / ' + item.cl_number  }}</span>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    
+</div>
+
+<div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+    <button mat-stroked-button 
+    fxFlex="12"  fxFlex.xs="12"
+    style="margin-right:50px; width:250px;"
+    (click)="closeDialog(true)"
+    color="primary" >
+        Close
+    </button>
+</div>

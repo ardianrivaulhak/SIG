@@ -1,0 +1,35 @@
+app-dashboard {
+
+    #test {
+        @media only screen and (max-width: 600px) {
+            h1 {
+                font-size: 21px;
+                font-weight: bolder;
+            }
+            p {
+                font-size: 13px;
+            }
+          }
+
+        /* designing title and tag line */
+        .logo {
+            text-align:left;
+            position: absolute;
+            font-size: 18px;
+            top: 100px;
+            left: 20%;
+            color: white;
+        }
+        h1, p {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h1 {
+            font-size: 41px;
+            font-weight: bolder;
+        }
+        p {
+            font-size: 21px;
+        }
+    }
+   
+}

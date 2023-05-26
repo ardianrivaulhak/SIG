@@ -1,0 +1,31 @@
+<div *ngIf="DiscountForm" style="margin-top: 20px;">
+    <div>
+        <mat-card-title>
+            Status Pengujian Detail
+        </mat-card-title>
+
+        <mat-card-content >
+            <hr style="color: white;">
+            <form name="DiscountForm" [formGroup]="DiscountForm">
+                <mat-grid-list cols="1" rowHeight="90px"> 
+                    <mat-grid-tile>
+                        <p>Discount : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                        <mat-form-field style="width: 70%;"  appearance="outline"> 
+                            <input style="color: black; width: 80%" formControlName="discount" matInput>
+                        </mat-form-field> 
+                        <p style="margin-top: -5px;">&nbsp;&nbsp; %</p>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="1" rowHeight="70px">
+                    <mat-grid-tile>
+                        <button mat-raised-button class="save-product-button" style="width: 100%; margin-top: 20px; color: white; background-color: #039be5;"
+                        [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}" (click)="saveFrom()">
+                        <mat-icon>save</mat-icon>
+                        <span> Save</span>
+                        </button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </div>
+</div>

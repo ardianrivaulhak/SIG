@@ -1,0 +1,267 @@
+<h1 mat-dialog-title>Set Customer Handle</h1>
+<div mat-dialog-content>
+    <div
+        fxLayout="column"
+        fxLayoutAlign="space-around center"
+        style="width: 100%"
+    >
+        <div style="width: 100%">
+            <div
+                style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 5px;
+                    flex-direction: row;
+                "
+            >
+                <ng-select
+                    appearance="outline"
+                    appendTo="body"
+                    style="width: 100%"
+                    [items]="datacontactperson"
+                    bindLabel="name"
+                    bindValue="id_cp"
+                    placeholder="Select Contact Person"
+                    (search)="onSearchi($event, 'cp')"
+                    (change)="getVal($event, 'cp')"
+                    (clear)="resetAll('cp')"
+                    (close)="resetAll('cp')"
+                    [(ngModel)]="id_cp"
+                    (scrollToEnd)="onScrollToEnd($event, 'cp')"
+                    dropdownPosition="bottom"
+                >
+                    <ng-template
+                        ng-option-tmp
+                        let-item="item"
+                        let-index="index"
+                    >
+                        <b>{{ item.name }}</b
+                        >&nbsp;-&nbsp;{{ item.email }}&nbsp;-&nbsp;{{
+                            item.telpnumber
+                        }}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <b>{{ item.name }}</b
+                        >&nbsp;-&nbsp;{{ item.email }}&nbsp;-&nbsp;{{
+                            item.telpnumber
+                        }}
+                    </ng-template>
+                </ng-select>
+                <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="addContactPerson()"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div
+                fxLayout="column"
+                fxLayoutAlign="center center"
+                style="width: 100%"
+                fxLayoutGap="10px"
+            >
+                <div
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        width: 100%;
+                    "
+                >
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                        "
+                    >
+                        <mat-form-field
+                            appearance="outline"
+                            style="width: 10% !important; align-self: center"
+                        >
+                            <input type="text" matInput value="+62" disabled />
+                        </mat-form-field>
+                        <mat-form-field
+                            appearance="outline"
+                            style="
+                                width: 100% !important;
+                                margin: 5px;
+                                align-self: center;
+                            "
+                        >
+                            <mat-label>Phone Number</mat-label>
+                            <input
+                                matInput
+                                [(ngModel)]="telpnumber"
+                                currencyMask
+                                [options]="{
+                                    prefix: '',
+                                    thousands: '',
+                                    precision: 0,
+                                    allowNegative: false,
+                                    align: 'left'
+                                }"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <span style="font-style: italic; font-size: 10px"
+                        >cth. 899999999 tanpa angka 0 didepan</span
+                    >
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        width: 100%;
+                    "
+                >
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                        "
+                    >
+                        <mat-form-field
+                            appearance="outline"
+                            style="width: 10% !important; align-self: center"
+                        >
+                            <input type="text" matInput value="+62" disabled />
+                        </mat-form-field>
+                        <mat-form-field
+                            appearance="outline"
+                            style="
+                                width: 100% !important;
+                                margin-left: 5px;
+                                align-self: center;
+                            "
+                        >
+                            <mat-label>Mobile Phone</mat-label>
+                            <input
+                                matInput
+                                [(ngModel)]="phonenumber"
+                                currencyMask
+                                [options]="{
+                                    prefix: '',
+                                    thousands: '',
+                                    precision: 0,
+                                    allowNegative: false,
+                                    align: 'left'
+                                }"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <span style="font-style: italic; font-size: 10px"
+                        >cth. 899999999 tanpa angka 0 didepan</span
+                    >
+                </div>
+            </div>
+            <div
+                fxLayout="column"
+                fxLayoutAlign="center center"
+                style="width: 100%"
+                fxLayoutGap="10px"
+            >
+                <div
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        width: 100%;
+                    "
+                >
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                        "
+                    >
+                        <mat-form-field
+                            appearance="outline"
+                            style="width: 10% !important; align-self: center"
+                        >
+                            <input type="text" matInput value="+62" disabled />
+                        </mat-form-field>
+                        <mat-form-field
+                            appearance="outline"
+                            style="
+                                width: 100% !important;
+                                margin-left: 5px;
+                                align-self: center;
+                            "
+                        >
+                            <mat-label>Fax</mat-label>
+                            <input
+                                matInput
+                                currencyMask
+                                [(ngModel)]="fax"
+                                [options]="{
+                                    prefix: '',
+                                    thousands: '',
+                                    precision: 0,
+                                    allowNegative: false,
+                                    align: 'left'
+                                }"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <span style="font-style: italic; font-size: 10px"
+                        >cth. 899999999 tanpa angka 0 didepan</span
+                    >
+                </div>
+                <div
+                    style="
+                        display: flex;
+                        justify-content: flex-start;
+                        flex-direction: column;
+                        width: 100%;
+                        height: 100%;
+                    "
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="
+                            width: 100% !important;
+                            margin-left: 5px;
+                            align-self: center;
+                        "
+                    >
+                        <mat-label>Email</mat-label>
+                        <input
+                            type="email"
+                            matInput
+                            (ngModelChange)="mychange($event, 'email')"
+                            [(ngModel)]="email"
+                        />
+                    </mat-form-field>
+                    <span
+                        *ngIf="!this.emailvalidformat"
+                        style="color: red; font-style: italic; font-size: 10px"
+                        >email tidak valid</span
+                    >
+                    <span *ngIf="this.emailvalidformat"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions align="end" style="margin-bottom: 5px">
+    <button mat-raised-button color="primary" *ngIf="!loading" (click)="save()">
+        <span>Save</span>
+    </button>
+    <button mat-raised-button color="warn" *ngIf="loading" [disabled]="true">
+        <mat-spinner [color]="'accent'" diameter="20"></mat-spinner>
+        <span style="margin-left: 10px">Please Wait</span>
+    </button>
+    <button mat-raised-button matDialogClose color="warning">
+        <span>Cancel</span>
+    </button>
+</div>

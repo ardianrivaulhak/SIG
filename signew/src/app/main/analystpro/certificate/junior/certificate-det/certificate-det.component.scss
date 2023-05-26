@@ -1,0 +1,113 @@
+@import "src/@fuse/scss/fuse";
+
+#certificate-det{
+
+    .center {
+
+        .header {
+
+            .title-header {
+                font-weight: 800;
+            }
+        }
+
+        .content-card {
+
+            .content {
+
+                .tab-content {
+                    height: 70vh; 
+                    overflow-y: auto;
+
+                    .mat-table {
+                        background: transparent;
+                        box-shadow: none;
+                        padding-bottom: 70px;
+                        width: 100%;
+                       
+                
+                        .text-value {
+                            font-size: 12px !important;
+                        }
+                
+                        .mat-row {
+                            position: relative;
+                            cursor: pointer;
+                            min-height: 64px;
+                        }
+                          
+                
+                        
+                
+                        .box-normal {
+                            width: 80%; 
+                            height: 20px; 
+                            border-radius: 15px; 
+                            background-color: #2ecc71 ; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center;
+                
+                             .text-truncate{
+                                 color: #eafaf1 ;
+                                 font-size: 10px;
+                             }
+                        }
+                
+                        .box-urgent {
+                            width: 80%; 
+                            height: 20px; 
+                            border-radius: 15px; 
+                            background-color:  #f7dc6f; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center;
+                
+                            .text-truncate{
+                                color: #7d6608 ;
+                                font-size: 10px;
+                            }
+                        }
+                
+                        .box-very-urgent {
+                            width: 80%; 
+                            height: 20px; 
+                            border-radius: 15px; 
+                            background-color:  #e74c3c ; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center;
+                
+                            .text-truncate{
+                                color:  #f2d7d5 ;
+                                font-size: 10px;
+                            }
+                        }
+                
+                        .box-custom {
+                            width: 80%; 
+                            height: 20px; 
+                            border-radius: 15px; 
+                            background-color: #5dade2 ; 
+                            display: flex; 
+                            justify-content: center; 
+                            align-items: center;
+                
+                            .text-truncate{
+                                color:  #eaf2f8;
+                                font-size: 10px;
+                            }
+                        }
+                
+                        .selected {
+                            background-color: #ebf5fb !important;
+                        }
+                
+                    }
+                }
+
+            }
+        }
+    }
+
+}

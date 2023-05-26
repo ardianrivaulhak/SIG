@@ -1,0 +1,84 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px;"> 
+    <mat-grid-list cols="3" rowHeight="100px" gutterSize="10px">
+        <mat-grid-tile>
+            <div style="width: 100%; display: flex; justify-content: center; align-content: center;">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    item
+                  </mat-icon>
+                  <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                      Status Attendance
+                  </span>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Search for Status Attendance</mat-label>
+                <input matInput [(ngModel)]="search" (input)="onSearchChange($event.target.value)" placeholder="Lab Name">
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button mat-flat-button style="width: 100%; height: 60%;" color="primary"
+              (click)="addnew()"
+              [@animate]="{value:'*',params:{delay:'200ms',x:'-25px'}}"
+              >
+          <mat-icon>add_box</mat-icon>
+          <span>  Add New</span>
+      </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <div class="mat-elevation-z8">
+        <mat-table class="lab-table" #table [dataSource]="datastatus" 
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+    
+            <!-- Active Column -->
+            <ng-container matColumnDef="status_code">
+                <mat-header-cell *matHeaderCellDef>Status Code</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">{{a.status_code}}</p>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Name Column -->
+            <ng-container matColumnDef="status_name">
+                <mat-header-cell *matHeaderCellDef>Status Name</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate">{{a.status_name}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="point_status">
+                <mat-header-cell *matHeaderCellDef>Point Status</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate" *ngIf="a.point_status !== null">{{a.point_status}}</p>
+                    <p class="text-truncate" *ngIf="a.point_status == null">-</p>
+                </mat-cell>
+            </ng-container> -->
+    
+            <!-- Weight Column -->
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef style="text-align: center;">Action</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <button mat-icon-button color="primary" (click)="addnew(a)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    <!-- <p class="text-truncate isi">{{parameterujiData.paketuji.price_is.toLocaleString()}}</p> -->
+                    <div>
+                        <button mat-icon-button color="warn" (click)="deleteaction(a)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                </div>
+                </mat-cell> 
+            </ng-container>
+
+
+    
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let a; columns: displayedColumns;" >
+            </mat-row>
+        </mat-table>
+
+    </div>
+
+</div>

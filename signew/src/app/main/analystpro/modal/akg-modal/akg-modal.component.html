@@ -1,0 +1,116 @@
+<h1>Set Data AKG</h1>
+<div mat-dialog-content>
+    <div
+        style="
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        "
+    >
+        <ng-select
+            appendTo="body"
+            [items]="datakg"
+            style="width: 60%"
+            (clear)="reset()"
+            appearance="fill"
+            bindLabel="akg_name"
+            bindValue="id"
+            placeholder="Select Contract Type"
+            (change)="getVal($event)"
+            dropdownPosition="bottom"
+            required
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                {{ item.akg_name }} - {{ item.price }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                {{ item.akg_name }} - {{ item.price }}
+            </ng-template>
+        </ng-select>
+        <mat-form-field style="width: 20%" appearance="outline">
+            <mat-label>Jumlah</mat-label>
+            <input matInput type="number" [(ngModel)]="jumlah" />
+        </mat-form-field>
+        <button mat-raised-button (click)="satuin()" color="warn">
+            Tambah
+        </button>
+    </div>
+    <mat-table #table [dataSource]="akgcombine" fusePerfectScrollbar>
+        <!-- Position Column -->
+        <ng-container matColumnDef="no">
+            <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+            <mat-cell *matCellDef="let a; let i = index">
+                <p class="text-truncate">{{ i + 1 }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="akg_name">
+            <mat-header-cell *matHeaderCellDef>AKG Name </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.akg_name }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef>Price </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.price.toLocaleString() }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="jumlah">
+            <mat-header-cell *matHeaderCellDef>Jumlah </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.jumlah }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef>Total </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.total.toLocaleString() }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index">
+                <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="deleterow(index)"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    <!-- <mat-icon>delete-outline</mat-icon> -->
+                    <svg-icon
+                        src="assets/icons/custom/close.svg"
+                        [svgStyle]="{
+                            'width.px': 20,
+                            fill: '#b80606 ',
+                            display: 'flex',
+                            'align-self': 'center'
+                        }"
+                    >
+                    </svg-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true">
+        </mat-header-row>
+        <mat-row *matRowDef="let a; columns: displayedColumns"> </mat-row>
+    </mat-table>
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: space-between">
+    <!-- <button mat-button mat-dialog-close>Close</button> -->
+    <span>Total Sampling Rp. {{ this.akgtotal.toLocaleString() }}</span>
+    <button mat-button (click)="this.closeModal()">Save</button>
+</div>

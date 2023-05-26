@@ -1,0 +1,4 @@
+<button mat-flat-button color="primary" (click)="_fileInput.click()">Select Image</button>
+<input #_fileInput type="file" (change)="fileChangeEvent($event)" accept="image/*" hidden>
+
+

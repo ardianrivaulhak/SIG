@@ -1,0 +1,111 @@
+<!-- SIDEBAR HEADER -->
+<div class="header primary-700 p-24" fxLayout="column" fxLayoutAlign="space-between" (sampleDatas)="receiveMessage($event)">
+
+  <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+
+      <button mat-icon-button matTooltip="Delete">
+          <mat-icon>done_all</mat-icon>
+      </button>
+
+      <!-- <button mat-icon-button matTooltip="Download">
+          <mat-icon>article</mat-icon>
+      </button> -->
+
+      <button mat-icon-button aria-label="More" matTooltip="More" (click)="openDialog()"> 
+          <mat-icon>more_vert</mat-icon>
+      </button>
+  </div>
+
+  <div *ngIf="Message" [@animateStagger]="{value:'50'}">
+      <div class="title mb-8" ><strong>{{ Message[1].value }}</strong></div>
+      <div class="subtitle secondary-text">
+          <span>{{ Message[2].value }}</span>
+      </div>
+  </div>
+</div>
+<!-- / SIDEBAR HEADER -->
+
+<!-- SIDEBAR CONTENT -->
+<div class="content" fusePerfectScrollbar>
+
+  <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
+     
+
+      <mat-table #table id="detailparameter" [dataSource]="Message[24].value" *ngIf="Message" [@animateStagger]="{value:'50'}" style="height: 70vh; overflow-y: auto;">
+        
+        <ng-container matColumnDef="select">
+          <mat-header-cell *matHeaderCellDef ><mat-checkbox class="example-margin"></mat-checkbox></mat-header-cell>
+          <mat-cell *matCellDef="let Message">
+            <mat-checkbox></mat-checkbox>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="parameter">
+          <mat-header-cell *matHeaderCellDef >Parameter</mat-header-cell>
+          <mat-cell *matCellDef="let Message" >
+            <p class="text-value">{{ Message.parameteruji.name_id }}<br>{{ Message.parameteruji.name_en }}</p>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lab">
+            <mat-header-cell *matHeaderCellDef>Lab</mat-header-cell>
+            <mat-cell *matCellDef="let Message;  let i = index">
+              <ng-select appendTo="body" style="width: 90px;"
+              [items]="labdata" bindLabel="nama_lab" bindValue="nama_lab" style="width: 100%;" [clearable]="false"
+              [(ngModel)]="Message.parameteruji.lab.nama_lab"
+              (change)="getValue($event,i)">
+            </ng-select>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="lod">
+          <mat-header-cell *matHeaderCellDef>LOD</mat-header-cell>
+          <mat-cell *matCellDef="let Message; let i = index">
+            <ng-select appendTo="body" class="text-value"
+            [items]="loddata" bindLabel="nama_lod" bindValue="nama_lod" style="width: 100%;" [clearable]="false"
+            [(ngModel)]="Message.lod.nama_lod"
+            (change)="getValue($event,i)" 
+            dropdownPosition="bottom">
+          </ng-select>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="unit">
+          <mat-header-cell *matHeaderCellDef>Unit</mat-header-cell>
+          <mat-cell *matCellDef="let Message; let i = index">
+            <ng-select appendTo="body" class="text-value"
+            [items]="unitdata" bindLabel="nama_unit" bindValue="nama_unit" style="width: 100%;" [clearable]="false"
+            [(ngModel)]="Message.unit.nama_unit"
+            (change)="getValue($event,i)" 
+            dropdownPosition="bottom">
+          </ng-select>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="metode">
+          <mat-header-cell *matHeaderCellDef>Metode</mat-header-cell>
+          <mat-cell *matCellDef="let Message; let i = index">            
+            <ng-select appendTo="body" class="text-value"
+              [items]="methoddata" bindLabel="metode" bindValue="metode" style="width: 100%;" [clearable]="false"
+              [(ngModel)]="Message.metode.metode"
+              (change)="getValue($event,i)" 
+              dropdownPosition="bottom">
+            </ng-select>
+          </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let Message; columns: displayedColumns; let i = index"
+        [@animate]="{value:'*',params:{y:'100%'}}">
+       </mat-row>
+      
+    </mat-table>
+
+    <div *ngIf="!Message">
+    <img src="https://i.pinimg.com/originals/5d/35/e3/5d35e39988e3a183bdc3a9d2570d20a9.gif">
+    </div>
+
+  </div>
+
+</div>
+<!-- / SIDEBAR CONTENT -->

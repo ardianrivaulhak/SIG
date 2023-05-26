@@ -1,0 +1,31 @@
+<div  *ngIf="descForm" class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <form name="descForm" [formGroup]="descForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Control Memo
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" >
+            <mat-label>Description</mat-label>
+                <textarea matInput name="desc_internal" formControlName="desc_internal" ></textarea>
+        </mat-form-field>   
+           
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">       
+        <button mat-button class="mat-accent" aria-label="Close" (click)="closeModal()">
+            CLOSE
+        </button>
+    </div>
+    </form>
+  </div>

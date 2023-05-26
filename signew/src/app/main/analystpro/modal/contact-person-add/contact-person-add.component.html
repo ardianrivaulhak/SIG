@@ -1,0 +1,96 @@
+<h1 mat-dialog-title>Add Contact Person</h1> 
+<div mat-dialog-content *ngIf="contactForm"> 
+    <form name="contactForm" [formGroup]="contactForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <div class="content">
+        <div class="tab-content p-24" fusePerfectScrollbar>
+            <mat-grid-list cols="2" rowHeight="100px">
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Name" name="name" formControlName="name" minlength="1"
+                            required>
+                        <mat-error>
+                            Name is Required
+                        </mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Gender</mat-label>
+                                <mat-select formControlName="gender" required>
+                                    <mat-option value="L">Male</mat-option>
+                                    <mat-option value="F">Female</mat-option>
+                                  </mat-select>
+                        <mat-error>
+                            Gender Name is Required
+                        </mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Telp Number</mat-label>
+                        <input matInput placeholder="Telp Number" name="telpnumber" formControlName="telpnumber"
+                            minlength="1" type="number">
+                            <mat-error>
+                                Phone is Required
+                            </mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile> 
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput placeholder="Phone Number" name="phonenumber"
+                            formControlName="phonenumber" minlength="1" type="number">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile> 
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Fax</mat-label>
+                        <input matInput placeholder="Fax" name="fax" formControlName="fax" type="number">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <mat-grid-tile> 
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" name="email" formControlName="email" rows="3">
+                    </mat-form-field>
+                </mat-grid-tile>
+
+                <!-- <mat-grid-tile> 
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Active</mat-label>
+                        <input matInput placeholder="Active" name="active" formControlName="active" rows="3">
+                    </mat-form-field>
+                </mat-grid-tile> -->
+
+                <mat-grid-tile> 
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p" style="width: 100% !important; margin: 5px;">
+                        <mat-label>Desc</mat-label>
+                        <textarea matInput placeholder="Desc" name="desc" formControlName="desc" rows="1">
+                        </textarea>
+                    </mat-form-field>
+                </mat-grid-tile>
+ 
+            </mat-grid-list>
+        </div>   
+    </div>
+    </form> 
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-raised-button matDialogClose
+    color="accent" style="margin-right: 30px;" (click)="saveNewForm()">
+      <mat-progress-spinner
+      class="example-margin"
+      [color]="accent"
+      [mode]="'indeterminate'"
+      diameter="20"
+      *ngIf="load">
+  </mat-progress-spinner><span *ngIf="!load">Save</span></button>
+  <button mat-raised-button matDialogClose color="warning">
+    <span>Cancel</span></button>
+</div>

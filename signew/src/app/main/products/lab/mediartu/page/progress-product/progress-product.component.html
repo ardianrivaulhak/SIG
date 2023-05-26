@@ -1,0 +1,42 @@
+<h2 mat-dialog-title style="font-weight: bolder; font-size: 21px; color: #1f3d4d;">Product Progress</h2>
+<div mat-dialog-content style="background-color: #D8D9CF;">    
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch" >
+        <mat-card class="mat-elevation-z0" style="margin:20px 0 20px 0;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="font-weight: bold; margin-bottom: 30px; width:50%;  vertical-align: center;">{{ data.master_media_rtu.product_name }}</td>
+                    <td style="font-weight: bold; margin-bottom: 30px;  width:20%; vertical-align: center;">{{ data.unit }} Unit</td>
+                    <td style="width:30%; vertical-align: center"> 
+                        <mat-form-field appearance="outline" style="font-size:11px;">
+                            <mat-label>Unit</mat-label>
+                            <input matInput [(ngModel)]="formData.unit" [disabled]="this.disabled">
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+        </mat-card>
+        <h2 style="font-size: 16px; font-weight: bold;">History</h2>
+        <mat-card class="mat-elevation-z0" style="margin-bottom:20px;">
+            <div *ngFor="let item of this.labData" >
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <p>{{ item.created_at | date}}</p>
+                    <p>{{ item.unit }} Unit</p>
+                </div>  
+            </div>
+             
+            <hr>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <p style="font-weight: bold;">TOTAL</p>
+                <p style="font-weight: bold;">{{ this.totalHistory }} Unit</p>
+            </div>    
+        </mat-card>
+    </div>
+ 
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+    <div>
+        <button mat-flat-button>Close</button>
+        <button mat-flat-button color="primary" (click)="submitProduct()">Submit</button>
+    </div>
+</div>

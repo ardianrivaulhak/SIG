@@ -1,0 +1,32 @@
+<div *ngIf='datafor.length < 1' style="height: 90vh; overflow: auto; display: flex; align-items: center; justify-content: center;">
+    <img src="assets/images/gif/loading.gif" style="width: 200px; height: auto;" />
+</div>
+ <div style="height: 90vh; overflow: auto;" *ngIf='datafor.length > 0'>
+ <div>
+     <h1>{{this.judul ? this.judul : '-'}}</h1>
+ </div>
+ <table id="customers">
+     <thead>
+        <tr>
+            <th>No</th>
+            <th>Type</th>
+            <th>Rules</th>
+            <th>Status</th>
+            <th>Values</th>
+            <th>Discount</th>
+            <th>Desc</th>
+        </tr>
+     </thead>
+     <tbody *ngFor="let o of datafor; let i = index">
+         <tr>
+            <td>{{i+1}}</td>
+            <td>{{o.mou_type}}</td>
+            <td>{{o.condition_name}}</td>
+            <td>{{o.id_status_pengujian ? o.statuspengujian.name : '-'}}</td>
+            <td>{{o.value ? o.value + 'x' : '-'}} </td>
+            <td>{{o.discount ? o.discount +'%' : '-'}}</td>
+            <td>{{o.desc ? o.desc : '-'}}</td>
+         </tr>
+     </tbody>     
+ </table>
+</div>

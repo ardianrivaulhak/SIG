@@ -1,0 +1,9 @@
+<div style="margin-top: 100px; text-align: center;" *ngIf="this.load == true">
+    <img  src="assets/images/loading.png" style=" width: 30%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 50px;"/>
+    <img  src="assets/images/gif/load-block.gif" style=" width: 5%; display: block; margin:auto;"/>
+    <span style="font-size: 13px; font-weight: 800; color:salmon;">Please Wait ...</span>
+</div>
+<div style="margin-top: 100px; text-align: center;" *ngIf="this.load == false">
+    <img  src="assets/images/completed.png" style=" width: 30%; display: block; margin-left: auto; margin-right: auto; margin-bottom: 50px;"/>
+    <span style="font-size: 13px; font-weight: 800; color:salmon;">Completed</span>
+</div>

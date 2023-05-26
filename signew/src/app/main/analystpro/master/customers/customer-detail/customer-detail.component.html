@@ -1,0 +1,498 @@
+<div
+    class="full-profile"
+    style="background-color: #f2f5fc; height: 93vh; overflow: auto"
+>
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div
+            fxLayout="row"
+            fxLayoutAlign="start start"
+            style="margin-bottom: 10px"
+        >
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Customer Address</span
+            >
+        </div>
+        <div fxLayout="row" fxLayoutGap="10">
+            <div fxFlex="35%">
+                <table class="empl" style="border-spacing: 10px">
+                    <tr>
+                        <td style="font-weight: bolder">Customer Name</td>
+                        <td>{{ this.detaildata[0]?.customer_name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Address</td>
+                        <td>
+                            {{ this.detaildata[0]?.customer_address.address }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Country</td>
+                        <td>
+                            {{ this.detaildata[0]?.countries.country_name }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Customer Tax Address</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="getModalCustomerAddress()"
+                    class="add-leave"
+                    matTooltip="Add Employee"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            *ngIf="this.detaildata[0]?.customer_taxaddress6 === null"
+        >
+            <h1
+                style="
+                    width: 40%;
+                    height: 50px;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #110f0f;
+                    font-size: 120%;
+                "
+            >
+                No Data, Please Fill In The Data
+            </h1>
+        </div>
+        <div>
+            <table id="statuskaryawan">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Address</th>
+                        <th>Desc</th>
+                        <th>Act</th>
+                    </tr>
+                </thead>
+                <tbody
+                    *ngFor="
+                        let o of detaildata[0]?.customer_taxaddress6;
+                        let i = index
+                    "
+                    style="font-size: smaller"
+                >
+                    <tr>
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+                        <td>
+                            {{ o?.address }}
+                        </td>
+                        <td>
+                            {{ o?.desc }}
+                        </td>
+                        <td style="text-align: center">
+                            <button
+                                mat-icon-button
+                                (click)="deleteDataAddress(o.id_taxaddress)"
+                                style="color: #ee7870"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash-fill"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Customer Handler</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="getModalCustomerHandler()"
+                    class="add-leave"
+                    matTooltip="Add Employee"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            *ngIf="this.detaildata[0]?.customers_handle6 === null"
+        >
+            <h1
+                style="
+                    width: 40%;
+                    height: 50px;
+
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #110f0f;
+                    font-size: 120%;
+                "
+            >
+                No Data, Please Fill In The Data
+            </h1>
+        </div>
+        <div>
+            <table
+                id="statuskaryawan"
+                *ngIf="this.detaildata[0]?.customers_handle6 !== null"
+            >
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th>Act</th>
+                    </tr>
+                </thead>
+                <tbody
+                    *ngFor="
+                        let o of detaildata[0].customers_handle6;
+                        let i = index
+                    "
+                    style="font-size: smaller"
+                >
+                    <tr>
+                        <td>
+                            {{ i + 1 }}
+                        </td>
+                        <td>
+                            {{ o.email !== null ? o.email : "-" }}
+                        </td>
+                        <td>
+                            {{ o.phone !== null ? o.phone : "-" }}
+                        </td>
+                        <td style="text-align: center">
+                            <button
+                                mat-icon-button
+                                (click)="deleteCustomerHandle(o.idch)"
+                                style="color: #ee7870"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash-fill"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Customer Mou</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <mat-menu #menu="matMenu">
+                    <button
+                        mat-menu-item
+                        (click)="StatusPengujianCustomerMou()"
+                    >
+                        Status Pengujian
+                    </button>
+                </mat-menu>
+                <button
+                    mat-icon-button
+                    [matMenuTriggerFor]="menu"
+                    color="white"
+                    matTooltip="Open Menu"
+                >
+                    <mat-icon>library_add</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            *ngIf="detaildata[0]?.customer_mou.length === 0"
+        >
+            <h1
+                style="
+                    width: 40%;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #110f0f;
+                    font-size: 120%;
+                "
+            >
+                No Data, Please Fill In The Data
+            </h1>
+        </div>
+
+        <div>
+            <table
+                id="statuskaryawan"
+                *ngIf="detaildata[0]?.customer_mou.length !== 0"
+            >
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>NO Customer Mou</th>
+                        <th>Sales Forecast</th>
+                        <th>Tgl. Berlaku</th>
+                        <th>Act</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="
+                            let mou of detaildata[0]?.customer_mou;
+                            let i = index
+                        "
+                        style="font-size: smaller"
+                    >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ mou.no_cust_mou }}</td>
+                        <td>
+                            {{
+                                mou.salesforecast > 0
+                                    ? "Rp. " +
+                                      mou.salesforecast.toLocaleString()
+                                    : "-"
+                            }}
+                        </td>
+                        <td>
+                            <div
+                                style="
+                                    padding: 5px;
+                                    background-color: rgb(228, 101, 101, 0.7);
+                                    border-radius: 6px;
+                                    font-weight: bold;
+                                    font-size: x-small;
+                                "
+                                *ngIf="checkdatenow(mou.end_date)"
+                            >
+                                <span>{{ mou.start_date | date }}</span>
+                                <span>~</span>
+                                <span>{{ mou.end_date | date }}</span>
+                            </div>
+                            <br />
+                            <div
+                                style="
+                                    background-color: rgba(145, 253, 154, 0.7);
+                                    padding: 5px;
+                                    border-radius: 6px;
+                                    font-weight: bold;
+                                    font-size: x-small;
+                                "
+                                *ngIf="!checkdatenow(mou.end_date)"
+                            >
+                                <span>{{ mou.start_date | date }}</span>
+                                <span>~</span>
+                                <span>{{ mou.end_date | date }}</span>
+                            </div>
+                        </td>
+                        <td style="text-align: center">
+                            <button
+                                mat-icon-button
+                                (click)="
+                                    deleteCustomerMou(mou.id_cust_mou_header)
+                                "
+                                style="color: #ee7870"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash-fill"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Customer NPWP</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="getModalCustomerNpwp()"
+                    class="add-leave"
+                    matTooltip="Add NPWP"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            fxLayout="row"
+            fxLayoutAlign="center center"
+            *ngIf="detaildata[0]?.customer_npwp.length === 0"
+        >
+            <h1
+                style="
+                    width: 40%;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #110f0f;
+                    font-size: 120%;
+                "
+            >
+                No Data, Please Fill In The Data
+            </h1>
+        </div>
+
+        <div>
+            <table
+                id="statuskaryawan"
+                *ngIf="detaildata[0]?.customer_npwp.length !== 0"
+            >
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Name</th>
+                        <th>Info</th>
+                        <th>NPWP</th>
+                        <th>Act</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="
+                            let u of detaildata[0]?.customer_npwp;
+                            let i = index
+                        "
+                        style="font-size: smaller"
+                    >
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ u.name }}</td>
+                        <td>
+                            {{ u.info }}
+                        </td>
+                        <td>
+                            {{ u.npwp_number }}
+                        </td>
+
+                        <td style="text-align: center">
+                            <button
+                                mat-icon-button
+                                (click)="deleteCustomerNpwp(u.id)"
+                                style="color: #ee7870"
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-trash-fill"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </mat-card>
+</div>

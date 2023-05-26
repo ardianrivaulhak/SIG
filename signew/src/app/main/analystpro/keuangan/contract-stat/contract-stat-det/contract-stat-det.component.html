@@ -1,0 +1,235 @@
+<div id="contract-stat-det"  class="page-layout simple"  *ngIf="this.contractData.length > 0">
+    <div class="content">        
+        <mat-card class="identity-contract" >
+            <h3 class="title-card">Contract Identity</h3>
+            <table class="table-identity">
+                <tr>
+                  <td class="fweight">Marketing Number</td>
+                  <td  class="fweight">:</td>
+                  <td  class="fweight">{{ this.contractData[0].contract_no }}</td>
+                </tr>
+                <tr>
+                  <td class="fweight">Customer</td>
+                  <td>:</td>
+                  <td>{{ this.contractData[0].customers_handle.customers.customer_name }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Address</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].cust_address.address }}</td>
+                  </tr>
+                <tr>
+                    <td class="fweight">PIC</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].customers_handle.contact_person.name }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Telephone</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].customers_handle.telp }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Phone</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].customers_handle.phone }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Termin</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].customers_handle.customers.customer_mou == null ?  this.contractData[0].customers_handle.customers.termin : this.contractData[0].customers_handle.customers.customer_mou.termin }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">MoU</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].customers_handle.customers.customer_mou == null ?  'NO' : 'YES' }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Purchase Order</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].no_po }}</td>
+                </tr>
+                <tr>
+                    <td class="fweight">Description Eksternal</td>
+                    <td>:</td>
+                    <td>{{ this.contractData[0].desc }}</td>
+                </tr>
+              </table> 
+        </mat-card>
+        <mat-card class="buttons">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span class="title-btn" fxHide fxShow.gt-md>Details</span>
+                    <button mat-icon-button color="white"
+                    class="btnbtn"
+                    matTooltip="Attachment Document"
+                    aria-label="Example icon button with a filter list icon"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="openAttachMent(contractData[0].id_kontrakuji, 'kontrak')"
+                    style="margin-left: -2px;">
+                        <mat-icon>attachment</mat-icon>
+                    </button>
+                    <button mat-icon-button color="white"
+                    class="btnbtn"
+                    matTooltip="Contract"
+                    aria-label="Example icon button with a filter list icon"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="openContract(contractData[0].id_kontrakuji)"
+                    style="margin-left: -2px;">
+                        <mat-icon>folder_shared</mat-icon>
+                    </button>
+                    
+        
+                </div>
+                <div>
+                    <span class="title-btn" fxHide fxShow.gt-md>Details</span>
+                </div>
+            </div>
+        </mat-card>
+        <mat-card class="invoice-data">
+            <h3 class="title-card">List Invoice</h3>
+            <mat-list role="list" *ngIf="this.invoicedata.length > 0">
+                <mat-list-item role="listitem" fxLayout="row" fxLayoutAlign="space-between center" style="font-size: 12px;" *ngFor="let invoice of this.invoicedata">
+                    <div>{{ this.invoice.invoice_header.no_invoice }}</div>
+                </mat-list-item>
+            </mat-list>
+            <span  *ngIf="this.invoicedata.length < 1" 
+            style="font-size:10px; font-style: italic;">
+                Invoice not created
+            </span>
+        </mat-card>
+
+        <mat-card class="sample-data">
+            <h3 class="title-card">List Sample</h3>
+            <mat-table class="sample-table" #table [dataSource]="sampledata" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.sampledata.length > 0"> 
+            
+                <!-- Column -->
+                <ng-container matColumnDef="no">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="no">No</mat-header-cell>
+                    <mat-cell *matCellDef="let a; let indexOfelement = index;">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ indexOfelement + 1}}"> {{ indexOfelement + 1}}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Column -->
+                <ng-container matColumnDef="sample_numb">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="sample_numb">Sample Number</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.no_sample }}"> {{ a.no_sample }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="sample_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="sample_name">Sample</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.sample_name }}">{{ a.sample_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedSampleColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let a; columns: displayedSampleColumns;" class="contract" matRipple >
+                </mat-row>
+
+            </mat-table>
+        </mat-card>
+
+        <mat-card class="history-payment">
+            <h3 class="title-card">History Payment</h3>
+            <mat-list role="list" *ngIf="this.contractData[0].payment_data.length > 0">
+                <mat-list-item role="listitem" 
+                fxLayout="row" 
+                fxLayoutAlign="space-between center" 
+                style="font-size: 12px;"
+                *ngFor="let item of this.contractData[0].payment_data">
+                    <div>asd</div>
+                </mat-list-item>
+            </mat-list>
+            <span  *ngIf="this.contractData[0].payment_data.length < 1" 
+            style="font-size:10px; font-style: italic;">
+                History payment not found
+            </span>
+        </mat-card>
+
+        <mat-card class="payment">
+            <h3 class="title-card">Payment Data</h3>
+            <div fxLayout="column">
+                <table id="wow" style="font-size: 11px; width: 100%;">
+                    <tr>
+                        <td style="width: 25%;">Total Cost of Testing</td>
+                        <td style="width: 5%;">:</td>
+                        <td style="width: 70%;"><span style="float: right;">
+                            {{ this.totalSample | currency:"Rp" }}
+                        </span></td>
+                    </tr>
+                    <tr>
+                        <td>Discount</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.discount | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sampling Fee</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.sampling | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>ING fees</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.akg | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sub Total</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.subTotal | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PPN</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.ppn | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Down Payment</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right;">{{ this.downPayment | currency:"Rp " }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Remaining Payment</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: right; font-weight: bold;">{{ this.remainingPay | currency:"Rp "
+                                }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Say</td>
+                        <td>:</td>
+                        <td>
+                            <span style="float: left;"><b>{{ this.terbilang == null ? '-' : this.terbilang + '
+                                    rupiah ' }}</b></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </mat-card>
+        
+    </div>
+
+</div>

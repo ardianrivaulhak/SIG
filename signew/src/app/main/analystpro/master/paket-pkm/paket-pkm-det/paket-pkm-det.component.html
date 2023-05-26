@@ -1,0 +1,528 @@
+<div
+    *ngIf="paketparameterForm"
+    class="page-layout carded fullwidth inner-scroll"
+    style="width: 100%; padding-bottom: 70px; overflow: auto"
+    [style.height.px]="this.screenHeight"
+>
+    <form
+        name="paketparameterForm"
+        [formGroup]="paketparameterForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+        <div
+            id="paketparameterdet"
+            class="page-layout carded fullwidth inner-scroll"
+        >
+            <div class="top-bg primary"></div>
+            <!-- / TOP BACKGROUND -->
+
+            <!-- CENTER -->
+            <div class="center">
+                <!-- HEADER -->
+                <div
+                    class="header primary"
+                    fxLayout="row"
+                    fxLayoutAlign="space-between center"
+                >
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <button
+                            mat-icon-button
+                            class="mr-0 mr-sm-16"
+                            [routerLink]="'/analystpro/paket-special'"
+                        >
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+
+                        <div *ngIf="this.idpaketparameter === 'add'">
+                            <div
+                                fxLayout="column"
+                                fxLayoutAlign="start start"
+                                [@animate]="{
+                                    value: '*',
+                                    params: { delay: '100ms', x: '-25px' }
+                                }"
+                            >
+                                <div class="text-customer h2">Add Data</div>
+
+                                <div class="subtitle secondary-text">
+                                    <span>Paket Special</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="this.idpaketparameter !== 'add'">
+                            <div
+                                fxLayout="column"
+                                fxLayoutAlign="start start"
+                                [@animate]="{
+                                    value: '*',
+                                    params: { delay: '100ms', x: '-25px' }
+                                }"
+                            >
+                                <div class="text-customer h2">Edit Data</div>
+
+                                <div class="subtitle secondary-text">
+                                    <span>Paket Special</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card" style="overflow: auto; height: 60vh">
+                    <mat-progress-bar
+                        color="primary"
+                        mode="indeterminate"
+                        value="50"
+                        *ngIf="load"
+                    >
+                    </mat-progress-bar>
+                    <div
+                        class="content"
+                        style="overflow-y: auto; scrollbar-width: thin"
+                        *ngIf="paketparameterForm"
+                    >
+                        <div
+                            class="tab-content p-24"
+                            fusePerfectScrollbar
+                            *ngIf="paketujiData"
+                        >
+                            <mat-grid-list cols="2" gutterSize="10px" rowHeight="110px">
+                                <mat-grid-tile colspan="2">
+                                    <mat-form-field
+                                        appearance="outline"
+                                        style="width: 100%"
+                                    >
+                                        <mat-label>Nama Paket</mat-label>
+                                        <textarea
+                                            matInput
+                                            formControlName="nama_paket"
+                                            placeholder="Package Name"
+                                        >
+                                        </textarea>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile colspan="2">
+                                    <mat-form-field
+                                        appearance="outline"
+                                        style="width: 100%"
+                                    >
+                                        <mat-label>Nama Paket English</mat-label>
+                                        <textarea
+                                            matInput
+                                            formControlName="nama_paket_en"
+                                            placeholder="Package Name"
+                                        >
+                                        </textarea>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <mat-grid-tile>
+                                    <mat-form-field
+                                        appearance="outline"
+                                        floatLabel="always"
+                                        style="width: 100%;"
+                                    >
+                                        <mat-label>Description</mat-label>
+                                        <textarea
+                                            matInput
+                                            placeholder="Description"
+                                            name="description"
+                                            formControlName="description"
+                                            rows="1"
+                                        >
+                                        </textarea>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline"
+                                    style="width: 100%;"
+                                    >
+                                        <mat-label>Discount</mat-label>
+                                            <mat-select formControlName="discount">
+                                              <mat-option value="1">
+                                                Yes
+                                              </mat-option>
+                                              <mat-option value="0">
+                                                No
+                                              </mat-option>
+                                            </mat-select>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+
+                                <div>
+                                    <mat-grid-tile
+                                        *ngIf="
+                                            this.paketparameterForm.controls
+                                                .reference.value === 'nonpaket'
+                                        "
+                                    >
+                                        <ng-select
+                                            appearance="outline"
+                                            appendTo="body"
+                                            [items]="parameterUjiData"
+                                            bindLabel="name_id"
+                                            bindValue="id"
+                                            (clear)="resetPaketparameter()"
+                                            formControlName="parameterpick"
+                                            placeholder="Select Parameter Uji"
+                                            (scrollToEnd)="
+                                                onScrollToEndParameter(
+                                                    'parameteruji'
+                                                )
+                                            "
+                                            (change)="
+                                                getValDataPaketparameter($event)
+                                            "
+                                            dropdownPosition="bottom"
+                                            (search)="sad($event)"
+                                            style="width: 100%"
+                                        >
+                                            <ng-template
+                                                ng-option-tmp
+                                                let-item="item"
+                                                let-index="index"
+                                            >
+                                                <div title="{{ item.name_id }}">
+                                                    <span
+                                                        >{{
+                                                            item.parameter_code
+                                                        }}
+                                                        -
+                                                        {{ item.name_id }}</span
+                                                    >
+                                                </div>
+                                            </ng-template>
+                                            <ng-template
+                                                ng-label-tmp
+                                                let-item="item"
+                                            >
+                                                <div title="{{ item.name_id }}">
+                                                    <span
+                                                        >{{
+                                                            item.parameter_code
+                                                        }}
+                                                        -
+                                                        {{ item.name_id }}</span
+                                                    >
+                                                </div>
+                                            </ng-template>
+                                        </ng-select>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <button
+                                            mat-raised-button
+                                            color="primary"
+                                            (click)="tambah()"
+                                            style="width: 100%"
+                                        >
+                                            Add
+                                        </button>
+                                    </mat-grid-tile>
+                                </div>
+                            </mat-grid-list>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="padding: 10px; overflow: auto"
+                    *ngIf="
+                        this.paketparameterForm.controls.parameter['controls']
+                            .length > 0
+                    "
+                >
+                    <table id="customers">
+                        <thead>
+                            <th width="10px">
+                                <mat-checkbox
+                                    class="checkbox-control"
+                                    color="primary"
+                                    [checked]="allchecked"
+                                    (change)="checkAll($event.checked, 'all')"
+                                ></mat-checkbox>
+                            </th>
+                            <th width="10px">Action</th>
+                            <th width="400px">Name</th>
+                            <th width="100px">Lab</th>
+                            <th width="100px">Jumlah / n</th>
+                            <th width="50px">c</th>
+                            <th width="50px">m</th>
+                            <th width="50px">M</th>
+                            <th width="100px">Price</th>
+                            <th width="100px">Satuan</th>
+                            <th width="100px">Metode</th>
+                            <th width="100px">Standart</th>
+                        </thead>
+                        <tbody formArrayName="parameter">
+                            <tr
+                                *ngFor="
+                                    let d of this.paketparameterForm.controls
+                                        .parameter['controls'];
+                                    let e = index
+                                "
+                                [formGroupName]="e"
+                            >
+                                <td align="center">
+                                    <mat-checkbox
+                                        formControlName="checked"
+                                        (change)="
+                                            checkAll($event.checked, row, e)
+                                        "
+                                    ></mat-checkbox>
+                                </td>
+                                <td>
+                                    <button
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="menu"
+                                    >
+                                        <mat-icon>more_vert</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button
+                                            mat-menu-item
+                                            (click)="copydata(e, i)"
+                                        >
+                                            <span>Copy</span>
+                                        </button>
+                                        <button
+                                            mat-menu-item
+                                            (click)="pastedata(e, i)"
+                                        >
+                                            <span>Paste</span>
+                                        </button>
+                                        <button
+                                            mat-menu-item
+                                            (click)="deletedata(e, i)"
+                                        >
+                                            <span>Delete</span>
+                                        </button>
+                                    </mat-menu>
+                                </td>
+                                <td>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: flex-start;
+                                            justify-content: center;
+                                            width: 250px;
+                                        "
+                                    >
+                                        <span
+                                            style="
+                                                font-weight: bold;
+                                                font-size: 12px;
+                                            "
+                                            >{{
+                                                d.value.parameteruji_name
+                                            }}</span
+                                        >
+                                        <span
+                                            style="
+                                                font-weight: 400;
+                                                font-size: 10px;
+                                            "
+                                            >{{
+                                                d.value.parameteruji_code
+                                            }}</span
+                                        >
+                                    </div>
+                                </td>
+                                <td>
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="datalab"
+                                        bindLabel="nama_lab"
+                                        bindValue="id"
+                                        (click)="clickSelect($event, 'lab')"
+                                        placeholder="Select Lab"
+                                        dropdownPosition="bottom"
+                                        (scrollToEnd)="
+                                            onScrollToEndParameter('lab')
+                                        "
+                                        (change)="getVal($event, 'lab')"
+                                        (search)="onSearch($event, 'lab')"
+                                        (clear)="clearSelect('lab')"
+                                        formControlName="id_lab"
+                                        style="width: 100%; align-self: center"
+                                    >
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <mat-form-field
+                                        appearance="fill"
+                                        style="width: 70px; font-size: 12px"
+                                    >
+                                        <input
+                                            matInput
+                                            formControlName="n"
+                                            style="height: 2.7em"
+                                        />
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field
+                                        appearance="fill"
+                                        style="width: 70px; font-size: 12px"
+                                    >
+                                        <mat-label>c</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="c"
+                                            style="height: 2.7em"
+                                        />
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field
+                                        appearance="fill"
+                                        style="width: 70px; font-size: 12px"
+                                    >
+                                        <mat-label>m</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="m"
+                                            style="height: 2.7em"
+                                        />
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field
+                                        appearance="fill"
+                                        style="width: 70px; font-size: 12px"
+                                    >
+                                        <mat-label>M</mat-label>
+                                        <input
+                                            matInput
+                                            formControlName="mm"
+                                            style="height: 2.7em"
+                                        />
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field
+                                        appearance="fill"
+                                        style="width: 100px; font-size: 12px"
+                                    >
+                                        <input
+                                            type="text"
+                                            matInput
+                                            currencyMask
+                                            formControlName="harga"
+                                            [options]="{
+                                                prefix: '',
+                                                thousands: '.',
+                                                precision: 0
+                                            }"
+                                        />
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="dataunit"
+                                        (click)="clickSelect($event, 'satuan')"
+                                        bindLabel="nama_unit"
+                                        bindValue="id"
+                                        placeholder="Select Satuan"
+                                        dropdownPosition="bottom"
+                                        (scrollToEnd)="
+                                            onScrollToEndParameter('unit')
+                                        "
+                                        (change)="getVal($event, 'unit')"
+                                        (search)="onSearch($event, 'unit')"
+                                        (clear)="clearSelect('unit')"
+                                        formControlName="id_unit"
+                                        style="width: 200px; align-self: center"
+                                    >
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="dataMetode"
+                                        bindLabel="metode"
+                                        (click)="clickSelect($event, 'metode')"
+                                        bindValue="id"
+                                        placeholder="Select Metode"
+                                        dropdownPosition="bottom"
+                                        (scrollToEnd)="
+                                            onScrollToEndParameter('metode')
+                                        "
+                                        (change)="getVal($event, 'metode')"
+                                        (search)="onSearch($event, 'metode')"
+                                        (clear)="clearSelect('metode')"
+                                        formControlName="id_metode"
+                                        style="width: 300px; align-self: center"
+                                    >
+                                    </ng-select>
+                                </td>
+                                <td>
+                                    <ng-select 
+                                    appearance="fill" 
+                                    appendTo="body" 
+                                    [items]="datastandart" 
+                                    bindLabel="nama_standart"
+                                    loadingText='Loading...'
+                                    (click)="clickSelect($event,'standart')"
+                                    bindValue="id" 
+                                    placeholder="Select Standart" 
+                                    dropdownPosition="bottom"
+                                    (scrollToEnd)="onScrollToEndParameter('standart')" 
+                                    (change)="getVal($event,'standart')"
+                                    (search)="onSearch($event,'standart')" 
+                                    (clear)="clearSelect('standart')"
+                                    formControlName="id_standart"
+                                    style="width: 200px; align-self: center">
+                                </ng-select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="button-action">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        (click)="pastedata('all', 'all')"
+                        [disabled]="disablepasteall"
+                    >
+                        Paste All
+                    </button>
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        (click)="deletedata('all', 'all')"
+                        [disabled]="jumlahapprove > 0 ? 'false' : 'true'"
+                    >
+                        Delete All
+                    </button>
+                    <!-- <button mat-raised-button color="primary" (click)="delete()">Delete</button> -->
+                    <button
+                        mat-raised-button
+                        color="warn"
+                        (click)="saveNewForm()"
+                        *ngIf="this.idpaketparameter === 'add'"
+                    >
+                        Save
+                    </button>
+                    <button
+                        mat-raised-button
+                        color="warn"
+                        (click)="editForm()"
+                        *ngIf="this.idpaketparameter !== 'add'"
+                    >
+                        Edit
+                    </button>
+                    <!-- <button mat-raised-button color="primary">Approve</button> -->
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

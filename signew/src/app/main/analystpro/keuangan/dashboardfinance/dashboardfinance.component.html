@@ -1,0 +1,201 @@
+<div id="dashboard-finance"  class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    
+    <h2 style="font-size: 21px; font-weight: bolder; width:90%; margin-left: 80px;">Dashboard Finance</h2>
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width:90%; margin: 20px auto 10px auto;">
+        <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="70">
+            <span style="font-color:white; font-size: 14px; font-weight: 800;">Basic Info</span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="30" style="padding-left:20px;">
+            <span style="font-color:white; font-size: 14px; font-weight: 800;">Users This Month</span>
+        </div>
+    </div>
+    
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width:90%; margin: 20px auto 10px auto;">
+        <div fxLayout="column" fxLayoutAlign="start start" fxFlex="70">
+            <div fxLayout="row" fxLayoutAlign="space-around center" style="width:100%;">
+                <div 
+                fxLayout="row" 
+                fxLayoutAlign="space-between start" 
+                style="position: relative;
+                width: 100%;
+                height: 240px;
+                background-color: #3AB4F2;">
+                    <div fxLayout="column" 
+                    fxLayoutAlign="start start"
+                    style="padding:20px;">
+                        <h2 style="font-weight: bolder; color:white;">{{ this.currentHours }}</h2>
+                        <span style="font-weight: bold; color:white; margin-top: -10px; margin-bottom: 50px;">{{ this.user }}</span>
+                        <span style="font-weight: bolder; color:white; margin-bottom: 20px;">{{ this.currentDay }}</span>
+                        <div fxLayout="row" fxLayoutAlign="space-between start" >
+                            <div fxLayout="column" 
+                            fxLayoutAlign="start start"  
+                            style="margin-right: 40px;">
+                                <span style="color:white; font-weight: 800;">Total</span>
+                                <span style="color:white;">{{ this.priceInvoiceDay | currency: 'Rp' }}</span>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start start"  style="margin-right: 40px;" >
+                                <span style="color:white; font-weight: 800;">Invoice</span>
+                                <span style="color:white;">{{ this.totalInvoiceDay }} Data</span>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <img  src="assets/images/pot-uang.svg" style="width:29%; margin-top: -60px;">
+                </div>  
+            </div>  
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top:50px;" >
+                <mat-form-field appearance="outline" style="margin-right:20px;">
+                    <mat-label>Month</mat-label>
+                    <mat-select style="width: 200px; 
+                    font-size: 11px;"
+                    [(ngModel)]="this.formDate.month">
+                    <mat-option *ngFor="let month of month" 
+                    [value]="month.value">
+                        {{month.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" style="margin-right:20px;">
+                    <mat-label>Years</mat-label>
+                    <mat-select style="
+                    width: 200px; 
+                    font-size: 11px;"
+                     [(ngModel)]="this.formDate.year">
+                    <mat-option *ngFor="let years of years" 
+                    [value]="years.value">
+                        {{years.viewValue}}
+                    </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-stroked-button 
+                style=" height:55px !important; 
+                        margin-bottom : 20px;"
+                color="primary"><mat-icon>search</mat-icon> Check!</button>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between start" style="width:100%;">
+                <div style="
+                width: 200px; 
+                height: 300px; 
+                border: 2px solid #3AB4F2;
+                border-radius: 10px;
+                background: #3AB4F2;
+                padding: 10px;
+                ">
+                    <div>
+                        <img  src="assets/images/icon/kont.svg">
+                        <h2 style="font-size: 18px; color: white; font-weight: bold;">Contract</h2>
+                        <h2 style="font-size: 13px; color: white; font-weight: bolder;">100 Data</h2>
+                    </div>
+                </div>
+
+                <div style="
+                width: 200px; 
+                height: 300px; 
+                border: 2px solid #3AB4F2;
+                border-radius: 10px;
+                background: #3AB4F2;
+                padding: 10px;
+                ">
+                    <div>
+                        <img  src="assets/images/icon/totkont.svg">
+                        <h2 style="font-size: 18px; color: white; font-weight: bold;">Price Contract</h2>
+                        <h2 style="font-size: 13px; color: white; font-weight: bolder;">Rp.11.000.000.000,00</h2>
+                    </div>
+                </div>
+
+                <div style="
+                width: 200px; 
+                height: 300px;
+                border: 2px solid #3AB4F2;
+                border-radius: 10px;
+                background: #3AB4F2;
+                padding: 10px;
+                ">
+                    <div>
+                        <img  src="assets/images/icon/inv.svg">
+                        <h2 style="font-size: 18px; color: white; font-weight: bold;">Invoice</h2>
+                        <h2 style="font-size: 13px; color: white; font-weight: bolder;">190 Data</h2>
+                    </div>
+                </div>
+
+                <div style="
+                width: 200px; 
+                height: 300px;
+                border: 2px solid #3AB4F2;
+                border-radius: 10px;
+                background: #3AB4F2;
+                padding: 10px;
+                ">
+                    <div>
+                        <img  src="assets/images/icon/invtot.svg">
+                        <h2 style="font-size: 18px; color: white; font-weight: bold;">Price Invoice</h2>
+                        <h2 style="font-size: 13px; color: white; font-weight: bolder;">Rp.11.000.000.000,00</h2>
+                    </div>
+                </div>
+
+                <div style="
+                width: 200px; 
+                height: 300px; 
+                border: 2px solid #3AB4F2;
+                border-radius: 10px;
+                background: #3AB4F2;
+                padding: 10px;
+                ">
+                    <div>
+                        <img  src="assets/images/icon/paid.svg">
+                        <h2 style="font-size: 18px; color: white; font-weight: bold;">Contract Paid</h2>
+                        <h2 style="font-size: 13px; color: white; font-weight: bolder;">Rp.11.000.000.000,00</h2>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>    
+        <div style="
+        padding: 0 20px;" 
+        fxFlex="30">
+            <mat-card 
+            *ngFor="let item of userTopGlobal"
+            class="mat-elevation-z0" 
+            style="margin-bottom:10px; 
+            border-left-style: solid; 
+            border-color: #0578AA;">
+                <mat-card-content>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <span style="
+                        font-weight: bold; 
+                        font-size: 11px;">
+                            {{ item.employee_name }}
+                        </span>
+                        <span style="background-color: #3AB4F2; 
+                        padding:3px; 
+                        font-weight: 900; 
+                        color:white;
+                        font-size: 11px;">
+                            {{ item.total }} Invoice
+                        </span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <!-- <div style="display: grid; width:90%; margin: 20px auto 10px auto;">
+        <span style="margin-left:30px; margin-top: 50px; font-color:white; font-size: 14px; font-weight: 800; margin-bottom: 30px;">Invoice </span>
+        <ngx-charts-bar-vertical-2d
+        [view]="view"
+        [scheme]="colorScheme"
+        [results]="multi"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="showLegend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)">
+        </ngx-charts-bar-vertical-2d>
+    </div> -->
+</div>

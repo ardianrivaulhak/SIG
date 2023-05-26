@@ -1,0 +1,18 @@
+
+<h2 mat-dialog-title>Status Sample</h2>
+<form>
+<mat-dialog-content class="mat-typography">    
+    <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Select Status</mat-label>
+    <mat-select name="status" [(ngModel)]="this.valueStat" >
+      <mat-option *ngFor="let status of status" [value]="status.id"  >
+        {{status.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+</form>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close (click)="this.closeModal(true)">Cancel</button>
+    <button mat-button (click)="saveForm()">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,24 @@
+<div fxLayout="column" fxLayoutAlign=" center" >
+    <div style="margin-bottom:50px;">
+        <span style="font-size: 14px; font-weight: bold;">History Complain in Preparation</span>
+    </div>
+    
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" >
+        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 20px;" >
+            <mat-label>Start</mat-label>
+            <input matInput [(ngModel)]="dateExcelStart" [matDatepicker]="dp2">
+            <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2></mat-datepicker>
+        </mat-form-field> 
+        <mat-form-field appearance="outline" style="font-size: 11px" >
+            <mat-label>End</mat-label>
+            <input matInput [(ngModel)]="dateExcelEnd" [matDatepicker]="dp3">
+            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3></mat-datepicker>
+        </mat-form-field> 
+    </div>
+
+    <div style="margin-top: 30px;">
+        <button mat-raised-button (click)="exportexcelFaktur()">Export</button>
+    </div>
+</div>

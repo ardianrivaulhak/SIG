@@ -1,0 +1,54 @@
+<p style="font-weight: bolder; font-size: 18px">Status Active</p>
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; "
+        fxFlex="50"
+    >
+        <mat-label style="color: black">From</mat-label>
+        <input
+            matInput
+            [(ngModel)]="sendingDet.from"
+            [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label style="color: black">Type Active</mat-label>
+        <mat-select [(ngModel)]="sendingDet.st" placeholder="Type Status">
+            <mat-option value="1">Active</mat-option>
+            <mat-option value="2">Non Active</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100" *ngIf="sendingDet.st == '2'">
+        <mat-label style="color: black">Type Non Active</mat-label>
+        <mat-select [(ngModel)]="sendingDet.desc" placeholder="Type Status">
+            <mat-option
+                [value]="o.id"
+                *ngFor="let o of datastatusnotactive"
+                >{{ o.title }}</mat-option
+            >
+        </mat-select>
+    </mat-form-field>
+
+</div>
+<div
+    fxLayout="row"
+    fxLayoutAlign="start end"
+    style="width: 100%; margin-top: 10px"
+>
+    <button
+        mat-flat-button
+        color="primary"
+        (click)="savingdata()"
+        fxFlex="15"
+        fxFlex.xs="15"
+        style="height: 40px; width: 250px; margin-right: 15px"
+    >
+        Save
+    </button>
+</div>

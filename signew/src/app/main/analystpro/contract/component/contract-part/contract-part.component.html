@@ -1,0 +1,204 @@
+<div class="mat-elevation-z8" style="width: auto; height: 100%; border-radius: 10px;">
+    <mat-card *ngIf="ContractForm">
+        <form name="ContractForm" [formGroup]="ContractForm">
+            <mat-card-title>
+                Customer Detail
+            </mat-card-title>
+            <mat-card-content>
+                <div fxFlex="1 0 auto" fxLayout="column">
+                    <ng-select appendTo="body" [items]="contract_category"
+                        bindLabel="title" bindValue="id" formControlName="contract_category" placeholder="Select Contract Type"
+                        (change)="getValCategoryContract($event)" dropdownPosition="bottom" style="display: flex;
+                    justify-content: center;
+                    align-items: center;" required>
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        {{item.title}}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.title}}
+                    </ng-template>
+                    <mat-error>
+                        Contract is Required
+                    </mat-error>
+                    </ng-select>
+                    <div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center">
+                        <ng-select 
+                            appearance="outline" 
+                            appendTo="body" 
+                            [items]="typeContract"
+                            bindLabel="type" 
+                            bindValue="id" 
+                            placeholder="Select Type Contract" 
+                            formControlName="typeContract"   
+                            [loading]="loading" 
+                            (change)="getValTypeContact($event)" 
+                            dropdownPosition="bottom"
+                            style="width: 100%; margin: 5px;" required>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <b>{{item.id}}</b>&nbsp;-&nbsp;{{item.type}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                <b>{{item.id}}</b>&nbsp;-&nbsp;{{item.type}} 
+                            </ng-template>
+                            <ng-error>
+                                Customer is Required
+                            </ng-error>
+                        </ng-select>   
+                    </div>
+                    <div style="max-width: 610px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center">
+                        <ng-select 
+                            appearance="outline" 
+                            appendTo="body" 
+                            [items]="customerhandle"
+                            bindLabel="customer_name" 
+                            bindValue="id_customer" 
+                            placeholder="Select Customer"
+                            (scrollToEnd)="onScrollToEnd('customer')" 
+                            formControlName="customerhandle" 
+                            (search)="onSearchi($event,'customer')"
+                            (clear)="reset()"
+                            [loading]="loading" 
+                            (change)="getVal($event)" 
+                            dropdownPosition="bottom"
+                            style="width: 100%; margin: 5px;" required>
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                <b>{{item.kode_customer}}</b>&nbsp;-&nbsp;{{item.customer_name}}&nbsp;-&nbsp;{{item.name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                <b>{{item.kode_customer}}</b>&nbsp;-&nbsp;{{item.customer_name}}&nbsp;-&nbsp;{{item.name}}
+                            </ng-template>
+                            <ng-error>
+                                Customer is Required
+                            </ng-error>
+                        </ng-select>  
+                        <button mat-mini-fab color="primary" (click)="modalcustomerhandle()">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                    <div style="max-width: 610px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center">
+                            <ng-select appearance="outline" style="width: 100%; margin: 5px;" class="wrap" appendTo="body"
+                                [items]="alamatcustomer" bindLabel="address" bindValue="id_address"
+                                placeholder="Select Address" formControlName="alamatcustomer" (search)="onSearchi($event,'address')"
+                                (change)="getValAddress($event)" dropdownPosition="bottom">
+                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                    {{item.address}}
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    {{item.address}}
+                                </ng-template>
+                                <mat-error>
+                                    Address Input is Required
+                                </mat-error>
+                            </ng-select>
+                            <button mat-mini-fab color="primary" (click)="modaladdresscustomer()" [disabled]="bukaalamat">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <div style="max-width: 610px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center">
+                            <ng-select  appearance="outline" appendTo="body" style="width: 100%; margin: 5px;"
+                                [items]="alamataxaddress" formControlName="alamataxaddress" bindLabel="address" bindValue="id_taxaddress"
+                                placeholder="Select Tax Address" (search)="onSearchi($event,'taxaddress')"(change)="getValTaxaddress($event)"
+                                dropdownPosition="bottom" required>
+                                <ng-template ng-option-tmp let-item="item" let-index="index">
+                                    {{item.address}}
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    {{item.address}}
+                                </ng-template>
+                                <mat-error>
+                                    Tax Address Input is Required
+                                </mat-error>
+                            </ng-select>
+                            <button mat-mini-fab color="primary" (click)="modalTaxaddressCust()" [disabled]="bukaalamat">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    <!-- <mat-grid-list cols="2" rowHeight="70px">
+                        <mat-grid-tile>
+                            <mat-form-field style="width: 90% !important;">
+                                <mat-label>Tanggal Input</mat-label>
+                                <input required matInput formControlName="tgl_input" [matDatepicker]="dp2">
+                                <mat-error>
+                                    Tanggal Input is Required
+                                </mat-error>
+                                    <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                                <mat-datepicker #dp2></mat-datepicker>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <mat-form-field style="width: 90% !important;">
+                                <mat-label>Tanggal Selesai</mat-label>
+                                <input required matInput formControlName="tgl_selesai" [matDatepicker]="dp3">
+                                <mat-error>
+                                    Tanggal Selesai is Required
+                                </mat-error>
+                                <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                                <mat-datepicker #dp3></mat-datepicker>
+                            </mat-form-field>
+                        </mat-grid-tile>
+                    </mat-grid-list> -->
+                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                        <mat-label>Description</mat-label>
+                        <textarea required matInput formControlName="desc" placeholder="Description" name="desc" rows="2">
+                        </textarea>
+                                <mat-error>
+                                    Description is Required
+                                </mat-error>
+                    </mat-form-field>
+                    <mat-card-title>
+                        Customer Detail
+                    </mat-card-title>
+                    <div style="display: flex; flex-direction: row; justify-content: start; width: 95%; align-items: start;">
+                        <div style="flex: 2;overflow-x: auto;scrollbar-width: thin; display: flex; justify-content: start; align-items: start;" formArrayName="attachment">
+                            <div class="box-photo" style="background-color: #09d261;" (click)="addfoto()" >
+                                <mat-icon style="width: 15px;">add_circle_outline</mat-icon> 
+                            </div>  
+                            <div *ngFor="let u of ContractForm.controls['attachment'].controls; let indexPoint=index">
+                                <div class="box-photo" [matMenuTriggerFor]="menu" 
+                                    [formGroupName]="indexPoint" >
+                                    <div *ngIf="!u.value.photo">
+                                        <mat-icon style="width: 15px;">add_a_photo</mat-icon>
+                                    </div>
+                                     
+                                    <div *ngIf="u.value.photo">
+                                        <img *ngIf="u.value.photo.toLowerCase().indexOf('.') > -1" src="{{this.urlnow + this.contrak_no + '/attachment/' + u.value.photo}}"
+                                            style=" flex: 1; max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: cover"
+                                            />
+                                        <img  *ngIf="u.value.photo.toLowerCase().indexOf('.') < 1" src="{{u.value.photo}}"
+                                        style=" flex: 1; max-width: 100%; max-height: 100%; border-radius: 10px; object-fit: cover"
+                                            />
+                                    </div>
+                                </div>
+                                <mat-menu #menu="matMenu"  >  
+                                    <input #_fileInput type="file" accept="image/*" (change)="uploadGambar($event,u.value.id)" hidden>
+                                    <button mat-menu-item
+                                    (click)="_fileInput.click()">
+                                        <mat-icon>file_copy</mat-icon>
+                                        <span>Upload Image</span>
+                                    </button> 
+                                </mat-menu>
+                            </div>
+                        </div> 
+                    </div> 
+
+                    <button mat-raised-button class="save-product-button" 
+                        (click)="saveForm()"
+                        *ngIf="this.btnSave === true"
+                        style="margin-top: 20px; color: white; background-color: #039be5;"
+                        [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                        <mat-icon>save</mat-icon>
+                        <span> Save</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" 
+                        *ngIf="this.btnUpdate === true"
+                        (click)="updateForm()"
+                        style="margin-top: 20px; color: white; background-color: #039be5;"
+                        [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                        <mat-icon>save</mat-icon>
+                        <span> Update</span>
+                    </button>
+                </div>
+            </mat-card-content>
+        </form>
+    </mat-card>
+</div>

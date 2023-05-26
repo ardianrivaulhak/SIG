@@ -1,0 +1,199 @@
+<div
+    style="
+        height: 100px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    "
+>
+    <div
+        style="
+            width: 300px;
+            height: 40px;
+            border-radius: 20px;
+            border: 1px solid lightgray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        "
+    >
+        <mat-icon>search</mat-icon>
+        <input
+            style="width: 100%"
+            [(ngModel)]="dataFilter.search"
+            (keyup.enter)="searching()"
+            #filter
+            placeholder="Search for Contract / Sample"
+        />
+    </div>
+    <div style="width: 30px"></div>
+    <button mat-mini-fab color="primary" (click)="searching()">
+        <mat-icon>search</mat-icon>
+    </button>
+</div>
+
+<mat-grid-list cols="3" rowHeight="100px" gutterSize="10px">
+    <mat-grid-tile>
+        <ng-select
+            appendTo="body"
+            [items]="contractcategory"
+            bindLabel="title"
+            bindValue="id"
+            [(ngModel)]="dataFilter.category"
+            appearance="outline"
+            placeholder="Contract Category"
+            (change)="getValue($event)"
+            dropdownPosition="bottom"
+            style="width: 100%"
+        >
+        </ng-select>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <ng-select
+            appendTo="body"
+            [items]="datauser"
+            bindLabel="employee_name"
+            bindValue="user_id"
+            (clear)="reseting('user')"
+            appearance="outline"
+            [(ngModel)]="dataFilter.user"
+            placeholder="Select User Created"
+            (change)="getValue($event)"
+            dropdownPosition="bottom"
+            style="width: 100%"
+        >
+        </ng-select>
+    </mat-grid-tile>
+    <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Tgl</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="dataFilter.tgl"
+                    (dateChange)="tglEstimasiLabChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<div class="mat-elevation-z8">
+    <div
+            style="
+                height: 70vh;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                width: auto;
+            "
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll($event)"
+            [scrollWindow]="false"
+        >
+    <mat-list>
+        <mat-list-item *ngFor="let s of gethistory" style="height: 80px">
+            <div
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+                <img
+                    matListAvatar
+                    [src]="
+                        this.urlphoto + 'assets/img/user/' + s.photo
+                    "
+                />
+                <div style="width: 20px"></div>
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: flex-start;
+                        width: 100%;
+                    "
+                >
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                        "
+                    >
+                        <span>{{ s.inserted_at | date }}</span>
+                        <div style="width: 10px"></div>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 70px;
+                                border-radius: 10px;
+                                height: 20px;
+                                padding: 2px;
+                                background-color: tomato;
+                                color: white;
+                            "
+                        >
+                            <span style="font-weight: bold">{{
+                                s.status == 1 ? "Revised"  : s.status == 2 ? 'Edited' : s.status == 0 ? 'Created' : s.status == 4 ? 'Approved' : 'Canceled'
+                            }}</span>
+                        </div>
+                        <div style="width: 10px"></div>
+                        <span class="content-header">{{ s.contract_no }}</span>
+                        <div style="width: 10px"></div>
+                        <span class="content-detail">{{ s.title }}</span>
+                    </div>
+                    <div style="height: 7px"></div>
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: center;
+                            align-items: center;
+                        "
+                    >
+                        <span class="content-header">{{
+                            s.employee_name
+                        }}</span>
+                        <div style="width: 10px"></div>
+                        <span class="content-detail">{{ s.excuse }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <mat-action-list>
+                <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="seeDetails(s.id_kontrakuji)"
+                >
+                    <mat-icon>launch</mat-icon>
+                </button>
+            </mat-action-list>
+            <mat-divider></mat-divider>
+        </mat-list-item>
+    </mat-list>
+    </div>
+    <div fxLayoutAlign="center center" style="width: 100%; margin: 10px 0px; padding: 10px 0px" *ngIf="loadMore">
+        <mat-spinner [diameter]="20" *ngIf="loadMore"></mat-spinner> 
+    </div>
+</div>
+<ngx-spinner bdColor = "rgba(255,255,255,1)" size = "medium" color = "#000" type = "ball-clip-rotate-multiple" [fullScreen] = "false"></ngx-spinner>

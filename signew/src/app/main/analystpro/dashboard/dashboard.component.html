@@ -1,0 +1,278 @@
+<div class="p-24">
+    <mat-grid-list cols="5" rowHeight="2:0.7" gutterSize="5px" *ngIf="!this.notshowing">
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Select Month</mat-label>
+                <mat-select [(ngModel)]="monthSelect">
+                    <mat-option
+                        *ngFor="let o of bulan"
+                        value="{{ o.id }}"
+                        >{{ o.bulan }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Set Year</mat-label>
+                <input
+                    matInput
+                    placeholder="Set Year Ex. 2012"
+                    [(ngModel)]="yearSelect"
+                    type="number"
+                />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile style="align-self: unset">
+            
+            <button
+                mat-flat-button
+                style="width: 100%; margin: 5px; height: 80%"
+                color="accent"
+                [disabled]="this.loadingbutton"
+                (click)="setTimeDashboard()"
+            >
+                <div *ngIf="!this.loadingbutton">Set</div>
+                <div
+                    *ngIf="this.loadingbutton"
+                    style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-direction: row;
+                    "
+                >
+                    <mat-spinner
+                        diameter="20"
+                    ></mat-spinner>
+                    <span style="margin-left: 10px">Please Wait</span>
+                </div>
+            </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
+<div
+    *ngIf="this.mine.length > 0"
+    class="page-layout simple fullwidth"
+    style="overflow-y: scroll; height: 100vh; padding-bottom: 50px"
+>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div
+        class="content p-24"
+        style="height: 100%; overflow: auto"
+        *ngIf="!this.notshowing"
+    >
+        <div >
+            <mat-grid-list cols="5" rowHeight="2:1.3" gutterSize="5px">
+               
+                <mat-grid-tile colspan="5">
+                    <div class="title-dashboard">
+                        <span>Contract Graph this month</span>
+                        <span
+                            *ngIf="this.datachart.length > 0"
+                            style="cursor: pointer"
+                            (click)="downloadashboard()"
+                            >Download Excel</span
+                        >
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="5" rowspan="3">
+                    <div
+                        class="content p-24"
+                        style="
+                            height: 100%;
+                            width: 100%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            flex-direction: column;
+                        "
+                        *ngIf="this.datachart.length < 1"
+                    >
+                        <img
+                            src="assets/images/gif/loading.gif"
+                            style="width: 20%"
+                        />
+                    </div>
+                    <div
+                        *ngIf="this.datachart.length > 0"
+                        style="
+                            display: flex;
+                            align-items: flex-start;
+                            flex-direction: column;
+                            width: 100%;
+                            height: 100%;
+                        "
+                    >
+                        <ngx-charts-advanced-pie-chart
+                            [view]="view"
+                            [results]="datachart"
+                            (select)="onSelect($event)"
+                        >
+                        </ngx-charts-advanced-pie-chart>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="5">
+                    <div
+                        class="title-dashboard"
+                        
+                    >
+                        <span>Details</span>
+                        <span
+                            style="cursor: pointer"
+                            *ngIf="this.datafix.length > 0"
+                            (click)="downloadashboarddetails()"
+                            >Download Excel</span
+                        >
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="5" rowspan="3" *ngIf="this.datachart.length < 1">
+                    <div
+                        class="content p-24"
+                        style="
+                            height: 100%;
+                            width: 100%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            flex-direction: column;
+                        "
+                        
+                    >
+                        <img
+                            src="assets/images/gif/loading.gif"
+                            style="width: 20%"
+                        />
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile *ngFor="let data of datafix">
+                    <div class="card">
+                        <span class="a1" style="font-weight: bold">{{
+                            data.title.toUpperCase()
+                        }}</span>
+                        <span class="a2">{{
+                            data.realtotal > 0
+                                ? data.realtotal.toLocaleString()
+                                : 0
+                        }}</span>
+                        <span class="a3"
+                            >{{ data.total_contract_type }} Contract{{
+                                data.total_contract_type > 1 ? "s" : ""
+                            }}</span
+                        >
+                    </div>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list cols="5" rowHeight="2:1.3">
+                <mat-grid-tile colspan="5">
+                    <div class="title-dashboard">
+                        <span>Customer Behaviour</span>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="5" rowspan="3" *ngIf="this.datacustomer.length < 1 && this.saletype.length < 1">
+                    <div
+                        class="content p-24"
+                        style="
+                            height: 100%;
+                            width: 100%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            flex-direction: column;
+                        "
+                        
+                    >
+                        <img
+                            src="assets/images/gif/loading.gif"
+                            style="width: 20%"
+                        />
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile
+                    colspan="2"
+                    rowspan="3"
+                    *ngIf="this.datacustomer.length > 0 && this.saletype.length > 0"
+                >
+                    <div
+                        style="
+                            display: flex;
+                            align-items: flex-start;
+                            flex-direction: column;
+                            width: 100%;
+                            height: 100%;
+                        "
+                    >
+                        <div style="padding: 10">
+                            <span
+                                style="
+                                    margin: 10px;
+                                    padding: 10px;
+                                    font-weight: 600;
+                                "
+                                >Top 5 Customers in this month</span
+                            >
+                            <table id="customers">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Customer Name</th>
+                                        <th>Total Contracts</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngFor="
+                                        let d of datacustomer;
+                                        let i = index
+                                    "
+                                >
+                                    <tr>
+                                        <td>{{ i + 1 }}</td>
+                                        <td>{{ d.name }}</td>
+                                        <td>{{ d.value }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="3" rowspan="3" 
+                *ngIf="this.datacustomer.length > 0 && this.saletype.length > 0"
+                >
+                    <ngx-charts-bar-vertical
+                        [view]="viewsalestype"
+                        [scheme]="colorScheme"
+                        [results]="saletype"
+                        [xAxis]="showXAxis"
+                        [yAxis]="showYAxis"
+                        legendTitle=""
+                        [legend]="'false'"
+                        [showXAxisLabel]="showXAxisLabelSaletype"
+                        [showYAxisLabel]="showYAxisLabelSaletype"
+                        [xAxisLabel]="xAxisLabelSaletype"
+                        [yAxisLabel]="yAxisLabel"
+                        (select)="onSelect($event)"
+                    >
+                    </ngx-charts-bar-vertical>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+    </div>
+    <div
+        class="content p-24"
+        style="
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        "
+        *ngIf="this.notshowing"
+    >
+        <img src="assets/images/backgrounds/enjoying.gif" style="width: 50%" />
+        <h2>Welcome, We are hoping you had a good day to learn a thing !</h2>
+    </div>
+    <!-- / CONTENT -->
+</div>

@@ -1,0 +1,59 @@
+<div fxLayout="column" fxLayoutAlign="start center" style="overflow: auto;">
+    <h3>Approve Sample to Certificate</h3>
+    <form *ngIf="sampleDet" [formGroup]="sampleDet" style="width: 100%;">
+        <table
+            id="customers"
+            *ngIf="
+                this.sampleDet.controls.sample['controls'].length > 0
+            "
+        >
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>No Sample</th>
+                    <th>Sample Name</th>
+                    <th>Kesimpulan</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="sample">
+                <tr
+                    *ngFor="
+                        let o of sampleDet.controls.sample[
+                            'controls'
+                        ];
+                        let i = index
+                    "
+                    [formGroupName]="i"
+                >
+                    <td style="display: flex; justify-content: center; align-items: center; height: 151px">
+                        <button mat-raised-button color="primary" [disabled]="o.value.status" (click)="sendSample(o.value)">Send it !</button>
+                    </td>
+                    <td>{{ o.value.no_sample }}</td>
+                    <td>
+                        {{o.value.sample_name}}
+                    </td>
+                    <td>
+                        <mat-form-field style="width: 100%">
+                            <!-- <mat-label>Conclussion</mat-label> -->
+                            <textarea
+                                matInput
+                                placeholder="Kesimpulan"
+                                rows="3"
+                                formControlName="kesimpulan"
+                            ></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%; padding-top: 20px;">
+        <button mat-flat-button color="primary" (click)="sendSampleAll()" [disabled]="disabledall">
+            Send Sample
+        </button>
+        <div style="width: 20px;"></div>
+        <button mat-flat-button color="warn" (click)="closeModal()">
+            Cancel
+        </button>
+    </div>
+</div>

@@ -1,0 +1,163 @@
+<div id="paketuji" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary"></div>
+    <!-- / TOP BACKGROUND -->
+
+   <!-- CENTER -->
+   <div class="center">
+
+      <!-- HEADER -->
+      <div class="header primary"
+      fxLayout="column" fxLayoutAlign="center center"
+      fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-24 mb-md-0"
+            fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            compare
+          </mat-icon>
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              Paket Uji
+          </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+      <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+          <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+              <mat-icon>search</mat-icon>
+              <input 
+              (input)="onSearchChange($event.target.value)"
+              #filter 
+              placeholder="Search for a Paket Uji Name" > 
+          </div>
+      </div>
+      <!-- / SEARCH -->
+
+      <!-- ADD BUTTON -->
+      <div *ngIf="this.access.length > 0">
+      <button mat-raised-button
+              [routerLink]="'/analystpro/paketuji/add'"
+              class="add-product-button fuse-white mt-24 mt-md-0" 
+              [@animate]="{value:'*',params:{delay:'200ms',x:'-25px'}}"
+              *ngIf="this.access[0].create === 1"
+              >
+          <mat-icon>add_box</mat-icon>
+          <span>  Add New</span>
+      </button>
+      </div>
+      <!-- / ADD BUTTON -->
+
+      
+    </div>
+    <!-- / HEADER -->
+
+      <!-- CONTENT CARD -->
+    <div class="content-card" style="height: 70vh; overflow-y: auto;">
+        <mat-table class="lab-table" #table [dataSource]="paketujiData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+    
+            <!-- Position Column -->
+            <ng-container matColumnDef="kode_paketuji">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="kode_paketuji">Code</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi">{{paketujiData.kode_paketuji}}</p>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Name Column -->
+            <ng-container matColumnDef="nama_paketuji">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="nama_paketuji">Name</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi">{{paketujiData.nama_paketuji}}</p>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Weight Column -->
+            <ng-container matColumnDef="price_is">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="price_is">Price 1</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi" style="float: right;">{{paketujiData.price_is.toLocaleString()}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="price_id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="price_id">Price 2</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi" style="float: right;">{{paketujiData.price_id > 0 ? paketujiData.price_id.toLocaleString() : '-'}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price_it">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="price_it">Price 3</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi">{{paketujiData.price_ii > 0 ? paketujiData.price_it.toLocaleString() : '-'}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price_ie">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="price_ie">Price 4</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi">{{paketujiData.price_ie > 0 ? paketujiData.price_ie.toLocaleString() : '-'}}</p>
+                </mat-cell>
+            </ng-container> -->
+
+            <ng-container matColumnDef="description">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="description">Description</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <p class="text-truncate isi">{{paketujiData.description ? paketujiData.description : '-'}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="discount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="discount">Discount</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                    <div class="box-yes" *ngIf="paketujiData.discount == 1">
+                        <p class="text-truncate isi" style="color: white">Yes</p>
+                    </div>
+                    <div class="box-no" *ngIf="paketujiData.discount !== 1">
+                        <p class="text-truncate isi" style="color: white">No</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="action">Action</mat-header-cell>
+                <mat-cell *matCellDef="let paketujiData">
+                   <button style="margin-right: 10px;background-color: #2196f3; " mat-mini-fab  [routerLink]="'/analystpro/paketuji/'+paketujiData.id" >
+                        <mat-icon>
+                            edit
+                        </mat-icon>
+                    </button>
+                    <button mat-mini-fab color="warn" (click)="deletePaket(paketujiData.id)">
+                        <mat-icon>
+                            delete_outline
+                        </mat-icon>
+                    </button>
+                </mat-cell> 
+            </ng-container>
+
+    
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let paketujiData; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator
+                [length]="total"
+                [pageIndex]="from"
+                [pageSize]="to"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page) = "paginated($event)">
+
+            </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+    
+</div>

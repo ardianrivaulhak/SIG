@@ -1,0 +1,408 @@
+<div
+    id="kontrakuji"
+    class="page-layout carded fullwidth"
+    *ngIf="this.me.length > 0"
+>
+    <div
+        fxFlex="45"
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        fxLayoutAlign.xs="center center"
+        fxLayoutGap="20px"
+        fxFlex.xs="100"
+        fxLayout.xs="column"
+    >
+        <div
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayoutGap="20px"
+        >
+            <div
+                style="
+                    display: flex;
+                    justify-content: flex-start;
+                    gap:10px;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+                <button
+                    mat-raised-button
+                    color="primary"
+                    [routerLink]="'/analystpro/penawaran-det/add'"
+                >
+                    Add New
+                </button>
+                <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="penawaranr()"
+                >
+                    Export
+                </button>
+            </div>
+
+            <div
+                style="width: 100%"
+                fxLayoutAlign="end center"
+                fxLayoutGap="20px"
+            >
+                <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="onSearchChange()"
+                >
+                    <mat-icon>search</mat-icon>
+                </button>
+                <div class="border-search">
+                    <input
+                        type="text"
+                        placeholder="Search Quotation Number"
+                        (keyup.enter)="onSearchChange($event.target.value)"
+                        [(ngModel)]="datasent.search"
+                        style="width: 100%; text-align: center"
+                    />
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <ng-select
+                appearance="outline"
+                appendTo="body"
+                [items]="dataemployee"
+                bindLabel="employee_name"
+                bindValue="employee_id"
+                placeholder="Select Sales / Marketing"
+                [(ngModel)]="this.datasent.sales"
+                (search)="onSearchi($event, 'employee')"
+                (scrollToEnd)="onScrollToEnd('employee')"
+                (change)="getValue($event)"
+                (clear)="reset('employee')"
+                (close)="reset('employee')"
+                dropdownPosition="bottom"
+                *ngIf="
+                    this.me[0].id_sub_bagian == 36 ||
+                    this.me[0].id_sub_bagian == 37 ||
+                    this.me[0].id_level < 19
+                "
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{ item.employee_name }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{ item.employee_name }}
+                </ng-template>
+            </ng-select>
+            <ng-select
+                appendTo="body"
+                [items]="customer"
+                bindLabel="customer_name"
+                appearance="outline"
+                bindValue="id_customer"
+                (scrollToEnd)="onScrollToEnd('customer')"
+                (clear)="reset('customer')"
+                (search)="onSearchi($event, 'cust')"
+                [(ngModel)]="this.datasent.customers"
+                placeholder="Select By Customers"
+                appearance="outline"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+            <ng-select
+                appendTo="body"
+                [items]="contractcategory"
+                bindLabel="title"
+                bindValue="id"
+                placeholder="Select Category"
+                [(ngModel)]="this.datasent.contract_category"
+                (change)="getValue($event)"
+                (clear)="reset('category')"
+                appearance="outline"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+            <ng-select
+                appearance="outline"
+                appendTo="body"
+                [items]="status"
+                bindLabel="title"
+                bindValue="id"
+                placeholder="Select Status"
+                [(ngModel)]="this.datasent.status"
+                dropdownPosition="bottom"
+                (change)="getValue($event)"
+                required
+            >
+            </ng-select>
+            <ng-select
+            appendTo="body"
+            [items]="quotationset"
+            bindLabel="name"
+            appearance="outline"
+            bindValue="id"
+            [(ngModel)]="this.datasent.used"
+            placeholder="Quotation Status"
+            appearance="outline"
+            (change)="getValue($event)"
+            dropdownPosition="bottom"
+        >
+        </ng-select>
+        </div>
+        <div
+            style="
+                height: 70vh;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                width: 100%;
+            "
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll($event)"
+            [scrollWindow]="false"
+        >
+            <table
+                id="customers"
+                *ngIf="dataPenawaran.length > 0 && !this.loadingfirst"
+            >
+                <tr>
+                    <th>No</th>
+                    <th>Quotation Number</th>
+                    <th>Customers</th>
+                    <th>Date</th>
+                    <th>Created By</th>
+                    <th>Sales / PIC</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                <tr *ngFor="let a of dataPenawaran; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: flex-start;
+                            "
+                        >
+                            {{ a.no_penawaran }}
+                            <div
+                                *ngIf="a.contract"
+                                style="
+                                    width: 20px;
+                                    background-color: #00a028;
+                                    height: 5px;
+                                    margin-top: 5px;
+                                    border-radius: 10px;
+                                "
+                            ></div>
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                flex-direction: column;
+                                align-items: flex-start;
+                            "
+                        >
+                            <span style="font-weight: bold">{{
+                                a.customers_handle.customers.customer_name
+                            }}</span>
+                            <span style="font-weight: 400">{{
+                                a.customers_handle.email
+                            }}</span>
+                        </div>
+                    </td>
+                    <td>{{ a.created_at | date }}</td>
+                    <td>{{ a.user_created.employee_name }}</td>
+                    <td>{{ a.sales_name.employee_name }}</td>
+                    <td align="right">
+                        <b>{{ a.payment.totalpembayaran.toLocaleString() }}</b>
+                    </td>
+                    <td>
+                        <div class="start-center-row">
+                            <div
+                                style="
+                                    display: flex;
+                                    width: 100%;
+                                    align-items: center;
+                                "
+                            >
+                                <mat-icon
+                                    [ngClass]="{
+                                        'warning-icon':
+                                            a.current_status == 0 ||
+                                            a.current_status == 2,
+                                        'success-icon': a.current_status == 1,
+                                        'warn-icon': a.current_status == 3
+                                    }"
+                                    style="cursor: pointer"
+                                    (click)="approving(a, 1)"
+                                    >{{
+                                        a.current_status == 0 ||
+                                        a.current_status == 2
+                                            ? "error"
+                                            : a.current_status == 1
+                                            ? "check_circle"
+                                            : "cancel"
+                                    }}</mat-icon
+                                >
+                                <span
+                                    style="font-size: 11px"
+                                    *ngIf="a.current_status == 0"
+                                    >Pending</span
+                                >
+                                <span
+                                    style="font-size: 11px"
+                                    *ngIf="a.current_status == 1"
+                                    >Approved</span
+                                >
+                                <span
+                                    style="font-size: 11px"
+                                    *ngIf="a.current_status == 2"
+                                    >Waiting Approval</span
+                                >
+                                <span
+                                    style="font-size: 11px"
+                                    *ngIf="a.current_status == 3"
+                                    >Canceled</span
+                                >
+                            </div>
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="viewPenawaran(a, 'view')"
+                                >
+                                    <span>View</span>
+                                </button>
+                                <!-- <button
+                                mat-menu-item
+                                [disabled]="a.tphs.length > 0 ? false : true"
+                                (click)="historyPenawaran(a)"
+                            >
+                                <span>History</span>
+                            </button> -->
+                                <button
+                                mat-menu-item
+                                (click)="viewPenawaran(a, 'edit')"
+                            >
+                                <span>Edit</span>
+                            </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="deletePenawaran(a, 3)"
+                                >
+                                    <span>Delete</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="upload(a, 'penawaran')"
+                                >
+                                    <span>Upload</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    [matMenuTriggerFor]="menu2"
+                                >
+                                    <span>Print</span>
+                                </button>
+                                <mat-menu #menu2="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="
+                                            pdfPenawaran(a, 'id', 'download')
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: flex-start;
+                                                align-items: center;
+                                                gap: 5px;
+                                            "
+                                        >
+                                            <span>ID</span>
+                                            <img
+                                                src="assets/images/flags/indonesia.svg"
+                                                style="
+                                                    width: 20px;
+                                                    height: 20px;
+                                                "
+                                            />
+                                        </div>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="
+                                            pdfPenawaran(a, 'en', 'download')
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                display: flex;
+                                                justify-content: flex-start;
+                                                align-items: center;
+                                                gap: 5px;
+                                            "
+                                        >
+                                            <span>EN</span>
+                                            <img
+                                                src="assets/images/flags/uk.svg"
+                                                style="
+                                                    width: 20px;
+                                                    height: 20px;
+                                                "
+                                            />
+                                        </div>
+                                    </button>
+                                </mat-menu>
+                                <button
+                                    mat-menu-item
+                                    (click)="pdfPenawaran(a, 'id', 'view')"
+                                >
+                                    <span>Preview</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div
+            *ngIf="this.loadingfirst && this.dataPenawaran.length < 1"
+            style="
+                width: 20%;
+                align-self: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            "
+        >
+            <img src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+        <div
+            *ngIf="!this.loadingfirst && this.dataPenawaran.length < 1"
+            style="
+                width: 20%;
+                align-self: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            "
+        >
+            <img src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+    </div>
+</div>

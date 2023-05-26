@@ -1,0 +1,22 @@
+<div fxFlex fxLayout="column" fxLayoutAlign='center center'>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <mat-form-field appearance="fill">
+            <mat-label>from</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="from">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <div style="width: 30px;"></div>
+          <mat-form-field appearance="fill">
+            <mat-label>to</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="to">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button (click)="save()">Set</button>
+        <div style="width: 20px;"></div>
+        <button mat-raised-button (click)="close()">Cancel</button>
+    </div>
+</div>

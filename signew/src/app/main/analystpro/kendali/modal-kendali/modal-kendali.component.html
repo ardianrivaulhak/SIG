@@ -1,0 +1,38 @@
+<div class="dialog-content-wrapper mat-accent m-0">
+
+  <mat-toolbar matDialogTitle class="mat-accent m-0">
+      <mat-toolbar-row>
+          <span class="title dialog-title"> 
+            {{ data.data.kontrakuji.contract_no }} 
+          </span>
+      </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <form>
+          <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
+              <mat-form-field appearance="outline" fxFlex>
+                  <mat-label>Desc Internal</mat-label>
+                  <textarea name="desc_internal" formControlName="desc_internal" matInput type="text" rows="6"></textarea>
+              </mat-form-field>
+          </div>
+
+          <div fxLayout="row" class="textarea-wrapper" fxLayoutAlign="start start">
+            <mat-form-field appearance="outline" fxFlex>
+                <mat-label>Desc</mat-label>
+                <textarea name="desc" formControlName="desc" matInput type="text" rows="6"></textarea>
+            </mat-form-field>
+        </div>
+      </form>
+  </div>
+
+  <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+      <button mat-button class="mat-accent" aria-label="Submit">
+        SUBMIT
+      </button>
+      <button mat-button class="mat-accent" aria-label="Close">
+          CLOSE
+      </button>
+  </div>
+
+</div>

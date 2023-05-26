@@ -1,0 +1,292 @@
+@import "src/@fuse/scss/fuse";
+
+#profile {
+    padding: 0%;
+
+
+    .custom-modalbox {
+        mat-dialog-container {
+            padding: 0;
+        }
+    }
+
+    .header {
+        height: 220px;
+        max-height: 320px;
+        background: linear-gradient(to bottom, #141e30 0%, #243b55 100%);
+        // background: url('/assets/images/backgrounds/dark-material-bg.jpg') no-repeat 0 45%;
+        background-size: cover;
+
+        .profile-image {
+            margin-right: 24px;
+
+            @include media-breakpoint("sm") {
+                margin: 0 0 16px 0;
+            }
+        }
+
+        .name {
+            font-size: 34px;
+            color: #ffffff;
+
+            @include media-breakpoint("sm") {
+                margin-bottom: 32px;
+            }
+        }
+
+        .actions {
+            button {
+                text-transform: none;
+                padding: 0 16px;
+                margin: 0 0 0 8px;
+            }
+        }
+    }
+
+    .content {
+        flex: 1;
+
+        mat-tab-group {
+            height: 100%;
+
+            .mat-tab-body-wrapper {
+                flex-grow: 1;
+            }
+        }
+    }
+}
+
+#reset-password-form {
+    width: 100%;
+    padding: 32px;
+    text-align: center;
+    @include mat-elevation(16);
+
+    @include media-breakpoint("xs") {
+        padding: 0px;
+        width: 100%;
+    }
+
+    .logo {
+        width: 128px;
+        margin: 32px auto;
+    }
+
+    .title {
+        font-size: 20px;
+        margin: 16px 0 32px 0;
+    }
+
+    form {
+        width: 100%;
+        text-align: left;
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        .submit-button {
+            width: 220px;
+            margin: 16px auto;
+            display: block;
+
+            @include media-breakpoint("xs") {
+                width: 90%;
+            }
+        }
+    }
+
+    .login {
+        margin: 32px auto 24px auto;
+        width: 250px;
+        font-weight: 600;
+
+        .text {
+            margin-right: 8px;
+        }
+    }
+}
+
+#about {
+    max-width: 1200px;
+
+    .about-content {
+        .general {
+            .location {
+                mat-icon {
+                    line-height: 13px !important;
+                }
+            }
+        }
+
+        .work {
+            .job {
+                .company {
+                    padding: 0 16px 0 0;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .about-sidebar {
+        padding-left: 32px;
+
+        @include media-breakpoint("sm") {
+            padding: 8px;
+        }
+
+        .friends {
+            .content {
+                .friend {
+                    padding: 4px;
+
+                    img {
+                        border-radius: 15px;
+                    }
+                }
+            }
+        }
+
+        .groups {
+            .content {
+                .group {
+                    margin-bottom: 0px;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .logo {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 48px;
+                        height: 48px;
+                        font-size: 21px;
+                        line-height: normal;
+                        border-radius: 50%;
+                        margin-right: 16px;
+                    }
+
+                    .name {
+                        font-weight: 600;
+                        font-size: 15px;
+                    }
+
+                    .members {
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Profile boxes
+.profile-box {
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    @include mat-elevation(2);
+
+    header {
+        padding: 16px;
+
+        .title {
+            font-size: 17px;
+        }
+
+        .more {
+            cursor: pointer;
+        }
+    }
+
+    .content {
+        padding: 16px;
+    }
+
+    footer {
+        padding: 8px;
+        border-top: 1px solid;
+    }
+
+    &.info-box {
+        .info-line {
+            margin-bottom: 24px;
+
+            .title {
+                font-size: 15px;
+                font-weight: 600;
+                padding-bottom: 4px;
+            }
+
+            .info {
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.tg td {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+.tg th {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+.tg .tg-0pky {
+    border-color: inherit;
+    text-align: left;
+    vertical-align: top;
+}
+
+.empl {
+    border-collapse: collapse;
+    width: 100%;
+    height: inherit;
+    font-size: 15px;
+    font-family: Muli,Helvetica Neue,Arial,sans-serif;;
+}
+
+.empl td,
+.empl th {
+    // border: 1px solid #ddd;
+    padding: 8px;
+
+}
+
+// .empl tr:nth-child(even) {
+//     background-color: #f2f2f2;
+// }
+
+// .empl tr:hover {
+//     background-color: #ddd;
+// }
+
+.empl th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+}

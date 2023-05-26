@@ -1,0 +1,308 @@
+<mat-card style="margin: 15px">
+    <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+        <div>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    fxFlex
+                    style="font-size: 10px"
+                >
+                    <mat-label>Search Customer Name</mat-label>
+                    <input
+                        matInput
+                        type="search"
+                        #filter
+                        [(ngModel)]="datasent.search"
+                        (input)="onSearchChange($event.target.value)"
+                    />
+                    <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    fxFlex
+                    style="font-size: 10px"
+                >
+                    <mat-label>Valid Status</mat-label>
+                    <mat-select
+                        [(ngModel)]="datasent.status"
+                        (selectionChange)="selection($event, 'valid')"
+                    >
+                        <mat-option value="all">All</mat-option>
+                        <mat-option value="1">Valid</mat-option>
+                        <mat-option value="0">Not Valid</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    fxFlex
+                    style="font-size: 10px"
+                >
+                    <mat-select
+                        [(ngModel)]="datasent.expired"
+                        (selectionChange)="selection($event, 'expired')"
+                    >
+                        <mat-option value="all">All</mat-option>
+                        <mat-option value="1">Expired</mat-option>
+                        <mat-option value="0">Active</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <div *ngIf="this.access.length > 0">
+                    <button
+                        mat-flat-button
+                        [matMenuTriggerFor]="menu"
+                        *ngIf="this.access[0].create == 1"
+                        style="bottom: 7.5px; right: 80px; font-size: 11px"
+                        color="primary"
+                    >
+                        <span>Add Mou</span>
+                    </button>
+
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item [matMenuTriggerFor]="menu2">
+                            Business
+                        </button>
+                        <mat-menu #menu2="matMenu">
+                            <button mat-menu-item (click)="statusPengujian()">
+                                Status Pengujian
+                            </button>
+                            <button mat-menu-item (click)="addiscMou()">
+                                Discount
+                            </button>
+                        </mat-menu>
+                        <button mat-menu-item [disabled]="true">
+                            Non Business
+                        </button>
+                    </mat-menu>
+                </div>
+            </mat-grid-tile>
+        </div>
+    </mat-grid-list>
+    <div id="table-scroll">
+        <table
+            class="demo"
+            style="
+                width: 100%;
+                align-content: center;
+                overflow: hidden;
+                border: rgb(8, 8, 8);
+            "
+        >
+            <thead>
+                <tr>
+                    <th style="width: 200px; text-align: center">No</th>
+                    <th style="width: 200px; text-align: center">
+                        Customer Name
+                    </th>
+                    <th style="width: 250px; text-align: center">
+                        Employee Name
+                    </th>
+                    <th style="width: 250px; text-align: center">
+                        Sales Forecast
+                    </th>
+                    <th style="width: 250px; text-align: center">
+                        Tgl. Berlaku
+                    </th>
+                    <th style="width: 250px; text-align: center">Status</th>
+                    <th style="width: 300px; text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of dataMou; let a = index">
+                    <td style="text-align: center">{{ a + 1 }}</td>
+                    <td>
+                        <div
+                            fxLayout="row"
+                            fxLayoutAlign="center center"
+                            fxLayoutGap="5px"
+                        >
+                            <div fxLayout="column">
+                                <p
+                                    class="text-truncate"
+                                    style="
+                                        font-weight: bold;
+                                        width: 180px;
+                                        font-size: x-small;
+                                    "
+                                >
+                                    {{ row.no_cust_mou }}
+                                </p>
+                                <span
+                                    class="text-truncate"
+                                    style="
+                                        width: 180px;
+                                        font-size: x-small;
+                                        text-align: left;
+                                    "
+                                    >{{ row.customer.customer_name }}</span
+                                >
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: left; font-size: x-small">
+                        <div fxLayout="column">
+                            <span class="text-truncate">{{
+                                row.employee.employee_name
+                            }}</span>
+                        </div>
+                    </td>
+                    <!-- <td>asdqwe</td> -->
+                    <td>
+                        <p
+                            style="
+                                font-size: 10px;
+                                font-size: x-small;
+                                text-align: right;
+                            "
+                            class="text-truncate"
+                        >
+                            {{
+                                row.salesforecast > 0
+                                    ? "Rp. " +
+                                      row.salesforecast.toLocaleString()
+                                    : "-"
+                            }}
+                        </p>
+                    </td>
+                    <td style="text-align: center">
+                        <div
+                            fxLayout="row"
+                            fxLayoutGap="5px"
+                            fxLayoutAlign="center center"
+                            style="
+                                padding: 5px;
+                                background-color: rgb(228, 101, 101, 0.7);
+                                border-radius: 6px;
+                                font-weight: bold;
+                                font-size: x-small;
+                            "
+                            *ngIf="checkdatenow(row.end_date)"
+                        >
+                            <span>{{ row.start_date | date }}</span>
+                            <span>~</span>
+                            <span>{{ row.end_date | date }}</span>
+                        </div>
+                        <br />
+                        <div
+                            fxLayout="row"
+                            fxLayoutGap="5px"
+                            fxLayoutAlign="center center"
+                            style="
+                                background-color: rgba(145, 253, 154, 0.7);
+                                padding: 5px;
+                                border-radius: 6px;
+                                font-weight: bold;
+                                font-size: x-small;
+                            "
+                            *ngIf="!checkdatenow(a.end_date)"
+                        >
+                            <span>{{ row.start_date | date }}</span>
+                            <span>~</span>
+                            <span>{{ row.end_date | date }}</span>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                width: 100%;
+                            "
+                        >
+                            <div>
+                                <button
+                                    mat-icon-button
+                                    color="success"
+                                    *ngIf="row.attachment.length > 0"
+                                    (click)="attachment(row, 'mou')"
+                                    style="width: 24px"
+                                >
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                            </div>
+                            <div>
+                                <div
+                                    class="box-urgent"
+                                    *ngIf="row.status === 0"
+                                    style="cursor: pointer"
+                                    (click)="approve(row)"
+                                >
+                                    <p
+                                        class="text-truncate"
+                                        style="font-size: x-small"
+                                    >
+                                        Not Valid
+                                    </p>
+                                </div>
+                                <div
+                                    class="box-normal"
+                                    *ngIf="row.status === 1"
+                                    style="cursor: pointer"
+                                    (click)="unapprove(row)"
+                                >
+                                    <p
+                                        class="text-truncate"
+                                        style="font-size: x-small"
+                                    >
+                                        Valid
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
+                    <td style="text-align: center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="details(row)">
+                                <span>Details</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="attachment(row, 'mou')"
+                            >
+                                <span>Attachment</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="update(row)"
+                                [disabled]="
+                                    this.access[0].create !== 1 ? true : false
+                                "
+                            >
+                                <span>Edit</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="delete(row)"
+                                [disabled]="
+                                    this.access[0].delete !== 1 ? true : false
+                                "
+                            >
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <mat-paginator
+        #paginator
+        [length]="total"
+        [pageSize]="pageSize"
+        [showFirstLastButtons]="true"
+        (page)="paginated($event)"
+    >
+    </mat-paginator>
+</mat-card>

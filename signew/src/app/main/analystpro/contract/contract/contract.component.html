@@ -1,0 +1,586 @@
+<div
+    style="height: 100%; overflow: auto; padding: 0px 20px"
+    *ngIf="this.mine.length > 0"
+>
+    <mat-grid-list cols="6" rowHeight="100px" gutterSize="10px">
+        <mat-grid-tile colspan="6">
+            <div
+                fxLayout="row"
+                fxLayoutAlign="center center"
+                fxFlex
+                fxLayoutGap="10px"
+            >
+                <div class="border-search">
+                    <input
+                        type="text"
+                        placeholder="Search Contract / No Sample / Sample Name"
+                        (keyup.enter)="onSearchChange($event.target.value)"
+                        [(ngModel)]="dataFilter.search"
+                        style="width: 100%; text-align: center"
+                    />
+                </div>
+                <div style="width: 20px"></div>
+                <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="onSearchChange($event.target.value)"
+                    style="align-self: center"
+                >
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button
+                    mat-mini-fab
+                    (click)="refresh()"
+                    style="
+                        align-self: center;
+                        color: rgb(13, 202, 145);
+                        background-color: #fff;
+                    "
+                >
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="contractcategory"
+                bindLabel="title"
+                (clear)="reset('Category')"
+                bindValue="id"
+                placeholder="Select Category"
+                [(ngModel)]="this.dataFilter.contract_category"
+                (change)="getValCategory($event)"
+                (clear)="reset('Category')"
+                appearance="outline"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="customer"
+                bindLabel="customer_name"
+                appearance="outline"
+                bindValue="id_customer"
+                (scrollToEnd)="onScrollToEnd('customer')"
+                (clear)="reset('customer')"
+                (search)="onsearchselect($event, 'cust')"
+                appearance="legacy"
+                [(ngModel)]="this.dataFilter.customers"
+                placeholder="Select By Customers"
+                appearance="outline"
+                (change)="getValCust($event)"
+                dropdownPosition="bottom"
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <div title="{{ item.customer_name }}">
+                        {{ item.customer_name }}
+                    </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <div title="{{ item.customer_name }}">
+                        {{ item.customer_name }}
+                    </div>
+                </ng-template>
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="datauser"
+                bindLabel="employee_name"
+                bindValue="user_id"
+                (clear)="reset('user')"
+                appearance="legacy"
+                (search)="onsearchselect($event, 'user')"
+                [(ngModel)]="this.dataFilter.user"
+                (scrollToEnd)="onScrollToEnd('user')"
+                placeholder="Select User Created"
+                appearance="outline"
+                (change)="getValUser($event)"
+                dropdownPosition="bottom"
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <div title="{{ item.employee_name }}">
+                        {{ item.employee_name }}
+                    </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <div title="{{ item.employee_name }}">
+                        {{ item.employee_name }}
+                    </div>
+                </ng-template>
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="status"
+                bindLabel="title"
+                bindValue="id"
+                [(ngModel)]="this.dataFilter.status"
+                placeholder="Contract Type"
+                (change)="getValStatus($event)"
+                (clear)="reset('Status')"
+                appearance="outline"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="statuscontract"
+                bindLabel="title"
+                (clear)="reset('statuscontract')"
+                bindValue="id"
+                placeholder="Status"
+                [(ngModel)]="this.dataFilter.statuscontract"
+                (change)="getValStatusContract($event)"
+                (clear)="reset('statuscontract')"
+                appearance="outline"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="outline"
+                style="width: 100%; font-size: 14px"
+            >
+                <mat-label>Tgl Selesai</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="dataFilter.tgl_selesai"
+                    (dateChange)="tglEstimasiLabChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+    <div
+        style="
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            gap: 10px;
+        "
+    >
+        <button
+            mat-raised-button
+            color="primary"
+            *ngIf="this.access.length > 0"
+            [routerLink]="'/analystpro/kontrak/add'"
+        >
+            Add New
+        </button>
+        <button
+            mat-raised-button
+            color="primary"
+            *ngIf="this.useraccidonly.includes(this.mine[0].employee_id)"
+            (click)="approvingchecked()"
+            [disabled]="totalchecked > 0 ? false : true"
+        >
+            Approve ( {{ totalchecked }} )
+        </button>
+    </div>
+    <div style="height: 20px"></div>
+    <div *ngIf="datacontract.length > 0">
+        <table id="customers">
+            <thead>
+                <tr>
+                    <th align="center" style="background-color: white;">
+                        <mat-checkbox
+                            class="checkbox-control"
+                            color="primary"
+                            (change)="checked($event.checked, 'all')"
+                        ></mat-checkbox>
+                    </th>
+                    <th>Contract no</th>
+                    <th>Contract Type</th>
+                    <th>Created at</th>
+                    <th>Cust.</th>
+                    <th>User</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let a of datacontract; let i = index">
+                <tr>
+                    <td>
+                        <mat-checkbox
+                            class="checkbox-control"
+                            color="primary"
+                            [checked]="a.checked == 1 ? true : false"
+                            [disabled]="
+                                checkdisable(a,i)
+                            "
+                            (change)="checked($event.checked, i)"
+                        ></mat-checkbox>
+                    </td>
+                    <td>
+                        <div fxLayout="column">
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: bold"
+                                >{{ a.kontrakuji.contract_no }}</span
+                            >
+                            <span
+                                class="text-truncate"
+                                style="
+                                    color: f5f5f5;
+                                    font-size: 10px;
+                                    font-style: italic;
+                                "
+                                >{{
+                                    a.kontrakuji.contract_category.title
+                                }}</span
+                            >
+                        </div>
+                    </td>
+                    <td>
+                        <p
+                            class="text-truncate"
+                            style="font-size: 10px; font-weight: bold"
+                        >
+                            {{ this.checkcontract(a.kontrakuji) }}
+                        </p>
+                    </td>
+                    <td>
+                        <div fxLayout="column" fxLayoutAlign="center start">
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: bold"
+                                >{{ a.inserted_at.split(" ")[0] }}</span
+                            >
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: 400"
+                                >{{ a.inserted_at.split(" ")[1] }}</span
+                            >
+                        </div>
+                    </td>
+                    <td>
+                        <div fxLayout="column" style="max-width: 230px">
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: bold"
+                                title="{{
+                                    a.kontrakuji.customers_handle.customers
+                                        .customer_name
+                                }}"
+                                >{{
+                                    a.kontrakuji.customers_handle.customers
+                                        .customer_name
+                                }}</span
+                            >
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: 400"
+                                >{{
+                                    a.kontrakuji.customers_handle.contact_person
+                                        .name
+                                }}</span
+                            >
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: flex-start;
+                                flex-direction: column;
+                            "
+                        >
+                            <span
+                                class="text-truncate"
+                                style="font-size: 10px; font-weight: bold"
+                            >
+                                {{ a.user.employee_name }}
+                            </span>
+                            <span
+                                class="text-truncate"
+                                style="font-size: 9px; font-style: italic"
+                            >
+                                {{
+                                    a.kontrakuji.pic_sales
+                                        ? a.kontrakuji.pic_sales
+                                        : "-"
+                                }}
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <p
+                            class="text-truncate"
+                            style="font-size: 10px; font-weight: bold"
+                        >
+                            {{ a.kontrakuji.tgl_selesai[0].tgl_selesai }}
+                        </p>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                width: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                gap: 5px;
+                            "
+                        >
+                            <button
+                                *ngIf="a.status == 1"
+                                mat-stroked-button
+                                style="
+                                    color: rgb(3, 75, 53);
+                                    font-size: 9px;
+                                    font-weight: bold;
+                                    width: 100px;
+                                "
+                            >
+                                <mat-icon>check_circle</mat-icon>
+                                <span>Approved</span>
+                            </button>
+
+                            <button
+                                *ngIf="a.status == 2"
+                                mat-stroked-button
+                                style="
+                                    color: rgb(161, 187, 11);
+                                    font-size: 9px;
+                                    font-weight: bold;
+                                    width: 100px;
+                                "
+                            >
+                                <mat-icon>report</mat-icon>
+                                <span>Waiting Approval</span>
+                            </button>
+
+                            <button
+                                *ngIf="a.status == 0"
+                                mat-stroked-button
+                                (click)="accept(a)"
+                                style="
+                                    color: rgb(201, 5, 5);
+                                    font-size: 9px;
+                                    font-weight: bold;
+                                    width: 100px;
+                                "
+                            >
+                                <mat-icon>info</mat-icon>
+                                <span>Pending</span>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 100%;
+                            "
+                        >
+                            <mat-icon
+                                style="font-size: 9; color: rgb(3, 75, 53)"
+                                *ngIf="a.kontrakuji.contract_attachment.length > 0"
+                                >event_available</mat-icon
+                            >
+                            <mat-icon
+                                style="font-size: 9; color: rgb(146, 3, 3)"
+                                *ngIf="a.kontrakuji.contract_attachment.length < 1"
+                                >event_busy</mat-icon
+                            >
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="emailsendtocust(a)"
+                                >
+                                    <span>Send Email</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    (click)="seeDetails(a.contract_id)"
+                                >
+                                    <span>Details</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    (click)="modalPhoto(a.contract_id)"
+                                >
+                                    <span>Input Photo</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    (click)="editContract(a.contract_id)"
+                                >
+                                    <span>Edit</span>
+                                </button>
+
+                                <button
+                                    mat-menu-item
+                                    [matMenuTriggerFor]="menu2"
+                                >
+                                    <span>Revision</span>
+                                </button>
+                                <mat-menu #menu2="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="setApprove(a)"
+                                        *ngIf="a.kontrakuji.status_inv == 1"
+                                    >
+                                        <span>Ajukan Revisi</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="setApprove(a)"
+                                        *ngIf="a.kontrakuji.status_inv == 2"
+                                        disabled
+                                    >
+                                        <span>Waiting for approval</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        [routerLink]="
+                                            '/analystpro/revision-contract/' +
+                                            a.contract_id
+                                        "
+                                        [disabled]="
+                                            a.kontrakuji.status_inv == 1 ||
+                                            a.kontrakuji.status_inv == 2
+                                                ? true
+                                                : false
+                                        "
+                                    >
+                                        <span>( + / - ) Sample</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="akgRevisi(a.contract_id)"
+                                        [disabled]="
+                                            a.kontrakuji.status_inv == 1 ||
+                                            a.kontrakuji.status_inv == 2
+                                                ? true
+                                                : false
+                                        "
+                                    >
+                                        <span>( + / - ) Biaya AKG</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="samplingRevisi(a.contract_id)"
+                                        [disabled]="
+                                            a.kontrakuji.status_inv == 1 ||
+                                            a.kontrakuji.status_inv == 2
+                                                ? true
+                                                : false
+                                        "
+                                    >
+                                        <span>( + / - ) Biaya Sampling</span>
+                                    </button>
+                                </mat-menu>
+                                <button
+                                    mat-menu-item
+                                    [matMenuTriggerFor]="menu3"
+                                >
+                                    <span>More</span>
+                                </button>
+                                <mat-menu #menu3="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        (click)="
+                                            openAttachMent(
+                                                a.kontrakuji,
+                                                'kontrak'
+                                            )
+                                        "
+                                    >
+                                        <span>Attachment</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="payment(a.kontrakuji)"
+                                    >
+                                        <span>Payment</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="
+                                            openPdf(a.contract_id, 'download')
+                                        "
+                                    >
+                                        <span>Download</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="
+                                            openPdf(a.contract_id, 'preview')
+                                        "
+                                    >
+                                        <span>Preview</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        (click)="infofinance(a.kontrakuji)"
+                                    >
+                                        <span>Info Finance</span>
+                                    </button>
+                                    <button
+                                        mat-menu-item
+                                        *ngIf="this.mine[0].id_bagian == 13"
+                                        (click)="
+                                            downloadExcelParameter(
+                                                a.contract_id,
+                                                a.kontrakuji.contract_no
+                                            )
+                                        "
+                                    >
+                                        <span>Download Kontrak Parameter</span>
+                                    </button>
+                                </mat-menu>
+                                <button
+                                    mat-menu-item
+                                    (click)="deleteContract(a)"
+                                >
+                                    <span>Delete</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator
+            [length]="this.total"
+            [pageSize]="this.to"
+            [pageIndex]="this.current_page"
+            hidePageSize="true"
+            (page)="pageEvent = $event; onPaginateChange($event)"
+        >
+        </mat-paginator>
+    </div>
+</div>
+<ngx-spinner
+    bdColor="rgba(255,255,255,1)"
+    size="medium"
+    color="#000"
+    type="ball-clip-rotate-multiple"
+    [fullScreen]="false"
+></ngx-spinner>

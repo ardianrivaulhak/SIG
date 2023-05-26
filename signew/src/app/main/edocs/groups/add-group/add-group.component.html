@@ -1,0 +1,47 @@
+<mat-card class="mat-elevation-z0" >            
+    <h3 style="font-weight:bold ; margin-top: 10px;">Add Group</h3>
+    <div fxLayout="column" fxLayoutAlign="start stretch" >
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 10px;">
+            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                <mat-label>Group Name</mat-label>
+                <input style="color: rgb(71, 68, 68);" [(ngModel)]="this.dataForm.group_name"  matInput>
+            </mat-form-field>
+        </div>
+        <!-- <div fxLayout="row" fxLayoutAlign="space-between center" >
+            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="90">
+                <mat-label>Search Employee</mat-label>
+                <input style="color: rgb(71, 68, 68);" (keyup.enter)="searching($event)" [(ngModel)]="this.datasend.search" matInput>
+            </mat-form-field>
+        </div> -->
+        <mat-card class="mat-elevation-z0" 
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollUpDistance]="1.5"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScrollToEnd($event)"
+        [scrollWindow]="false"
+        style="width: 90%; margin: 20px auto 10px auto; height:600px; overflow: auto;" >                
+            <mat-card class="mat-elevation-z0" fxLayout="row" fxLayoutAlign="space-between center"  *ngFor="let emp of this.employeeData; let i = index">
+                <div  fxLayout="column" fxLayoutAlign="space-around start">
+                    <span style="font-size:11px; font-weight: bold;">{{ emp.employee_name }}</span>
+                    <span style="font-size:10px;">{{ emp.division }}</span>
+                </div>
+                <button mat-flat-button color="primary" *ngIf="emp.add == false" (click)="addMember(i, emp.id)">Add</button>
+                <button mat-flat-button color="warn" *ngIf="emp.add == true" (click)="removeMember(i, emp.id)">Remove</button>
+            </mat-card>
+        </mat-card>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="end end" style="margin-bottom:15px;" >
+        <button mat-stroked-button color="primary" 
+        style="margin-right: 10px;"
+        (click)="closeModal(true)"
+        matTooltip="upload">
+           <mat-icon>chevron_left</mat-icon> Close
+       </button>
+        <button mat-flat-button color="primary"
+        (click)="createGroup()"
+         matTooltip="upload">Create
+        </button>
+    </div>
+</mat-card>

@@ -1,0 +1,147 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label>
+                <mat-icon>search</mat-icon>Search Lab Unit / Satuan</mat-label
+            >
+            <input
+                matInput
+                [(ngModel)]="datasent.search"
+                (input)="onSearchChange($event.target.value)"
+                placeholder="Lab Unit / Satuan"
+            />
+        </mat-form-field>
+        <div style="margin-left: 470px">
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                [routerLink]="'/analystpro/unit/add'"
+                *ngIf="this.access[0].create === 1"
+            >
+                <span>Add Unit</span>
+            </button>
+        </div>
+        <div>
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                matTooltip="Export"
+                [matMenuTriggerFor]="menu2"
+            >
+                <span>Export Unit</span>
+            </button>
+        </div>
+        <mat-menu #menu2="matMenu">
+            <!-- Item-menu yang diinginkan -->
+            <button mat-menu-item (click)="exportExcel()">Export Data</button>
+
+            <!-- Item-menu lainnya -->
+        </mat-menu>
+    </div>
+
+    <!-- / TABLE -->
+
+    <div
+        style="
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        "
+    ></div>
+    <div id="table-scroll">
+        <table
+            class="demo"
+            style="
+                width: 100%;
+                align-content: center;
+                overflow: hidden;
+                border: black;
+            "
+        >
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center">No</th>
+                    <th style="width: 150px; text-align: center">Unit Code</th>
+                    <th style="width: 150px; text-align: center">Unit Name</th>
+                    <th style="width: 150px; text-align: center">
+                        Description
+                    </th>
+                    <th style="width: 170px; text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of unitData; let a = index">
+                    <td style="text-align: center">
+                        {{ a + 1 }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ row.kode_unit }}
+                    </td>
+                    <td style="text-align: center">{{ row.nama_unit }}</td>
+                    <!-- <td>asdqwe</td> -->
+                    <td style="text-align: center">
+                        {{ row.description }}
+                    </td>
+                    <td style="text-align: center">
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            [routerLink]="'/analystpro/unit/' + row.id"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                                />
+                            </svg>
+                        </button>
+                        <button
+                            mat-icon-button
+                            (click)="deleteData(row.id)"
+                            *ngIf="this.access[0].delete > 0"
+                            style="color: #ee7870"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash-fill"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                                />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+</mat-card>

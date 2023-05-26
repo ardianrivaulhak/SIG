@@ -1,0 +1,51 @@
+<div *ngIf="this.formVoucher" class="w-100-p" fxLayout="column" fxFlex style="overflow: auto;">
+    <h3>{{this.statusdata !== 'add' ? 'Edit Data' : 'Add Data'}}</h3>
+    <form name="formVoucher" [formGroup]="formVoucher" class="product w-100-p" fxLayout="column" fxFlex>
+        <mat-form-field appearance="outline">
+            <mat-label>Voucher Name</mat-label>
+            <input matInput placeholder="Name" formControlName="vouchername">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="status" (selectionChange)="setValueChange()">
+              <mat-option value="0">Discount</mat-option>
+              <mat-option value="1">Price</mat-option>
+            </mat-select>
+          </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Set Description" rows="3" formControlName="desc"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline"  *ngIf="this.formVoucher.controls.status.value == '1'">
+            <mat-label>Price</mat-label>
+            <input
+                type="text"
+                matInput
+                currencyMask
+                formControlName="price"
+                [options]="{
+                    prefix: '',
+                    thousands: '.',
+                    precision: 0
+                }"
+            />
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="this.formVoucher.controls.status.value == '0'">
+            <mat-label>Disc</mat-label>
+            <input matInput placeholder="Disc" type="number" formControlName="disc">
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Valid Until</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="validate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </form>
+    <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="saveData()">Save</button>
+        <div style="width: 30px;"></div>
+        <button mat-raised-button color="danger" (click)="closeModal()">Cancel</button>
+    </div>
+    <div style="height: 20px"></div>
+</div>

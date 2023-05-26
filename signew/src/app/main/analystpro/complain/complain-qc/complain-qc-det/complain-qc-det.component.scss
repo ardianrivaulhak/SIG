@@ -1,0 +1,73 @@
+app-complain-qc-det {
+    width: 100% !important;
+    height: 100% !important;
+    padding: 20px !important;
+
+
+
+    .border-search {
+        width: 100%;
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+    .mat-input-element:disabled,
+    .mat-form-field-type-mat-native-select.mat-form-field-disabled
+        .mat-form-field-infix::after {
+        color: black !important;
+    }
+
+    #customers {
+        border-collapse: collapse;
+        width: 1550px;
+    }
+    #customers td,
+    #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    #customers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #customers tr:hover {
+        background-color: #ddd;
+    }
+
+    #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+    }
+
+    .cust{
+        display: flex;
+        width: 90px;
+        height: 25px;
+        color: white;
+        background-color: rgb(183, 8, 199);
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+    
+      .qc{
+        display: flex;
+        width: 90px;
+        height: 25px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        border-radius: 5px;
+        background-color: rgb(2, 124, 23);
+      }
+      
+}

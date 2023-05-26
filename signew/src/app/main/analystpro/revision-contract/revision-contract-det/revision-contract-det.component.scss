@@ -1,0 +1,167 @@
+@import "src/@fuse/scss/fuse";
+
+// mat-form-field.mat-form-field{
+//     font-size: 10px;
+// }
+.mat-form-field-wrapper{
+    padding-bottom: 0px !important;
+} 
+app-revision-contract-det {
+    overflow: auto;
+    width: 100% !important; 
+    height: 100% !important;
+    padding: 5px !important;
+
+    #kontrakuji {
+
+        .sample-table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+          }
+          
+          .sample-table td, .sample-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+          }
+          
+          .sample-table tr:nth-child(even){background-color: #f2f2f2;}
+          
+          .sample-table tr:hover {background-color: #ddd;}
+          
+          .sample-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #1e2129;
+            color: white;
+          }
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        ng-select {
+            width: 100%;
+        }
+
+        .lineborder {
+            flex-grow: 1;
+            height: 5px; 
+            background-color: indigo; 
+            border-radius: 2px;
+        }
+        
+        .subjudul {
+            color: indigo; 
+            font-weight: bold;
+        }
+
+        .box-photo {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+            margin: 5px;
+            cursor: pointer;
+        }
+        .sample {
+            width: 100%;
+            align-items: center;
+            input {
+                font-size: 10px;
+                width: 120px !important;
+                height: 100%;
+            }
+        
+            .mat-column-no{
+                max-width: 30px;
+            }
+        
+            .mat-column-nosample{
+                justify-content: center;
+                max-width: 150px;
+            }
+        }
+        .pricing {
+            display: flex;
+            flex-direction: row; 
+            margin: 10px;
+        }
+        
+        .title-pricing {
+            font-weight: bold; 
+            width: 140px
+        }
+        
+        .text-pricing {
+            margin: 0px 5px 0px 5px;
+        }
+        
+        .price-tag {
+            font-size: 12px; 
+            margin-top: 40px; 
+            display: flex; 
+            flex-direction: column;
+        }
+        
+        .pricing-table {
+            border-collapse: collapse;
+            width: 90%; 
+            align-self: center;
+        }
+        
+        // .pricing-table thead tr th {
+        //     text-align: center;
+        // }
+        
+        .pricing-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        
+        .pricing-table tr:nth-child(even){
+            background-color: #f2f2f2;
+        }
+        
+        .pricing-table tr:hover {
+            background-color: #ddd;
+        }
+
+        .contactperson-info {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            background-color: white;
+            height: 100px;
+            z-index: 9999;
+            left: 32%;
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 0px 10px 1px rgba(3,15,145,0.55);
+            span {
+                padding: 5px;
+            }
+        }
+        
+        .row-contactperson-info {
+            display: flex; 
+            flex-direction: row; 
+            width: 50%; 
+            justify-content: space-around;
+            div {
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                padding: 10px;
+            }
+        }
+    }
+}

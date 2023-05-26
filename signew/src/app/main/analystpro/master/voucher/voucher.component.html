@@ -1,0 +1,52 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px;" *ngIf="this.access.length > 0"> 
+    <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Search Voucher</mat-label>
+                <input matInput [(ngModel)]="datasent.search" (input)="onSearchChange($event.target.value)" placeholder="Lab Name">
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <button mat-flat-button style="width: 100%; height: 60%;" color="primary"
+              (click)="addoredit('add')"
+              [disabled]="this.access[0].create > 0 ? false : true"
+              >
+          <mat-icon>add_box</mat-icon>
+          <span>  Tambah Voucher</span>
+      </button>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-grid-list [cols]="3" rowHeight="2:1" gutterSize="10px">
+        <mat-grid-tile *ngFor="let o of datavoucher">
+            <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="background-color: #f1efe6;">
+                <div class="description">
+                    <span style="font-weight: bold;">{{o.voucher_name}}</span>
+                    <span>{{o.desc}}</span>
+                    <span>Valid Until {{o.valid_until | date}}</span>
+                    <div style="justify-content: center; align-items: center; flex-direction: row; display: flex;">
+                        <div style="cursor: pointer;" (click)="setStatus(o)" [ngClass]="{'kotak-active' :o.active == 'Y', 'kotak-inactive': o.active == 'N'}">
+                            <span>{{o.active == 'Y' ? 'Active' : 'Inactive'}}</span>
+                        </div>
+                        <button
+                            mat-icon-button                        
+                            [matMenuTriggerFor]="afterMenu"
+                        >
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #afterMenu="matMenu" xPosition="after">
+                            <button mat-menu-item [disabled]="this.access[0].update > 0 ? false : true" (click)="addoredit(o.id)">Edit</button>
+                            <button mat-menu-item [disabled]="this.access[0].delete > 0 ? false : true" (click)="delete(o.id)">Delete</button>
+                        </mat-menu>
+                    </div>
+                </div>
+                <div [ngClass]="{'tag-price' : o.status > 0, 'tag-disc': o.status < 1}">
+                    <div>
+                        <span class="headline">{{o.status > 0 ? o.price.toLocaleString() : o.discount+'%'}}</span>
+                        <span class="subline">{{o.status > 0 ? 'PRICE' : 'DISC'}}</span>
+                    </div>
+                </div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

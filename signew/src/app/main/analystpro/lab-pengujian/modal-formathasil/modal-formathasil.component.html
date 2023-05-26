@@ -1,0 +1,8 @@
+
+    <mat-form-field style="width: 90% !important; width: 90%">
+        <mat-label>Tanggal Estimasi Lab</mat-label>
+        <input matInput [(ngModel)]="preparationDateEstimasiLab" [matDatepicker]="dp2">
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field> 
+    <button style="width: 90%; margin-top: 30px;" mat-raised-button (click)="exportexcelEstimasiLab()">Export</button>

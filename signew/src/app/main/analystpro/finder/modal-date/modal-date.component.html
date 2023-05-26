@@ -1,0 +1,65 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <div
+        fxFlex
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 70%"
+    >
+        <mat-form-field appearance="fill" class="example-form-field">
+            <mat-label>From</mat-label>
+            <input
+                style="padding: 11px"
+                matInput
+                [(ngModel)]="from"
+                [matDatepicker]="dp2"
+            />
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="dp2"
+                style="font-size: 16px"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+                #dp2
+            ></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-form-field">
+            <mat-label>To</mat-label>
+            <input
+                style="padding: 11px"
+                matInput
+                [(ngModel)]="to"
+                [matDatepicker]="dp3"
+            />
+            <mat-datepicker-toggle
+                matSuffix
+                [for]="dp3"
+                style="font-size: 16px"
+            ></mat-datepicker-toggle>
+            <mat-datepicker
+                #dp3
+            ></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div style="height: 30px"></div>
+    <button mat-raised-button (click)="setDate()">
+        <div *ngIf="!this.loadingprev" style="padding: 10px">Set</div>
+        <div
+            *ngIf="this.loadingprev"
+            style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+                padding: 10px
+            "
+        >
+            <mat-spinner
+                [color]="'accent'"
+                diameter="20"
+            ></mat-spinner>
+            <span style="margin-left: 10px">Please Wait</span>
+        </div>
+    </button>
+</div>
+
+<!-- <p>Selected range: {{range.value | json}}</p> -->

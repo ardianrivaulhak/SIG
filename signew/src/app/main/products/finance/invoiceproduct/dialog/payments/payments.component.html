@@ -1,0 +1,93 @@
+<mat-progress-bar
+color="primary"
+mode="indeterminate"
+value="50" *ngIf="load">
+</mat-progress-bar>
+
+<h2 mat-dialog-title>Payments</h2>
+<mat-dialog-content class="mat-typography">
+    <h3 style="font-weight: bold; font-size:14px;">Order Summary</h3>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span>Subtotal</span>
+        <span>Rp. {{ this.payment.subtotal.toLocaleString() }}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span>Discount</span>
+        <span>Rp. {{ this.payment.discount.toLocaleString() }}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span>Shipping Cost</span>
+        <span>Rp. {{ this.payment.shippingcost.toLocaleString() }}</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span>PPN</span>
+        <span>Rp. {{ this.payment.ppn.toLocaleString() }}</span>
+    </div>    
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span style="font-weight:bold;">Total</span>
+        <span style="font-size:18px; font-weight:bolder;">Rp. {{ this.payment.total.toLocaleString() }}</span>
+    </div>
+    <br>
+    <mat-accordion>
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              History
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngIf="this.payment.history.length > 0" >
+            <div *ngFor="let a of this.payment.history;">
+
+                <mat-card style="margin-top: 10px;">
+                    <span style="font-weight: bold;">Rp. {{ a.payment.toLocaleString() }}</span><br>
+                    <span style="font-size:10px;"><mat-icon style="font-size:11px;">date_range</mat-icon> {{ a.tgl_bayar | date }}</span><br>
+                    <span >{{ a.user.employee_name }}</span>
+                </mat-card>
+            </div>
+          </div>
+          <p *ngIf="this.payment.history.length < 1">No Payment Data</p>
+        </mat-expansion-panel>
+        </mat-accordion>
+    <br>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+        <span>Remaining Payment</span>
+        <span>Rp. {{ this.payment.remaining.toLocaleString() }}</span>
+    </div>
+    <br>
+    <div fxLayout="column" fxLayoutAlign="space-around stretch" >
+        <div fxLayout="row" fxLayoutAlign="start center" >            
+            <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;"  fxFlex fxFlex="100">
+                <mat-label>Payment</mat-label>
+                <input matInput currencyMask name="payment" [(ngModel)]="this.form.payment" [options]="{ prefix: 'Rp. ', thousands: '.', decimal: ',' }">
+            </mat-form-field>  
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" >            
+            <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;"  fxFlex fxFlex="100">
+                <mat-label>Date of Payment</mat-label>
+                <input matInput [matDatepicker]="picker" name="date"  [(ngModel)]="this.form.date" >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>  
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" >            
+            <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;"  fxFlex fxFlex="100">
+                <mat-label>Bank</mat-label>
+                <mat-select [(ngModel)]="this.form.bank">
+                    <mat-option *ngFor="let a of bankAccount" value="{{a.id}}">
+                      {{a.bank_name}} - {{a.serial_number}} 
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>  
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" >            
+            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                <mat-label>Information</mat-label>
+                    <textarea matInput name="information"  [(ngModel)]="this.form.information" ></textarea>
+            </mat-form-field>     
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeModal(true)">Cancel</button>
+  <button mat-button (click)="submitData()" >Submit</button>
+</mat-dialog-actions>

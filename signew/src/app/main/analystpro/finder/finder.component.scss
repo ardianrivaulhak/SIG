@@ -1,0 +1,87 @@
+.fs-10 {
+    font-size: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+mat-form-field {
+    width: 100% !important;
+}
+
+.setheight { height: calc(100vh - 110px); }
+
+.lab-table {
+    flex: 1 1 auto;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    // width: 1500px;
+    -webkit-overflow-scrolling: touch;
+
+    .mat-header-row {
+        min-height: 64px;
+    }
+
+    .lod {
+        position: relative;
+        cursor: pointer;
+        height: 84px;
+    }
+
+    .mat-cell {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .mat-column-no {
+        flex: 0 1 7%;
+    }
+
+    .mat-column-contract_no {
+        flex: 0 1 20%;
+    }
+
+    .mat-column-no_po {
+        flex: 0 1 10%;
+        margin: 0px 5px;
+    }
+
+    .mat-column-no_penawaran {
+        flex: 0 1 17%;
+        margin: 0px 5px;
+    }
+
+    .mat-column-customer {
+        flex: 0 1 28%;
+        align-self: center;
+    }
+
+    .mat-column-contactperson {
+        flex: 0 1 20%;
+    }
+
+    .mat-column-created {
+        flex: 0 1 15%;
+    }
+
+    .mat-column-pic {
+        flex: 0 1 15%;
+        align-items: center;
+    }
+
+
+    .mat-column-tgl_selesai {
+        flex: 0 1 7%;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .mat-column-status {
+        flex: 0 1 15%;
+        justify-content: center;
+    }
+
+    .mat-column-action {
+        flex: 0 1 5%;
+    }
+}

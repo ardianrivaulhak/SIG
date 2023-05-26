@@ -1,0 +1,96 @@
+<div  *ngIf="parameterForm" class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <form name="parameterForm" [formGroup]="parameterForm" class="product w-100-p" fxLayout="column" fxFlex>
+
+    <mat-toolbar matDialogTitle class="mat-primary m-0"  >
+        <mat-toolbar-row *ngIf="this.data.select == 'nonchecklist'" >
+            <span class="title dialog-title" *ngIf="parameterData"> 
+                {{ this.parameterData[0].parameteruji.name_id }} 
+            </span>                  
+        </mat-toolbar-row>
+
+        <mat-toolbar-row *ngIf="this.data.select == 'checklist'" >
+            <span class="title dialog-title" > 
+                Bulk Edit Parameter
+            </span>                  
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar >
+        <div fxLayout="column" fxLayoutAlign="space-around center" >
+            <div fxLayout="row" fxLayoutAlign="space-around center" >
+                <mat-checkbox class="example-margin" 
+                style="margin-right: 10px" 
+                *ngIf=" this.data.select == 'checklist'"
+                (change)="showOptions($event.checked, 'lab')">
+                </mat-checkbox>
+                <ng-select 
+                appendTo="body" 
+                appearance="outline"
+                [items]="labs" 
+                bindLabel="nama_lab" 
+                bindValue="id"
+                (scrollToEnd)="onScrollToEnd('lab')" 
+                placeholder="Select Lab" 
+                dropdownPosition="bottom" 
+                name="id_lab" 
+                formControlName="id_lab"
+                style="display: flex;
+                        justify-content: center;
+                        align-items: center; width: 400px">
+                </ng-select>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-around center" >
+                <mat-checkbox 
+                class="example-margin" 
+                style="margin-right: 10px" 
+                *ngIf=" this.data.select == 'checklist'"
+                (change)="showOptions($event.checked, 'unit')">
+                </mat-checkbox>
+                <ng-select 
+                appendTo="body" 
+                appearance="outline"
+                [items]="units" 
+                bindLabel="nama_unit" 
+                bindValue="id"
+                (scrollToEnd)="onScrollToEnd('unit')" 
+                placeholder="Select Unit" 
+                dropdownPosition="bottom" 
+                name="id_unit" 
+                (search)="searchUnit($event, 'unit')"
+                formControlName="id_unit"
+                style="display: flex;
+                        justify-content: center;
+                        align-items: center; width: 400px">
+                </ng-select>
+            </div>
+           
+        </div>                   
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+            <mat-checkbox 
+            class="example-margin" 
+            style="margin-right: 10px" 
+            *ngIf=" this.data.select == 'checklist'"
+            (change)="checkAllSample($event.checked)">
+            All Sample
+            </mat-checkbox>
+        </div>   
+        <div>
+            <button mat-flat-button color="accent" aria-label="Submit" (click)="saveForm()" [disabled]="this.disablebtn">
+                Submit
+                <mat-icon *ngIf="this.loadbtn"><mat-spinner color="primary" diameter="20"></mat-spinner></mat-icon> 
+            </button>
+            <button mat-flat-button color="warn" aria-label="Close"  (click)="closeModal(true)">
+                Close
+            </button>
+        </div>      
+    </div>
+    </form>
+</div>

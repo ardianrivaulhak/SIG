@@ -1,0 +1,225 @@
+<div id="dashboard-attendace" class="dashboard-attendace">
+    <div
+        fxLayout="row"
+        fxLayout.xs="column"
+        fxLayoutAlign="space-around center"
+        fxLayoutGap="16px"
+        style="padding: 16px; width: 100%"
+    >
+        <div style="width: 100%">
+            <mat-card class="day-card" (click)="setLateView()" mat-ripple style="font-size: medium;">
+                Today Late
+                <div style="text-align: center">
+                    <br />
+                    <br />
+                    <div
+                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500"
+                    >
+                        {{ this.datatoday.percent }}%
+                    </div>
+                    <br />
+                    <br />
+                    <p style="font-size: medium;">
+                        Late :{{ this.datatoday.late }}
+                    </p>
+                    <p style="font-size: medium;">
+                        On Time : {{ this.datatoday.ontime }}
+                    </p>
+                </div>
+                <!-- <div class="text-center">
+                    <button mat-stroked-button (click)="setLateView()">
+                        View
+                    </button>
+                </div> -->
+            </mat-card>
+        </div>
+        <div style="width: 100%">
+            <mat-card class="day-card" (click)="setLateViewYesterday()" mat-ripple style="font-size: medium;">
+                Yesterday Late
+            <div style="text-align: center">
+                <br />
+                <br />
+                <div
+                    class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500"
+                >
+                    {{ this.datayesterday.percent }}%
+                </div>
+                <br />
+                <br />
+                <p style="font-size: medium;">
+                    Late :{{ this.datayesterday.late }}
+                </p>
+                <p style="font-size: medium;">
+                    On Time : {{ this.datayesterday.ontime }}
+                </p>
+            </div>
+            <!-- <div class="text-center">
+                <button mat-stroked-button (click)="setLateViewYesterday()">
+                    View
+                </button>
+            </div> -->
+        </mat-card>
+        </div>
+        <div style="width: 100%">
+            <mat-card class="day-card" (click)="setLateViewMonth()" mat-ripple style="font-size: medium;">
+                This Month Late
+                <div style="text-align: center">
+                    <br />
+                    <br />
+                    <div
+                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-yellow-500"
+                    >
+                        {{ this.datamonth.percent }}%
+                    </div>
+                    <br />
+                    <br />
+                    <p style="font-size: medium;">
+                        Late :{{ this.datamonth.late }}
+                    </p>
+                    <p style="font-size: medium;">
+                        On Time : {{ this.datamonth.ontime }}
+                    </p>
+                </div>
+                <!-- <div class="text-center">
+                    <button mat-stroked-button (click)="setLateViewMonth()">
+                        View
+                    </button>
+                </div> -->
+            </mat-card>
+        </div>
+        <div style="width: 100%">
+            <mat-card class="day-card" (click)="setLateViewYear()" mat-ripple style="font-size: medium;">
+                This Year Late
+                <div style="text-align: center">
+                    <br />
+                    <br />
+                    <div
+                        class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500"
+                    >
+                    {{ this.datayear.percent }}%
+                </div>
+                <br />
+                <br />
+                <p style="font-size: medium;">
+                    Late :{{ this.datayear.late }}
+                </p>
+                <p style="font-size: medium;">
+                    On Time : {{ this.datayear.ontime }}
+                </p>
+                </div>
+                <!-- <div class="text-center">
+                    <button
+                        mat-stroked-button
+                        (click)="setLateViewYear(); $event.preventDefault()"
+                    >
+                        View
+                    </button>
+                </div> -->
+            </mat-card>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center">
+        <mat-card
+            class="linechart"
+            fxFlex="50%"
+            style="overflow: auto; margin: 16px; width: 100%;"
+        >
+            <div
+                style="
+                    display: flex;
+                    justify-content: left;
+                    align-items: center;
+                "
+            >
+                <mat-form-field appearance="outline">
+                    <mat-label>Month and Year</mat-label>
+                    <input matInput [matDatepicker]="dp" [formControl]="date" />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="dp"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #dp
+                        startView="multi-year"
+                        (monthSelected)="setMonthAndYear($event, dp)"
+                    ></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <br />
+            <ngx-charts-line-chart
+                [view]="view"
+                [scheme]="colorScheme"
+                [legend]="legend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxis]="xAxis"
+                [yAxis]="yAxis"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [timeline]="timeline"
+                [results]="multi"
+                [autoScale]="autoScale"
+                (select)="onSelect($eventline)"
+                (activate)="onActivate($event)"
+                (deactivate)="onDeactivate($event)"
+            >
+            </ngx-charts-line-chart>
+        </mat-card>
+        <mat-card
+            class="toplate"
+            fxFlex="50%"
+            style="margin: 16px; overflow: auto"
+        >
+            <table mat-table [dataSource]="this.datatoplate" class="top-late">
+            <caption style="background-color: white; text-align: left">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Select Top</mat-label>
+                        <mat-select
+                            style="width: 150px"
+                            (selectionChange)="onSelectChange($event)"
+                            [(ngModel)]="select_tab"
+                        >
+                            <mat-option
+                                *ngFor="let st of statustop"
+                                [value]="st.id"
+                            >
+                                {{ st.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </caption>
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef>No.</th>
+                    <td mat-cell *matCellDef="let a; let i = index">
+                        {{ i + 1 }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="employee_name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let a">
+                        {{ a.employee?.employee_name }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="total_late">
+                    <th mat-header-cell *matHeaderCellDef>Total</th>
+                    <td mat-cell *matCellDef="let a">
+                        {{ a.total }}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="division_name">
+                    <th mat-header-cell *matHeaderCellDef>Division</th>
+                    <td mat-cell *matCellDef="let a">
+                        {{ a.employee?.bagian.division_name }}
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+            </table>
+        </mat-card>
+    </div>
+    <!-- do not delete -->
+</div>

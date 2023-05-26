@@ -1,0 +1,1280 @@
+<div
+    id="add-employee"
+    class="add-employee"
+    style="overflow: auto; height: 93vh; background-color: #eff0f6"
+>
+    <!-- Personal Information -->
+
+    <div class="personal-information">
+        <!-- <button mat-icon-button [routerLink]="'/hris/employee'">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button> -->
+        <mat-card
+            class="mat-elevation-z0 rounded-2x1"
+            style="width: 98%; margin: 15px auto 10px auto"
+        >
+            <form
+                name="employeeForm"
+                [formGroup]="employeeForm"
+                class="product w-100-p"
+                fxLayout="column"
+                fxFlex
+            >
+                <div
+                    fxLayout="column"
+                    fxLayoutAlign="center start"
+                    style="margin-bottom: 10px"
+                >
+                    <div
+                        fxFlexAlign="center"
+                        style="width: 150px; height: 150px"
+                    >
+                        <div
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 15px;
+                                border: 2px solid cadetblue;
+                            "
+                        >
+                            <img
+                                *ngIf="this.employeeForm.controls.photo.value"
+                                [src]="this.employeeForm.controls.photo.value"
+                                style="
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                    border-radius: 15px;
+                                "
+                            />
+                            <button
+                                mat-mini-fab
+                                color="primary"
+                                (click)="_fileInput.click()"
+                                style="
+                                    position: absolute;
+                                    transform: translate(180%, 170%);
+                                "
+                            >
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <input
+                            #_fileInput
+                            type="file"
+                            (change)="uploadGambar($event)"
+                            hidden
+                        />
+                    </div>
+                    <span
+                        style="
+                            font-size: 18px;
+                            font-weight: bolder;
+                            color: #303030;
+                            margin-right: 25px;
+                        "
+                        fxShow.gt-md
+                        >Personal</span
+                    >
+                    <div
+                        fxLayout="row"
+                        fxLayoutAlign="space-evenly center"
+                        style="margin-bottom: 10px"
+                    >
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            (click)="enableEverything()"
+                            *ngIf="this.employeeForm.value.employee_id"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px; margin-right: 10px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Company</mat-label>
+                        <mat-select
+                            formControlName="company_name"
+                            placeholder="Set Company"
+                        >
+                            <mat-option
+                                *ngFor="let o of sisterCompany"
+                                value="{{ o.id }}"
+                                >{{ o.company_name }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                        *ngIf="this.status == 'edit'"
+                    >
+                        <mat-label style="color: black">NIK</mat-label>
+                        <input matInput formControlName="nik" />
+                    </mat-form-field> -->
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black"
+                            >Employee Name</mat-label
+                        >
+                        <input
+                            matInput
+                            placeholder="Put a Name"
+                            formControlName="employee_name"
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Email</mat-label>
+                        <input
+                            matInput
+                            placeholder="Put an Email"
+                            formControlName="email"
+                            type="email"
+                        />
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Gender</mat-label>
+                        <mat-select
+                            formControlName="gender"
+                            placeholder="Set Gender"
+                        >
+                            <mat-option value="Male">Male</mat-option>
+                            <mat-option value="Female">Female</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black"
+                            >Place of Birth</mat-label
+                        >
+                        <mat-select
+                            formControlName="tempatlahir"
+                            placeholder="Set City"
+                        >
+                            <mat-option
+                                *ngFor="let o of city"
+                                value="{{ o.id_city }}"
+                                >{{ o.city_name }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black"
+                            >Date of Birth</mat-label
+                        >
+                        <input
+                            matInput
+                            #ref
+                            formControlName="tgl_lahir"
+                            [matDatepicker]="picker"
+                            (dateChange)="orgValueChange(ref.value)"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="50"
+                    >
+                        <mat-label style="color: black"
+                            >Date of Entry</mat-label
+                        >
+                        <input
+                            matInput
+                            #ref2
+                            formControlName="tgl_masuk"
+                            [matDatepicker]="picker2"
+                            (dateChange)="orgValueChange2(ref2.value)"
+                        />
+                        <mat-datepicker-toggle
+                            matSuffix
+                            [for]="picker2"
+                        ></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="50"
+                    >
+                        <mat-label style="color: black"
+                            >Marital Status
+                        </mat-label>
+                        <mat-select
+                            formControlName="martial_status"
+                            placeholder="Select a Status"
+                        >
+                            <mat-option value="Menikah">Menikah</mat-option>
+                            <mat-option value="Belum Menikah"
+                                >Belum Menikah</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="50"
+                    >
+                        <mat-label style="color: black">Religion</mat-label>
+                        <mat-select
+                            formControlName="religion"
+                            placeholder="Select Religion"
+                        >
+                            <mat-option value="Islam">Islam</mat-option>
+                            <mat-option value="Katolik">Katolik</mat-option>
+                            <mat-option value="Kristen">Kristen</mat-option>
+                            <mat-option value="Hindu">Hindu</mat-option>
+                            <mat-option value="Budha">Budha</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- <mat-form-field
+                    appearance="outline"
+                    style="font-size: 11px"
+                    fxFlex="33"
+                >
+                    <mat-label style="color: black"
+                        >Employee Status</mat-label
+                    >
+                    <mat-select
+                        formControlName="status_karyawan"
+                        placeholder="Select Status"
+                    >
+                        <mat-option value="0">Honorer</mat-option>
+                        <mat-option value="1">Kontrak</mat-option>
+                        <mat-option value="2">Tetap</mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+                    <!-- <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px; margin-right: 10px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Education </mat-label>
+                        <mat-select
+                            formControlName="pendidikan"
+                            placeholder="Select Education"
+                        >
+                            <mat-option value="0">SD</mat-option>
+                            <mat-option value="1">SMP</mat-option>
+                            <mat-option value="2">SMA</mat-option>
+                            <mat-option value="3">D1</mat-option>
+                            <mat-option value="4">D2</mat-option>
+                            <mat-option value="5">D3</mat-option>
+                            <mat-option value="6">S1</mat-option>
+                            <mat-option value="7">S2</mat-option>
+                            <mat-option value="8">S3</mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+                    <!-- <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px; margin-right: 10px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Major</mat-label>
+                        <input
+                            matInput
+                            placeholder="Put a Jurusan"
+                            formControlName="jurusan"
+                        />
+                    </mat-form-field> -->
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="50"
+                    >
+                        <mat-label style="color: black">Tax Status</mat-label>
+                        <mat-select
+                            formControlName="status_pajak"
+                            placeholder="Select Status Pajak"
+                        >
+                            <mat-option value="0">TK</mat-option>
+                            <mat-option value="1">K0</mat-option>
+                            <mat-option value="2">K1</mat-option>
+                            <mat-option value="3">K2</mat-option>
+                            <mat-option value="4">K3</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="50"
+                    >
+                        <mat-label style="color: black"
+                            >Employee Status</mat-label
+                        >
+                        <mat-select
+                            formControlName="status_karyawan"
+                            placeholder="Select Status"
+                        >
+                            <mat-option value="0">Honorer</mat-option>
+                            <mat-option value="1">Kontrak</mat-option>
+                            <mat-option value="2">Tetap</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    fxLayoutGap="10px"
+                >
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Home Phone</mat-label>
+                        <input
+                            matInput
+                            placeholder="Put a Telp Rumah"
+                            formControlName="telp"
+                            type="number"
+                        />
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Phone</mat-label>
+                        <input
+                            matInput
+                            placeholder="Put a Phone 2"
+                            formControlName="phone2"
+                            type="number"
+                        />
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="33"
+                    >
+                        <mat-label style="color: black">Phone 2</mat-label>
+                        <input
+                            matInput
+                            placeholder="Put a phone"
+                            formControlName="phone"
+                            type="number"
+                        />
+                    </mat-form-field>
+                    <!-- <mat-form-field
+                    appearance="outline"
+                    style="font-size: 11px"
+                    fxFlex="33"
+                >
+                    <mat-label style="color: black">NIK</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put an NIK"
+                        formControlName="nik"
+                    />
+                </mat-form-field> -->
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <mat-form-field
+                        appearance="outline"
+                        style="font-size: 11px"
+                        fxFlex="100"
+                    >
+                        <mat-label style="color: black">Address </mat-label>
+                        <input
+                            matInput
+                            placeholder="Put an Address"
+                            formControlName="alamat"
+                        />
+                    </mat-form-field>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="start end"
+                    style="width: 100%; margin-top: 10px"
+                >
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        (click)="serviceAct()"
+                        fxFlex="15"
+                        fxFlex.xs="15"
+                        style="height: 40px; width: 250px; margin-right: 15px"
+                    >
+                        Save
+                    </button>
+                    <!-- <button
+                        mat-icon-button
+                        color="primary"
+                        (click)="enableEverything()"
+                        *ngIf="this.employeeForm.value.employee_id"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button> -->
+                    <!-- <button
+                    mat-flat-button
+                    color="primary"
+                    (click)="serviceAct()"
+                    fxFlex="15"
+                    fxFlex.xs="15"
+                    style="height: 40px; width: 250px; margin-right: 15px"
+                >
+                    Save
+                </button> -->
+                </div>
+            </form>
+        </mat-card>
+    </div>
+    <!-- Close Personal Information -->
+
+    <!-- Status Information -->
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Status</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addstatusinfo('add')"
+                    class="add-leave"
+                    matTooltip="Add History"
+                    [disabled]="this.status == 'edit' ? false : true"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+            *ngIf="this.datahistory.length > 0"
+        >
+            <mat-table
+                [dataSource]="datahistory"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let i = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        {{ i + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Status
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <span *ngIf="a.status_karyawan == 1">Honorer</span>
+                        <span *ngIf="a.status_karyawan == 2">Kontrak</span>
+                        <span *ngIf="a.status_karyawan == 3">Tetap</span>
+                        <span *ngIf="a.status_karyawan == 4">Non Aktif</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dept">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Dept
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        {{ a.dept.dept_name }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="div">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Div
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.division.division_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="subdiv">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Sub Div</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.subdivision.name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="position">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Position</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.position.position_name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="level">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Level</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.level.level_name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="from">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >From</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ changeDate(a.from) }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="to">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >To</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ changeDate(a.to) }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.desc }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row" fxLayoutGap="5px">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="acthist(a.id, 'edit')"
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="acthist(a.id, 'delete')"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></mat-row>
+            </mat-table>
+            <!-- Name Column -->
+        </div>
+        <!-- <p style="font-weight: bolder; font-size: 18px">Status Information</p> -->
+    </mat-card>
+    <!-- Close Status Information-->
+
+    <!-- Education Information -->
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Education</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addstatuseducation('add')"
+                    class="add-leave"
+                    matTooltip="Add History"
+                    [disabled]="this.status == 'edit' ? false : true"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+            *ngIf="this.dataeducation.length > 0"
+        >
+            <mat-table
+                [dataSource]="dataeducation"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let z = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        {{ z + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="education">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Education
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <span *ngIf="a.education_id == 0">SD</span>
+                        <span *ngIf="a.education_id == 1">SMP</span>
+                        <span *ngIf="a.education_id == 2">SMA</span>
+                        <span *ngIf="a.education_id == 3">D1</span>
+                        <span *ngIf="a.education_id == 4">D2</span>
+                        <span *ngIf="a.education_id == 5">D3</span>
+                        <span *ngIf="a.education_id == 6">S1</span>
+                        <span *ngIf="a.education_id == 7">S2</span>
+                        <span *ngIf="a.education_id == 8">S3</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="instansi">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Institution
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        {{ a.instansi }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="jurusan">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Major
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.jurusan }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tahun_masuk">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Masuk</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.tgl_masuk }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tahun_keluar">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Keluar</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.tgl_keluar }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.desc }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row" fxLayoutGap="5px">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="
+                                    actedu(a.id_employee_education, 'edit')
+                                "
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="
+                                    actedu(a.id_employee_education, 'edit')
+                                "
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="columnEducation"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: columnEducation"
+                ></mat-row>
+            </mat-table>
+            <!-- Name Column -->
+        </div>
+        <!-- <p style="font-weight: bolder; font-size: 18px">Status Information</p> -->
+    </mat-card>
+
+    <!-- End of education information -->
+
+    <!-- Administrative Information -->
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Administrative</span
+            >
+
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addadmininfo('add')"
+                    class="add-leave"
+                    [disabled]="this.status == 'edit' ? false : true"
+                    matTooltip="Add Leave"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+            *ngIf="this.dataadministration.length > 0"
+        >
+            <mat-table
+                [dataSource]="dataadministration"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let z = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        {{ z + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="type">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Type
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <span *ngIf="a.type == 0">KTP</span>
+                        <span *ngIf="a.type == 1">NPWP</span>
+                        <span *ngIf="a.type == 2">Jamsostek</span>
+                        <span *ngIf="a.type == 3">BPJS Kesehatan</span>
+                        <span *ngIf="a.type == 4">Rekening</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="value">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        Value
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: flex-start;
+                            "
+                        >
+                            <span>{{ a.value }}</span>
+                            <span *ngIf="a.type == 4">{{
+                                a.bank.bank_name
+                            }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.desc }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row" fxLayoutGap="5px">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="actadmin(a.id, 'edit')"
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="actadmin(a.id, 'delete')"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="columnAdministration"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: columnAdministration"
+                ></mat-row>
+            </mat-table>
+            <!-- Name Column -->
+        </div>
+    </mat-card>
+    <!-- Close Administrative Information -->
+
+    <!-- Attachment  -->
+</div>

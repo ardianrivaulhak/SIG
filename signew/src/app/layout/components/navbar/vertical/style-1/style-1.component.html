@@ -1,0 +1,51 @@
+<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
+
+    <div class="logo" style="display: flex; align-items: center; justify-content: center;width: 100%;">
+        <img (click)="gotohome()" style="cursor: pointer; width: 120px; height: auto;" src="assets/images/logos/putihsiglogo.png">
+        <!-- <span class="logo-text secondary-text">Analystpro 2.0</span> -->
+    </div>
+
+    <div class="buttons">
+
+        <button mat-icon-button class="toggle-sidebar-folded"
+                (click)="toggleSidebarFolded()" fxHide.lt-lg>
+            <mat-icon class="secondary-text">menu</mat-icon>
+        </button>
+
+        <button mat-icon-button class="toggle-sidebar-opened"
+                (click)="toggleSidebarOpened()" fxHide.gt-md>
+            <mat-icon class="secondary-text">arrow_back</mat-icon>
+        </button>
+
+    </div>
+
+</div>
+
+
+<div class="navbar-scroll-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground"
+     fusePerfectScrollbar [fusePerfectScrollbarOptions]="{suppressScrollX: true}">
+
+    <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" *ngIf="this.me.length > 0">
+
+        <div class="h3 username">{{this.me[0].employee_name}}</div>
+        <div class="h5 email hint-text mt-8">{{this.me[0].nik}}</div>
+        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
+            <img class="avatar" [src]="setPhoto()" style="object-fit: cover;">
+        </div>
+
+    </div>
+    <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground" *ngIf="this.me == undefined">
+
+        <div class="h3 username">{{this.me[0].employee_name}}</div>
+        <div class="h5 email hint-text mt-8">{{this.me[0].nik}}</div>
+        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
+            <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
+        </div>
+
+    </div>
+
+    <div class="navbar-content">
+        <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
+    </div>
+
+</div>

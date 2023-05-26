@@ -1,0 +1,296 @@
+<div id="certcomplain"  class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content"> 
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;">
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="10">
+                            <mat-label>Contract Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            [(ngModel)]="dataFilter.marketing" 
+                            placeholder="Contract Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="10">
+                            <mat-label>LHU Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="lhu"
+                            [(ngModel)]="dataFilter.lhu" 
+                            placeholder="LHU Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="15">
+                            <mat-label>Sample Name</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="sample_name"
+                            [(ngModel)]="dataFilter.sample_name" 
+                            placeholder="Sample">
+                        </mat-form-field>
+        
+                        <ng-select appendT o="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        class="auto-grow"
+                        bindValue="id_customer" 
+                        fxFlex="30" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Customer"
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        name="id_customer" 
+                        [(ngModel)]="dataFilter.id_customer" 
+                        dropdownPosition="bottom"  
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select>   
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="15">
+                            <mat-label>Sample Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="sample_number"
+                            [(ngModel)]="dataFilter.sample_number" 
+                            placeholder="LHU Number">
+                        </mat-form-field>  
+                        
+                        <mat-form-field appearance="outline" style="font-size: 12px" fxFlex="12" fxHide fxShow.gt-xs>
+                            <mat-select 
+                                name="team" 
+                                placeholder="Select Team"
+                                class="select-me"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 200px;
+                                color:white !important;"
+                                [(ngModel)]="dataFilter.team">
+                                <mat-option *ngFor="let groupdata of groupdata" [value]="groupdata.id">
+                                    {{ groupdata.group_name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px" fxFlex="5" fxHide fxShow.gt-xs>
+                            <mat-label>Status</mat-label>
+                              <mat-select placeholder="Status"                               
+                                name="status"
+                                [(ngModel)]="dataFilter.status"
+                                class="select-me"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; 
+                                width: 200px;
+                                color:white !important;">
+                                <mat-option *ngFor="let status of status" [value]="status.id">
+                                    {{ status.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end end" >        
+                        <button  mat-raised-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 42px; width:250px; margin-right:10px;" (click)="searchButton()">
+                            Search
+                        </button>
+                        <button mat-stroked-button color="primary" fxFlex="17"  fxFlex.xs="23" style="height: 42px; width: 100%; " (click)="cancelSearchMark()">
+                            Reset
+                        </button>   
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Request Complain </span>
+                </div>
+               <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                <!-- <button mat-icon-button fxHide fxShow.gt-md  matTooltip="Add New" >
+                    <mat-icon style="color: #696969;">library_add</mat-icon>
+                </button> -->
+               </div>
+            </div>
+
+            <mat-table class="cert-table" #table [dataSource]="complainData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.complainData.length > 0" > 
+
+                <!-- Column -->
+                <ng-container matColumnDef="no_complain">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="no_complain">No Complain</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <span class="text-truncate" matTooltip="{{ complainData.technical.complain_no }}">{{ complainData.technical.complain_no }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="lhu">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="lhu">LHU</mat-header-cell>
+                        <mat-cell *matCellDef="let complainData">
+                            <div fxLayout="column">
+                                <span class="text-truncate" matTooltip="{{ complainData.technical.complain.transaction_certificate.lhu_number }}">
+                                    {{ complainData.technical.complain.transaction_certificate.lhu_number }}
+                                </span>
+                                <span class="text-truncate" 
+                                matTooltip="{{ complainData.technical.complain.transaction_certificate.cl_number }}"
+                                style="font-size:10px;">
+                                    {{ complainData.technical.complain.transaction_certificate.cl_number }}
+                                </span>
+                            </div>                            
+                        </mat-cell>
+                    </ng-container>
+                
+                <!-- Column -->
+                <ng-container matColumnDef="sample_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="sample_name">Sample</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ complainData.technical.complain.transaction_certificate.sample_name }}">
+                                {{ complainData.technical.complain.transaction_certificate.sample_name }}
+                            </span>
+                            <span class="text-truncate" matTooltip="{{ complainData.technical.complain.transaction_certificate.no_sample }}"
+                                style="color: f5f5f5; font-size: 10px">{{ complainData.technical.complain.transaction_certificate.no_sample }}
+                            </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="date">Complain/Estimate Date</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                            <div fxLayout="column">
+                                <span class="text-truncate"  matTooltip="{{ complainData.technical.complain_date | date }}">{{ complainData.technical.complain_date | date }}</span>
+                                <span class="text-truncate" matTooltip="{{ complainData.technical.estimate_date | date  }}"
+                                    style="color: f5f5f5;">{{ complainData.technical.estimate_date | date  }}
+                                </span>
+                            </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="marketing">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="marketing">Marketing</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                            <p class="text-truncate" matTooltip="{{ complainData.technical.complain.transaction_sample.kontrakuji.contract_no  }}">
+                                {{ complainData.technical.complain.transaction_sample.kontrakuji.contract_no }}
+                            </p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Column -->
+                  <ng-container matColumnDef="customer">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="customer">Customer</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                            <p class="text-truncate" matTooltip="{{ complainData.technical.complain.transaction_certificate.customer.customer_name }}">
+                                {{ complainData.technical.complain.transaction_certificate.customer.customer_name }}
+                            </p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                <!-- Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="status">Stat</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                        <div class="box-custom" *ngIf="complainData.status== 0">
+                            <p class="text-truncate" matTooltip="New">New</p>
+                        </div>
+                        <div class="box-normal" *ngIf="complainData.status== 1">
+                            <p class="text-truncate" matTooltip="sent">Sent</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="team">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="team">Team</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData">
+                            <div fxLayout="column">
+                                <span class="text-truncate"  matTooltip="{{ complainData.technical.complain.transaction_certificate.condition_cert[0].team.group_name }}">
+                                    {{ complainData.technical.complain.transaction_certificate.condition_cert[0].team.group_name }}
+                                </span>
+                                <span class="text-truncate" matTooltip="Beginning"
+                                *ngIf="complainData.statuscust == 0"
+                                    style="color: f5f5f5; font-size: 10px;  font-weight: bold;">Beginning
+                                </span>
+                                <span class="text-truncate" matTooltip="Final"
+                                *ngIf="complainData.statuscust == 1"
+                                style="color: f5f5f5; font-size: 10px; font-weight: bold;">Final
+                            </span>
+                            </div>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Column -->
+                <ng-container matColumnDef="action" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="icon" fxHide fxShow.gt-md>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let complainData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                        <div fxFlex="column" fxLayoutAlign="start center">
+                            <button mat-icon-button 
+                            color="primary"  
+                            class="btn-icon-control" 
+                            matTooltip="{{ complainData.inserted_at == null ? '-' : complainData.inserted_at | date}}" 
+                            aria-label="Desc" (click)="parametersModals(complainData)">
+                                <mat-icon>forum </mat-icon>
+                            </button>
+                            <div *ngIf="this.complainData.status== 0" fxLayout="row">
+                                <a (click)="goCertificate(complainData.technical.complain.id_cert, 'ID')"><img style="width: 20px; margin-top:0px;" src="assets/images/flags/indonesia.svg"/></a> &nbsp;
+                                <a (click)="goCertificate(complainData.technical.complain.id_cert, 'EN')">  <img style="width: 20px; margin-top:0px;" src="assets/images/flags/uk.svg"/></a> 
+                            </div>
+                            <div *ngIf="this.complainData.status== 1">
+                                <button mat-icon-button 
+                                color="primary"  
+                                class="btn-icon-control" 
+                                matTooltip="go to lhu" 
+                                aria-label="go to lhu"  
+                                (click)="gotoLhu(complainData.technical.complain.transaction_sample.id_contract)">
+                                    <mat-icon>link </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let complainData; columns: displayedColumns;" 
+                class="standart">
+                </mat-row>
+            </mat-table>
+
+            <div>
+                <mat-paginator
+                [length]="this.total"
+                [pageSize]="this.to"
+                [pageIndex]="this.current_page"
+                hidePageSize="true"
+                (page)="pageEvent = $event; paginated($event)">
+                </mat-paginator>
+            </div>
+
+            <div *ngIf="loadingfirst && this.complainData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/loading.gif" />
+                <small>Please Wait ...</small>
+            </div>
+    
+            <div *ngIf="!loadingfirst && this.complainData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/selectfile.gif" />
+                <small>No Data</small>
+            </div>
+
+        </mat-card>
+    </div>
+</div>

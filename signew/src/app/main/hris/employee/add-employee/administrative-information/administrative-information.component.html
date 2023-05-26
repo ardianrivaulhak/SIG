@@ -1,0 +1,66 @@
+<p style="font-weight: bolder; font-size: 18px">Administrative Information</p>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="fill"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="50"
+    >
+        <mat-label style="color: black">Type Administrative</mat-label>
+        <mat-select [(ngModel)]="sendingDet.type" placeholder="Select Type">
+            <mat-option value="0">KTP</mat-option>
+            <mat-option value="1">NPWP</mat-option>
+            <mat-option value="2">Jamsostek</mat-option>
+            <mat-option value="3">BPJS Kesehatan</mat-option>
+            <mat-option value="4">Rekening</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <ng-select
+        appendTo="body"
+        appearance="fill"
+        *ngIf="sendingDet.type == '4'"
+        [items]="databank"
+        bindLabel="bank_name"
+        bindValue="id"
+        placeholder="Select Bank"
+        [(ngModel)]="sendingDet.id_bank"
+        fxFlex="50"
+        style="font-size: 11px; margin-right: 10px"
+    >
+    </ng-select>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100">
+        <mat-label style="color: black">Value</mat-label>
+        <input
+            matInput
+            placeholder="Put a Value"
+            [(ngModel)]="sendingDet.value"
+        />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100">
+        <mat-label style="color: black">Description</mat-label>
+        <input
+            matInput
+            placeholder="Put a Description"
+            [(ngModel)]="sendingDet.desc"
+        />
+    </mat-form-field>
+</div>
+<div
+    fxLayout="row"
+    fxLayoutAlign="start end"
+    style="width: 100%; margin-top: 10px"
+>
+    <button
+        mat-flat-button
+        color="primary"
+        (click)="savingdata()"
+        fxFlex="15"
+        fxFlex.xs="15"
+        style="height: 40px; width: 250px; margin-right: 15px"
+    >
+        Save
+    </button>
+</div>

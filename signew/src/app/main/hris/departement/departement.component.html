@@ -1,0 +1,88 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label> <mat-icon>search</mat-icon>Search Department</mat-label>
+            <input
+                matInput
+                [(ngModel)]="search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+        <button
+            mat-flat-button
+            color="primary"
+            style="margin-right: 10px"
+            matTooltip="Add Department"
+            (click)="addnew()"
+        >
+            <mat-icon>add_box</mat-icon>
+        </button>
+    </div>
+    <table
+        mat-table
+        #table
+        [dataSource]="datadept"
+        [@animateStagger]="{ value: '50' }"
+        fusePerfectScrollbar
+
+        matSort (matSortChange)="sortData($event)"
+        style="width: 100%"
+    >
+        <!-- Active Column -->
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef >No</th>
+            <td mat-cell *matCellDef="let a; let i = index">
+                <p class="text-truncate">{{ i + 1 }}</p>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dept_code">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="dept_code">Department Code</th>
+            <td mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.dept_code }}</p>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dept_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="dept_name">Department Name</th>
+            <td mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{ a.dept_name }}</p>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center">
+                Action
+            </th>
+            <td mat-cell *matCellDef="let a">
+                <div fxLayout="row" fxLayoutAlign="center center" >
+                <button mat-icon-button color="primary" (click)="addnew(a)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <div>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="deleteaction(a)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+            </td>
+        </ng-container>
+
+        <tr
+            mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let a; columns: displayedColumns"></tr>
+    </table>
+
+</mat-card>

@@ -1,0 +1,86 @@
+<table class="pricing-table" *ngIf="this.dataSample.length > 0">
+    <tr>
+        <td width="30%">Kode Sample</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].kode_sample ? this.dataSample[0].kode_sample : '-'}}</td>
+    </tr>
+    <tr>
+        <td width="30%">Lot Number</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].lot_number ? this.dataSample[0].lot_number : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Nama Dagang</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].nama_dagang ? this.dataSample[0].nama_dagang : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Nama Pabrik</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].nama_pabrik ? this.dataSample[0].nama_pabrik : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Alamat Pabrik</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].alamat_pabrik ? this.dataSample[0].alamat_pabrik : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">No Notifikasi</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].no_notifikasi ? this.dataSample[0].no_notifikasi : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">No Pengajuan</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].no_pengajuan ? this.dataSample[0].no_pengajuan : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">No Principal Code</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].no_principalcode ? this.dataSample[0].no_principalcode : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">No Registrasi</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].no_registrasi ? this.dataSample[0].no_registrasi : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Keterangan Lain</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].keterangan_lain ? this.dataSample[0].keterangan_lain : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Jenis Kemasan</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].jenis_kemasan ? this.dataSample[0].jenis_kemasan : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Certificate Info</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].certificate_info == 0 ? 'Release' : 'Draft'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Tgl Produksi</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].tgl_produksi ? this.dataSample[0].tgl_produksi : '-'}}</td>
+
+    </tr>
+    <tr>
+        <td width="30%">Tgl Kadaluarsa</td>
+        <td width="1%">:</td>
+        <td>{{this.dataSample[0].tgl_kadaluarsa ? this.dataSample[0].tgl_kadaluarsa: '-'}}</td>
+
+    </tr>
+   
+</table>

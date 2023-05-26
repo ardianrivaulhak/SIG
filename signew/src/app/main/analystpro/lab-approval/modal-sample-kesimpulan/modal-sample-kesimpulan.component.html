@@ -1,0 +1,53 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start center">
+    <h3>Input Kesimpulan Sample</h3>
+    <form *ngIf="labSampleConclusion" [formGroup]="labSampleConclusion" style="width: 100%;">
+        <table
+            id="customers"
+            *ngIf="
+                this.labSampleConclusion.controls.sample['controls'].length > 0
+            "
+        >
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>No Sample</th>
+                    <th>Conclusion</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="sample">
+                <tr
+                    *ngFor="
+                        let o of labSampleConclusion.controls.sample[
+                            'controls'
+                        ];
+                        let i = index
+                    "
+                    [formGroupName]="i"
+                >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ o.value.no_sample }}</td>
+                    <td>
+                        <mat-form-field style="width: 100%">
+                            <!-- <mat-label>Conclussion</mat-label> -->
+                            <textarea
+                                matInput
+                                placeholder="Kesimpulan"
+                                rows="1"
+                                formControlName="sample_conclude"
+                            ></textarea>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%; padding-top: 20px;">
+        <button mat-flat-button color="primary" (click)="closeModal()">
+            Save
+        </button>
+        <div style="width: 20px;"></div>
+        <button mat-flat-button color="warn" (click)="closeModal()">
+            Cancel
+        </button>
+    </div>
+</div>

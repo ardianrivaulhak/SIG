@@ -1,0 +1,165 @@
+<div style="height: 100%; overflow: auto; padding: 10px 20px;" *ngIf="parameterujiForm" id="parameterujidet">
+    <ngx-spinner bdColor="rgba(255,255,255,1)" size="medium" color="#000" type="ball-clip-rotate-multiple"
+        [fullScreen]="false"></ngx-spinner>
+    <form name="parameterujiForm" [formGroup]="parameterujiForm" class="product w-100-p">
+        <mat-grid-list [cols]='2' rowHeight='100px' gutterSize="10px">
+            <mat-grid-tile>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Name ID</mat-label>
+                    <input matInput placeholder="Name ID" name="name_id" formControlName="name_id" required
+                        minlength="1">
+                    <mat-error>
+                        Name is Required
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Name EN</mat-label>
+                    <input matInput placeholder="Name EN" name="name_en" formControlName="name_en" required>
+                    <mat-error>
+                        Name is Required
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select appearance="outline" appendTo="body" [items]="dataLab" bindLabel="nama_lab" bindValue="id"
+                    placeholder="Select Lab" formControlName="lab_id" (change)="getValDataLab($event)"
+                    dropdownPosition="bottom" style="width: 100%; font-size: 12px;">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        {{item.nama_lab}}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.nama_lab}}
+                    </ng-template>
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select appearance="outline" appendTo="body" [items]="dataParameterType" bindLabel="name"
+                    bindValue="id" placeholder="Select Parameter Typer" formControlName="parametertype_id"
+                    (change)="getValDataLab($event)" dropdownPosition="bottom" style="width: 100%; font-size: 12px;">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        {{item.name}}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.name}}
+                    </ng-template>
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select appearance="outline" appendTo="body" [items]="dataAnalyst" bindLabel="group_name"
+                    bindValue="id" (scrollToEnd)="onScrollToEnd('analyst')" placeholder="Select Group"
+                    formControlName="group_id" dropdownPosition="bottom" style="width: 100%;">
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="this.idParameteruji === 'add'">
+                <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Price</mat-label>
+                    <input matInput placeholder="Price" style="width: 70%" formControlName="harga" currencyMask [options]="{ prefix: '', thousands: '.', precision: 0 }"
+                        required>
+                    <mat-error>
+                        Price is Required
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="this.idParameteruji === 'add'">
+                <mat-form-field style="margin-top: 28px;" appearance="outline" floatLabel="always" class="w-100-p">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Description" name="description" formControlName="desc" rows="1">
+                            </textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile *ngIf="this.idParameteruji !== 'add'">
+                <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
+                    <button mat-flat-button color="primary" (click)="addListParameter()">
+                        <mat-icon>add_circle</mat-icon> Tambah List Harga
+                    </button>
+                    <div style="width: 10px;"></div>
+                    <button mat-flat-button color="warn" (click)="deleteListParameter()" [disabled]="this.parameterujiForm.controls.parameter['controls'].length <= 1 ? true : false">
+                        <mat-icon>delete</mat-icon> Delete List Harga
+                    </button>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div class="mat-elevation-z8" style="width: 100%" *ngIf="this.idParameteruji !== 'add'">
+            <mat-table #table style="width: 100%" [dataSource]="this.parameterujiForm.controls.parameter['controls']"
+                formArrayName="parameter">
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; let i = index; columns: displayedColumns"></mat-row>
+                <ng-container matColumnDef="no">
+                    <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+                    <mat-cell *matCellDef="let v; let e = index" style="height: 80px">
+                        {{e+1}}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="tgl">
+                    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" [formGroupName]="e" style="height: 100%">
+                        <mat-form-field appearance="fill" style="width: 90%">
+                            <input matInput formControlName="created_at" />
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="price">
+                    <mat-header-cell *matHeaderCellDef>Price</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" [formGroupName]="e" style="height: 100%">
+                        <mat-form-field appearance="fill" style="width: 90%">
+                            <input type="text" matInput currencyMask 
+                                formControlName="price" [options]="{ prefix: '', thousands: '.', precision: 0 }">
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell *matHeaderCellDef>Desc</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" [formGroupName]="e" style="height: 100%">
+                        <mat-form-field appearance="fill" style="width: 90%;">
+                            <input matInput formControlName="desc" />
+                        </mat-form-field>
+
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef>User</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" [formGroupName]="e" style="height: 100%">
+                        <mat-form-field appearance="fill" style="width: 90%;">
+                            <input matInput formControlName="insert_user" />
+                        </mat-form-field>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" [formGroupName]="e" style="height: 100%">
+                        <p [ngClass]="{'text-truncate box-normal' : row.value.status == 1, 'text-truncate box-urgent' : row.value.status == 0}" 
+                style="font-size: 10px; cursor: pointer;" 
+                (click)="setActive(row.value)" *ngIf="row.value.status !== 2">{{row.value.status == 1 ? 'Active' : 'Not Active'}}</p>
+                <p *ngIf="row.value.status == 2">Save First</p>
+                    </mat-cell>
+                </ng-container>
+                <!-- <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef [hidden]="hide">action</mat-header-cell>
+                    <mat-cell *matCellDef="let row; let e = index" style="height: 100%" [hidden]="hide">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="saveprice(row.value)">Save</button>
+                            <button mat-menu-item (click)="approveprice(row.value)">Approve</button>
+                            <button mat-menu-item (click)="unapproveprice(row.value)">Unapprove</button>
+                            <button mat-menu-item (click)="deleteprice(row.value)"
+                                [disabled]="e == 0 ? true : false">Delete</button>
+                        </mat-menu>
+
+                    </mat-cell>
+                </ng-container> -->
+            </mat-table>
+        </div>
+        <div style="height: 30px;"></div>
+        <div style="display: flex; flex-direction: row; width: 100%; justify-content: center; align-items: center;">
+            <button mat-flat-button color="primary" (click)="choose()">Save</button>
+            <div style="width: 20px"></div>
+            <button mat-flat-button color="warn" (click)="cancel()">Cancel</button>        
+        </div>
+    </form>
+    
+</div>

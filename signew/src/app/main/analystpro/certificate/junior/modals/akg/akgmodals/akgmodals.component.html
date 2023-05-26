@@ -1,0 +1,223 @@
+<div id="akg-lhu" class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;" >
+    <div class="content" style="overflow: auto;" *ngIf="this.dataContract.length > 0">
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;"  >
+            <h2 style="font-weight:bolder; margin-bottom:30px;">Nutrition Facts</h2>
+            <h3 style="font-weight:bold ;">Contract Identity</h3>
+            
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Contract Number</span>
+                    <p style="font-size:11px;">{{ this.dataContract[0].contract_no }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Category</span>
+                    <p style="font-size:11px;">{{ dataContract[0].contract_category.title }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Customer</span>
+                    <p style="font-size:11px;">{{ dataContract[0].customers_handle.customers.customer_name }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Contact Person</span>
+                    <p style="font-size:11px;">{{ this.dataContract[0].customers_handle.contact_person.name }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Phone/Mobile</span>
+                    <p style="font-size:11px;">{{  this.dataContract[0].customers_handle.telp == '-' ? '-' : '+62' + this.dataContract[0].customers_handle.telp }} / {{ this.dataContract[0].customers_handle.phone == '-' ? '-' : '+62' + this.dataContract[0].customers_handle.phone }}</p>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Others</span>
+                    <div>                    
+                        <button mat-icon-button color="white"
+                            class="contract-certficate"
+                            matTooltip="Contract"
+                            (click)="openPdf(this.dataContract[0].id_kontrakuji,'preview')"
+                            [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                            <mat-icon>description</mat-icon>
+                        </button>
+                   </div>
+                </div>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>List Nutrition Facts</span>
+                </div>
+                <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                    <button mat-icon-button color="white"
+                        class="contract-certficate"
+                        matTooltip="Add Number"
+                        [routerLink]="'/analystpro/certificate/'+ this.dataContract[0].id_kontrakuji +'/lhu/ing/add'"
+                        aria-label="Example icon button with a filter list icon"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>add_circle</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <mat-table class="sample-cert-table" #table [dataSource]="akgData" matSort (matSortChange)="sortData($event)"
+            [@animate]="{value:'*',params:{delay:'120ms',y:'-25px'}}" fusePerfectScrollbar *ngIf="this.akgData.length > 0"> 
+
+                   
+
+                <!-- Column -->
+                <ng-container matColumnDef="lhu">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="lhu">LHU Number</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.akg_detail[0].akg_in_lhu.lhu_number }}">{{ akgData.akg_detail[0].akg_in_lhu.lhu_number }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="bj">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="bj">Weighting Type</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.bj }}">{{ akgData.bj }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="energi">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="energi">Energy</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.energi }}">{{ akgData.energi }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="takaran">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="takaran">Serving Size</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.takaran_saji }}">{{ akgData.takaran_saji }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="format">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="format">Format</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.format_akg.name }}">{{ akgData.format_akg.name }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData">
+
+                            <div *ngIf="this.akgData.akg_condition[this.akgData.akg_condition.length - 1].position == 1 && 
+                            this.akgData.akg_condition[this.akgData.akg_condition.length - 1].status == 0" 
+                            fxLayout="row" fxLayoutAlign="space-evenly center">
+                                <span style="height: 15px;
+                                    width: 15px;
+                                    background-color: #686868;
+                                    border-radius: 50%;
+                                    display: inline-block;
+                                    margin-right:5px;"></span>
+                                <p class="text-truncate" matTooltip="New">                                
+                                    New
+                                </p>
+                            </div>
+
+                            <div *ngIf="this.akgData.akg_condition[this.akgData.akg_condition.length - 1].position == 1 && 
+                            this.akgData.akg_condition[this.akgData.akg_condition.length - 1].status == 1" 
+                            fxLayout="row" fxLayoutAlign="space-evenly center">
+                                <span style="height: 15px;
+                                    width: 15px;
+                                    background-color: #ffad0a;
+                                    border-radius: 50%;
+                                    display: inline-block;
+                                    margin-right:5px;"></span>
+                                <p class="text-truncate" matTooltip="Waiting">                                
+                                    Waiting
+                                </p>
+                            </div>
+
+                            <div *ngIf="this.akgData.akg_condition[this.akgData.akg_condition.length - 1].position == 2 && 
+                            this.akgData.akg_condition[this.akgData.akg_condition.length - 1].status == 1" 
+                            fxLayout="row" fxLayoutAlign="space-evenly center">
+                                <span style="height: 15px;
+                                    width: 15px;
+                                    background-color: #3EB049;
+                                    border-radius: 50%;
+                                    display: inline-block;
+                                    margin-right:5px;"></span>
+                                <p class="text-truncate" matTooltip="Approved">                                
+                                    Approved
+                                </p>
+                            </div>
+
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="inserted_at">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="inserted_at">Insert Date</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{ akgData.created_at | date }}">{{ akgData.created_at | date }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="user">User</mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <p class="text-truncate"  matTooltip="{{this.akgData.akg_condition[this.akgData.akg_condition.length - 1].user.employee_name}}">{{ this.akgData.akg_condition[this.akgData.akg_condition.length - 1].user.employee_name }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="action"></mat-header-cell>
+                        <mat-cell *matCellDef="let akgData" >
+                            <button mat-icon-button 
+                            (click)="goToAkg(akgData.id)"                            
+                            color="primary">
+                                <mat-icon  class="secondary-text">visibility</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                            (click)="$event.stopPropagation();">
+                                <mat-icon  class="secondary-text">more_vert</mat-icon>
+                            </button>
+                           <mat-menu #moreMenu="matMenu">
+                                <button mat-menu-item aria-label="copy" (click)="approveAkg(akgData.id)">
+                                    <mat-icon style="color:#3EB049">check_circle</mat-icon>
+                                    <span style="color:#3EB049">Approve</span>
+                                </button>
+                                <button mat-menu-item aria-label="copy">
+                                    <mat-icon>edit</mat-icon>
+                                    <span>Update</span>
+                                </button>
+                                <button mat-menu-item aria-label="copy">
+                                    <mat-icon>delete</mat-icon>
+                                    <span>Delete</span>
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let dataSampleLab; columns: displayedColumns;"
+                class="standart"
+                matRipple>
+                </mat-row>
+            </mat-table>
+
+            <div *ngIf="loadingfirst && this.akgData.length === 0" style="display: block;  margin: auto;  text-align: center;">
+                <img  src="assets/images/gif/loading.gif" style="width: 10%;"/>
+                <small style="display: block;  margin: auto;  text-align: center;">Loading ...</small>
+            </div>
+    
+            <div *ngIf="!loadingfirst && this.akgData.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/selectfile.gif" />
+                <small>No Data</small>
+            </div>
+        </mat-card>
+    </div>
+</div>

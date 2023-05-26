@@ -1,0 +1,206 @@
+<div id="access"  class="page-layout simple"   style=" height: 100%; background-color: #f7f7f7;">
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top:10px;" >
+        <div fxFlex fxFlex="70" > 
+            <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;">
+                
+            <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>AccessDocuments</span>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none" *ngIf="this.dataDetail">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>{{ this.dataDetail.group_name }}</span>
+                    <form name="documentsForm" class="product w-100-p" fxLayout="column" fxFlex>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+                                <mat-label>Search Name</mat-label>
+                                <input matInput 
+                                #filter 
+                                name="group_name"
+                                [(ngModel)]="this.dataFilter.search"
+                                placeholder="group name">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="end center">
+                            <button mat-raised-button color="primary"  
+                            fxFlex="15"  fxFlex.xs="15" 
+                            style="height: 40px; 
+                            width:250px; 
+                            margin-right:15px;"
+                            (click)="search()" >
+                                Search
+                            </button>
+                            <button mat-stroked-button color="primary" 
+                            fxFlex="15" fxFlex.xs="15" 
+                            (click)="reset()"
+                            style="height: 40px;">
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </mat-card>
+            <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;">
+
+                <mat-table class="documents-table" #table [dataSource]="AccessData" matSort (matSortChange)="sortData($event)"
+                [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.AccessData.length > 0"> 
+
+            
+                <!-- Column -->
+                <ng-container matColumnDef="name_employee">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="name_employee">Employee Name</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.employee.employee_name }}"> {{ a.employee.employee_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- Column -->
+                 <ng-container matColumnDef="division">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="division">Div</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.employee.bagian.division_name }}"> {{ a.employee.bagian.division_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="user">User Create</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.user_create }}">{{ a.user_create }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="created">Creating Date</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.created_at | date }}"> {{ a.created_at | date }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container> 
+
+                <!-- Column -->
+                <ng-container matColumnDef="action" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="icon" >Action</mat-header-cell>
+                    <mat-cell *matCellDef="let a; let indexOfelement=index;">
+                        <div >                            
+                            <button mat-icon-button color="warn"  
+                            class="btn-icon-control"
+                            matTooltip="Remove" 
+                            (click)="deleteMember(a.id)" 
+                            aria-label="Sample">
+                            <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let a; columns: displayedColumns;" class="documents" matRipple >
+                </mat-row>
+            </mat-table>
+            </mat-card>
+        </div>
+
+        <div fxFlex fxFlex="29" >
+
+            <mat-card class="mat-elevation-z0" fxLayout="column" fxLayoutAlign="space-between start" style="width: 90%; margin: 20px auto 10px auto;" > 
+
+                <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.buttonSelected == 'employee'" style="width: 100%;">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>Employee</span> 
+                        <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>|</span>  
+                        <span style="font-size: 18px; font-weight: bolder; color: #bababa; margin-right: 25px; margin-bottom:10px;"  fxHide fxShow.gt-md>  
+                            <button (click)="setButton('groups')"  mat-button >Groups </button>
+                        </span>
+                    </div>           
+                    <form name="documentsForm" class="product w-100-p" fxLayout="column" fxFlex>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100">
+                            <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+                                <mat-label>Search Name</mat-label>
+                                <input matInput 
+                                #filter 
+                                (keyup.enter)="searching($event)"
+                                name="search"
+                                [(ngModel)]="this.datasend.search"
+                                placeholder="group name">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.buttonSelected == 'groups'" style="width: 100%;">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <span style="font-size: 18px; font-weight: bolder; color: #bababa; margin-right: 25px; margin-bottom:10px;"  fxHide fxShow.gt-md>
+                            <button (click)="setButton('employee')" mat-button>Employee</button> 
+                        </span> 
+                        <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>|</span>  
+                        <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px; margin-bottom:10px;" fxHide fxShow.gt-md>Groups</span>
+                    </div> 
+                    <form name="documentsForm" class="product w-100-p" fxLayout="column" fxFlex>
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+                                <mat-label>Search Group</mat-label>
+                                <input matInput 
+                                #filter 
+                                (keyup.enter)="searching($event)"
+                                name="search"
+                                [(ngModel)]="this.datasend.search"
+                                placeholder="group name">
+                            </mat-form-field>
+                        </div>
+                    </form>
+                </div>
+
+            </mat-card>
+
+
+            <mat-card class="mat-elevation-z0" 
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScrollToEnd($event)"
+            [scrollWindow]="false"
+            *ngIf="this.buttonSelected == 'employee'"
+            style="width: 90%; 
+                    margin: 20px auto 10px auto; 
+                    height:600px;
+                    overflow: auto;">                
+                <mat-card class="mat-elevation-z0" fxLayout="row" fxLayoutAlign="space-between center"  *ngFor="let emp of this.employeeData">
+                    <div  fxLayout="column" fxLayoutAlign="space-around start">
+                        <span style="font-size:11px; font-weight: bold;">{{ emp.employee_name }}</span>
+                        <span style="font-size:10px;">{{ emp.bagian.division_name }}</span>
+                    </div>
+                    <button mat-flat-button color="primary" *ngIf="emp.documentaccess == null" (click)="AddMember(emp.employee_id)">Add</button>
+                    <button mat-flat-button color="warn" *ngIf="emp.documentaccess != null" >Added!</button>
+                </mat-card>
+            </mat-card>
+
+            <mat-card class="mat-elevation-z0" 
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScrollToEnd($event)"
+            [scrollWindow]="false"
+            *ngIf="this.buttonSelected == 'groups'"
+            style="width: 90%; 
+                    margin: 20px auto 10px auto; 
+                    height:600px;
+                    overflow: auto;">                
+                <mat-card class="mat-elevation-z0" fxLayout="row" fxLayoutAlign="space-between center"  *ngFor="let group of this.groupData">
+                    <div  fxLayout="column" fxLayoutAlign="space-around start">
+                        <span style="font-size:11px; font-weight: bold;">{{ group.group_name }}</span>
+                        <span style="font-size:10px;">{{ group.employee.employee_name }}</span>
+                    </div>
+                    <button mat-flat-button color="primary"  (click)="AddByGroup(group.id)">Add</button>
+                </mat-card>
+            </mat-card>
+
+        </div>
+    </div>
+</div>

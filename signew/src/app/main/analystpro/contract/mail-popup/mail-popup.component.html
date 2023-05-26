@@ -1,0 +1,89 @@
+<div
+    style="
+        width: 100%;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    "
+>
+    <!-- <h4 *ngIf="this.dataemailo.length > 0" >
+        Sending Email to : {{ this.dataemailo[0].email }}
+    </h4> -->
+
+    <mat-grid-list cols="2" rowHeight="2:0.5" gutterSize="10px" *ngIf="this.dataemailo.length > 0">
+
+        <mat-grid-tile colspan="2">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <span style="width: 200px">From</span>
+                <div style="width: 20px"></div>
+                <ng-select
+                    appendTo="body"
+                    appearance="outline"
+                    [items]="employee"
+                    bindLabel="email"
+                    bindValue="id_user"
+                    (scrollToEnd)="onScrollToEnd('email')"
+                    (search)="onSearchi($event, 'email')"
+                    (clear)="reset()"
+                    (change)="getValue($event, 'email')"
+                    placeholder="Select Employee Email"
+                    [(ngModel)]="emailfrom"
+                    dropdownPosition="bottom"
+                    style="width: 100%"
+                >
+                </ng-select>
+            </div>
+        </mat-grid-tile>
+
+        <mat-grid-tile colspan="2">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <span style="width: 200px">To</span>
+                <div style="width: 20px"></div>
+                <ng-select
+                    appendTo="body"
+                    appearance="outline"
+                    [items]="dataemailo"
+                    bindLabel="email"
+                    bindValue="id_kontrakuji"
+                    [(ngModel)]="idkontuji"
+                    style="width: 100%"
+                    disabled
+                >
+                </ng-select>
+            </div>
+        </mat-grid-tile>
+
+        
+
+        <mat-grid-tile colspan="2">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <span style="width: 200px">cc</span>
+                <div style="width: 20px"></div>
+                <ng-select
+                    appearance="outline"
+                    appendTo="body"
+                    [items]="employee"
+                    bindLabel="email"
+                    bindValue="id_user"
+                    (scrollToEnd)="onScrollToEnd('email')"
+                    (search)="onSearchi($event, 'email')"
+                    (clear)="reset()"
+                    (change)="getValue($event, 'email')"
+                    placeholder="Select Employee Email"
+                    [(ngModel)]="cc"
+                    multiple="true"
+                    dropdownPosition="bottom"
+                    style="width: 100%"
+                >
+                </ng-select>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    
+</div>
+<div style="display: grid;">
+    <button mat-raised-button color="primary" (click)="setLink()">Send</button>
+    <div style="height: 10px"></div>
+    <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+</div>

@@ -1,0 +1,208 @@
+.header-profile {
+    .th {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+}
+.circular_image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: blue;
+    /* commented for demo
+    float: left;
+    margin-left: 125px;
+    margin-top: 20px;
+    */
+
+    /*for demo*/
+    display: inline-block;
+    vertical-align: middle;
+}
+.circular_image img {
+    width: 100%;
+}
+
+.lineborder {
+    flex-grow: 1;
+    height: 3px;
+    background-color: indigo;
+    border-radius: 2px;
+}
+
+.session2 {
+    font-weight: bold;
+    color: black;
+}
+
+.session3 {
+    font-weight: bold;
+    color: black;
+}
+
+.gender-border {
+    height: 150px;
+    border-radius: 100px;
+}
+
+#bankaccount {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#bankaccount td,
+#bankaccount th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#bankaccount tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#bankaccount tr:hover {
+    background-color: #ddd;
+}
+
+#bankaccount th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: lightgray;
+    color: black;
+}
+
+#administrative {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#administrative td,
+#administrative th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#administrative tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#administrative tr:hover {
+    background-color: #ddd;
+}
+
+#administrative th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: lightgray;
+    color: black;
+}
+
+#statuskaryawan {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#statuskaryawan td,
+#statuskaryawan th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-weight: bold;
+}
+
+#statuskaryawan tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#statuskaryawan tr:hover {
+    background-color: #ddd;
+}
+
+#statuskaryawan th {
+    text-align: left;
+    color: lightgray;
+}
+
+@import "src/@fuse/scss/fuse";
+
+.mat-elevation-z8 {
+    width: 100%;
+    flex: 1 1 auto;
+    background-color: transparent;
+}
+
+.table-leave {
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.mat-header-row {
+    min-height: 64px;
+    font-size: 12px;
+    background-color: #0e172b;
+    color: white;
+}
+
+mat-header-cell {
+    color: white;
+}
+
+@media (max-width: 300px) {
+    .content {
+        width: 100%;
+        margin: 15px auto 10px auto;
+    }
+
+    mat-card {
+        width: 100%;
+    }
+
+    // mat-form-field {
+    // 	fxFlex: 100%;
+    // }
+
+    // button {
+    // 	fxFlex: 100%;
+    // }
+}
+
+.table-leave {
+    overflow-x: auto;
+    display: block;
+    min-width: 400px;
+}
+
+@media (max-width: 400px) {
+    .table-leave {
+        overflow-x: auto;
+        display: block;
+    }
+}
+
+.profile {
+    margin: 15px;
+    border-radius: 15px;
+    height: 300px;
+    background: linear-gradient(
+        to bottom,
+        #0e172b 0%,
+        #0e172b 50%,
+        white 50%,
+        white 100%
+    );
+}
+
+.profile-pic {
+    width: 135px;
+    height: 140px;
+    margin: auto;
+    margin-top: 25px;
+    margin-left: 25px;
+    border-radius: 50%;
+}

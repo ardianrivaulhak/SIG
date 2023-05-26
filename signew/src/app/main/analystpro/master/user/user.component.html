@@ -1,0 +1,149 @@
+<div
+    class="page-layout blank p-24"
+    fusePerfectScrollbar
+    style="height: 90vh; overflow-y: auto !important"
+>
+    <div class="center">
+        <!-- HEADER -->
+        <div
+            class="header primary"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            fxLayout.gt-sm="column"
+            fxLayoutAlign.gt-sm="space-between center"
+        >
+            <div
+                class="search-wrapper mx-32 mx-md-0"
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
+                <div
+                    class="search"
+                    fxFlex
+                    fxLayout="row"
+                    fxLayoutAlign="start center"
+                    style="height: 200px"
+                >
+                    <mat-icon>search</mat-icon>
+                    <input
+                        (input)="onSearchChange($event.target.value)"
+                        style="
+                            width: 400px;
+                            border: 1px solid black;
+                            height: 25%;
+                            border-radius: 20px;
+                        "
+                        #filter
+                        placeholder="Search Employee / Email"
+                    />
+                </div>
+                <div style="width: 30px"></div>
+                <button mat-mini-fab color="accent" (click)="gotoModal('add')">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <div
+                class="mat-elevation-z8"
+                style="width: 100%"
+                *ngIf="!this.loading"
+            >
+                <mat-table
+                    class="lab-table"
+                    #table
+                    [dataSource]="user"
+                    fusePerfectScrollbar
+                >
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="no">
+                        <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+                        <mat-cell *matCellDef="let e; let i = index">
+                            <p class="text-truncate">{{ i + 1 }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="employee">
+                        <mat-header-cell *matHeaderCellDef
+                            >Employee</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let e">
+                            <p class="text-truncate">{{ e.employee_name }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="user_email">
+                        <mat-header-cell *matHeaderCellDef
+                            >Email</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let e">
+                            <p class="text-truncate">
+                                {{ e.user_id < 1 ? "-" : e.email }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active">
+                        <mat-header-cell *matHeaderCellDef
+                            >Status</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let e">
+                            <p class="text-truncate">
+                                {{ e.user_id < 1 ? "Not Active" : "Active" }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef
+                            >Action</mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let e; let i = index">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="gotoModal('edit', e)"
+                                >
+                                    <span>Edit</span>
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row
+                        *matHeaderRowDef="displayedColumns; sticky: true"
+                    ></mat-header-row>
+                    <mat-row *matRowDef="let e; columns: displayedColumns">
+                    </mat-row>
+                </mat-table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="this.loading">
+    <div
+        style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        "
+    >
+        <img
+            src="assets/images/backgrounds/complete.png"
+            style="width: 40%; height: auto"
+        />
+        <span style="font-size: 16px; font-weight: bold"
+            >Please Select Employee First</span
+        >
+    </div>
+</div>

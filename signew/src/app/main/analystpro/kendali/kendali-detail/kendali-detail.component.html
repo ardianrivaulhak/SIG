@@ -1,0 +1,64 @@
+<div id="kendali-detail" class="page-layout simple right-sidebar inner-scroll">
+
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+
+        <!-- HEADER -->
+        <div class="header primary-700 p-24" fxLayout="column" fxLayoutAlign="space-between start">
+
+            <!-- TOOLBAR -->
+            <div class="toolbar w-100-p" fxFlex fxLayout="row" fxLayoutAlign="space-between start">
+
+                <div class="left-side" fxLayout="row" *ngIf="sampledata.length > 0">
+                    
+                    <button mat-icon-button class="sidebar-toggle" [routerLink]="'/analystpro/kendali'">
+                        <mat-icon fill="#fff">arrow_back</mat-icon>
+                    </button>
+                    <h2 id="text-identity">
+                        <strong>{{ sampledata[0].kontrakuji.contract_no }}</strong> 
+                        <br>{{ sampledata[0].kontrakuji.customers_handle.customers.customer_name }}
+                    </h2>   
+                  
+                </div>
+
+                
+                <div class="right-side" fxLayout="row">
+                    <!-- <button mat-icon-button aria-label="Search" matTooltip="Search">
+                        <mat-icon>search</mat-icon>
+                    </button> -->
+                    <button mat-icon-button aria-label="More" matTooltip="More" (click)="openDialog(sampledata[0].kontrakuji.id_kontrakuji)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <!-- / TOOLBAR -->
+
+            <!-- BREADCRUMB -->
+            <div class="breadcrumb text-truncate h1 pl-72" fxLayout="row" fxLayoutAlign="start center"
+                 [@animate]="{value:'*',params:{x:'50px'}}">
+                <div  fxLayout="row" fxLayoutAlign="start center">
+                  
+                </div>
+            </div>
+            <!-- / BREADCRUMB -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content" fusePerfectScrollbar>
+            <parameter-list (sampleDatas)="receiveMessage($event)"></parameter-list>
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+    <!-- / CENTER -->
+
+    <!-- SIDEBAR -->
+    <fuse-sidebar class="sidebar details-sidebar" name="file-manager-details-sidebar" position="right"
+    lockedOpen="gt-md">
+        <kendali-details [Message]="Message"></kendali-details>
+    </fuse-sidebar>
+    <!-- / SIDEBAR -->
+
+</div>

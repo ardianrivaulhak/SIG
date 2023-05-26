@@ -1,0 +1,78 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+    <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        style="width: 100%"
+    >
+        <button mat-raised-button color="primary" (click)="addRow()">
+            Add
+        </button>
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="settimetable()"
+        >
+            Set Timetable
+        </button>
+    </div>
+    <form
+        *ngIf="FormTimetable"
+        [formGroup]="FormTimetable"
+        style="width: 100%; height: 400px; overflow: auto"
+    >
+        <table id="timetable">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Sub Division</th>
+                </tr>
+            </thead>
+            <tbody formArrayName="timetablefor">
+                <tr
+                    *ngFor="
+                        let a of this.FormTimetable.controls.timetablefor[
+                            'controls'
+                        ];
+                        let e = index
+                    "
+                    [formGroupName]="e"
+                >
+                    <td>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="deleteRow(e, a.value)"
+                        >
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Select Sub Division</mat-label>
+                            <mat-select formControlName="id_subdiv">
+                                <mat-option
+                                    *ngFor="let o of datasubdiv"
+                                    value="{{ o.id_subagian }}"
+                                    >{{ o.name }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        style="width: 100%; margin-top: 10px"
+    >
+        <button mat-raised-button color="primary" (click)="saveData()">
+            Save
+        </button>
+        <div style="width: 10px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

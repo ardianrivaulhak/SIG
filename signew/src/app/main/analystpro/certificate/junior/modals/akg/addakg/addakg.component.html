@@ -1,0 +1,416 @@
+<div id="add-akg" class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;" >
+    <div class="content" style="overflow: auto;" *ngIf="this.dataContract.length > 0">
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;"  >
+            <h2 style="font-weight:bolder; margin-bottom:30px;">Nutrition Facts</h2>
+            
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Contract Number</span>
+                    <p style="font-size:11px;">{{ this.dataContract[0].contract_no }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Category</span>
+                    <p style="font-size:11px;">{{ dataContract[0].contract_category.title }}</p>
+                </div>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Add Nutrition Facts</span>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <form fxLayout="column" fxLayoutAlign="start"
+                fxFlex="1 0 auto" name="sampleForm">
+                    <div class="h4 mb-24 font-weight-800">Identity Form</div>
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        
+                        <ng-select 
+                        appendTo="body" 
+                        [items]="format" 
+                        bindLabel="name" 
+                        bindValue="id"                    
+                        placeholder="Format" 
+                        dropdownPosition="bottom" 
+                        name="format"
+                        appearance="outline"
+                        [(ngModel)]="this.sendData.format" 
+                        (scrollToEnd)="onScrollToEnd('no_lhu')"
+                        (search)="onsearchselect($event,'lhu')" 
+                        style="display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-right: 10px;"
+                                fxFlex="10">
+                        </ng-select>
+                        
+                        
+                        <ng-select 
+                        appendTo="body" 
+                        [items]="listContract" 
+                        bindLabel="contract_no" 
+                        bindValue="id_kontrakuji"                    
+                        placeholder="Contract Number" 
+                        dropdownPosition="bottom" 
+                        name="id_kontrakuji"
+                        readonly="true"
+                        [(ngModel)]="this.sendData.id_contracts" 
+                        appearance="outline"
+                        (scrollToEnd)="onScrollToEnd('no_kontrak')"
+                        (change)="getValKontrak($event)"
+                        (search)="onsearchselect($event,'kontrak')" 
+                        style="display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-right: 10px;"
+                                fxFlex="20">
+                        </ng-select>
+
+                        <ng-select 
+                        appendTo="body" 
+                        [items]="listLhu" 
+                        bindLabel="lhu_number" 
+                        bindValue="id"                    
+                        placeholder="LHU Number" 
+                        dropdownPosition="bottom" 
+                        name="id_lhu"
+                        [(ngModel)]="this.sendData.id_lhu" 
+                        appearance="outline"
+                        (scrollToEnd)="onScrollToEnd('no_lhu')"
+                        (search)="onsearchselect($event,'lhu')" 
+                        style="display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-right: 10px;"
+                                fxFlex="25">
+                        </ng-select>
+
+                        <mat-form-field 
+                        appearance="outline" 
+                        fxFlex="10" 
+                        class="pr-4" 
+                        style="font-size: 11px; 
+                        margin-right: 10px;">
+                        <mat-label>Serving per Pack</mat-label>
+                            <input 
+                            type="number"
+                            matInput 
+                            name="servingperpack" 
+                            [(ngModel)]="this.sendData.servingperpack">
+                    </mat-form-field>  
+
+                        
+                        <mat-form-field 
+                            appearance="outline" 
+                            fxFlex="10" 
+                            class="pr-4" 
+                            style="font-size: 11px; margin-right: 10px;">
+                            <mat-label>Size</mat-label>
+                            <mat-select                  
+                                class="select-me"
+                                [(ngModel)]="this.sendData.size"
+                                (ngModelChange)="openDisabled($event)"
+                                name="size"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; 
+                                color:white !important;">
+                                <mat-option *ngFor="let selectType of selectType" [value]="selectType.id">
+                                    {{ selectType.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Size Type is required!</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field 
+                            appearance="outline" 
+                            fxFlex="10" 
+                            class="pr-4" 
+                            style="font-size: 11px; 
+                            margin-right: 10px;">
+                            <mat-label>Serving Size</mat-label>
+                                <input 
+                                type="number"
+                                matInput name="takaran_saji" 
+                                [disabled]="this.disabledForm"
+                                [(ngModel)]="this.sendData.select_takaran_saji" 
+                                (keyup)="ServSize(this.sendData.select_takaran_saji)"
+                                required>
+                                <mat-hint style="color: red; font-size: 11px;" 
+                                *ngIf="!!this.sendData.size && this.sendData.size == 2">Or <b>{{ this.sendData.takaran_saji }}</b> gr</mat-hint>
+                                <mat-error>Energy Type is required!</mat-error>
+                        </mat-form-field>                        
+                        
+                        <mat-form-field 
+                            appearance="outline" 
+                            fxFlex="10" 
+                            class="pr-4" 
+                            style="font-size: 11px; margin-right: 10px;">
+                                <mat-label>Weighting Type</mat-label>
+                                <input 
+                                type="number"
+                                matInput 
+                                name="bobotjenis" 
+                                (keyup)="bobotJenis(this.sendData.bj)"
+                                [(ngModel)]="this.sendData.bj" 
+                                required>
+                            <mat-error>Weighting Type is required!</mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field 
+                            appearance="outline" 
+                            fxFlex="10" 
+                            class="pr-4" 
+                            style="font-size: 11px; margin-right: 10px;">
+                        <mat-label>Energy</mat-label>
+                        <mat-select                  
+                            class="select-me"
+                            [(ngModel)]="this.sendData.energi"
+                            name="takaran_saji"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center; 
+                            color:white !important;">
+                            <mat-option *ngFor="let selectData of selectData" [value]="selectData.id">
+                                {{ selectData.id }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Energy Type is required!</mat-error>
+                        </mat-form-field>
+
+                        
+                        
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end center" class="mb-10">
+                        <button mat-raised-button 
+                            color="primary"   
+                            fxFlex="12"  fxFlex.xs="12" 
+                            style="height: 40px; width:250px;  margin-right: 10px;" 
+                            [disabled]="this.disabledBUtton"
+                            (click)="getParameterinLhu()">
+                            <mat-icon>add_circle</mat-icon>
+                            &nbsp; Add Parameter
+                        </button>
+                        <button mat-raised-button 
+                            color="primary"   
+                            fxFlex="12"  fxFlex.xs="12" 
+                            [disabled]="this.listParameter.length < 1"
+                            (click)="removeParameter()"
+                            style="height: 40px; width:250px;" >
+                            <mat-icon>undo</mat-icon>
+                            &nbsp; Cancel
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+            <button mat-button color="primary" 
+            *ngIf="this.listParameter.length > 0"
+            (click)="addAkg(this.sendData.id_lhu)"
+            style="font-weight: bold;">
+                <mat-icon>add_circle</mat-icon>
+                Add
+            </button>
+            <button mat-button color="primary" 
+            (click)="removeCheckParameter()"
+            style="font-weight: bold;" 
+            *ngIf="this.checkList.length > 0">
+                <mat-icon>delete</mat-icon>
+                Delete
+            </button>
+            <div class="example-container" fxLayout="row" fxLayoutAlign="start center" >
+                <table mat-table [dataSource]="listParameter" class="mt-20" *ngIf="this.listParameter.length > 0" >
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="number" >
+                        <th mat-header-cell *matHeaderCellDef>
+                            
+                        </th>
+                        <td mat-cell *matCellDef="let listDataParameter; let i = index" style="font-size: 11px;" sticky>
+                            {{ i + 1 }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="checkbox" sticky>
+                        <th mat-header-cell *matHeaderCellDef>
+                            <mat-checkbox class="example-margin" style="margin-left: 10px;"
+                            (change)="setAll($event.checked)"
+                            (change)="someComplete()"
+                            ></mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index">
+                            <mat-checkbox class="example-margin"
+                            style="margin-right: 10px; margin-bottom: 20px;"
+                            [(ngModel)]="listParameter.completed"
+                            (ngModelChange)="updateAllComplete()"
+                            (change)="checkBox($event.checked, listParameter.id)"
+                            ></mat-checkbox>
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="parameter" sticky>
+                        <th mat-header-cell *matHeaderCellDef> ID </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>parameteruji id</mat-label>
+                                <input matInput name="parameteruji_id" 
+                                [(ngModel)]="listParameter.parameteruji_id">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="unit_akg">
+                        <th mat-header-cell *matHeaderCellDef>Unit AKG</th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>unit akg</mat-label>
+                                <input matInput name="unit_akg" 
+                                [(ngModel)]="listParameter.unit_akg">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="unit_lhp">
+                        <th mat-header-cell *matHeaderCellDef> Unit LHP </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>unit lhp</mat-label>
+                                <input matInput name="unit_lhp" 
+                                [(ngModel)]="listParameter.unit_lhp">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="result_lhp">
+                        <th mat-header-cell *matHeaderCellDef>LHP Result </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>lhp result</mat-label>
+                                <input matInput name="result_lhp" 
+                                (keyup)="lhpResult(listParameter.result_lhp, i)"
+                                [(ngModel)]="listParameter.result_lhp">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="result_akg">
+                        <th mat-header-cell *matHeaderCellDef> AKG Result </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>akg result</mat-label>
+                                <input matInput name="result_akg" 
+                                [(ngModel)]="listParameter.result_akg">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="result_takaran_saji">
+                        <th mat-header-cell *matHeaderCellDef> Result Serving Size </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>result serving size</mat-label>
+                                <input matInput name="result_takaran_saji" 
+                                [(ngModel)]="listParameter.result_takaran_saji">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="pencantuman">
+                        <th mat-header-cell *matHeaderCellDef> Inclusion </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>inclusion</mat-label>
+                                <input matInput name="pencantuman" 
+                                [(ngModel)]="listParameter.pencantuman">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="nilai_acuan">
+                        <th mat-header-cell *matHeaderCellDef> References </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>references</mat-label>
+                                <input matInput name="nilai_acuan" 
+                                readonly
+                                [(ngModel)]="listParameter.ref">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+
+                      <!-- Column -->
+                      <ng-container matColumnDef="persen_akg">
+                        <th mat-header-cell *matHeaderCellDef> % AKG </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>%akg</mat-label>
+                                <input matInput name="persen_akg" 
+                                [(ngModel)]="listParameter.akg">
+                            </mat-form-field>         
+                        </td>
+                    </ng-container>
+                        <!-- Column -->
+                      <ng-container matColumnDef="pencantuman_akg">
+                        <th mat-header-cell *matHeaderCellDef> Inclusion % AKG </th>
+                        <td mat-cell *matCellDef="let listParameter; let i = index"> 
+                            <mat-form-field appearance="outline"  class="p-10 mt-10" style="font-size: 11px;" >
+                                <mat-label>Inclusion %akg</mat-label>
+                                <input matInput name="persen_akg" 
+                                [(ngModel)]="listParameter.pencantuman_akg">
+                            </mat-form-field>         
+                        </td>
+
+                        
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <div *ngIf="loadingfirst && this.listParameter.length === 0 && disabledBUtton" style="display: block;  margin: auto;  text-align: center;">
+                    <img  src="assets/images/gif/spinner.gif" style="width: 30%;"/>
+                    <small style="display: block;  margin: auto;  text-align: center;">Calculating ...</small>
+                </div>
+        
+                <div *ngIf="!loadingfirst && this.listParameter.length === 0 && !disabledBUtton" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                    <img  src="assets/images/gif/selectfile.gif" />
+                    <small>No Data</small>
+                </div>
+                
+            </div>
+            <div class="mt-24 footer" fxLayoutAlign="end center" >
+                <button mat-stroked-button 
+                    fxFlex="12"  
+                    fxFlex.xs="12"
+                    style="margin-right:10px; width:250px;" 
+                    color="primary" 
+                    [disabled]="this.listParameter.length < 1"
+                    aria-label="Close">
+                    Refresh
+                </button>
+                <button mat-raised-button 
+                    fxFlex="12"  fxFlex.xs="12" 
+                    color="primary" 
+                    style="margin-right:20px; width:250px;"
+                    (click)="submitButton()"
+                    [disabled]="this.listParameter.length < 1 || this.loading == true"
+                    class="mat-primary" >
+                    Submit
+                </button>
+            </div>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<!-- SIDEBAR HEADER -->
+<div class="header primary p-24" fxLayout="column" fxLayoutAlign="space-between" (messageEvent)="receiveMessage($event)">
+
+    <div class="toolbar" fxLayout="row" fxLayoutAlign="end center">
+  
+        
+    </div>
+  
+    <div>
+        <div class="title mb-8">List Parameter Uji</div>
+        <div class="subtitle secondary-text">
+            <span>by sample</span>
+        </div>
+    </div>
+  </div>
+  <!-- / SIDEBAR HEADER -->
+  
+  <!-- SIDEBAR CONTENT -->
+  <div class="content p-24" fusePerfectScrollbar>
+  
+    <div class="file-details" [@animate]="{value:'*',params:{delay:'200ms'}}">
+  
+        <div class="preview file-icon" fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon class="type-icon s-48" ></mat-icon>
+        </div>
+  
+        <app-sample-list (messageEvent)="receiveMessage($event)"></app-sample-list>
+
+        <mat-table #table [dataSource]="parameterData" [@animateStagger]="{value:'50'}" style="height: 70vh; overflow-y: auto;">
+    
+            <ng-container matColumnDef="name_id">
+              <mat-header-cell *matHeaderCellDef>Name Parameter</mat-header-cell>
+              <mat-cell *matCellDef="let parameterData">{{ parameterData.parameteruji.name_id }}</mat-cell>
+            </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let parameterData; columns: displayedColumns;"
+            [@animate]="{value:'*',params:{y:'100%'}}">
+           </mat-row>
+          
+        </mat-table>
+  
+    </div>
+  
+  </div>
+  <!-- / SIDEBAR CONTENT -->
+  

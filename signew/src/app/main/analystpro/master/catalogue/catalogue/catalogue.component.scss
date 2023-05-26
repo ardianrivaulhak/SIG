@@ -1,0 +1,117 @@
+app-catalogue {
+    .green-status {
+        // width: 30%;
+        // height: 20px;
+        background-color: rgb(186, 253, 189);
+        display: flex;
+        // justify-content: center;
+
+        .text-truncate {
+            color: #1f4715;
+            font-size: 10px;
+            text-align: center;
+        }
+    }
+
+    .red-status {
+        width: 30%;
+        height: 20px;
+        background-color: #ffcfcf;
+        display: flex;
+        // justify-content: center;
+        // align-items: center;
+
+        .text-truncate {
+            color: rgb(121, 1, 1);
+            font-size: 10px;
+            text-align: center;
+        }
+    }
+
+    .border-search {
+        width: 60%;
+        height: 40px;
+        // border-radius: 20px;
+        border: 1px solid lightgray;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px;
+        margin-left: 100px;
+    }
+
+    // mat-form-field {
+    //     width: 100%;
+    // }
+
+    // .mat-form-field-wrapper {
+    //     padding-bottom: 12px !important;
+    // }
+
+    ng-select {
+        width: 100%;
+    }
+
+    .box-normal {
+        width: 80%;
+        height: 20px;
+        border-radius: 15px;
+        background-color: rgb(93, 255, 101);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #7d6608;
+            font-size: 10px;
+        }
+    }
+
+    .mat-header-cell {
+        text-align: center;
+        background-color: rgb(30, 33, 41);
+        color: navajowhite !important;
+    }
+
+    .box-urgent {
+        width: 80%;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #f72323;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: white;
+            font-size: 10px;
+        }
+    }
+
+    .box-warn {
+        width: 120px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #857100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #ffffff;
+            font-size: 10px;
+        }
+    }
+
+    .demo th {
+        border: 1px solid #c0c0c0;
+        padding: 5px;
+        background: #2d323e;
+    }
+
+    #table-scroll {
+        height: 500px;
+        overflow: auto;
+        margin-top: 20px;
+    }
+}

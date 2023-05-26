@@ -1,0 +1,331 @@
+<div class="dialog-content-wrapper mat-primary m-0"  style="overflow: hidden; height: 100%;">
+
+    <mat-toolbar matDialogTitle class="mat-primary m-0" style="background-color: #F7F7F7;">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> Detail Complaint </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: auto; height: 100%;">
+        <!-- content -->
+        <div *ngIf="this.statusselect == 'cs'">            
+            <span  style="font-weight: 800; margin-bottom: 20px;">Information</span>
+            <table class="table-cs">
+                <tr>
+                    <td style="width: 20%;">LHU Number</td>
+                    <td>{{ this.complaindata[0].transaction_certificate.lhu_number }}</td>
+                </tr>
+                <tr>
+                    <td>Contract Number</td>
+                    <td>{{ this.complaindata[0].transaction_sample.kontrakuji.contract_no }}</td>
+                </tr>
+                <tr>
+                    <td>Sample Number</td>
+                    <td>{{ this.complaindata[0].transaction_sample.no_sample }}</td>
+                </tr>
+                <tr>
+                    <td>Customer</td>
+                    <td>{{ this.complaindata[0].transaction_sample.kontrakuji.customers_handle.customers.customer_name }}</td>
+                </tr>
+                <tr>
+                    <td>Contact Person</td>
+                    <td>{{ this.complaindata[0].transaction_sample.kontrakuji.customers_handle.contact_person.name }}</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>{{ this.complaindata[0].transaction_sample.kontrakuji.customers_handle.email }}</td>
+                </tr>
+            </table>
+
+            <span  style="font-weight: 800; margin-bottom: 20px;">Date</span>
+            <div fxLayout="row" fxLayoutAlign="start  center" style="margin-bottom: 30px;">
+                <mat-form-field appearance="outline" class="pr-4"  fxFlex="19"  style="font-size:12px;">
+                    <mat-label>Complain Date</mat-label>
+                    <input matInput [matDatepicker]="picker" (dateChange)="getDateInvoice($event)" name="date_complain" [(ngModel)]="this.formdata.date_complain" >
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error>Complain Date is required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="pr-4" fxFlex="19"  style="font-size:12px;">
+                    <mat-label>Finish Date</mat-label>
+                    <input matInput [matDatepicker]="finish_picker" name="finish_complain"[(ngModel)]="this.formdata.finish_complain">
+                    <mat-datepicker-toggle matSuffix [for]="finish_picker"></mat-datepicker-toggle>
+                    <mat-datepicker #finish_picker></mat-datepicker>
+                    <mat-error>Complain Date is required!</mat-error>
+                </mat-form-field>
+            </div>
+
+            <span style="font-weight: 800; margin-bottom: 20px;">Form Complain</span>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 30px;">
+                <ng-select appendTo="body" 
+                    [items]="selectChange" 
+                    bindLabel="name" 
+                    bindValue="id" 
+                    appearance="outline" 
+                    (change)="test()"
+                    placeholder="Type"
+                    [(ngModel)]="formdata.complaintype" 
+                    dropdownPosition="top"
+                    fxFlex="19" 
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 10px;">
+                </ng-select>   
+
+                <ng-select appendTo="body"  *ngIf="this.formdata.complaintype == 1"
+                    [items]="this.formdata.parameterarray" 
+                    bindLabel="name_id" 
+                    bindValue="id" 
+                    appearance="outline" 
+                    (change)="getDataParmater($event)"
+                    placeholder="Complain Type"
+                    fxFlex="49"
+                    dropdownPosition="bottom"
+                    style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <div title="{{item.name_id}} [ {{item.hasiluji}} ]">{{item.name_id}} [ {{item.hasiluji}} ]</div>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <div title="{{item.name_id}} [ {{item.hasiluji}} ]">{{item.name_id}} [ {{item.hasiluji}} ]</div>
+                    </ng-template>
+                </ng-select> 
+
+                <div  fxFlex="49" *ngIf="this.formdata.complaintype == 1">
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <button mat-flat-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 50px;  margin-right: 10px; margin-bottom: 12px;" (click)="addParameter()">
+                            <mat-icon>add_circle</mat-icon> Add
+                        </button>
+                        <button mat-stroked-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 50px; margin-bottom: 12px;"  (click)="deleteParameter()" [disabled]="checkdata()">
+                            <mat-icon>delete</mat-icon>  Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center"  style="margin-bottom: 30px;">
+                <table id="tables" fxFlex="100" *ngIf="this.formdata.complaintype == 1 && this.parameterpick.length > 0" >
+                    <thead>
+                        <tr>
+                            <th>
+                                <mat-checkbox
+                                    class="checkbox-control"
+                                    color="primary"
+                                    (change)="checkAll($event.checked, 'all')"
+                                ></mat-checkbox>
+                            </th>
+                            <th>Parameter Name</th>
+                            <th>Lab</th>
+                            <th>Hasil Awal</th>
+                            <th>Satuan</th>
+                            <th>Complain</th>
+                            <th>Expetation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="
+                                let u of this.parameterpick;
+                                let z = index
+                            "
+                        >
+                            <td>
+                                <mat-checkbox
+                                        [checked]="u.checked"
+                                        (change)="checkAll($event.checked,z)"
+                                    ></mat-checkbox>
+                            </td>
+                            <td>
+                                <div>
+                                    <span style="font-weight: 700;">{{ u.name_id }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                {{u.nama_lab}}
+                            </td>
+                            <td>{{ u.hasiluji }}</td>
+                            <td>{{ u.unit }}</td>
+                            <td>
+                                <div style="padding:5px;">
+                                    <select [(ngModel)]="u.complain" style="width: 90%; padding:5px;">
+                                      <option *ngFor="let z of complainlist" value="{{z.id}}">{{z.val}}</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="padding:5px;">
+                                  <textarea [(ngModel)]="u.expetation" rows="1" style="width: 90%; padding:5px;"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+
+        <div *ngIf="this.statusselect == 'qc'"> 
+            <span style="font-weight: 800; margin-bottom: 20px;">Add More Complain</span>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom: 30px;">
+                <ng-select appendTo="body" 
+                    [items]="selectChange" 
+                    bindLabel="name" 
+                    bindValue="id" 
+                    appearance="outline" 
+                    (change)="test()"
+                    placeholder="Type"
+                    [(ngModel)]="formdata.complaintype" 
+                    dropdownPosition="top"
+                    fxFlex="19" 
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 10px;">
+                </ng-select> 
+                <ng-select appendTo="body" 
+                    [items]="this.formdata.parameterarray" 
+                    bindLabel="name_id" 
+                    bindValue="id" 
+                    appearance="outline" 
+                    (change)="getDataParmater($event)"
+                    placeholder="Complain Type"
+                    fxFlex="49"
+                    dropdownPosition="bottom"
+                    style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 10px;">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        <div title="{{item.name_id}} [ {{item.hasiluji}} ] - ( {{item.info_name}} )">{{item.name_id}} [ {{item.hasiluji}} ] - ( {{item.info_name}} )</div>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <div title="{{item.name_id}} [ {{item.hasiluji}} ] - ( {{item.info_name}} )">{{item.name_id}} [ {{item.hasiluji}} ] - ( {{item.info_name}} )</div>
+                    </ng-template>
+                </ng-select>
+                <div  fxFlex="49" >
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <button mat-flat-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 50px;  margin-right: 10px; margin-bottom: 12px;" (click)="addParameter()">
+                            <mat-icon>add_circle</mat-icon> Add
+                        </button>
+                        <button mat-stroked-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 50px; margin-bottom: 12px;"  (click)="deleteParameter()" [disabled]="checkdata()">
+                            <mat-icon>delete</mat-icon>  Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table id="tables" fxFlex="100"  && this.parameterpick.length > 0">
+                <thead>
+                    <tr>
+                        <th>
+                            <mat-checkbox
+                                class="checkbox-control"
+                                color="primary"
+                                (change)="checkAll($event.checked, 'all')"
+                            ></mat-checkbox>
+                        </th>
+                        <th>Parameter Name</th>
+                        <th>Lab</th>
+                        <th>Matriks</th>
+                        <th>Hasil Awal</th>
+                        <th>Satuan</th>
+                        <th>Hasil Uji Ulang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="
+                            let u of this.parameterpick;
+                            let z = index
+                        "
+                    >
+                        <td>
+                            <mat-checkbox
+                                    [checked]="u.checked"
+                                    (change)="checkAll($event.checked,z)"
+                                ></mat-checkbox>
+                        </td>
+                        <td>
+                            <div>
+                                <span style="font-weight: 700;">{{ u.name_id }}</span><br>
+                                <span style=" font-size: 10px;">{{ u.info_name }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            {{u.nama_lab}}
+                        </td>
+                        <td>
+                            {{
+                                u.matriks
+                            }}
+                        </td>
+                        <td>{{ u.hasiluji }}</td>
+                        <td>{{ u.unit }}</td>
+                        <td>
+                           <input [(ngModel)]="u.complain_result"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div  fxLayout="column" fxLayoutAlign="space-between  center" *ngIf="this.formdata.complaintype == 2">
+            <div fxLayout="row" fxLayoutAlign="space-between  center">
+                <mat-form-field appearance="outline" class="pr-4" style="font-size: 12px;">
+                    <mat-label>Bagian*</mat-label>
+                    <mat-select [(ngModel)]="this.formdata.bagian">
+                        <mat-option *ngFor="let datadiv of datadiv" [value]="datadiv.id_div">
+                        {{datadiv.division_name}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Bagian is required!</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between  center" >
+                <mat-form-field appearance="outline" class="pr-4" style="font-size: 12px; margin-top: 5px;">
+                    <mat-label>Complain</mat-label>
+                    <input matInput required [(ngModel)]="this.formdata.complain" >
+                    <mat-error>Complain is required!</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between  center" >
+                <mat-form-field appearance="outline" style="font-size: 12px;margin-top: 5px;" >
+                    <mat-label>Message</mat-label>
+                    <textarea matInput rows="5" [(ngModel)]="this.formdata.message"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <!-- end content -->
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" 
+    fxLayout="row" 
+    fxLayoutAlign="end center"
+    *ngIf="this.formdata.complaintype == 1"
+    style="background-color: #fff;">
+        <button mat-raised-button color="primary" aria-label="Submit" (click)="saving()" >
+            Submit
+        </button>
+        <button mat-stroked-button color="primary" aria-label="Close"  (click)="closeModal(true)">
+              Close
+        </button>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" 
+    fxLayout="row" 
+    fxLayoutAlign="end center"
+    *ngIf="this.formdata.complaintype == 2"
+    style="background-color: #fff;">
+        <button mat-raised-button color="primary" aria-label="Submit" (click)="saveForm()" >
+            Submit
+        </button>
+        <button mat-stroked-button color="primary" aria-label="Close"  (click)="closeModal(true)">
+              Close
+        </button>
+    </div>
+</div>

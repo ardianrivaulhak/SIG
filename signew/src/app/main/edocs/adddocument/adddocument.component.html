@@ -1,0 +1,992 @@
+<div id="edoc-newdata"  fxLayout="column" fxLayoutAlign="space-between none" style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content">
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <mat-card-title>
+                <strong>Add Document</strong>
+            </mat-card-title>
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                <h2 class="text-title" style="margin-top:20px; font-size:18px; font-weight: 700;">Document Title</h2>
+                <div fxLayout="row" fxLayoutAlign="start start" >
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex="33">
+                        <mat-label>Type</mat-label>
+                        <mat-select 
+                        [(ngModel)]="formData.type_document"
+                        (selectionChange)="selecttype($event)"
+                         style="font-size:11px;">
+                            <mat-option  *ngFor="let d of masterData" [value]="d">
+                                {{d.document_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                    <mat-form-field 
+                    appearance="outline" 
+                    *ngIf="viewmasterInheritance == true"
+                    style="font-size: 11px;" fxFlex="33">
+                        <mat-label>Select Data</mat-label>
+                        <mat-select 
+                        [(ngModel)]="formData.type_inheritance"
+                         style="font-size:11px;">
+                            <mat-option *ngFor="let d of masterDataInhetitance" [value]="d.id">
+                                {{d.document_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>  
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                        <mat-label>Title</mat-label>
+                        <input style="color: rgb(71, 68, 68);" [(ngModel)]="formData.title" matInput>
+                    </mat-form-field>
+                </div>
+                
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                        <mat-label>Document Number</mat-label>
+                        <input style="color: black;" [(ngModel)]="formData.document_number" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="10">
+                        <mat-label>Issue Number</mat-label>
+                        <input style="color: black;" [(ngModel)]="formData.issue_number" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="15">
+                        <mat-label>Date of Issue</mat-label>
+                        <input matInput [(ngModel)]="formData.issued_date" 
+                            [matDatepicker]="issuedate">
+                        <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                        <mat-datepicker #issuedate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="10">
+                        <mat-label>Revision Number</mat-label>
+                        <input style="color: black;" [(ngModel)]="formData.revision_number" matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="15">
+                        <mat-label>Date of Revision</mat-label>
+                        <input matInput [(ngModel)]="formData.revision_date" 
+                            [matDatepicker]="revision">
+                        <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                        <mat-datepicker #revision></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="10">
+                        <mat-label>Total Pages</mat-label>
+                        <input style="color: black;" [(ngModel)]="formData.total_pages" matInput>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-bottom:15px;" >
+                    <mat-form-field appearance="outline" style="font-size: 11px;" floatLabel="always" fxFlex="100">
+                        <mat-label>Infomarion(optional)</mat-label>
+                        <textarea matInput [(ngModel)]="formData.information" placeholder="Infomation" name="desc" rows="7">
+                        </textarea>
+                    </mat-form-field>
+                </div>
+                <h2 class="text-title" style="margin-top:5px; font-size:18px; font-weight: 700;">Document File</h2>
+                 <!-- file -->
+                 <div class="container" fxLayout="row" fxLayoutAlign="start center">
+                    <input
+                    [disabled]="this.formData.type_document == null"
+                    #_fileInput
+                    type="file"
+                    (change)="uploadDocument($event, 'document', '')"
+                    hidden
+                    />
+                    <mat-card 
+                    class="mat-elevation-z0"
+                    fxFlex="10"
+                    (click)="_fileInput.click()"
+                    style="margin-bottom: 10px; 
+                    margin-right: 20px;
+                    width: 100%;
+                    background-color: antiquewhite;
+                    border: 2px solid white; 
+                    border-radius: 15px;">
+                        <div fxLayout="column" fxLayoutAlign="start center" >
+                            <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                            <span style="margin-top: 24px;">
+                                <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add</button>
+                            </span>
+                        </div>
+                    </mat-card>
+                    <mat-card 
+                        *ngFor="let item of this.formData.documents; let i = index"
+                        class="mat-elevation-z0"
+                        fxFlex="10"
+                        style="margin-bottom: 10px; 
+                        width: 100%;
+                        background-color: antiquewhite;
+                        border: 2px solid white; 
+                        border-radius: 15px;"
+                        >
+                        <div fxLayout="column" fxLayoutAlign="start center" >
+                            <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                            <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                    <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                </button>
+                                <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                    <mat-icon style="color: #911F27;">lock</mat-icon>
+                                </button> -->
+                                <span>
+                                    <button mat-icon-button color="primary" 
+                                    [matMenuTriggerFor]="moreMenu"
+                                    (click)="$event.stopPropagation();">
+                                        <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                    </button>
+                                    <mat-menu #moreMenu="matMenu">
+                                        <button mat-menu-item aria-label="copy" (click)="openDocument(item)">
+                                            <mat-icon >visibility</mat-icon>
+                                            <span>View</span>
+                                        </button>
+                                        <br>
+                                        <button mat-menu-item aria-label="copy" (click)="removeFile(item, i , 'document')">
+                                            <mat-icon style="color:red;">remove_circle</mat-icon>
+                                            <span style="color:red;">Remove</span>
+                                        </button>
+                                    </mat-menu>
+                                </span>
+                            </div>
+                            <!-- <mat-icon>visibility_off</mat-icon> -->
+                        </div>
+                    </mat-card>
+                </div>
+                <!-- end file -->
+            </mat-card-content>           
+        </mat-card>
+
+        <!-- OTHER DOCUMENT -->
+        <div style="width: 90%; margin: 20px auto 10px auto;">
+            <h2 class="text-title" style="margin-top:20px; font-size:18px; font-weight: 700;">Others Document</h2>
+            <!-- AMANDEMENT -->
+            <mat-accordion class="mat-elevation-z0" >
+                <mat-expansion-panel [disabled]="this.formData.type_document == null">
+                <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: bold;">
+                    Amandement
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                
+                <div class="container" *ngIf="this.amandements.length > 0">
+                <!-- file -->
+                    <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let amandement of amandements; let i = index">
+                        <div class="container" fxLayout="column" fxLayoutAlign="space-between none" style="margin-right: 20px;">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                                <h2 style="font-size:13px; font-weight: bold;">Identity Document</h2>
+                                <button mat-icon-button color="warn" matTooltip="remove data" (click)="removeOtherDocument(i, 'amandement')">
+                                    <mat-icon>delete_sweep</mat-icon>
+                                  </button>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                    <mat-label>Title </mat-label>
+                                    <input style="color: rgb(71, 68, 68);" name="title_amandement" [(ngModel)]="this.amandements[i].title" matInput>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                    <mat-label>Document Number</mat-label>
+                                    <input style="color: black;" name="document_number_amandement" [(ngModel)]="amandements[i].document_number" matInput>
+                                </mat-form-field>
+                            </div>
+            
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                    <mat-label>Issue Number</mat-label>
+                                    <input style="color: black;" name="issue_number_amandement" [(ngModel)]="amandements[i].issue_number" matInput>
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                    <mat-label>Date of Issue</mat-label>
+                                    <input matInput name="date_of_issue_amandement" [(ngModel)]="amandements[i].issued_date" 
+                                        [matDatepicker]="issuedate">
+                                    <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                                    <mat-datepicker #issuedate></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+            
+                            
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                    <mat-label>Revision Number</mat-label>
+                                    <input name="revision_number_amandement" style="color: black;" [(ngModel)]="amandements[i].revision_number" matInput>
+                                </mat-form-field>
+            
+                                <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                    <mat-label>Date of Revision</mat-label>
+                                    <input matInput [(ngModel)]="amandements[i].revision_date" 
+                                    name="revision_date_amandement"
+                                        [matDatepicker]="revision">
+                                    <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                                    <mat-datepicker #revision></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+            
+                            
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                    <mat-label>Total Pages</mat-label>
+                                    <input style="color: black;" name="total_pages_amandement" [(ngModel)]="amandements[i].total_pages" matInput>
+                                </mat-form-field>
+                            </div>
+                           
+                        </div>
+
+                        <div class="container" fxLayout="column" fxLayoutAlign="space-between none">
+                            <h2 style="font-size:13px; font-weight: bold;">Attachment</h2>
+                            <div fxLayout="row" fxLayoutAlign="start center" >                            
+                                <mat-card 
+                                fxFlex="100"
+                                class="mat-elevation-z0"
+                                (click)="_fileInput.click()"
+                                *ngIf="this.amandements[i].file.length < 2"
+                                style="margin-bottom: 10px; 
+                                margin-right: 20px;
+                                width: 100%;
+                                background-color: antiquewhite;
+                                border: 2px solid white; 
+                                border-radius: 15px;">
+                                <input
+                                [disabled]="this.amandements[i].title == null"
+                                #_fileInput
+                                type="file"
+                                (change)="uploadDocument($event, 'amandement', i)"
+                                hidden
+                                />
+                                    <div fxLayout="column" fxLayoutAlign="start center" >
+                                        <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                                        <span style="margin-top: 24px;">
+                                            <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add New</button>
+                                        </span>
+                                    </div>
+                                </mat-card>
+                                <mat-card 
+                                fxFlex="100"
+                                    *ngFor="let item of this.amandements[i].file"
+                                    class="mat-elevation-z0"
+                                    style="margin-bottom: 10px; 
+                                    width: 100%;
+                                    background-color: antiquewhite;
+                                    border: 2px solid white; 
+                                    border-radius: 15px;"
+                                    >
+                                    <div fxLayout="column" fxLayoutAlign="start center" >
+                                        <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                        <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                            </button>
+                                            <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon style="color: #911F27;">lock</mat-icon>
+                                            </button> -->
+                                            <span>
+                                                <button mat-icon-button color="primary" 
+                                                [matMenuTriggerFor]="moreMenu"
+                                                (click)="$event.stopPropagation();">
+                                                    <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                                </button>
+                                                <mat-menu #moreMenu="matMenu">
+                                                    <button mat-menu-item aria-label="copy" (click)="openDocument(item.id)">
+                                                        <mat-icon >visibility</mat-icon>
+                                                        <span>View</span>
+                                                    </button>
+                                                    <br>
+                                                    <button mat-menu-item 
+                                                    (click)="removeFile(item, i , 'amandement')"
+                                                    aria-label="copy">
+                                                        <mat-icon style="color:red;">remove_circle</mat-icon>
+                                                        <span style="color:red;">Remove</span>
+                                                    </button>
+                                                </mat-menu>
+                                            </span>
+                                        </div>
+                                        <!-- <mat-icon>visibility_off</mat-icon> -->
+                                        
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end file -->                
+                </div>
+                <div class="container" *ngIf="this.amandements.length < 1">
+                    <div style="width: 20%; margin-left: auto; margin-right: auto;display: block; text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>No Data</small>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start" >
+                    <button mat-flat-button color="primary" (click)="addRowAmandement('amandement')"><mat-icon>add_box</mat-icon> Add Row</button>
+                </div>
+                </mat-expansion-panel>
+
+                <!-- FLOWCHARTS -->
+                
+                <mat-expansion-panel  [disabled]="this.formData.type_document == null">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="font-weight: bold;">
+                        Flowchart
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                   <!-- file -->
+                   <div class="container" *ngIf="this.flowcharts.length > 0">
+                    <!-- file -->
+                        <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let flowchat of flowcharts; let i = index">
+                            <div class="container" fxLayout="column" fxLayoutAlign="space-between none" style="margin-right: 20px;">
+                                <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                                    <h2 style="font-size:13px; font-weight: bold;">Identity Document</h2>
+                                    <button mat-icon-button color="warn" matTooltip="remove data" (click)="removeOtherDocument(i, 'flowchart')">
+                                        <mat-icon>delete_sweep</mat-icon>
+                                      </button>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                        <mat-label>Title</mat-label>
+                                        <input style="color: rgb(71, 68, 68);" name="title" [(ngModel)]="flowcharts[i].title" matInput>
+                                    </mat-form-field>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="start center" >
+                                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                        <mat-label>Document Number</mat-label>
+                                        <input style="color: black;" name="document_number" [(ngModel)]="flowcharts[i].document_number" matInput>
+                                    </mat-form-field>
+                                </div>
+                
+                                <div fxLayout="row" fxLayoutAlign="start center" >
+                                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                        <mat-label>Issue Number</mat-label>
+                                        <input style="color: black;" name="issue_number" [(ngModel)]="flowcharts[i].issue_number" matInput>
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                        <mat-label>Date of Issue</mat-label>
+                                        <input matInput  name="issue_number" [(ngModel)]="flowcharts[i].issued_date"  
+                                            [matDatepicker]="issuedate">
+                                        <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                                        <mat-datepicker #issuedate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>                
+                                
+                                <div fxLayout="row" fxLayoutAlign="start center" >
+                                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                        <mat-label>Revision Number</mat-label>
+                                        <input style="color: black;" name="revision_number" [(ngModel)]="flowcharts[i].revision_number"  matInput>
+                                    </mat-form-field>
+                
+                                    <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                        <mat-label>Date of Revision</mat-label>
+                                        <input matInput name="revision_date" [(ngModel)]="flowcharts[i].revision_date"
+                                            [matDatepicker]="revision">
+                                        <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                                        <mat-datepicker #revision></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                
+                                
+                                <div fxLayout="row" fxLayoutAlign="start center" >
+                                    <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                        <mat-label>Total Pages</mat-label>
+                                        <input style="color: black;"name="total_pages" [(ngModel)]="flowcharts[i].total_pages" matInput>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="container" fxLayout="column" fxLayoutAlign="space-between none">
+                                <h2 style="font-size:13px; font-weight: bold;">Attachment</h2>
+                                <div fxLayout="row" fxLayoutAlign="start center" >                            
+                                    <mat-card 
+                                    fxFlex="100"
+                                    class="mat-elevation-z0"
+                                    (click)="_fileInput.click()"
+                                    *ngIf="this.flowcharts[i].file.length < 2"
+                                    style="margin-bottom: 10px; 
+                                    margin-right: 20px;
+                                    width: 100%;
+                                    background-color: antiquewhite;
+                                    border: 2px solid white; 
+                                    border-radius: 15px;">
+                                    <input
+                                    [disabled]="flowcharts[i].title == null"
+                                    #_fileInput
+                                    type="file"
+                                    (change)="uploadDocument($event, 'flowcharts', i)"
+                                    hidden
+                                    />
+                                        <div fxLayout="column" fxLayoutAlign="start center" >
+                                            <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                                            <span style="margin-top: 24px;">
+                                                <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add New</button>
+                                            </span>
+                                        </div>
+                                    </mat-card>
+                                    <mat-card 
+                                    fxFlex="100"
+                                        *ngFor="let item of flowcharts[i].file"
+                                        class="mat-elevation-z0"
+                                        style="margin-bottom: 10px; 
+                                        width: 100%;
+                                        background-color: antiquewhite;
+                                        border: 2px solid white; 
+                                        border-radius: 15px;"
+                                        >
+                                        <div fxLayout="column" fxLayoutAlign="start center" >
+                                            <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                            <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                                <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                    <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                                </button>
+                                                <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                    <mat-icon style="color: #911F27;">lock</mat-icon>
+                                                </button> -->
+                                                <span>
+                                                    <button mat-icon-button color="primary" 
+                                                    [matMenuTriggerFor]="moreMenu"
+                                                    (click)="$event.stopPropagation();">
+                                                        <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                                    </button>
+                                                    <mat-menu #moreMenu="matMenu">
+                                                        <button mat-menu-item aria-label="copy" (click)="openDocument(item.id)">
+                                                            <mat-icon >visibility</mat-icon>
+                                                            <span>View</span>
+                                                        </button>
+                                                        <br>
+                                                        <button mat-menu-item 
+                                                        (click)="removeFile(item, i , 'flowchart')"
+                                                        aria-label="copy">
+                                                            <mat-icon style="color:red;">remove_circle</mat-icon>
+                                                            <span style="color:red;">Remove</span>
+                                                        </button>
+                                                    </mat-menu>
+                                                </span>
+                                            </div>
+                                            <!-- <mat-icon>visibility_off</mat-icon> -->
+                                            
+                                        </div>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end file -->                
+                    </div>
+                    <div class="container" *ngIf="this.flowcharts.length < 1">
+                        <div style="width: 20%; margin-left: auto; margin-right: auto;display: block; text-align: center;">
+                            <img  src="assets/images/gif/notfound.gif" />
+                            <small>No Data</small>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start start" >
+                        <button mat-flat-button color="primary" (click)="addRowAmandement('flowcharts')"><mat-icon>add_box</mat-icon> Add Row</button>
+                    </div>
+                <!-- end file -->
+                </mat-expansion-panel>
+
+                <!-- FORMULIR -->
+
+                <mat-expansion-panel  [disabled]="this.formData.type_document == null">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="font-weight: bold;">
+                        Form
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- file -->
+                    <div class="container" *ngIf="this.formulirs.length > 0">
+                        <!-- file -->
+                            <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let form of formulirs; let i = index;">
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none" style="margin-right: 20px;">
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                                        <h2 style="font-size:13px; font-weight: bold;">Identity Document</h2>
+                                        <button mat-icon-button color="warn" matTooltip="remove data" (click)="removeOtherDocument(i, 'form')">
+                                            <mat-icon>delete_sweep</mat-icon>
+                                          </button>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Title</mat-label>
+                                            <input style="color: rgb(71, 68, 68);" name="title" [(ngModel)]="formulirs[i].title" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Document Number</mat-label>
+                                            <input style="color: black;" name="document_number" [(ngModel)]="formulirs[i].document_number" matInput>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Issue Number</mat-label>
+                                            <input style="color: black;" name="issue_number" [(ngModel)]="formulirs[i].issue_number" matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Issue</mat-label>
+                                            <input matInput  name="issue_number" [(ngModel)]="formulirs[i].issued_date"  
+                                                [matDatepicker]="issuedate">
+                                            <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                                            <mat-datepicker #issuedate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>                
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Revision Number</mat-label>
+                                            <input style="color: black;" name="revision_number" [(ngModel)]="formulirs[i].revision_number"  matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Revision</mat-label>
+                                            <input matInput name="revision_date" [(ngModel)]="formulirs[i].revision_date"
+                                                [matDatepicker]="revision">
+                                            <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                                            <mat-datepicker #revision></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Total Pages</mat-label>
+                                            <input style="color: black;"name="total_pages" [(ngModel)]="formulirs[i].total_pages" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none">
+                                    <h2 style="font-size:13px; font-weight: bold;">Attachment</h2>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >                            
+                                        <mat-card 
+                                        fxFlex="100"
+                                        class="mat-elevation-z0"
+                                        (click)="_fileInput.click()"
+                                        *ngIf="this.formulirs[i].file.length < 2"
+                                        style="margin-bottom: 10px; 
+                                        margin-right: 20px;
+                                        width: 100%;
+                                        background-color: antiquewhite;
+                                        border: 2px solid white; 
+                                        border-radius: 15px;">
+                                        <input
+                                        [disabled]="formulirs[i].title == null"
+                                        #_fileInput
+                                        type="file"
+                                        (change)="uploadDocument($event, 'formulir', i)"
+                                        hidden
+                                        />
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                                                <span style="margin-top: 24px;">
+                                                    <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add New</button>
+                                                </span>
+                                            </div>
+                                        </mat-card>
+                                        <mat-card 
+                                        fxFlex="100"
+                                            *ngFor="let item of formulirs[i].file"
+                                            class="mat-elevation-z0"
+                                            style="margin-bottom: 10px; 
+                                            width: 100%;
+                                            background-color: antiquewhite;
+                                            border: 2px solid white; 
+                                            border-radius: 15px;"
+                                            >
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                                <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                                    </button>
+                                                    <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #911F27;">lock</mat-icon>
+                                                    </button> -->
+                                                    <span>
+                                                        <button mat-icon-button color="primary" 
+                                                        [matMenuTriggerFor]="moreMenu"
+                                                        (click)="$event.stopPropagation();">
+                                                            <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                                        </button>
+                                                        <mat-menu #moreMenu="matMenu">
+                                                            <button mat-menu-item aria-label="copy" (click)="openDocument(item.id)">
+                                                                <mat-icon >visibility</mat-icon>
+                                                                <span>View</span>
+                                                            </button>
+                                                            <br>
+                                                            <button mat-menu-item 
+                                                            (click)="removeFile(item, i , 'form')"
+                                                            aria-label="copy">
+                                                                <mat-icon style="color:red;">remove_circle</mat-icon>
+                                                                <span style="color:red;">Remove</span>
+                                                            </button>
+                                                        </mat-menu>
+                                                    </span>
+                                                </div>
+                                                <!-- <mat-icon>visibility_off</mat-icon> -->
+                                                
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end file -->                
+                        </div>
+                        <div class="container" *ngIf="this.formulirs.length < 1">
+                            <div style="width: 20%; margin-left: auto; margin-right: auto;display: block; text-align: center;">
+                                <img  src="assets/images/gif/notfound.gif" />
+                                <small>No Data</small>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start" >
+                            <button mat-flat-button color="primary" (click)="addRowAmandement('formulirs')" ><mat-icon>add_box</mat-icon> Add Row</button>
+                        </div>
+                        <!-- file -->
+                           
+                </mat-expansion-panel>
+
+                <!-- AMANDEMENT FORM -->
+
+                <mat-expansion-panel  [disabled]="this.formData.type_document == null">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="font-weight: bold;">
+                        Amandement Form
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- file -->
+                    <div class="container" *ngIf="this.amandement_form.length > 0">
+                        <!-- file -->
+                            <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let form of amandement_form; let i = index;">
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none" style="margin-right: 20px;">
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                                        <h2 style="font-size:13px; font-weight: bold;">Identity Document</h2>
+                                        <button mat-icon-button color="warn" matTooltip="remove data" (click)="removeOtherDocument(i, 'amandement_form')">
+                                            <mat-icon>delete_sweep</mat-icon>
+                                          </button>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Title</mat-label>
+                                            <input style="color: rgb(71, 68, 68);" name="title" [(ngModel)]="amandement_form[i].title" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Document Number</mat-label>
+                                            <input style="color: black;" name="document_number" [(ngModel)]="amandement_form[i].document_number" matInput>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Issue Number</mat-label>
+                                            <input style="color: black;" name="issue_number" [(ngModel)]="amandement_form[i].issue_number" matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Issue</mat-label>
+                                            <input matInput  name="issue_number" [(ngModel)]="amandement_form[i].issued_date"  
+                                                [matDatepicker]="issuedate">
+                                            <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                                            <mat-datepicker #issuedate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>                
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Revision Number</mat-label>
+                                            <input style="color: black;" name="revision_number" [(ngModel)]="amandement_form[i].revision_number"  matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Revision</mat-label>
+                                            <input matInput name="revision_date" [(ngModel)]="amandement_form[i].revision_date"
+                                                [matDatepicker]="revision">
+                                            <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                                            <mat-datepicker #revision></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Total Pages</mat-label>
+                                            <input style="color: black;"name="total_pages" [(ngModel)]="amandement_form[i].total_pages" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none">
+                                    <h2 style="font-size:13px; font-weight: bold;">Attachment</h2>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >                            
+                                        <mat-card 
+                                        fxFlex="100"
+                                        class="mat-elevation-z0"
+                                        (click)="_fileInput.click()"
+                                        *ngIf="this.amandement_form[i].file.length < 2"
+                                        style="margin-bottom: 10px; 
+                                        margin-right: 20px;
+                                        width: 100%;
+                                        background-color: antiquewhite;
+                                        border: 2px solid white; 
+                                        border-radius: 15px;">
+                                        <input
+                                        [disabled]="amandement_form[i].title == null"
+                                        #_fileInput
+                                        type="file"
+                                        (change)="uploadDocument($event, 'amandement_form', i)"
+                                        hidden
+                                        />
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                                                <span style="margin-top: 24px;">
+                                                    <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add New</button>
+                                                </span>
+                                            </div>
+                                        </mat-card>
+                                        <mat-card 
+                                        fxFlex="100"
+                                            *ngFor="let item of amandement_form[i].file"
+                                            class="mat-elevation-z0"
+                                            style="margin-bottom: 10px; 
+                                            width: 100%;
+                                            background-color: antiquewhite;
+                                            border: 2px solid white; 
+                                            border-radius: 15px;"
+                                            >
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                                <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                                    </button>
+                                                    <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #911F27;">lock</mat-icon>
+                                                    </button> -->
+                                                    <span>
+                                                        <button mat-icon-button color="primary" 
+                                                        [matMenuTriggerFor]="moreMenu"
+                                                        (click)="$event.stopPropagation();">
+                                                            <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                                        </button>
+                                                        <mat-menu #moreMenu="matMenu">
+                                                            <button mat-menu-item aria-label="copy" (click)="openDocument(item.id)">
+                                                                <mat-icon >visibility</mat-icon>
+                                                                <span>View</span>
+                                                            </button>
+                                                            <br>
+                                                            <button mat-menu-item
+                                                            (click)="removeFile(item, i , 'amandement_form')"
+                                                            aria-label="copy">
+                                                                <mat-icon style="color:red;">remove_circle</mat-icon>
+                                                                <span style="color:red;">Remove</span>
+                                                            </button>
+                                                        </mat-menu>
+                                                    </span>
+                                                </div>
+                                                <!-- <mat-icon>visibility_off</mat-icon> -->
+                                                
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end file -->                
+                        </div>
+                        <div class="container" *ngIf="this.amandement_form.length < 1">
+                            <div style="width: 20%; margin-left: auto; margin-right: auto;display: block; text-align: center;">
+                                <img  src="assets/images/gif/notfound.gif" />
+                                <small>No Data</small>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start" >
+                            <button mat-flat-button color="primary" (click)="addRowAmandement('amandement_form')" ><mat-icon>add_box</mat-icon> Add Row</button>
+                        </div>
+                        <!-- file -->
+                           
+                </mat-expansion-panel>
+
+                <!-- CHANGE HISTORY  -->
+
+                <mat-expansion-panel  [disabled]="this.formData.type_document == null">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title style="font-weight: bold;">
+                        Change History
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!-- file -->
+                    <div class="container" *ngIf="this.histories.length > 0">
+                        <!-- file -->
+                            <div fxLayout="row" fxLayoutAlign="start start" *ngFor="let history of histories; let i = index;">
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none" style="margin-right: 20px;">
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                                        <h2 style="font-size:13px; font-weight: bold;">Identity Document</h2>
+                                        <button mat-icon-button color="warn" matTooltip="remove data" (click)="removeOtherDocument(i, 'history')">
+                                            <mat-icon>delete_sweep</mat-icon>
+                                          </button>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Title</mat-label>
+                                            <input style="color: rgb(71, 68, 68);" name="title" [(ngModel)]="histories[i].title" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="100">
+                                            <mat-label>Document Number</mat-label>
+                                            <input style="color: black;" name="document_number" [(ngModel)]="histories[i].document_number" matInput>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Issue Number</mat-label>
+                                            <input style="color: black;" name="issue_number" [(ngModel)]="histories[i].issue_number" matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Issue</mat-label>
+                                            <input matInput  name="issue_number" [(ngModel)]="histories[i].issued_date"  
+                                                [matDatepicker]="issuedate">
+                                            <mat-datepicker-toggle matSuffix [for]="issuedate"></mat-datepicker-toggle>
+                                            <mat-datepicker #issuedate></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>                
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Revision Number</mat-label>
+                                            <input style="color: black;" name="revision_number" [(ngModel)]="histories[i].revision_number"  matInput>
+                                        </mat-form-field>
+                    
+                                        <mat-form-field appearance="outline" style="font-size: 11px; margin-left:10px;" fxFlex="50">
+                                            <mat-label>Date of Revision</mat-label>
+                                            <input matInput name="revision_date" [(ngModel)]="histories[i].revision_date"
+                                                [matDatepicker]="revision">
+                                            <mat-datepicker-toggle matSuffix [for]="revision"></mat-datepicker-toggle>
+                                            <mat-datepicker #revision></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                    
+                                    
+                                    <div fxLayout="row" fxLayoutAlign="start center" >
+                                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="50">
+                                            <mat-label>Total Pages</mat-label>
+                                            <input style="color: black;"name="total_pages" [(ngModel)]="histories[i].total_pages" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div class="container" fxLayout="column" fxLayoutAlign="space-between none">
+                                    <h2 style="font-size:13px; font-weight: bold;">Attachment</h2>
+                                    <div fxLayout="row" fxLayoutAlign="start center" >                            
+                                        <mat-card 
+                                        fxFlex="100"
+                                        class="mat-elevation-z0"
+                                        (click)="_fileInput.click()"
+                                        *ngIf="this.histories[i].file.length < 2"
+                                        style="margin-bottom: 10px; 
+                                        margin-right: 20px;
+                                        width: 100%;
+                                        background-color: antiquewhite;
+                                        border: 2px solid white; 
+                                        border-radius: 15px;">
+                                        <input
+                                        [disabled]="histories[i].title == null"
+                                        #_fileInput
+                                        type="file"
+                                        (change)="uploadDocument($event, 'history', i)"
+                                        hidden
+                                        />
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <mat-icon style="color:rgb(102, 63, 12); font-size: 50px;margin-right: 20px;">add_box</mat-icon>
+                                                <span style="margin-top: 24px;">
+                                                    <button mat-button color="primary" style="color:rgb(102, 63, 12); font-weight: bold;">Add New</button>
+                                                </span>
+                                            </div>
+                                        </mat-card>
+                                        <mat-card 
+                                        fxFlex="100"
+                                            *ngFor="let item of histories[i].file"
+                                            class="mat-elevation-z0"
+                                            style="margin-bottom: 10px; 
+                                            width: 100%;
+                                            background-color: antiquewhite;
+                                            border: 2px solid white; 
+                                            border-radius: 15px;"
+                                            >
+                                            <div fxLayout="column" fxLayoutAlign="start center" >
+                                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                                <div fxLayout="row" fxLayoutAlign="space-between start" >
+                                                    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #3DB2FF;">lock_open</mat-icon>
+                                                    </button>
+                                                    <!-- <button mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+                                                        <mat-icon style="color: #911F27;">lock</mat-icon>
+                                                    </button> -->
+                                                    <span>
+                                                        <button mat-icon-button color="primary" 
+                                                        [matMenuTriggerFor]="moreMenu"
+                                                        (click)="$event.stopPropagation();">
+                                                            <mat-icon style="color:rgb(102, 63, 12)">arrow_drop_down_circle</mat-icon>
+                                                        </button>
+                                                        <mat-menu #moreMenu="matMenu">
+                                                            <button mat-menu-item aria-label="copy" (click)="openDocument(item)">
+                                                                <mat-icon >visibility</mat-icon>
+                                                                <span>View</span>
+                                                            </button>
+                                                            <br>
+                                                            <button mat-menu-item 
+                                                            (click)="removeFile(item, i , 'history')"
+                                                            aria-label="copy">
+                                                                <mat-icon style="color:red;">remove_circle</mat-icon>
+                                                                <span style="color:red;">Remove</span>
+                                                            </button>
+                                                        </mat-menu>
+                                                    </span>
+                                                </div>
+                                                <!-- <mat-icon>visibility_off</mat-icon> -->
+                                                
+                                            </div>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end file -->                
+                        </div>
+                        <div class="container" *ngIf="this.histories.length < 1">
+                            <div style="width: 20%; margin-left: auto; margin-right: auto;display: block; text-align: center;">
+                                <img  src="assets/images/gif/notfound.gif" />
+                                <small>No Data</small>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start" >
+                            <button mat-flat-button color="primary" (click)="addRowAmandement('histories')" ><mat-icon>add_box</mat-icon> Add Row</button>
+                        </div>
+                        <!-- file -->
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="end end" style="margin-bottom:15px;" >
+                <button mat-stroked-button color="primary" 
+                style="margin-right: 10px;"
+                matTooltip="upload">
+                   <mat-icon>dashboard</mat-icon> Back to Dashboard
+               </button>
+                <button mat-flat-button color="primary" 
+                (click)="saveForm()"
+                 matTooltip="upload">
+                    <mat-icon>add_box</mat-icon> Upload
+                </button>
+            </div>
+        </mat-card>
+    </div>
+</div>

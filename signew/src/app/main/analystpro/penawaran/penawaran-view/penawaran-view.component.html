@@ -1,0 +1,341 @@
+<div
+    *ngIf="this.dataview"
+    id="lab-pengujian"
+    class="page-layout carded fullwidth inner-scroll"
+    style="overflow: auto; height: 90vh"
+>
+    <!-- CONTENT -->
+
+    <!-- INVOICE -->
+    <div *ngIf="this.dataview.length > 0">
+        <div
+            class="content"
+            *ngFor="let dataview of this.dataview"
+            style="padding: 50px"
+        >
+            <div
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
+                <h2 style="font-weight: bold">{{ dataview.no_penawaran }}</h2>
+
+                <span style="font-size: 12px; font-weight: bold"
+                    >{{ dataview.customers_handle.customers.customer_name }} -
+                    {{ dataview.customers_handle.contact_person.name }}</span
+                >
+                <span style="font-size: 12px; font-weight: bold"
+                    >{{ dataview.customers_handle.email }} /
+                    {{
+                        dataview.customers_handle.phone
+                            ? "+62 " + dataview.customers_handle.phone
+                            : "-"
+                    }}
+                    /
+                    {{
+                        dataview.customers_handle.telp
+                            ? "+62 " + dataview.customers_handle.telp
+                            : "-"
+                    }}</span
+                >
+                <div class="created-sales">
+                    <span style="font-style: italic">PIC Sales     : {{dataview.sales_name.employee_name}}</span>
+                    <span style="font-style: italic">Created By   : {{dataview.user_created.employee_name}}</span>
+                </div>
+                <div
+                    fxLayout="row"
+                    fxLayoutAlign="center center"
+                    fxFlex
+                    style="padding-top: 10px"
+                >
+                    <div class="border-search">
+                        <input
+                            type="text"
+                            placeholder="Search Sample"
+                            (keyup.enter)="searchsample()"
+                            [(ngModel)]="samplename"
+                            style="width: 100%; text-align: center"
+                        />
+                    </div>
+                    <div style="width: 20px"></div>
+                    <button
+                        mat-mini-fab
+                        color="primary"
+                        (click)="searchsample()"
+                        style="align-self: center"
+                    >
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="mat-elevation-z8" style="margin: 30px 0px">
+                <mat-table
+                    class="lab-table"
+                    #table
+                    [dataSource]="dataview.transaction_penawaran_sample"
+                    [@animateStagger]="{ value: '50' }"
+                    fusePerfectScrollbar
+                >
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="no">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul">No</span></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource; let l = index">
+                            <p class="text-truncate isi">
+                                {{ l + 1 }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="samplename">
+                        <mat-header-cell
+                            [hidden]="hidingprice"
+                            *matHeaderCellDef
+                            ><span class="judul"
+                                >Sample Name</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell
+                            [hidden]="hidingprice"
+                            *matCellDef="let dataSource"
+                        >
+                            <div
+                                class="text-truncate isi"
+                                title="{{ dataSource.sample_name }}"
+                            >
+                                {{ dataSource.sample_name }}
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef
+                            ><span class="judul"
+                                >Status Pengujian</span
+                            ></mat-header-cell
+                        >
+                        <mat-cell *matCellDef="let dataSource">
+                            <div
+                                class="box-0"
+                                *ngIf="dataSource.id_statuspengujian == 1"
+                            >
+                                <p class="text-truncate isi">Normal</p>
+                            </div>
+                            <div
+                                class="box-1"
+                                *ngIf="dataSource.id_statuspengujian == 2"
+                            >
+                                <p class="text-truncate isi">Urgent</p>
+                            </div>
+                            <div
+                                class="box-2"
+                                *ngIf="dataSource.id_statuspengujian == 3"
+                            >
+                                <p class="text-truncate isi">Very Urgent</p>
+                            </div>
+                            <div
+                                class="box-3"
+                                *ngIf="dataSource.id_statuspengujian == 4"
+                            >
+                                <p class="text-truncate isi">Costum 2 Hari</p>
+                            </div>
+                            <div
+                                class="box-4"
+                                *ngIf="dataSource.id_statuspengujian == 5"
+                            >
+                                <p class="text-truncate isi">Costum 1 Hari</p>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="biaya">
+                        <mat-header-cell
+                            [hidden]="hidingprice"
+                            *matHeaderCellDef
+                            ><span class="judul">Harga</span></mat-header-cell
+                        >
+                        <mat-cell
+                            [hidden]="hidingprice"
+                            *matCellDef="let dataSource"
+                        >
+                            <p class="text-truncate isi">
+                                Rp.{{
+                                    dataSource.price > 0
+                                        ? dataSource.price.toLocaleString()
+                                        : 0
+                                }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef>
+                            <span class="judul">Action</span>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let dataSource">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="gotoModalViewDetail(dataSource)"
+                                >
+                                    <span>Lihat</span>
+                                </button>
+                            </mat-menu>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row
+                        *matHeaderRowDef="displayedColumns; sticky: true"
+                    ></mat-header-row>
+                    <mat-row
+                        *matRowDef="let dataSource; columns: displayedColumns"
+                        class="lod"
+                    >
+                    </mat-row>
+                </mat-table>
+
+            </div>
+
+            <div
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                "
+            >
+                <span class="size-16-bold">Notes</span>
+                <span class="size-16-bold custom-span">{{
+                    dataview.internal_notes ? dataview.internal_notes : "-"
+                }}</span>
+            </div>
+            <div *ngIf="!hidingprice">
+                <span class="size-16-bold">Pricing</span>
+                <mat-card-content
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                    "
+                >
+                    <table class="pricing-table">
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Total Biaya Pengujian
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    dataview.payment
+                                        ? dataview.payment.totalpembayaran.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="3"
+                                style="text-align: left; font-weight: bold"
+                            ></td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Discount &nbsp;{{dataview.payment.discountconv}}%
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    dataview.payment
+                                        ? dataview.payment.hargadiscount.toLocaleString()
+                                        : 0
+                                }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Sub Total
+                            </td>
+                            <td style="text-align: right">
+                                Rp. {{ this.getSubTotal().toLocaleString() }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                PPN
+                                {{
+                                    (
+                                        (this.getppn(dataview) /
+                                            this.getSubTotal()) *
+                                        100
+                                    ).toFixed()
+                                }}
+                                %
+                            </td>
+                            <td style="text-align: right">
+                                Rp. {{ this.getppn(dataview).toLocaleString() }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
+                                colspan="2"
+                                style="text-align: left; font-weight: bold"
+                            >
+                                Total Cost.
+                            </td>
+                            <td style="text-align: right">
+                                Rp.
+                                {{
+                                    (
+                                        this.getSubTotal() +
+                                        this.getppn(dataview)
+                                    ).toLocaleString()
+                                }}
+                            </td>
+                        </tr>
+                    </table>
+                </mat-card-content>
+            </div>
+            <div
+                style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    margin-top: 40px;
+                    gap: 20px;
+                "
+            >
+                <button mat-raised-button color="primary" (click)="pdfPenawaran('id', 'download')">Download</button>
+                <button mat-raised-button color="primary" (click)="pdfPenawaran('id', 'view')">Preview</button>
+                <button mat-raised-button color="primary" (click)="approve()">Approve</button>
+            </div>
+        </div>
+    </div>
+</div>

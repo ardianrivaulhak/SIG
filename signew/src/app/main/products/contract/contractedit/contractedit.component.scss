@@ -1,0 +1,79 @@
+@import "src/@fuse/scss/fuse";
+
+app-contractedit{
+
+      
+    height: 100% !important;
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    
+    }
+
+    #contract-add { 
+        overflow: auto;
+        height: 100%;
+
+        .card-action {
+            width: 90%;
+            margin: 20px auto;
+
+            .myFilter .mat-select-trigger {
+                max-height: 80vh;
+              }
+        
+            .ng-select .ng-select-container {
+                min-height: 48px;
+                font-size: 11px !important;
+                margin-bottom: 2px;
+              }
+            
+              .ng-dropdown-panel {
+                min-width: 100%;
+                min-height: 100%;
+            }
+
+            mat-card-title {
+                font-size: 21px;
+                font-weight: 800;
+            }
+
+            .text-title {
+                font-size: 14px;
+                font-weight: 800;
+            }
+
+            .info-payment {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 11px;
+
+                td, th {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                  }
+                  
+                  tr:nth-child(even) {
+                    background-color: #dddddd;
+                  }
+            }
+           
+        }
+        
+    }
+
+    
+
+}
+

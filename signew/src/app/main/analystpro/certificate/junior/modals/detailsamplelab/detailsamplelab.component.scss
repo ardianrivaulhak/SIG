@@ -1,0 +1,245 @@
+@import "src/@fuse/scss/fuse";
+
+.result-datalab-dialog{
+
+    
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 720px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-tab-group,
+    .mat-tab-body-wrapper,
+    .tab-content {
+        flex: 1 1 auto;
+        max-width: 100%;
+    }
+
+    .sample-cert-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+
+        .mat-header-row {
+            min-height: 64px;
+        }
+
+        .standart {
+            position: relative;
+            cursor: pointer;
+            height: 15px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            
+        }
+
+        .mat-column-id {
+            flex: 0 1 84px;
+        }
+
+        .mat-column-image {
+            flex: 0 1 84px;
+
+            .customers-image {
+                width: 52px;
+                height: 52px;
+                border: 1px solid rgba(0, 0, 0, .12);
+            }
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 80px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+
+        .filters {
+            width: 100%;
+            max-width: 1040px;
+            margin: 24px auto;
+            padding: 0 20px;
+            background-color: #fff;
+
+            @include media-breakpoint('xs') {
+                margin: 0 auto;
+            }
+
+            .course-search {
+                width: 320px;
+
+                @include media-breakpoint('gt-xs') {
+                    margin-right: 16px;
+                }
+            }
+        }
+
+        .mat-column-parameter_id{
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-parameter_en{
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+
+        .mat-column-hasiluji {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-simplo {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-duplo {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-triplo {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-standart {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-lod {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-unit {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        .mat-column-metode {
+
+            .text-truncate {
+                font-size: 11px;
+            }
+        }
+
+        
+        .box-normal {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color: #2ecc71 ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+             .text-truncate{
+                 color: #eafaf1 ;
+                 font-size: 10px;
+             }
+        }
+
+        .box-urgent {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  #f7dc6f; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color: #7d6608 ;
+                font-size: 10px;
+            }
+        }
+
+        .box-very-urgent {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  #e74c3c ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color:  #f2d7d5 ;
+                font-size: 10px;
+            }
+        }
+
+        .box-custom {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color: #5dade2 ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color:  #eaf2f8;
+                font-size: 10px;
+            }
+        }
+
+        
+
+        
+    }
+}

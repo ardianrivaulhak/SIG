@@ -1,0 +1,56 @@
+<div
+    style="
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    "
+>
+    <div
+        style="
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        "
+    >
+        <ng-select
+            appendTo="body"
+            [items]="dataFormatHasil"
+            bindLabel="hasil"
+            appearance="outline"
+            bindValue="id"
+            placeholder="Format"
+            dropdownPosition="bottom"
+            [(ngModel)]="formathasil"
+            (change)="getValformatHasil($event)"
+            style="flex: 1; align-self: center"
+        >
+        </ng-select>
+        <ng-select
+            appendTo="body"
+            [items]="dataParameterPrice"
+            bindLabel="id"
+            appearance="outline"
+            bindValue="price"
+            placeholder="Select Price"
+            dropdownPosition="bottom"
+            (change)="getValPrice($event)"
+            [(ngModel)]="price"
+            style="flex: 1; align-self: center"
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                {{ item.price.toLocaleString() }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                {{ item.price.toLocaleString() }}
+            </ng-template>
+        </ng-select>
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 5px;">
+        <button mat-stroked-button (click)="saving()">Save</button>
+        <button mat-stroked-button (click)="close()">Cancel</button>
+    </div>
+</div>

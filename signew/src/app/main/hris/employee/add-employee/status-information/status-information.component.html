@@ -1,0 +1,154 @@
+<p style="font-weight: bolder; font-size: 18px">Status Information</p>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="33"
+    >
+        <mat-label style="color: black">Select Department</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.dept"
+            placeholder="Select Department"
+        >
+            <mat-option *ngFor="let o of departement" [value]="o.id">{{
+                o.dept_name
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="33"
+    >
+        <mat-label style="color: black">Select Division</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.division"
+            placeholder="Select Division"
+        >
+            <mat-option *ngFor="let o of division" [value]="o.id_div">{{
+                o.division_name
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="33">
+        <mat-label style="color: black">Select Sub Division</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.subdiv"
+            placeholder="Select Sub Division"
+        >
+            <mat-option *ngFor="let o of subdiv" [value]="o.id_subagian">{{
+                o.name
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="33"
+    >
+        <mat-label style="color: black">Select Position</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.position"
+            placeholder="Select Position"
+        >
+            <mat-option
+                *ngFor="let o of position"
+                [value]="o.id_position"
+                >{{ o.position_name }}</mat-option
+            >
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="33"
+    >
+        <mat-label style="color: black">Select Level</mat-label>
+        <mat-select [(ngModel)]="sendingDet.level" placeholder="Select Level">
+            <mat-option *ngFor="let o of level" [value]="o.id_level">{{
+                o.level_name
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="33">
+        <mat-label style="color: black">Employee Status</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.statusp"
+            placeholder="Select Status"
+        >
+            <mat-option value="0">Honorer</mat-option>
+            <mat-option value="1">Kontrak</mat-option>
+            <mat-option value="2">Tetap</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <!-- <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="33"
+    >
+        <mat-label style="color: black">Status Periode </mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.statusp"
+            placeholder="Select Periode"
+        >
+            <mat-option value="0">1</mat-option>
+            <mat-option value="1">2</mat-option>
+            <mat-option value="2">3</mat-option>
+            <mat-option value="3">4</mat-option>
+            <mat-option value="4">5</mat-option>
+        </mat-select>
+    </mat-form-field> -->
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="50"
+    >
+        <mat-label style="color: black">From</mat-label>
+        <input
+            matInput
+            [(ngModel)]="sendingDet.from"
+            [matDatepicker]="picker"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label style="color: black">To</mat-label>
+        <input matInput [(ngModel)]="sendingDet.to" [matDatepicker]="picker2" />
+        <mat-datepicker-toggle
+            matSuffix
+            [for]="picker2"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100">
+        <mat-label style="color: black">Description </mat-label>
+        <input
+            matInput
+            placeholder="Put an Description"
+            [(ngModel)]="sendingDet.desc"
+        />
+    </mat-form-field>
+</div>
+<div
+    fxLayout="row"
+    fxLayoutAlign="start end"
+    style="width: 100%; margin-top: 10px"
+>
+    <button
+        mat-flat-button
+        color="primary"
+        (click)="savingdata()"
+        fxFlex="15"
+        fxFlex.xs="15"
+        style="height: 40px; width: 250px; margin-right: 15px"
+    >
+        Save
+    </button>
+</div>

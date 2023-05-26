@@ -1,0 +1,27 @@
+@import "src/@fuse/scss/fuse";
+
+.backtrack-control-dialog{
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 720px;
+    }
+
+    .dialog-title {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}

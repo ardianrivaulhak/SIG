@@ -1,0 +1,179 @@
+<div id="csocomplain"  class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content">  
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;">
+            <form name="resultForm" [formGroup]="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="40">
+                            <mat-label>Marketing</mat-label>
+                            <input matInput 
+                            #filter 
+                            formControlName="marketing" 
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+        
+                        <ng-select appendT o="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        class="auto-grow"
+                        bindValue="id_customer" 
+                        fxFlex="59" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Customer"
+                        name="id_customer" 
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        [(ngModel)]="dataFilter.customer_name" 
+                        dropdownPosition="bottom"  
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select>             
+                                  
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end end" >
+                        <button mat-raised-button color="primary"  fxFlex="17"  fxFlex.xs="23" style="height: 42px; width:250px; margin-right: 10px;">
+                            Search
+                        </button>
+                        <button mat-stroked-button color="primary" fxFlex="17"  fxFlex.xs="23" style="height: 42px; width: 100%;">
+                            Reset
+                        </button> 
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 98%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Complain Non Technical</span>
+                </div>
+               <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                <!-- <button mat-icon-button fxHide fxShow.gt-md  matTooltip="Add New">
+                    <mat-icon style="color: #696969;">library_add</mat-icon>
+                </button> -->
+               </div>
+            </div>
+
+            <mat-table class="cert-table" #table [dataSource]="nonteknisData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.nonteknisData.length > 0" style="height:600px; overflow: auto;"> 
+
+                <!-- Column -->
+                <ng-container matColumnDef="date_complain">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="date_complain">Date of complaint</mat-header-cell>
+                    <mat-cell *matCellDef="let nonteknisData">
+                        <div fxLayout="column">
+                            <span class="text-truncate" style="white-space: normal;" matTooltip="{{ nonteknisData.date_complain | date }} - {{ nonteknisData.finish_date | date }}"> {{ nonteknisData.date_complain | date }} - {{ nonteknisData.finish_date | date }}</span>
+                            <span class="text-truncate" matTooltip="{{ nonteknisData.penerima_complain.employee_name }}"
+                                style="color: f5f5f5; font-size: 10px;white-space: normal; ">{{ nonteknisData.penerima_complain.employee_name }}
+                            </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="marketing">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="marketing">Marketing</mat-header-cell>
+                        <mat-cell *matCellDef="let nonteknisData">
+                            <p class="text-truncate"  matTooltip="{{ nonteknisData.complain_data.transaction_sample.kontrakuji.contract_no }}">{{ nonteknisData.complain_data.transaction_sample.kontrakuji.contract_no }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="complain">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="complain">Complaint</mat-header-cell>
+                        <mat-cell *matCellDef="let nonteknisData">
+                            <p class="text-truncate"  matTooltip="{{ nonteknisData.complain }}">{{ nonteknisData.complain }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="message">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="message">Message</mat-header-cell>
+                        <mat-cell *matCellDef="let nonteknisData">
+                            <p class="text-truncate"  matTooltip="{{ nonteknisData.message }}">{{ nonteknisData.message }}</p>
+                        </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="repair">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="repair">Repair</mat-header-cell>
+                    <mat-cell *matCellDef="let nonteknisData">
+                        <p class="text-truncate"  matTooltip="{{ nonteknisData.perbaikan == null ?  '-' : nonteknisData.perbaikan }}">{{ nonteknisData.perbaikan == null ? '-' : nonteknisData.perbaikan }}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                    <mat-cell *matCellDef="let nonteknisData">
+                        <div class="box-category"  matTooltip="sigconnect" *ngIf="nonteknisData.status == 0">
+                            <p class="text-truncate">undone</p>
+                        </div>
+                        <div class="box-normal"  matTooltip="email" *ngIf="nonteknisData.status == 1">
+                            <p class="text-truncate">done</p>
+                        </div>
+                        <div class="box-very-urgent"  matTooltip="add" *ngIf="nonteknisData.status == 2">
+                            <p class="text-truncate">pending</p>
+                        </div>
+                        <div class="box-urgent"  matTooltip="add" *ngIf="nonteknisData.status == 3">
+                            <p class="text-truncate">cancel</p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- Column -->
+                <ng-container matColumnDef="action" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="icon" fxHide fxShow.gt-md>Action</mat-header-cell>
+                    <mat-cell *matCellDef="let nonteknisData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                        <div fxFlex="row" fxLayoutAlign="start center">
+                            <button mat-icon-button color="primary"  class="btn-icon-control" matTooltip="Add" aria-label="Add" (click)="selectData(nonteknisData)">
+                                <mat-icon>arrow_drop_down_circle</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let nonteknisData; columns: displayedColumns;" 
+                class="standart"
+                matRipple>
+
+                </mat-row>
+            </mat-table>
+            <div>
+                <mat-paginator #paginator
+                [length]="total"
+                [pageIndex]="from"
+                [pageSize]="to"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page) = "paginated($event)"
+                style="font-size: 10px;"
+                *ngIf="this.total > 0">
+    
+                </mat-paginator>
+            </div>
+
+            <div *ngIf="loadingfirst && this.nonteknisData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/loading.gif" />
+                <small>Please Wait ...</small>
+            </div>
+    
+            <div *ngIf="!loadingfirst && this.nonteknisData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/selectfile.gif" />
+                <small>No Data</small>
+            </div>
+        </mat-card>
+
+    </div>
+</div>

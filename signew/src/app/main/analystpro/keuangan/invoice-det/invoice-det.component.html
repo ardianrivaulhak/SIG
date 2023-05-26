@@ -1,0 +1,453 @@
+<div id="invoice-finance" class="page-layout simple" fxLayout="column" fxLayoutAlign="space-between none" style="overflow: auto; height: 100%; background-color: #f7f7f7;"  *ngIf="this.invoicedata">   
+    <div class="content"  >
+        <div *ngIf="this.invoiceForm">
+        <form name="invoiceForm" [formGroup]="invoiceForm" >
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <mat-card-title> {{ this.invoicedata.no_invoice }}   </mat-card-title>
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                <h2 class="text-title" style="margin-top:20px;">Contract</h2>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <ng-select 
+                        appendTo="body" 
+                        [items]="datacontract" 
+                        bindLabel="contract_no" 
+                        bindValue="id_kontrakuji" 
+                        appearance="outline" 
+                        placeholder="Select Contract"
+                        (scrollToEnd)="onScrollToEnd('contract')" 
+                        (search)="onsearchselect($event,'kontrak')"
+                        (clear)="reset('kontrak')"
+                        [clearable]="false"
+                        [multiple]="true"
+                        [ngModelOptions]="{standalone: true}"
+                        [(ngModel)]="contractSelect" 
+                        (change)="getValKontrak($event)" 
+                        dropdownPosition="bottom" 
+                        fxFlex="41" 
+                        [disabled]="this.checked || this.splitInvoice == true"
+                        >
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.contract_no}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.contract_no}}
+                            </ng-template>
+                    </ng-select>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <ng-select appendTo="body" 
+                        [items]="customersData"
+                        bindLabel="customer_name" 
+                        bindValue="id_customer"
+                        appearance="outline"  
+                        (scrollToEnd)="onScrollToEnd('customer')" 
+                        (change)="getValCustomer($event)"
+                        formControlName="id_cust" 
+                        (search)="onsearchselect($event,'customer')"
+                        (clear)="reset('customer')"
+                        [clearable]="false"
+                        fxFlex="41"
+                        style="margin-right:10px;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select>
+
+                        <ng-select 
+                        appendTo="body" 
+                        [items]="cpData" 
+                        bindLabel="name" 
+                        bindValue="id_cp" 
+                        formControlName="cust_penghubung"
+                        appearance="outline"
+                        (scrollToEnd)="onScrollToEnd('CP')" 
+                        placeholder="Select Contact Person" 
+                        (change)="getValCP($event)" 
+                        (search)="onsearchselect($event,'cp')"
+                        (clear)="reset('cp')"
+                        [clearable]="false"
+                        dropdownPosition="bottom" 
+                        fxFlex="41">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.name}}
+                            </ng-template>
+                        </ng-select>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" >
+                    <ng-select appearance="outline" 
+                    class="wrap" 
+                    appendTo="body" 
+                    [items]="alamatcustomer"
+                    bindLabel="address" 
+                    bindValue="id_address" 
+                    placeholder="Select Address"
+                    formControlName="cust_addres" 
+                    [(ngModel)]="alamatSelect" 
+                    [ngModelOptions]="{standalone: true}"
+                    (search)="onsearchselect($event,'address')" (clear)="reset('address')"
+                    (change)="getValAddress($event)" 
+                    fxFlex="83"
+                    dropdownPosition="bottom">
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        {{item.address}}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.address}}
+                    </ng-template>
+                </ng-select>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="true">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      All Memo
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <div fxLayout="row" fxLayoutAlign="space-between center" >
+                    <mat-card style="background-color: #FFD93D;"  fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A;">Info Finance</h5>
+                        <mat-list role="list">
+                            <mat-list-item style="font-size:11px ;color:#CF0A0A;" role="listitem" *ngFor="let item of this.invoicedata.invoice_detail[0].kontrakuji.description_invoice">
+                                {{ item.desc }}
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card>
+                    <mat-card style="background-color: #FFD93D;"  fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A;">Memo Internal</h5>
+                        <mat-list role="list">
+                            <mat-list-item style="font-size:11px ;color:#CF0A0A;" role="listitem" *ngFor="let item of this.invoicedata.invoice_detail[0].kontrakuji.description_cs">
+                                {{ item.desc }}
+                            </mat-list-item>
+                        </mat-list>
+                    </mat-card>
+                  </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card>
+      
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <h2 class="text-title" style="margin-top:20px;">Invoice</h2>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <mat-form-field appearance="outline" fxFlex="49"  style="font-size: 11px;">
+                    <mat-label>Format</mat-label>
+                    <mat-select [(ngModel)]="selectFormat" [ngModelOptions]="{standalone: true}">
+                        <mat-option *ngFor="let d of dataStatus" [value]="d.id">
+                            {{d.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="splitInvoice" [ngModelOptions]="{standalone: true}" (change)="changeRadio($event)">                        
+                    <mat-radio-button  [disabled]="this.contractSelect.length > 1 || this.checked" style="margin-right: 50px;" [value]="0">No Split</mat-radio-button>
+                    <mat-radio-button  [disabled]="this.contractSelect.length > 1 || this.checked" [value]="1">Split</mat-radio-button>
+                </mat-radio-group>
+
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <mat-form-field appearance="outline" fxFlex="33"  style="font-size: 11px;">
+                    <mat-label>Invoice Number</mat-label>
+                    <input style="color: black;" formControlName="no_invoice" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="33"  style="font-size: 11px;">
+                    <mat-label>Purchase Number</mat-label>
+                    <input style="color: black;" formControlName="no_po" matInput>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="33"  style="font-size: 11px;">
+                    <mat-label>Termin</mat-label>
+                    <input style="color: black;" formControlName="termin" matInput>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field appearance="outline" fxFlex="33" style="margin-right: 10px; font-size: 11px;">
+                    <mat-label>Invoice Date</mat-label>
+                    <input matInput formControlName="tgl_faktur" [matDatepicker]="dp1" [(ngModel)]="selectDate"
+                        (dateChange)="getDateInvoice($event)">
+                    <mat-datepicker-toggle matSuffix [for]="dp1"></mat-datepicker-toggle>
+                    <mat-datepicker #dp1></mat-datepicker>
+                </mat-form-field>                    
+
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [(ngModel)]="tgl_jatuh_tempo" formControlName="tgl_jatuh_tempo"
+                        [matDatepicker]="dp2">
+                    <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+                    <mat-datepicker #dp2></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex="33">
+                    <mat-label>Tax Invoice Code and Serial Number</mat-label>
+                    <input style="color: black;" formControlName="no_faktur" matInput>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field appearance="outline" style="font-size: 11px;" floatLabel="always"  fxFlex="100">
+                    <mat-label>Other Ref</mat-label>
+                    <textarea matInput formControlName="other_ref" placeholder="Description" name="desc" rows="5">
+                </textarea>
+                </mat-form-field>
+            </div>
+        </mat-card>
+        
+        </form>
+        </div>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >  
+                <h2 class="text-title" style="margin-top:20px;">Samples</h2>
+                <button mat-flat-button  (click)="downloadExcel()" color="primary">Download</button>
+            </div>
+            <table style="width: 100%; font-size: 9px;" #table class="invoice-table" mat-table
+                class="mat-elevation-z8" [dataSource]="dataSample" >
+                <ng-container matColumnDef="no">
+                    <th mat-header-cell *matHeaderCellDef> No </th>
+                    <td mat-cell *matCellDef="let e; let i=index;"> 
+                        <p style="font-size: 11px;">{{i + 1}}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+                <ng-container matColumnDef="nosample">
+                    <th mat-header-cell *matHeaderCellDef> No Sample </th>
+                    <td mat-cell *matCellDef="let e;let z=index;">
+                        <p style="font-size: 11px;">{{e.no_sample}}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+                <ng-container matColumnDef="samplename">
+                    <th mat-header-cell *matHeaderCellDef> Sample Name </th>
+                    <td mat-cell *matCellDef="let e; let g=index;">
+                        <p style="font-size: 11px;">{{e.sample_name}}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+                <ng-container matColumnDef="statuspengujian">
+                    <th mat-header-cell *matHeaderCellDef> Status Pengujian </th>
+                    <td mat-cell *matCellDef="let e;let z=index;">
+                        <p style="font-size: 11px;">{{e.statuspengujian.name}}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+                <ng-container matColumnDef="price">
+                    <th mat-header-cell *matHeaderCellDef> Price</th>
+                    <td mat-cell *matCellDef="let e; let g=index;">
+                        <p style="font-size: 11px;">Rp. {{e.price.toLocaleString()}}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container> 
+                <ng-container matColumnDef="discount">
+                    <th mat-header-cell *matHeaderCellDef> Discount</th>
+                    <td mat-cell *matCellDef="let e; let g=index;">
+                        <!-- <input style="font-size: 11px;" matInput type="number" name="discount" (keyup)="discount(this.dataSample[g].discount)" [(ngModel)]="this.dataSample[g].discount"> -->
+                        <div fxLayout="row"  fxLayoutAlign="none center" >
+                            <p style="font-size: 11px;">Rp.</p>
+                            <form>                           
+                            <input style="font-size: 11px;"
+                             matInput 
+                             currencyMask 
+                             type="text" 
+                             size="9"
+                             name="discount"
+                              (keyup)="discount(this.dataSample[g].discount)" 
+                              [(ngModel)]="this.dataSample[g].discount"
+                              [options]="{
+                                  prefix: '',
+                                  thousands: '.',
+                                  precision: 0
+                              }">
+                            </form>
+                        </div>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef   style="font-size: 11px; font-weight: bold;">
+                        <span *ngIf="this.totDiscount > 0">{{ totDiscount | currency:"Rp " }} / {{ sisa | currency:"Rp " }}</span>
+                        <span *ngIf="notif_dic == true" style="background-color: red; color: white;">exceeds the limit</span>
+                    </td>
+                </ng-container> 
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Total</th>
+                    <td mat-cell *matCellDef="let e; let g=index;">
+                        <p style="font-size: 11px;">Rp. {{ e.total.toLocaleString() }}</p>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef></td>
+                </ng-container> 
+
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                    <td mat-cell *matCellDef="let e; let i = index">
+                        <button mat-icon-button color="warn" [disabled]="this.disableBUtton" (click)="deleteRow(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns" class="example-first-footer-row"></tr>
+            </table>
+            <div *ngIf="this.noKontrak.length === 0"
+            style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img src="assets/images/gif/selectfile.gif" />
+            <small>Sample Not Found</small>
+        </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <h2 class="text-title" style="margin-top:20px;">Price Infomation</h2>
+            <table id="wow" style="font-size: 11px; margin-bottom: 150px;" >
+                <tr>
+                    <td style="width: 25%;">Total Cost of Testing</td>
+                    <td style="width: 5%;">:</td>
+                    <td style="width: 5%;">Rp. </td>
+                    <td style="width: 65%;"><span style="float: right;">{{ this.priceTotalSample | currency:'':'' }}</span></td>
+                </tr>            
+                <tr>
+                    <td>Discount</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span  *ngIf="this.splitInvoice == false" style="float: right;">{{ this.discountTotal | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        (keyup)="inputDiscount(this.discountTotal, 'disc')"
+                         [(ngModel)]="this.discountTotal" 
+                         matInput
+                         currencyMask  
+                         [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                         style="text-align: right; background-color: #dddddd;" 
+                         type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sampling Fee</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span *ngIf="this.splitInvoice == false" style="float: right;">{{ this.priceSampling | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        matInput
+                        currencyMask  
+                        (keyup)="inputDiscount(this.priceSampling, 'sampling')"  
+                        [(ngModel)]="this.priceSampling" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #fff;" 
+                        type="text">
+                    </td>
+                </tr> 
+                <tr>
+                    <td>ING fees</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span *ngIf="this.splitInvoice == false" style="float: right;">{{  this.priceAkg | currency:'':'' }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        matInput
+                        currencyMask 
+                        (keyup)="inputDiscount(this.priceAkg, 'akg')" 
+                        [(ngModel)]="this.priceAkg" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #dddddd;" 
+                        type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sub Total</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td><span style="float: right;">{{ this.priceSubTotal | currency:'':''  }}</span></td>
+                </tr>
+                <tr>
+                     <td>PPN</td>
+                     <td>:</td>
+                     <td>Rp. </td>
+                     <td><span style="float: right;">{{ this.pricePPN | currency:'':'' }}</span></td>
+                 </tr>
+                <tr>
+                    <td>Down Payment</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span *ngIf="this.splitInvoice == false" style="float: right;">{{ this.priceDP | currency:'':''  }}</span>
+                        <input *ngIf="this.splitInvoice == true" 
+                        (keyup)="inputDiscount(this.priceDP, 'dp')" 
+                        matInput
+                        currencyMask 
+                        [(ngModel)]="this.priceDP" 
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        style="text-align: right; background-color: #fff;" 
+                        type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Remaining Payment</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span style="float: right;">{{ this.remainingpayment | currency:'':'' }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Say</td>
+                    <td>:</td>
+                    <td>Rp. </td>
+                    <td>
+                        <span style="float: left;"><b>{{ this.terbilangan == null ? '-' : this.terbilangan + ' rupiah ' }}</b></span>
+                    </td>
+                </tr>
+              </table>
+        </mat-card>
+              
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto; background-color: #2d323e!important" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <button mat-flat-button 
+                    color="accent"  
+                    [disabled]="this.checked || this.splitInvoice == true"
+                    (click)="calcAgain()" 
+                    style="margin-right: 10px;"
+                    matTooltip="syncronize">
+                        <mat-icon>loupe</mat-icon> Sync 
+                    </button>
+
+                    <button mat-flat-button color="accent" 
+                    (click)="openInvoice()" 
+                    matTooltip="preview" 
+                    style="margin-right: 20px;">
+                        <mat-icon> insert_drive_file</mat-icon> Priview 
+                    </button>
+        
+                </div>
+                <div>
+                    <button mat-flat-button color="accent" 
+                    (click)="editForm()"
+                     matTooltip="upload">
+                        <mat-icon>add_box</mat-icon> Update
+                    </button>
+                </div>
+            </div>
+        </mat-card>  
+    </div>
+</div>

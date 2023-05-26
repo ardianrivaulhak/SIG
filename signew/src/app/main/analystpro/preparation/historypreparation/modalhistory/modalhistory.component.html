@@ -1,0 +1,31 @@
+<div fxLayout="column" fxLayoutAlign=" center" >
+    <div style="margin-bottom:50px;">
+        <span style="font-size: 14px; font-weight: bold;">History Preparation</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-evenly center" >
+        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 20px;" >
+            <mat-label>Start</mat-label>
+            <input matInput [(ngModel)]="dateExcelStart" [matDatepicker]="dp2">
+            <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2></mat-datepicker>
+        </mat-form-field> 
+        <mat-form-field appearance="outline" style="font-size: 11px" >
+            <mat-label>End</mat-label>
+            <input matInput [(ngModel)]="dateExcelEnd" [matDatepicker]="dp3">
+            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3></mat-datepicker>
+        </mat-form-field> 
+    </div>
+    <div style="margin-top: 30px;">
+        <button mat-raised-button (click)="exportexcelFaktur()">Export</button>
+    </div>
+</div>
+<!-- <div style="margin-left: 30px;" >
+    <mat-form-field style="width: 90% !important; width: 90%">
+        <mat-label>Aprrove Sample</mat-label>
+        <input matInput [(ngModel)]="dateExcel" [matDatepicker]="dp2">
+        <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+        <mat-datepicker #dp2></mat-datepicker>
+    </mat-form-field> 
+    <button style="width: 90%; margin-top: 30px;" mat-raised-button (click)="exportexcelFaktur()">Export</button>
+</div> -->

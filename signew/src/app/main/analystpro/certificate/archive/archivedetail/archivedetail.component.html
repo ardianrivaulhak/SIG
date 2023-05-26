@@ -1,0 +1,386 @@
+<div id="admin-detail" class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;" >
+    <div class="content" style="overflow: auto;" *ngIf="this.contractData.length > 0">
+        <mat-card class="mat-elevation-z0"  style="width: 95%; margin: 20px auto 10px auto;" >
+            <h2 style="font-weight:bolder ;">Archive Detail</h2>
+            <br>
+            <h3 style="font-weight:bold ;">Contract Identity</h3>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Contract Number</span>
+                    <p style="font-size:11px;">{{ this.contractData[0].contract_no }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Category</span>
+                    <p style="font-size:11px;">{{ contractData[0].contract_category.title }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Customer</span>
+                    <p style="font-size:11px;">{{ contractData[0].customers_handle.customers.customer_name }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Contact Person</span>
+                    <p style="font-size:11px;">{{ this.contractData[0].customers_handle.contact_person.name }}</p>
+                </div>
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Phone/Mobile</span>
+                    <p style="font-size:11px;">+62{{ this.contractData[0].customers_handle.telp }} / +62{{ this.contractData[0].customers_handle.phone }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Others</span>
+                    <div>
+                        <button mat-icon-button color="white"  
+                        class="contract-certficate" 
+                        matTooltip="Contract" 
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"                        
+                        (click)="openPdfContract(this.contractData[0].id_kontrakuji,'preview')">
+                            <mat-icon>insert_drive_file</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="white"  
+                        class="contract-certficate" 
+                        matTooltip="Attachment" 
+                        (click)="openAttachMent(contractData[0].id_kontrakuji, 'kontrak')"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                            <mat-icon>attachment</mat-icon>
+                        </button>
+                        
+                        <!-- <button mat-icon-button color="white"  
+                        class="contract-certficate" 
+                        matTooltip="Email" 
+                        (click)="UpdateData(this.contractData[0].id_kontrakuji)"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                            <mat-icon>assignment</mat-icon>
+                        </button> -->
+                   </div>
+                </div>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 95%; margin: 20px auto 10px auto;" *ngIf="this.contractData.length > 0" >
+            <mat-accordion class="example-headers-align">
+                <mat-expansion-panel [expanded]="this.contractData.length > 0 ? true : false">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <span style="font-size:14px; font-weight: 700;">All Memo</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+              
+                  <div fxLayout="row" fxLayoutAlign="space-between start" >
+                    <mat-card style="background-color: #E97777;"  fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A;">Memo CS</h5>
+                            <mat-list role="list" *ngIf="this.contractData[0].description_cs.length > 0">
+                                <mat-list-item style="font-size:11px ;color:white;" role="listitem" *ngFor="let item of this.contractData[0].description_cs">
+                                    {{ item.desc }}
+                                </mat-list-item>
+                            </mat-list>
+                            <span style="font-size:11px ;color:white;" 
+                            *ngIf="this.contractData[0].description_cs.length < 1">
+                            Not Found Info
+                            </span>
+                    </mat-card>
+                    <mat-card style="background-color: #E97777;"   fxFlex="49">
+                        <h5 style="font-weight: 800; color: #CF0A0A;">Memo Kendali</h5>
+                            <mat-list role="list" *ngIf="this.contractData[0].description_kendali.length > 0">
+                                <mat-list-item style="font-size:11px ;color:white;" role="listitem" *ngFor="let item of this.contractData[0].description_kendali">
+                                    {{ item.desc }}
+                                </mat-list-item>
+                            </mat-list>
+                            <span style="font-size:11px ;color:white;" 
+                            *ngIf="this.contractData[0].description_kendali.length < 1">
+                            Not Found Memo
+                            </span>
+                    </mat-card>
+                  </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card>
+
+        <mat-card class="mat-elevation-z0" style="width: 95%; margin: 20px auto 10px auto;" >
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Data COA </span>
+                </div>
+                <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                    <button mat-icon-button color="white"  
+                    class="contract-certficate" 
+                    matTooltip="Change Condition" 
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"                        
+                    (click)="Revision(2)">
+                        <mat-icon>insert_drive_file</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="white"  
+                    class="contract-certficate" 
+                    matTooltip="Resending" 
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"                        
+                    (click)="resendingEmail()">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <!-- <button mat-menu-item aria-label="remove" (click)="Revision(2)">
+                        <mat-icon>file_copy</mat-icon>
+                        <span>Change Condition</span>
+                    </button> 
+                    <button mat-menu-item aria-label="resending" (click)="this.resendingEmail()">
+                        <mat-icon>edit</mat-icon>
+                        <span>Resending</span>
+                    </button> -->
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">          
+                <form name="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="15">
+                                <mat-label>LHU</mat-label>
+                                <input matInput 
+                                name="lhu"
+                                [(ngModel)]="formdata.lhu"
+                                #filter >
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="44" fxHide fxShow.gt-xs>
+                                <mat-label>Sample Name</mat-label>
+                                <input matInput 
+                                name="sample"
+                                [(ngModel)]="formdata.sample"
+                                #filter >
+                            </mat-form-field>                        
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="14">
+                                <mat-label>Sample Number</mat-label>
+                                <input matInput 
+                                name="no_sample"
+                                [(ngModel)]="formdata.no_sample"
+                                #filter >
+                            </mat-form-field>
+                            <button mat-raised-button 
+                            color="primary"   
+                            fxFlex="12"  fxFlex.xs="13" 
+                            style="height: 40px; width:250px; margin-top: -13px;" 
+                            (click)="searchButton()">
+                                Search
+                            </button>
+                            <button mat-stroked-button 
+                            color="primary"  fxFlex="12"
+                              fxFlex.xs="13" 
+                              style="height: 40px; width: 100%; margin-top: -13px;" 
+                              (click)="this.cancelSearchMark()">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-table class="cert-table" #table [dataSource]="dataCertificate" matSort (matSortChange)="sortData($event)"
+        [@animate]="{value:'*',params:{delay:'120ms',y:'-25px'}}" fusePerfectScrollbar *ngIf="this.dataCertificate.length > 0">
+
+            <!-- Column -->
+            <ng-container matColumnDef="checkbox">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox class="example-margin" 
+                    (change)="setAll($event.checked)"
+                    (change)="someComplete()"
+                    ></mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let dataSampleLab">
+                    <mat-checkbox class="example-margin"
+                    [(ngModel)]="dataSampleLab.completed"
+                    (ngModelChange)="updateAllComplete()"
+                    (change)="checkBox($event.checked, dataSampleLab.id, this.contractData[0].id_kontrakuji)"
+                    ></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column --> 
+            <ng-container matColumnDef="lhu_number">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>LHU Number</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                    <div fxLayout="column">         
+                        <span class="text-truncate" style="margin-left: 5px; margin-top: 2px; font-weight: bold; margin-bottom: 5px;" matTooltip="{{dataCertificate.lhu_number == null ? '-' : dataCertificate.lhu_number}}"> {{dataCertificate.lhu_number == null ? '-' : dataCertificate.lhu_number}}</span>                  
+                        <span class="text-truncate" matTooltip="{{ dataCertificate.cl_number == null ? '-' : dataCertificate.cl_number }}"
+                            style="color: f5f5f5; font-size: 10px; font-weight: 600; margin-left: 5px; margin-top: -5px;">{{dataCertificate.cl_number == null ? '-' : dataCertificate.cl_number }} 
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="no_sample">
+                <mat-header-cell *matHeaderCellDef mat-sort-header >Sample</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ dataCertificate.sample_name }}">{{ dataCertificate.sample_name }}</span>
+                        <span class="text-truncate" matTooltip="{{ dataCertificate.no_sample }}"
+                            style="color: f5f5f5; font-size: 10px; ">{{ dataCertificate.no_sample }}
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="status_pengujian">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                   
+                    <div *ngIf="dataCertificate.id_statuspengujian == 1" fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <span style="height: 15px;
+                            width: 15px;
+                            background-color: #2ecc71;
+                            border-radius: 50%;
+                            display: inline-block;"></span>
+                        <p class="text-truncate" matTooltip="{{ dataCertificate.statuspengujian }}">
+                            
+                            {{ dataCertificate.statuspengujian }}</p>
+                    </div>
+
+                    <div *ngIf="dataCertificate.id_statuspengujian == 2" fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <span style="height: 15px;
+                        width: 15px;
+                        background-color: #f7dc6f;
+                        border-radius: 50%;
+                        display: inline-block;"></span>
+                    <p class="text-truncate" matTooltip="{{ dataCertificate.statuspengujian }}">
+                        
+                        {{ dataCertificate.statuspengujian }}</p>
+                    </div>
+
+                    <div *ngIf="dataCertificate.id_statuspengujian == 3" fxLayout="row" fxLayoutAlign="space-evenly center">
+                        <span style="height: 15px;
+                        width: 15px;
+                        background-color: #e74c3c;
+                        border-radius: 50%;
+                        display: inline-block;"></span>
+                    <p class="text-truncate" matTooltip="{{ dataCertificate.statuspengujian }}">
+                        
+                        {{ dataCertificate.statuspengujian }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="tgl_selesai">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cert Date</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                    <div fxLayout="column">
+                        <p class="text-truncate" matTooltip="{{ dataCertificate.date_at | date  }}">{{ dataCertificate.date_at | date  }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="tgl_lab">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Lab App</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                    <div fxLayout="column">
+                        <p class="text-truncate" matTooltip="{{ dataCertificate.approve_lab | date  }}">{{ dataCertificate.approve_lab | date  }}</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="cert_status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Cert Status</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate">
+                    <button mat-icon-button color="primary"  class="btn-icon-control">
+                        <div *ngIf="this.dataCertificate.status == 3">
+                            <mat-icon style="color:#3DB2FF;" matTooltip="Draft" >drafts</mat-icon>
+                        </div>
+                        <div *ngIf="this.dataCertificate.status == 4">                            
+                            <mat-icon style="color: #81B214;" matTooltip="Certificate" >beenhere</mat-icon>
+                        </div>                   
+                    </button>
+
+                    <button mat-icon-button color="primary"  class="btn-icon-control" style="margin-left: -15px;">
+                        <div *ngIf="this.dataCertificate.sc == 1">
+                            <mat-icon class="grey-icon" matTooltip="New"  style="font-size: 5;">check_circle</mat-icon>
+                        </div>
+                        <div *ngIf="this.dataCertificate.sc == 2">
+                            <mat-icon class="orange-icon" matTooltip="Revision" style="font-size: 5;">check_circle</mat-icon>
+                        </div>
+                        <div  *ngIf="this.dataCertificate.sc == 3">
+                            <mat-icon class="red-icon" matTooltip="Retest" style="font-size: 5;">check_circle</mat-icon>
+                        </div>
+                    </button>
+
+                    <button mat-icon-button color="primary"  class="btn-icon-control" (click)="informationDialog(dataCertificate.id)" style="margin-left: -15px;">
+                        <div *ngIf="dataCertificate.print_info == 2" >
+                            <mat-icon role="img" class="mat-icon notranslate green-fg material-icons mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="font"  matTooltip="Information">info</mat-icon>
+                        </div>
+                        <div *ngIf="dataCertificate.print_info == 1" >
+                            <mat-icon role="img" class="mat-icon notranslate secondary-text material-icons mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="font"  matTooltip="No Information">info</mat-icon>
+                        </div>
+                    </button>
+
+                    <button mat-icon-button color="primary"  class="btn-icon-control" style="margin-left: -15px;"  (click)="activedButton(dataCertificate)">
+                        <div *ngIf="this.dataCertificate.actived == 'N'" >
+                            <mat-icon style="color: #FF2442;" matTooltip="Not Active" *ngIf="this.dataCertificate.actived == 'N'">offline_pin</mat-icon>
+                        </div>
+                        <div *ngIf="this.dataCertificate.actived == 'Y'">
+                            <mat-icon style="color: #36ff24;" matTooltip="Actived" *ngIf="this.dataCertificate.actived == 'Y'">offline_bolt</mat-icon>
+                        </div>
+                    </button>
+                    
+
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+                <mat-cell *matCellDef="let dataCertificate; let indexOfelement=index;">
+                    <div fxFlex="row" fxLayoutAlign="end center">
+                        <a [routerLink]="'/certificate/pdf-certificate/' + dataCertificate.id  + '/id'" target="_blank"><img style="width: 20px;" src="assets/images/flags/indonesia.svg" /></a> &nbsp;
+                        <a [routerLink]="'/certificate/pdf-certificate/' + dataCertificate.id  + '/en'" target="_blank">  <img style="width: 20px;" src="assets/images/flags/uk.svg" /></a>
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                            <mat-icon class="secondary-text">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <button mat-menu-item aria-label="add akg"  (click)="addAkgModals(dataCertificate.id)" *ngIf="this.sisaAkg > 0">
+                                <mat-icon>backup</mat-icon>
+                                <span>add AKG</span>
+                            </button>
+                            <button mat-menu-item aria-label="no akg" *ngIf="this.sisaAkg < 1">
+                                <span>AKG not found</span>
+                            </button>
+                        </mat-menu>            
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let dataCertificate; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+            </mat-row>
+        </mat-table>
+        <div [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+            <mat-paginator #paginator
+            [length]="total"
+            [pageIndex]="from"
+            [pageSize]="to"
+            [hidePageSize]="true"
+            [showFirstLastButtons]="true"
+            (page) = "paginated($event)"
+            style="font-size: 10px;"
+            *ngIf="this.total > 0">
+
+            </mat-paginator>
+        </div>
+
+        <div *ngIf="loadingfirst && this.dataCertificate.length < 1" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.dataCertificate.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+        </mat-card>
+    </div>
+</div>

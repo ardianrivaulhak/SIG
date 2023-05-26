@@ -1,0 +1,104 @@
+<h2 mat-dialog-title *ngIf="this.employeename">
+    <span style="font-weight: bold">{{ this.employeename }}</span>
+</h2>
+<mat-dialog-content class="mat-typography">
+    <table
+        class="demo"
+        *ngIf="this.tablegetdata.length > 0"
+        style="width: 100%"
+    >
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Absen Masuk</th>
+                <th>Absen Pulang</th>
+                <th>Status Masuk</th>
+                <th>Status Pulang</th>
+                <th>Att Status</th>
+                <th>Desc</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let o of tablegetdata; let i = index">
+            <tr>
+                <td>
+                    {{ o.tgl ? setFormTgl(o.tgl) : "-" }}
+                </td>
+                <td>
+                    {{ o.absen_masuk ? setFormTime(o.absen_masuk) : "-" }}
+                </td>
+                <td>
+                    {{ o.absen_pulang ? setFormTime(o.absen_pulang) : "-" }}
+                </td>
+                <td>
+                    {{
+                        o.status_attendance
+                            ? o.status_attendance.status_code
+                            : "-"
+                    }}
+                </td>
+                <td>
+                    {{
+                        o.status_attendance_plg
+                            ? o.status_attendance_plg.status_code
+                            : "-"
+                    }}
+                </td>
+                <td>
+                    {{ o.convert }}
+                </td>
+                <td>
+                    {{ o.desc ? o.desc : "-" }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxLayoutGap="10px"
+        style="width: 100%; margin-top: 10px"
+    >
+        <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>Set Status Masuk</mat-label>
+            <mat-select [(ngModel)]="status">
+                <mat-option
+                    *ngFor="let o of statusattendance"
+                    value="{{ o.id }}"
+                    >{{ o.status_name.toUpperCase() }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>Set Status Pulang</mat-label>
+            <mat-select [(ngModel)]="status_plg">
+                <mat-option
+                    *ngFor="let o of statusattendance"
+                    value="{{ o.id }}"
+                    >{{ o.status_name.toUpperCase() }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="1" [(ngModel)]="description"></textarea>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        style="display: flex; align-self: flex-end"
+    >
+        <button mat-raised-button color="primary" (click)="savedata()">
+            {{ this.button }}
+        </button>
+        <div style="width: 10px"></div>
+        <button mat-raised-button color="warn" (click)="exitModal()">
+            Cancel
+        </button>
+    </div>
+</mat-dialog-actions>

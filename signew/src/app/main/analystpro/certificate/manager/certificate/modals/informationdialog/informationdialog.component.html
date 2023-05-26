@@ -1,0 +1,37 @@
+<div  *ngIf="infoForm" class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <form name="infoForm" [formGroup]="infoForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Print Info
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-label>Print Info</mat-label>
+                <textarea matInput name="information" formControlName="information"  ></textarea>
+            <mat-error>
+                Print Info is Required
+            </mat-error>
+        </mat-form-field>   
+           
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="primary" class="mat-primary" aria-label="Submit" (click)="saveForm()">
+          Submit
+        </button>
+        <button mat-button class="mat-primary" aria-label="Close" (click)="closeModal()">
+            Close
+        </button>
+    </div>
+    </form>
+  </div>     

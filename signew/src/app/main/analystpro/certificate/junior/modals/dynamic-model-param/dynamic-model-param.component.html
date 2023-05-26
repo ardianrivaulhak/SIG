@@ -1,0 +1,63 @@
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title">
+           {{ this.titles }}
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+                <div *ngIf="this.access_dialog == 1">
+                    <ng-select 
+                    appendTo="body" 
+                    appearance="outline"
+                    [(ngModel)]="this.id_parameter"
+                    [items]="parameters" 
+                    bindLabel="name_id" 
+                    bindValue="id"
+                    (scrollToEnd)="onScrollToEnd('parameters')" 
+                    (search)="searchParameters($event)"
+                    placeholder="Select Parameter" 
+                    dropdownPosition="bottom" 
+                    name="id_parameter" 
+                    (clear)="reset('parameters')"
+                    style="width: 100%;" >
+                    </ng-select>
+                </div>
+                <div *ngIf="this.access_dialog == 2">
+                    <ng-select 
+                    appendTo="body" 
+                    appearance="outline"
+                    [(ngModel)]="this.id_lhu"
+                    [items]="lhudata" 
+                    bindLabel="lhu_number" 
+                    bindValue="id_transaction_cert"
+                    (search)="searchLHU($event)"
+                    placeholder="Select LHU" 
+                    dropdownPosition="bottom" 
+                    name="id_lhu" 
+                    (clear)="reset('lhu_number')"
+                    style="width: 100%;" >
+                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                        {{item.transaction_cert_light
+                            .lhu_number}}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{item.transaction_cert_light
+                            .lhu_number}}
+                    </ng-template>
+                    </ng-select>
+                </div>
+               
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="primary" class="mat-primary" aria-label="Submit" (click)="saveForm()">
+          SAVE
+        </button>
+        <button mat-button class="mat-accent" aria-label="Close" (click)="closeDialog(false)" >
+            CLOSE
+        </button>
+    </div>
+  </div>

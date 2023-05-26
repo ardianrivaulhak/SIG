@@ -1,0 +1,515 @@
+@import "src/@fuse/scss/fuse";
+
+app-penawaran-view {
+    .lab-table {
+        width: auto;
+        margin: 0px 50px;
+    }
+    .isi {
+        font-size: 10px;
+    }
+    .created-sales {
+        display: flex;
+        justify-content: space-between;
+        width: 52%;
+        flex-direction: row;
+        align-items: center;
+        margin: 30px 0px;
+        background: #1e2129;
+        padding: 10px;
+        border-radius: 5px;
+        color: #fff;
+        font-weight: bold;
+    }
+    // .mat-column-nosample{
+    //     justify-content: flex-start;
+    //     flex: 0 0 10%;
+    // }
+    // .mat-column-samplename{
+    //     justify-content: flex-start;
+    //     flex: 0 0 30%;
+    // }
+    // .mat-column-tgl_lab{
+    //     justify-content: center;
+    //     flex: 0 0 15%;
+    // }
+    // .mat-column-status{
+    //     justify-content: center;
+    //     flex: 0 0 10%;
+    // }
+    .judul {
+        font-size: 11px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .size-16-bold {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .custom-span {
+        padding: 20px;
+        border: 1px solid gainsboro;
+        border-radius: 10px;
+        margin: 10px;
+    }
+
+    .link-span {
+        padding: 5;
+        color: red;
+        font-size: 10px;
+        font-style: italic;
+    }
+
+    .border-search {
+        width: 300px;
+        height: 40px;
+        border-radius: 20px;
+        border: 1px solid lightgray;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+    .mat-column-biaya {
+        justify-content: center;
+        flex: 0 0 15%;
+    }
+
+    mat-header-cell {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    // .mat-column-discount{
+    //     justify-content: center;
+    //     flex: 0 0 15%;
+    // }
+
+    // .mat-column-status_lab{
+    //     justify-content: center;
+    //     flex: 0 0 5%;
+    // }
+
+    .mat-column-action {
+        justify-content: center;
+        flex: 0 0 10%;
+    }
+    .mat-column-no {
+        justify-content: center;
+        flex: 0 0 6%;
+    }
+
+    :host ::ng-deep .custom-spinner circle {
+        stroke: #fff;
+    }
+
+    .mat-progress-spinner circle,
+    .mat-spinner circle {
+        stroke: #fff !important;
+    }
+
+    .chat-popup {
+        display: none;
+        position: fixed;
+        bottom: 110px;
+        right: 60px;
+        border: 3px solid #f44336;
+        border-radius: 10px;
+        z-index: 9;
+        width: 400px;
+    }
+
+    .container {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .darker {
+        border-color: #ccc;
+        background-color: #ddd;
+    }
+
+    .container::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .container img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 20px;
+        border-radius: 50%;
+    }
+
+    .container img.right {
+        float: right;
+        margin-left: 20px;
+        margin-right: 0;
+    }
+
+    .time-right {
+        float: right;
+        color: #aaa;
+    }
+
+    .time-left {
+        float: left;
+        color: #999;
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+        // max-width: 300px;
+        padding: 10px;
+        background-color: white;
+    }
+
+    /* Full-width textarea */
+    .form-container textarea {
+        width: 75%;
+        // padding: 15px;
+        // margin: 5px 0 22px 0;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 0px 0px 12px;
+        background: #f1f1f1;
+        resize: none;
+        // min-height: 200px;
+    }
+
+    /* When the textarea gets focus, do something */
+    .form-container textarea:focus {
+        background-color: #ddd;
+        outline: none;
+    }
+
+    /* Set a style for the submit/send button */
+    .form-container .btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 16px 20px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        margin-bottom: 10px;
+        opacity: 0.8;
+    }
+
+    /* Add a red background color to the cancel button */
+    .form-container .cancel {
+        background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover,
+    .open-button:hover {
+        opacity: 1;
+    }
+
+    .box-0 {
+        width: 80%;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #80f76f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #7d6608;
+            font-size: 10px;
+        }
+    }
+
+    .box-1 {
+        width: 100px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #f7dc6f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #7d6608;
+            font-size: 10px;
+        }
+    }
+
+    .box-2 {
+        width: 100px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #6feaf7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #7d6608;
+            font-size: 10px;
+        }
+    }
+
+    .box-3 {
+        width: 100px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #e74c3c;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #f2d7d5;
+            font-size: 10px;
+        }
+    }
+
+    .box-4 {
+        width: 100px;
+        height: 20px;
+        border-radius: 15px;
+        background-color: #e74c3c;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .text-truncate {
+            color: #eaf2f8;
+            font-size: 10px;
+        }
+    }
+
+    .pricing {
+        display: flex;
+        flex-direction: row;
+        margin: 10px;
+    }
+
+    .title-pricing {
+        font-weight: bold;
+        width: 140px;
+    }
+
+    .text-pricing {
+        margin: 0px 5px 0px 5px;
+    }
+
+    .price-tag {
+        font-size: 12px;
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pricing-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    // .pricing-table thead tr th {
+    //     text-align: center;
+    // }
+
+    .pricing-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .pricing-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .pricing-table tr:hover {
+        background-color: #ddd;
+    }
+
+    .card {
+        width: 1020px;
+        min-width: 1020px;
+        max-width: 1020px;
+        padding: 64px 88px;
+        overflow: hidden;
+        background: #ffffff;
+        @include mat-elevation(7);
+
+        .header {
+            .invoice-date {
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.54);
+                margin-bottom: 32px;
+            }
+
+            .client {
+                .invoice-number {
+                    font-size: 18px;
+                    padding-bottom: 2px;
+
+                    .title {
+                        color: rgba(0, 0, 0, 0.54);
+                    }
+
+                    .number {
+                        color: rgba(0, 0, 0, 0.87);
+                        padding-left: 6px;
+                    }
+                }
+
+                .due-date {
+                    font-size: 18px;
+                    padding-bottom: 16px;
+
+                    .title {
+                        color: rgba(0, 0, 0, 0.54);
+                    }
+
+                    .date {
+                        color: rgba(0, 0, 0, 0.87);
+                        padding-left: 6px;
+                    }
+                }
+
+                .info {
+                    color: rgba(0, 0, 0, 0.54);
+                    line-height: 22px;
+                }
+            }
+
+            .issuer {
+                margin-right: -88px;
+                padding-right: 66px;
+
+                .logo {
+                    width: 96px;
+                    padding: 0 8px;
+                    border-right: 1px solid rgba(255, 255, 255, 0.7);
+                }
+
+                .info {
+                    padding: 16px;
+                }
+            }
+        }
+
+        .content {
+            .invoice-table {
+                margin-top: 64px;
+                font-size: 15px;
+
+                thead {
+                    tr {
+                        th {
+                            color: rgba(0, 0, 0, 0.87);
+                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+                            &:first-child {
+                                padding-left: 8px;
+                            }
+
+                            &:last-child {
+                                padding-right: 8px;
+                            }
+                        }
+                    }
+                }
+
+                tbody {
+                    tr {
+                        td {
+                            color: rgba(0, 0, 0, 0.87);
+                            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+                            &:first-child {
+                                padding-left: 8px;
+                            }
+
+                            &:last-child {
+                                padding-right: 8px;
+                            }
+                        }
+                    }
+                }
+
+                .title {
+                    font-size: 16px;
+                }
+
+                .detail {
+                    margin-top: 8px;
+                    font-size: 12px;
+                    color: rgba(0, 0, 0, 0.54);
+                    max-width: 360px;
+                }
+            }
+
+            .invoice-table-footer {
+                margin: 32px 0 72px 0;
+
+                tr {
+                    td {
+                        text-align: right;
+                        font-size: 16px;
+                        font-weight: 600;
+                        color: rgba(0, 0, 0, 0.54);
+                        border-bottom: none;
+                        padding: 4px 8px;
+
+                        &:first-child {
+                            text-align: left;
+                        }
+                    }
+
+                    &.discount {
+                        td {
+                            padding-bottom: 32px;
+                        }
+                    }
+
+                    &.total {
+                        td {
+                            padding: 24px 8px;
+                            border-top: 1px solid rgba(0, 0, 0, 0.12);
+                            font-size: 35px;
+                            font-weight: 300;
+                            color: rgba(0, 0, 0, 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        .footer {
+            .note {
+                font-size: 15px;
+                font-weight: 600;
+                margin-bottom: 24px;
+            }
+
+            // IE10 fix
+            // .logo, .small-note {
+            //     -ms-flex: 0 1 auto;
+            // }
+
+            .logo {
+                width: 32px;
+                min-width: 32px;
+                margin-right: 24px;
+            }
+
+            .small-note {
+                font-size: 12px;
+                font-weight: 600;
+                color: rgba(0, 0, 0, 0.54);
+                line-height: 18px;
+            }
+        }
+    }
+}

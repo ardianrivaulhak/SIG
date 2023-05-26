@@ -1,0 +1,24 @@
+<div class="dialog-content-wrapper mat-accent m-0" >
+    <form name="paramForm" [formGroup]="paramForm" *ngIf="paramForm">
+    <mat-toolbar matDialogTitle class="primary-700 m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+              Edit Data 
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <div mat-dialog-content class="content p-24 m-0" fusePerfectScrollbar>
+        <div fxLayout="row" fxLayoutAlign="space-around center" fxFlex="1 0 auto">
+            
+            <mat-form-field appearance="fill">
+                <mat-label>Estimasi Lab</mat-label>
+                <input matInput [matDatepicker]="picker" name="tgl_estimasi_lab" formControlName="tgl_estimasi_lab" (dateChange)="onDateChange()">  
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+        </div>
+  
+</div>
+</form>
+  </div>
+  

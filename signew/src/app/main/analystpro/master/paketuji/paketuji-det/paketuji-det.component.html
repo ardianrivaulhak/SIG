@@ -1,0 +1,250 @@
+<div *ngIf="paketujiForm" class="page-layout carded fullwidth inner-scroll">
+    <form name="paketujiForm" [formGroup]="paketujiForm" class="product w-100-p" fxLayout="column" fxFlex>
+        <div id="paketujidet" class="page-layout carded fullwidth inner-scroll" style="padding-bottom: 80px; height: 100vh;">
+            <div class="top-bg primary"></div>
+            <!-- / TOP BACKGROUND -->
+
+            <!-- CENTER -->
+            <div class="center" style="overflow: auto;">
+
+                <!-- HEADER -->
+                <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+
+                        <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/paketuji'">
+                            <mat-icon>arrow_back</mat-icon>
+                        </button>
+
+                        <div *ngIf="this.idpaketuji === 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                    <div class="text-customer h2">
+                                        Add Data
+                                    </div>
+            
+                                    <div class="subtitle secondary-text">
+                                        <span>add new Paket Uji</span>
+                                    </div>                    
+                            </div>
+                        </div>
+    
+                        <div *ngIf="this.idpaketuji !== 'add'">
+                            <div fxLayout="column" fxLayoutAlign="start start"
+                                [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >                    
+                                    <div class="text-customer h2">
+                                        Edit Data
+                                    </div>
+            
+                                    <div class="subtitle secondary-text">
+                                        <span>edit data Paket Uji</span>
+                                    </div>                    
+                            </div>
+                        </div>
+
+                    </div>
+                    <button mat-raised-button class="save-product-button" (click)="saveNewForm()"
+                        *ngIf="hide && this.idpaketuji === 'add'" [disabled]="paketujiForm.invalid"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <mat-icon>save</mat-icon>
+                        <span>Save</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" (click)="enableForm()"
+                        *ngIf="hide && this.idpaketuji !== 'add'"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit</span>
+                    </button>
+                    <button mat-raised-button class="save-product-button" (click)="disableForm()"
+                        *ngIf="!hide && this.idpaketuji !== 'add'"
+                        [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                        <mat-icon>chevron_left</mat-icon>
+                        <span>Cancel</span>
+                    </button>
+                </div>
+                <div class="content-card" style="overflow: auto;">
+                    <mat-progress-bar color="primary" mode="indeterminate" value="50" *ngIf="load">
+                    </mat-progress-bar>
+                    <div class="content" *ngIf="paketujiForm">
+                        <div class="tab-content p-24" fusePerfectScrollbar>
+                            <mat-grid-list [cols]="3" rowHeight='100px'>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Code</mat-label>
+                                        <input matInput placeholder="Code" name="kode_paketuji" formControlName="kode_paketuji"
+                                            required minlength="1">
+                                            <mat-error>
+                                                Code is Required
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput placeholder="Name" name="nama_paketuji" formControlName="nama_paketuji"
+                                            required>
+                                            <mat-error>
+                                                Name is Required
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <!-- <mat-form-field style="width: 80% !important;">
+                                        <mat-select formControlName="discount" placeholder="Discount" required>
+                                            <mat-option *ngFor="let d of disc" [value]="d.value">
+                                                {{d.viewValue}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field> -->
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Discount</mat-label>
+                                        <input matInput placeholder="Price" name="price_id" formControlName="discount" placeholder="Discount">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                           
+                            <mat-grid-list [cols]="4" rowHeight='100px'>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Price 1</mat-label>
+                                        <input matInput placeholder="Price" name="price_is" formControlName="price_is"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            (change)="data = $event.target.value" required>
+                                            <mat-error>
+                                                Fill Price at Least 1
+                                            </mat-error>
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Price 2</mat-label>
+                                        <input matInput placeholder="Price" name="price_id" formControlName="price_id"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            (change)="data = $event.target.value">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Price 3</mat-label>
+                                        <input matInput placeholder="Price" name="price_it" formControlName="price_it"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            (change)="data = $event.target.value">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                        <mat-label>Price 4</mat-label>
+                                        <input matInput placeholder="Price" name="price_ie" formControlName="price_ie"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            (change)="data = $event.target.value">
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <ng-select appearance="outline"
+                                        appendTo="body" [items]="dataunit" bindLabel="nama_unit" bindValue="id"
+                                        (search)="onSearchi($event,'unit')" 
+                                        (clear)="resetAll('unit')"
+                                        formControlName="unit"
+                                        (scrollToEnd)="onScrollToEnd('unit')" 
+                                        placeholder="Select Unit"
+                                        (change)="getValData($event,'unit')" 
+                                        dropdownPosition="bottom"
+                                        style="width: 100%; margin: 5px; height: 100%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{item.kode_unit}}</b>&nbsp;-&nbsp;{{item.nama_unit}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <b>{{item.kode_unit}}</b>&nbsp;-&nbsp;{{item.nama_unit}}
+                                        </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <ng-select appearance="outline"
+                                        appendTo="body" [items]="datastandart" bindLabel="nama_lod" bindValue="id"
+                                        (search)="onSearchi($event,'standart')" 
+                                        (clear)="resetAll('standart')"
+                                        formControlName="standart"
+                                        (scrollToEnd)="onScrollToEnd('standart')" 
+                                        placeholder="Select Standart"
+                                        (change)="getValData($event,'standart')" 
+                                        dropdownPosition="bottom"
+                                        style="width: 100%; margin: 5px; height: 100%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{item.kode_standart}}</b>&nbsp;-&nbsp;{{item.nama_standart}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <b>{{item.kode_standart}}</b>&nbsp;-&nbsp;{{item.nama_standart}}
+                                        </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <ng-select appearance="outline"
+                                        appendTo="body" [items]="datametode" bindLabel="metode" bindValue="id"
+                                        (search)="onSearchi($event,'metode')" 
+                                        (clear)="resetAll('metode')"
+                                        formControlName="metode"
+                                        (scrollToEnd)="onScrollToEnd('metode')" 
+                                        placeholder="Select Metode"
+                                        (change)="getValData($event,'metode')" 
+                                        dropdownPosition="bottom"
+                                        style="width: 100%; margin: 5px; height: 100%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{item.kode_metode}}</b>&nbsp;-&nbsp;{{item.metode}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <b>{{item.kode_metode}}</b>&nbsp;-&nbsp;{{item.metode}}
+                                        </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                                <mat-grid-tile>
+                                    <ng-select appearance="outline"
+                                        appendTo="body" [items]="datalod" bindLabel="nama_lod" bindValue="id"
+                                        (search)="onSearchi($event,'lod')" 
+                                        (clear)="resetAll('lod')"
+                                        formControlName="lod"
+                                        (scrollToEnd)="onScrollToEnd('lod')" 
+                                        placeholder="Select Lod"
+                                        (change)="getValData($event,'lod')" 
+                                        dropdownPosition="bottom"
+                                        style="width: 100%; margin: 5px; height: 100%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            <b>{{item.kode_lod}}</b>&nbsp;-&nbsp;{{item.nama_lod}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            <b>{{item.kode_lod}}</b>&nbsp;-&nbsp;{{item.nama_lod}}
+                                        </ng-template>
+                                    </ng-select>
+                                </mat-grid-tile>
+                            </mat-grid-list>
+                            
+                            <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                                <mat-label>Description</mat-label>
+                                <textarea matInput placeholder="Description" name="description"
+                                    formControlName="description" rows="2">
+                                    </textarea>
+                            </mat-form-field>
+                            
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!hide">
+                            <button mat-raised-button 
+                            color="accent" 
+                            style="margin-right: 5px;" 
+                            (click)="saveForm()"
+                                [disabled]="load">
+                                <mat-icon>save</mat-icon>
+                                Save</button>
+                            <button mat-raised-button 
+                            color="warn" 
+                            style="margin-left: 5px;" 
+                            (click)="deleteForm()"
+                                [disabled]="load">
+                                <mat-icon>delete</mat-icon>
+                                Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

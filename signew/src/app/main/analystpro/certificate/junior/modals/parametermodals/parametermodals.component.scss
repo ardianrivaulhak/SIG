@@ -1,0 +1,307 @@
+@import "src/@fuse/scss/fuse";
+
+.certificate-parameter-dialog{
+
+    @include media-breakpoint('xs') {
+        //width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 720px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mat-dialog-content {
+        display: block;
+        margin: 0 -24px;
+        padding: -20px 24px;
+        max-height: 65vh;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .example-list {
+        width: 100%;
+        display: block;
+        background: white;
+        border-radius: 4px;
+        margin-right: 20px;
+      }
+      
+      .example-box {
+        padding: 20px 10px;
+        border-bottom: solid 1px #ccc;
+        color: rgba(0, 0, 0, 0.87);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+        cursor: move;
+        background: white;
+        font-size: 12px;
+      }
+
+      
+      
+      .cdk-drag-preview {
+        // box-sizing: border-box;
+        // border-radius: 4px;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+      }
+      
+      .cdk-drag-animating {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+      
+      .example-box:last-child {
+        border: none;
+      }
+      
+      .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+      
+      .example-custom-placeholder {
+        background: #ccc;
+        min-height: 60px;
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+   
+
+      
+      .exxo {
+        height: calc(100vh - 32px);
+        overflow: auto;
+      }
+
+      .sample-cert-table {
+            flex: 1 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, .12);
+            
+            width: 3000px;
+            margin-left: -35px;
+            height: 400px;
+
+            .mat-header-row {
+                min-height: 64px;
+                background-color: #1e2129;
+                margin-bottom: 5px;
+                color: #fff;
+                
+                .mat-header-cell{
+                    color:#fff;
+                    font-size: 14px;
+                    font-weight: bolder;
+                    
+                }
+                .mat-sort-header-button{
+                    color: #fff;
+                    font-weight: 800;
+                }
+    
+                .mat-checkbox .mat-checkbox-frame {
+                    border-color: #fff;
+                }
+            }
+
+            .mat-row{
+                min-height: 80px;
+                font-size: 10px;
+                padding-top: 25px;
+                
+            }
+
+          .standart {
+              position: relative;
+              cursor: pointer;
+              height: 15px;
+          }
+
+          .mat-cell {
+              min-width: 0;
+              display: flex;
+              align-items: center;
+          }
+
+          .mat-column-id {
+              flex: 0 1 84px;
+          }
+
+          .mat-column-image {
+              flex: 0 1 84px;
+
+              .customers-image {
+                  width: 52px;
+                  height: 52px;
+                  border: 1px solid rgba(0, 0, 0, .12);
+              }
+          }
+
+          .mat-column-buttons {
+              flex: 0 1 80px;
+          }
+
+          .quantity-indicator {
+              display: inline-block;
+              vertical-align: middle;
+              width: 8px;
+              height: 8px;
+              border-radius: 4px;
+              margin-right: 8px;
+
+              & + span {
+                  display: inline-block;
+                  vertical-align: middle;
+              }
+          }
+
+          .active-icon {
+              border-radius: 50%;
+          }
+
+          .filters {
+              width: 100%;
+              max-width: 1040px;
+              margin: 24px auto;
+              padding: 0 20px;
+              background-color: #fff;
+
+              @include media-breakpoint('xs') {
+                  margin: 0 auto;
+              }
+
+              .course-search {
+                  width: 320px;
+
+                  @include media-breakpoint('gt-xs') {
+                      margin-right: 16px;
+                  }
+              }
+          }
+
+
+    }
+
+    // dua
+    .sampledata-cert-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        
+        width: 3000px;
+        margin-left: 0px;
+        height: 400px;
+
+        
+
+        .mat-header-row {
+            min-height: 64px;
+            background-color: #1e2129;
+            margin-bottom: 5px;
+            color: #fff;
+            
+            .mat-header-cell{
+                color:#fff;
+                font-size: 14px;
+                font-weight: bolder;
+                
+            }
+            .mat-sort-header-button{
+                color: #fff;
+                font-weight: 800;
+            }
+
+            .mat-checkbox .mat-checkbox-frame {
+                border-color: #fff;
+            }
+        }
+
+        .mat-row{
+            min-height: 50px;
+            font-size: 10px;
+            padding-top: 25px;
+            
+        }
+
+      .standart {
+          position: relative;
+          cursor: pointer;
+          height: 15px;
+      }
+
+      .mat-cell {
+          min-width: 0;
+          display: flex;
+          align-items: center;
+      }
+
+      .mat-column-id {
+          flex: 0 1 84px;
+      }
+
+      .mat-column-image {
+          flex: 0 1 84px;
+
+          .customers-image {
+              width: 52px;
+              height: 52px;
+              border: 1px solid rgba(0, 0, 0, .12);
+          }
+      }
+
+      .mat-column-buttons {
+          flex: 0 1 80px;
+      }
+
+      .quantity-indicator {
+          display: inline-block;
+          vertical-align: middle;
+          width: 8px;
+          height: 8px;
+          border-radius: 4px;
+          margin-right: 8px;
+
+          & + span {
+              display: inline-block;
+              vertical-align: middle;
+          }
+      }
+
+      .active-icon {
+          border-radius: 50%;
+      }
+
+      .filters {
+          width: 100%;
+          max-width: 1040px;
+          margin: 24px auto;
+          padding: 0 20px;
+          background-color: #fff;
+
+          @include media-breakpoint('xs') {
+              margin: 0 auto;
+          }
+
+          .course-search {
+              width: 320px;
+
+              @include media-breakpoint('gt-xs') {
+                  margin-right: 16px;
+              }
+          }
+      }
+
+
+}
+}

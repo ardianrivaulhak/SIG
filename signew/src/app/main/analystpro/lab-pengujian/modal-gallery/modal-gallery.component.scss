@@ -1,0 +1,16 @@
+@import "src/@fuse/scss/fuse";
+
+#gallery {
+  .slider-container {
+    position:relative;
+    height: 300px;
+    width: 300px;
+    overflow:hidden;
+    // border: 2px solid;
+    border-radius: 10px;
+  } 
+ .slide {
+    position:absolute;
+  }
+
+}

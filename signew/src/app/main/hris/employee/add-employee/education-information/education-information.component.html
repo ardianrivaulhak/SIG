@@ -1,0 +1,87 @@
+<p style="font-weight: bolder; font-size: 18px">Education Information</p>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="40"
+    >
+        <mat-label style="color: black">Education</mat-label>
+        <mat-select
+            [(ngModel)]="sendingDet.education"
+            placeholder="Select Education"
+        >
+            <mat-option value="0">SD</mat-option>
+            <mat-option value="1">SMP</mat-option>
+            <mat-option value="2">SMA</mat-option>
+            <mat-option value="3">D1</mat-option>
+            <mat-option value="4">D2</mat-option>
+            <mat-option value="5">D3</mat-option>
+            <mat-option value="6">S1</mat-option>
+            <mat-option value="7">S2</mat-option>
+            <mat-option value="8">S3</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="70"
+    >
+        <mat-label style="color: black">Institution </mat-label>
+        <input
+            matInput
+            placeholder="Institution"
+            [(ngModel)]="sendingDet.instansi"
+        />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="100"
+    >
+        <mat-label style="color: black">Major </mat-label>
+        <input matInput placeholder="Major" [(ngModel)]="sendingDet.major" />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field
+        appearance="outline"
+        style="font-size: 11px; margin-right: 10px"
+        fxFlex="50"
+    >
+        <mat-label style="color: black">From</mat-label>
+        <input matInput placeholder="Year Start" type="number" [(ngModel)]="sendingDet.from" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="50">
+        <mat-label style="color: black">To</mat-label>
+        <input matInput placeholder="Year End" type="number" [(ngModel)]="sendingDet.to" />
+    </mat-form-field>
+</div>
+<div fxLayout="row" fxLayoutAlign="start center">
+    <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="100">
+        <mat-label style="color: black">Description </mat-label>
+        <input
+            matInput
+            placeholder="Put an Description"
+            [(ngModel)]="sendingDet.desc"
+        />
+    </mat-form-field>
+</div>
+<div
+    fxLayout="row"
+    fxLayoutAlign="start end"
+    style="width: 100%; margin-top: 10px"
+>
+    <button
+        mat-flat-button
+        color="primary"
+        (click)="savingdata()"
+        fxFlex="15"
+        fxFlex.xs="15"
+        style="height: 40px; width: 250px; margin-right: 15px"
+    >
+        Save
+    </button>
+</div>

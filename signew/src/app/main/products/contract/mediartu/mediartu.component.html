@@ -1,0 +1,251 @@
+<div id="product_mediartu" fxLayout="column" 
+fxLayoutAlign="space-between none" 
+style="overflow: auto; 
+height: 100%; 
+background-color: #f7f7f7;" >
+    <div class="content">
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="25">
+                            <mat-label>Marketing</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            [(ngModel)]="dataFilter.marketing"
+                            placeholder="marketing number">
+                        </mat-form-field>
+
+                        <ng-select 
+                        appearance="outline"
+                        appendTo="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        bindValue="id_customer"                         
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        fxFlex="25" fxHide fxShow.gt-xs
+                        [clearable]="false" 
+                        placeholder="Select Customer" 
+                        name="customers"
+                        [(ngModel)]="dataFilter.customer"
+                        dropdownPosition="bottom" 
+                        style="display: flex; justify-content: center; align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select> 
+                                
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="18">
+                            <mat-label>Status</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="status"
+                            [(ngModel)]="dataFilter.status"
+                            placeholder="status">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="15">
+                            <mat-label>Received Date</mat-label>
+                            <input matInput [matDatepicker]="tgl_terima"  [(ngModel)]="dataFilter.received_date" name="tgl_terima">
+                            <mat-datepicker-toggle matSuffix [for]="tgl_terima"></mat-datepicker-toggle>
+                            <mat-datepicker #tgl_terima></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="15">
+                            <mat-label>Estimate</mat-label>
+                            <input matInput [matDatepicker]="estimate"  [(ngModel)]="dataFilter.estimate" name="estimate">
+                            <mat-datepicker-toggle matSuffix [for]="estimate"></mat-datepicker-toggle>
+                            <mat-datepicker #estimate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-flat-button color="primary"  fxFlex="12" (click)="FilteringData()"  fxFlex.xs="15" style="height: 40px; width:250px; margin-right:15px; width: 70%;" >
+                            Filter
+                        </button>
+                        <button mat-stroked-button color="primary" fxFlex="12" (click)="reset()"  fxFlex.xs="15" style="height: 40px; width: 70%;">
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            
+        </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:20px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Media RTU </span>
+                    
+                   
+                </div>
+                <button  mat-flat-button color="primary"
+                    matTooltip="New Contract" 
+                    style="margin-right:10px; margin-bottom:20px;"
+                    [routerLink]="'/products/contract-add'">
+                        <mat-icon>library_add</mat-icon>
+                        add new
+                </button>
+            </div>
+            <mat-table class="mediartu-table" #table [dataSource]="mediartuData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar  *ngIf="this.mediartuData.length > 0 && !loadingfirst">
+
+           
+            <!-- Column -->
+            <ng-container matColumnDef="contract_no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{mediartuData.contract_number}}">{{  mediartuData.contract_number }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer">Customer</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ mediartuData.customers.customer_name}}">{{mediartuData.customers.customer_name}}</span>
+                        <span class="text-truncate" style="color: f5f5f5; font-size: 10px;" matTooltip="{{ mediartuData.contactpersons.name}}">{{mediartuData.contactpersons.name}}</span>
+                    </div> 
+                </mat-cell>
+            </ng-container>
+
+
+              <!-- Column -->
+              <ng-container matColumnDef="tgl_terima">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_terima">Received Date</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{mediartuData.tgl_terima | date}}">{{mediartuData.tgl_terima | date}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+               <!-- Column -->
+               <ng-container matColumnDef="estimasi">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="estimasi">Estimate</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{mediartuData.estimasi | date }}">{{mediartuData.estimasi | date }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            
+             <!-- Column -->
+             <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <div class="box-normal" *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 1 && mediartuData.conditions[mediartuData.conditions.length - 1].status == 0">
+                            <p class="text-truncate" matTooltip="{{ mediartuData.created_at | date }}">Created</p>
+                        </div>
+                        <div class="box-normal" *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 1 && mediartuData.conditions[mediartuData.conditions.length - 1].status == 1">
+                            <p class="text-truncate" matTooltip="{{ mediartuData.created_at | date }}">Approved</p>
+                        </div>
+                        <div class="box-urgent" *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 2 ">
+                            <p class="text-truncate" matTooltip="{{ mediartuData.created_at | date }}">Lab</p>
+                        </div>
+                        <div class="box-custom" *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 3 ">
+                            <p class="text-truncate" matTooltip="{{ mediartuData.created_at | date }}">Done</p>
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="user">Create By</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ mediartuData.employee.employee_name }}">{{ mediartuData.employee.employee_name }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>    
+    
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="action" fxHide fxShow.gt-md>Action</mat-header-cell>
+                <mat-cell *matCellDef="let mediartuData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                            <mat-icon  class="secondary-text">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <button mat-menu-item aria-label="copy" (click)="goToContract(mediartuData.id_product_contract)">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Contract</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" *ngIf="mediartuData.status_rev == 0" (click)="goDetail(mediartuData.id_product_contract)">
+                                <mat-icon>edit</mat-icon>
+                                <span>Update </span>
+                            </button>
+
+                            <button mat-menu-item aria-label="copy" *ngIf="mediartuData.status_rev == 1" (click)="revision(mediartu)">
+                                <mat-icon>lock_open</mat-icon>
+                                <span>Revision</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" (click)="sendingProduct(mediartuData.id_product_contract)">
+                                <mat-icon>format_list_numbered</mat-icon>
+                                <span>Sendig Product</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" (click)="attachment(mediartuData)">
+                                <mat-icon>attach_file</mat-icon>
+                                <span>Attachment</span>
+                            </button>
+                            <br>
+                            <button mat-menu-item 
+                            (click)="approveToLab(mediartuData)"
+                            aria-label="copy" 
+                            *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 1">
+                                <mat-icon style="color:green;">check</mat-icon>
+                                <span style="color:green;">Approve</span>
+                            </button>
+                            <button mat-menu-item 
+                            (click)="deleteContract(mediartuData)"
+                            aria-label="copy" 
+                            *ngIf="mediartuData.conditions[mediartuData.conditions.length - 1].position == 1">
+                                <mat-icon style="color:red;">remove_circle</mat-icon>
+                                <span style="color:red;">Remove</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+            <mat-row *matRowDef="let mediartuData; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+        <mat-paginator
+        [length]="this.total"
+        [pageSize]="this.to"
+        [pageIndex]="this.current_page"
+        hidePageSize="true"
+        (page)="pageEvent = $event; paginated($event)" >
+        </mat-paginator>
+
+        <div *ngIf="loadingfirst && this.mediartuData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.mediartuData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        </mat-card>
+
+    </div>
+</div>

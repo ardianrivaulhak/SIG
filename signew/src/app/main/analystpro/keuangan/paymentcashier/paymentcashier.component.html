@@ -1,0 +1,303 @@
+<div class="dialog-content-wrapper mat-primary m-0" *ngIf="this.paymentForm" style="overflow-y: hidden;">
+   
+    <form name="paymentForm" [formGroup]="paymentForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+                Testing Fee
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" >
+        <mat-grid-list cols="6" rowHeight='100px'>   
+            <mat-grid-tile colspan="4"> 
+             
+                <ng-select 
+                    appendTo="body" 
+                    [items]="datacontract" 
+                    bindLabel="contract_no" 
+                    bindValue="id_kontrakuji"
+                    appearance="outline"
+                    formControlName="id_contract"
+                    (scrollToEnd)="onScrollToEnd('no_kontrak')" 
+                    placeholder="Select Contract" 
+                    dropdownPosition="bottom" 
+                    (change)="getValKontrak($event)" 
+                    (search)="searchterm($event)"
+                    style="display: flex;
+                        justify-content: center;
+                        align-items: center; width: 95%">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.contract_no}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.contract_no}}
+                        </ng-template>
+                </ng-select>
+            </mat-grid-tile> 
+            <mat-grid-tile colspan="2"> 
+                <mat-form-field style="width: 80%; padding-top: 10px; font-size: 15px;" appearance="outline">
+                    <mat-label>Test Price</mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="samplingfee" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-accordion >
+            <mat-expansion-panel (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false" style="margin-left: 23px; width:95%">
+                <mat-expansion-panel-header>
+                <mat-panel-title style="font-weight: 800;">
+                    AKG Data ( {{ this.dataAkg.length }} )
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table style="width: 100%;" #table class="payment-table" mat-table class="mat-elevation-z8" [dataSource]="dataAkg"
+                *ngIf="this.cekData" >
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No </th>
+                        <td mat-cell *matCellDef="let e; let i=index;"> 
+                            <p>{{i + 1}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="akg_name">
+                        <th mat-header-cell *matHeaderCellDef> Akg Name </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.masterakg.akg_name}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p>{{e.masterakg.price.toLocaleString()}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef> Unit </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.jumlah}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef> Total </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.total.toLocaleString()}}</p>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedAkg"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedAkg;"></tr>
+                </table>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false" style="margin-left: 23px; width:95%; margin-bottom:30px;">
+                <mat-expansion-panel-header>
+                <mat-panel-title style="font-weight: 800;">
+                    Sampling Fee ( {{ this.dataSampling.length }} )
+                </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table style="width: 100%;" #table class="payment-table" mat-table class="mat-elevation-z8" [dataSource]="dataSampling"
+                *ngIf="this.cekData != null" >
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No </th>
+                        <td mat-cell *matCellDef="let e; let i=index;"> 
+                            <p>{{i + 1}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="sampling_name">
+                        <th mat-header-cell *matHeaderCellDef> Sampling Name </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.samplingmaster.sampling_name}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p>{{e.samplingmaster.price.toLocaleString()}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="unit">
+                        <th mat-header-cell *matHeaderCellDef> Unit </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.jumlah}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="total">
+                        <th mat-header-cell *matHeaderCellDef> Total </th>
+                        <td mat-cell *matCellDef="let e;let z=index;">
+                            <p>{{e.total.toLocaleString()}}</p>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedSampling"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedSampling;"></tr>
+                </table>
+            </mat-expansion-panel>
+         </mat-accordion>
+
+        <mat-grid-list cols="4" rowHeight='90px'>
+            <mat-grid-tile> 
+                <mat-form-field style="width: 85% !important;" appearance="outline">
+                    <mat-label>PPN </mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="ppn" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>  
+                <mat-form-field style="width: 85% !important; " appearance="outline">
+                    <mat-label>PPH</mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="pph" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>  
+                <mat-form-field style="width: 85% !important;" appearance="outline">
+                    <mat-label>Discount</mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="discount" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile> 
+                <mat-form-field style="width: 85% !important;" appearance="outline">
+                    <mat-label>Downpayment </mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="downpayment" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        
+        <mat-grid-list cols="3" rowHeight='90px'>
+            <mat-grid-tile colspan="1"> 
+                <mat-form-field style="width: 88% !important; " appearance="outline">
+                    <mat-label>Bank </mat-label>
+                    <mat-select formControlName="bank">
+                        <mat-option *ngFor="let a of bankAccount" value="{{a.id}}">
+                          {{a.bank_name}} ( {{a.serial_number}} )
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="2">  
+                <mat-form-field style="width: 95% !important; " appearance="outline">
+                    <mat-label>Information</mat-label>
+                    <input style="color: black;" formControlName="information" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="5" rowHeight='90px'>
+            <mat-grid-tile colspan="1">  
+                <mat-form-field style="width: 88% !important;" appearance="outline">
+                    <mat-label>Total Cost</mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="subtotal" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="3"> 
+                <mat-form-field style="width: 95% !important; " appearance="outline">
+                    <mat-label>Payment </mat-label>
+                    <input currencyMask [options]="{
+                        prefix: '',
+                        thousands: '.',
+                        precision: 0
+                    }" style="color: black;" formControlName="payment" matInput>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="1"> 
+                <mat-form-field style="width: 95% !important; " appearance="outline">
+                    <mat-label>date of payment </mat-label>
+                    <input matInput [matDatepicker]="picker" name="tgl_bayar" formControlName="tgl_bayar" >
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+           
+        <!-- table -->
+        <div *ngIf="this.cekData === null" style="width: 25%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>History Payment Not Found</small>
+        </div>
+
+        <table style="width: 100%; " #table class="payment-table" mat-table class="mat-elevation-z8" [dataSource]="datapayment"
+        *ngIf=" this.datapayment.length > 0 || this.cekData != null"  >
+            <ng-container matColumnDef="no">
+                <th mat-header-cell *matHeaderCellDef> No </th>
+                <td mat-cell *matCellDef="let e; let i=index;"> 
+                    <p>{{i + 1}}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="payment">
+                <th mat-header-cell *matHeaderCellDef> Payment </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p>{{e.payment | currency:"Rp "}}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef> User </th>
+                <td mat-cell *matCellDef="let e; let g=index;">
+                    <p>{{e.user.employee_name}}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="information">
+                <th mat-header-cell *matHeaderCellDef> Information </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p>{{e.information}}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="serial">
+                <th mat-header-cell *matHeaderCellDef> Serial </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p>{{e.bank.bank_name}}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="created">
+                <th mat-header-cell *matHeaderCellDef> Created at </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <p>{{e.tgl_bayar | date }}</p>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let e;let z=index;">
+                    <button (click)="deleteHistory(e.id)" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                        <mat-icon style="color: red;">delete_forever</mat-icon>
+                      </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table><br>
+        <mat-card>Remaining Pay : <b style="float:right ;">{{ this.remainingPay | currency:"Rp " }}</b> <span *ngIf="this.remainingPay <= 0" style="font-weight: bolder; color: red;"> [ Paid Off ] </span></mat-card>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="primary" (click)="saveForm()" style="font-weight: 800;">
+          {{ this.proccess ? 'Please Wait ...' : 'Submit'}}
+        </button>
+        <button mat-button class="mat-primary" aria-label="Close" (click)="closeModal()">
+            CLOSE
+        </button>
+    </div>
+    </form>
+  </div>

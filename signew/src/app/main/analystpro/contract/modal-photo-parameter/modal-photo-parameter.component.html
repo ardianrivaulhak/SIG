@@ -1,0 +1,108 @@
+ <div *ngIf="this.dataSample.length > 0">
+        <mat-card-title>
+                Photo Sample
+            </mat-card-title>
+        <div>
+            <hr style="color: white;">
+            <div  style="margin-bottom: 10px;">
+                <div style="display: flex; 
+                            flex-direction: row; 
+                            align-items: center; 
+                            justify-content: space-between; 
+                            font-size: 12px; 
+                            margin: 5px; 
+                            height: 40px;">
+                    <span style="display: flex; flex: 1">Input Photo Sample</span>
+                     
+                    <div
+                        style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end; flex: 1">
+                         
+                        <input disabled style="height: 25px;
+                                border: 1px solid #737373;
+                                width: 35%;
+                                border-radius: 5px; 
+                                margin: 5px; 
+                                text-align: center;" value="{{dataSample.length}}"
+                             /> 
+                    </div>
+                </div>
+            </div>
+            <hr style="color: white;">
+            <div style="height: 350px;overflow-y: auto;scrollbar-width: thin;">
+                <table style="width: 100%;" mat-table [dataSource]="dataSample">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No </th>
+                        <td mat-cell *matCellDef="let e; let i=index;">
+                            <p>{{i+1}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="nosample">
+                        <th mat-header-cell *matHeaderCellDef> No Sample </th>
+                        <td mat-cell *matCellDef="let e; let i=index;">
+                            <p>{{e.no_sample}}</p>
+                        </td>
+                    </ng-container> 
+                    <ng-container matColumnDef="samplename">
+                        <th mat-header-cell *matHeaderCellDef> Sample Name </th>
+                        <td mat-cell *matCellDef="let e; let g=index;">
+                            <p>{{e.sample_name}}</p>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Add Photo </th>
+                        <td mat-cell *matCellDef="let e; let z = index">
+                            <div fxFlex fxLayout="row" fxLayoutAlign="flex-start center">
+                            <div class="box-photo" (click)="addfoto(z)" >
+                                <mat-icon style="width: 15px;">add_circle_outline</mat-icon> 
+                            </div>  
+                            <div *ngFor="let o of e.photo; let i = index">
+                            <div class="box-photo" [matMenuTriggerFor]="menu" *ngIf="e.photo.length < 4">
+                                        <mat-icon style="width: 15px;" *ngIf="!o.photo">add_a_photo</mat-icon> 
+        
+                                            <div *ngIf="o.photo">
+                                                <img *ngIf="o.photo.toLowerCase().indexOf('.') > -1" [src]="setFoto(e,o)"
+                                                    style=" flex: 1; height: 40px; width: 40px; border-radius: 10px; object-fit: cover"
+                                                    />
+                                                <img  *ngIf="o.photo.toLowerCase().indexOf('.') < 1" src="{{o.photo}}"
+                                                style=" flex: 1; height: 40px; width: 40px; border-radius: 10px; object-fit: cover"
+                                                    />
+                                            </div>
+                                        
+                                    </div>
+                                    <mat-menu #menu="matMenu"  > 
+                                        <button mat-menu-item 
+                                        (click)="deletePhoto(o,i,z)" *ngIf="o.photo">
+                                            <span>Hapus Gambar</span>
+                                        </button> 
+                                        <button mat-menu-item 
+                                        (click)="openseephoto(o,i,z)" *ngIf="o.photo">
+                                            <span>Lihat Gambar</span>
+                                        </button> 
+                                        <button mat-menu-item 
+                                        (click)="openmodalphoto(o,i,z)">
+                                            <span>Ambil Gambar</span>
+                                        </button>  
+                                        <input #_fileInput type="file" accept="image/*" (change)="uploadGambar($event,i,z)" hidden>
+                                        <button mat-menu-item
+                                        (click)="_fileInput.click()">
+                                            <span>Upload Gambar</span>
+                                        </button> 
+                                    </mat-menu>
+                                </div>
+                            </div>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table> 
+            </div> 
+        </div>
+    </div> 
+    <div *ngIf="this.dataSample.length > 0" style="display: flex; flex-direction: row; justify-content: space-between;">
+        <button mat-button matDialogClose (click)="save()">Done</button>
+   </div>
+   
+   <div *ngIf="this.dataSample.length < 1" style="display: flex; justify-content: center; align-items: center; height: 90vh; width: 100%">
+    <img style="width: 10%;" src="assets/images/gif/loading.gif" />
+    <span>Please Wait</span>
+</div>

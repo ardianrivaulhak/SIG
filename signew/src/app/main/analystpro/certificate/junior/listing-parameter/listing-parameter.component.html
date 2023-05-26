@@ -1,0 +1,84 @@
+<div id="parameterlisting-lhu" class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content" style="overflow: auto;" *ngIf="this.detailCertificate.length > 0">
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;"  >
+            <h2 style="font-weight:bolder; margin-bottom:30px;">Data Parameter</h2>
+            <h3 style="font-weight:bold ;">Certificate Identity</h3>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="15">                    
+                    <span style="font-weight: 700;">Cover Letter</span>
+                    <p style="font-size:11px;">{{ detailCertificate[0].cl_number == null ? '-' : detailCertificate[0].cl_number }}</p>
+                </div>
+                <div  fxFlex="15">                    
+                    <span style="font-weight: 700;">Result Of Analysis</span>
+                    <p style="font-size:11px;">{{ detailCertificate[0].lhu_number == null ? '-' : detailCertificate[0].lhu_number }}</p>
+                </div>
+                <div  fxFlex="15">                    
+                    <span style="font-weight: 700;">Sample Number</span>
+                    <p style="font-size:11px;">{{ detailCertificate[0].no_sample == null ? '-' : detailCertificate[0].no_sample }}</p>
+                </div>
+                <div  fxFlex="55">                    
+                    <span style="font-weight: 700;">Sample Name</span>
+                    <p style="font-size:11px;">{{ detailCertificate[0].sample_name == null ? '-' : detailCertificate[0].sample_name }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Others Action</span>
+                    <div>
+                        <button mat-icon-button color="white"
+                        class="contract-certficate"
+                        matTooltip="Listing Parameter"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        (click)="goToParameter(detailCertificate[0].id)">
+                        <mat-icon>list icon</mat-icon>
+                    </button>
+                    
+                   </div>
+                </div>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0"   style="width: 98%; margin: 20px auto 10px auto;"  >
+            <div style="margin-bottom:40px;">
+                <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>List Parameter</span>
+            </div>
+            <div *ngIf="this.listDataParameter.length > 0">
+                <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                    <div class="example-box" *ngFor="let parameter of listDataParameter; let i = index" cdkDrag>
+                    <div class="example-custom-placeholder" fxLayout="row" fxLayoutAlign="start center"  *cdkDragPlaceholder></div>
+                        <span style="margin-right: 50px; font-weight: bold;">{{ i + 1 }} . {{ parameter.parameteruji_id}}</span>
+                        <span  style="font-weight: bold; font-style: italic;">{{ parameter.parameteruji_en}}</span>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div *ngIf="loadingfirst && this.listDataParameter.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/loading.gif" />
+                <small>Please Wait ...</small>
+            </div>
+    
+            <div *ngIf="!loadingfirst && this.listDataParameter.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+                <img  src="assets/images/gif/selectfile.gif" />
+                <small>No Data</small>
+            </div>
+
+            <div class="mt-24" fxLayoutAlign="end center" >
+                <button mat-stroked-button 
+                fxFlex="12"  fxFlex.xs="12"
+                style="margin-right:10px; width:250px;" 
+                color="primary" (click)="clearSearch()" aria-label="Close">
+                    Refresh
+                </button>
+                <button mat-raised-button 
+                fxFlex="12"  fxFlex.xs="12" 
+                color="primary" 
+                style="width:250px;"
+                class="mat-primary" 
+                (click)="saveForm()" >
+                  Submit
+                </button>
+            </div>
+
+        </mat-card>
+    </div>
+</div>

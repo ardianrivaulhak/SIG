@@ -1,0 +1,29 @@
+<table id="customers" *ngIf="this.dataParam.length > 0">
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>Info Parameter</th>
+            <th>Parameter</th>
+            <th>Satuan</th>
+            <th>Metode</th>
+            <th>LOD</th>
+            <th>Desc</th>
+        </tr>
+    </thead>
+    <tbody
+        *ngFor="
+            let v of this.dataParam[0].transaction_penawaran_parameter;
+            let i = index
+        "
+    >
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ v.info }}</td>
+            <td>{{ v.parameteruji.name_id }}</td>
+            <td>{{ v.id_satuan ? v.unit.nama_unit : "-" }}</td>
+            <td>{{ v.id_metode ? v.metode.metode : "-" }}</td>
+            <td>{{ v.id_lod ? v.lod.nama_lod : "-" }}</td>
+            <td>{{ v.desc ? v.desc : "-" }}</td>
+        </tr>
+    </tbody>
+</table>

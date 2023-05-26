@@ -1,0 +1,32 @@
+<h2 mat-dialog-title style="font-weight: bolder; font-size: 21px; color: #1f3d4d;">Product Progress</h2>
+<div mat-dialog-content style="background-color: #D8D9CF; padding: 30px;"  >
+    <mat-accordion >
+        <mat-expansion-panel *ngFor="let item of labData" class="mat-elevation-z0">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+            {{ item.master_media_rtu.product_name }}
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngIf="item.sendingprogress.length > 0">
+            <div *ngFor="let a of item.sendingprogress" fxLayout="row" fxLayoutAlign="space-between center" >
+                <mat-checkbox class="example-margin"
+                [(ngModel)]="a.completed"
+                (ngModelChange)="updateAllComplete()"
+                (change)="checkBox($event.checked, a)"
+                ></mat-checkbox>
+                <p>{{ a.unit }} <b>Unit</b></p>
+                <p>{{ a.created_at | date }}</p>
+            </div>
+        </div>
+        <div *ngIf="item.sendingprogress.length  < 1">
+            <p>No Data</p>
+        </div>
+        </mat-expansion-panel>
+        
+    </mat-accordion>
+</div>
+
+<mat-dialog-actions  fxLayout="row" fxLayoutAlign="end center" >
+    <button mat-stroked-button color="primary" (click)="closeModal()">Close</button>
+    <button mat-flat-button  color="primary" (click)="openTandaTerima()">Open</button>
+</mat-dialog-actions>

@@ -1,0 +1,62 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="statusAttendanceForm"
+        [formGroup]="statusAttendanceForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+        <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px">
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Status Code</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put 1 Letter or 2 for code"
+                        formControlName="status_code"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Status Name</mat-label>
+                    <input
+                        matInput
+                        placeholder="Put a Name"
+                        formControlName="status_name"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Status Point</mat-label>
+                    <input
+                        matInput
+                        placeholder="Set Point"
+                        formControlName="point_status"
+                    />
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="serviceAct()">Save</button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

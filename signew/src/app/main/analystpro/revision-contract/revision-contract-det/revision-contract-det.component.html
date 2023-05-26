@@ -1,0 +1,768 @@
+<div id="kontrakuji" class="page-layout carded fullwidth">
+    <div
+        fxFlex="45"
+        fxLayout="row"
+        fxLayoutAlign="space-between start"
+        fxLayoutAlign.xs="space-between center"
+        fxLayoutGap="10px"
+        fxFlex.xs="100"
+        fxLayout.xs="column"
+    >
+        <div
+            fxFlex="100"
+            style="
+                width: 100%;
+                padding: 15px;
+                max-height: 800px !important;
+                overflow: auto;
+            "
+            fxLayout="column"
+            fxLayoutAlign="center flex-start"
+        >
+            <div
+                fxFlex="100"
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                fxLayoutGap="5px"
+                style="width: 100%"
+            >
+                <h1 class="subjudul">Customer Details</h1>
+                <div class="lineborder"></div>
+            </div>
+            <ng-select
+                appendTo="body"
+                [items]="contract_category"
+                [(ngModel)]="formContract.contractcategory"
+                appearance="outline"
+                bindLabel="title"
+                bindValue="id"
+                placeholder="Select Contract Type"
+                (change)="getValue($event, 'contractcategory')"
+                dropdownPosition="bottom"
+            >
+            </ng-select>
+            <ng-select
+                appendTo="body"
+                [items]="datapenawaran"
+                appearance="outline"
+                bindLabel="no_penawaran"
+                bindValue="id"
+                [(ngModel)]="formContract.penawaran"
+                placeholder="Select Penawaran"
+                (change)="getValue($event, 'penawaran')"
+                dropdownPosition="bottom"
+                style="width: 100%"
+                required
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <b>{{ item.no_penawaran }}</b
+                    >&nbsp;-&nbsp;{{ item.employee }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <b>{{ item.no_penawaran }}</b
+                    >&nbsp;-&nbsp;{{ item.employee }}
+                </ng-template>
+            </ng-select>
+            <div style="height: 10px"></div>
+            <mat-form-field appearance="outline">
+                <mat-label>Nomer PO</mat-label>
+                <input matInput [(ngModel)]="formContract.no_po" />
+            </mat-form-field>
+            <div style="height: 10px"></div>
+            <ng-select
+                appearance="outline"
+                appendTo="body"
+                [items]="typeContract"
+                bindLabel="type"
+                [(ngModel)]="formContract.sample_source"
+                bindValue="id"
+                placeholder="Select Sample Source"
+                (change)="getValue($event, 'typecontract')"
+                dropdownPosition="bottom"
+                fxFlexFill
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    <b>{{ item.id }}</b
+                    >&nbsp;-&nbsp;{{ item.type }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    <b>{{ item.id }}</b
+                    >&nbsp;-&nbsp;{{ item.type }}
+                </ng-template>
+            </ng-select>
+            <div
+                FxLayout="row"
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="5px"
+                style="width: 100%"
+            >
+                <ng-select
+                    appearance="outline"
+                    appendTo="body"
+                    [items]="customerhandle"
+                    bindLabel="customer_name"
+                    [(ngModel)]="formContract.idch"
+                    bindValue="idch"
+                    placeholder="Select Customer"
+                    (scrollToEnd)="onScrollToEnd('customer')"
+                    (search)="onSearchi($event, 'customer')"
+                    (change)="getValue($event, 'customer')"
+                    dropdownPosition="bottom"
+                    fxFlex.xs="0 1 400px"
+                    fxFlex="0 1 450px"
+                >
+                    <ng-template
+                        ng-option-tmp
+                        let-item="item"
+                        let-index="index"
+                    >
+                        <div
+                            title="{{ item.kode_customer }} - {{
+                                item.customer_name
+                            }} - {{ item.name }}"
+                        >
+                            <b>{{ item.kode_customer }}</b
+                            >&nbsp;-&nbsp;{{
+                                item.customer_name
+                            }}&nbsp;-&nbsp;{{ item.name }}
+                        </div>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <div
+                            title="{{ item.kode_customer }} - {{
+                                item.customer_name
+                            }} - {{ item.name }}"
+                        >
+                            <b>{{ item.kode_customer }}</b
+                            >&nbsp;-&nbsp;{{
+                                item.customer_name
+                            }}&nbsp;-&nbsp;{{ item.name }}
+                        </div>
+                    </ng-template>
+                </ng-select>
+                <button
+                    mat-mini-fab
+                    type="button"
+                    color="primary"
+                    (click)="modalcustomerhandle()"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+            <div
+                FxLayout="row"
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="5px"
+                style="width: 100%"
+            >
+                <ng-select
+                    appearance="outline"
+                    style="width: 100%"
+                    class="wrap"
+                    appendTo="body"
+                    [items]="alamatcustomer"
+                    bindLabel="address"
+                    bindValue="id_address"
+                    placeholder="Select Address"
+                    [(ngModel)]="formContract.alamatcustomer"
+                    (search)="onSearchi($event, 'address')"
+                    (change)="getValue($event, 'alamat')"
+                    dropdownPosition="bottom"
+                    fxFlex.xs="0 1 400px"
+                    fxFlex="0 1 450px"
+                >
+                    <ng-template
+                        ng-option-tmp
+                        let-item="item"
+                        let-index="index"
+                    >
+                        <div
+                            title="{{ item.address }}{{
+                                item.desc ? ' - ' + item.desc : ''
+                            }}"
+                        >
+                            {{ item.address
+                            }}{{ item.desc ? " - " + item.desc : "" }}
+                        </div>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <div
+                            title="{{ item.address }}{{
+                                item.desc ? ' - ' + item.desc : ''
+                            }}"
+                        >
+                            {{ item.address
+                            }}{{ item.desc ? " - " + item.desc : "" }}
+                        </div>
+                    </ng-template>
+                </ng-select>
+                <button
+                    mat-mini-fab
+                    color="primary"
+                    type="button"
+                    [disabled]="this.formContract.idch ? false : true"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <ng-select
+                appearance="outline"
+                appendTo="body"
+                [items]="dataemployee"
+                bindLabel="employee_name"
+                bindValue="employee_id"
+                placeholder="Select Sales / Marketing"
+                [(ngModel)]="formContract.clienthandling"
+                (search)="onSearchi($event, 'employee')"
+                (scrollToEnd)="onScrollToEnd('employee')"
+                dropdownPosition="bottom"
+                style="width: 100%"
+                required
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{ item.employee_name }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{ item.employee_name }}
+                </ng-template>
+            </ng-select>
+
+            <mat-form-field
+                appearance="outline"
+                floatLabel="always"
+                class="w-100-p"
+            >
+                <mat-label>Internal Description</mat-label>
+                <textarea
+                    matInput
+                    [(ngModel)]="formContract.internal_desc"
+                    placeholder="Internal Description"
+                    rows="2"
+                >
+                </textarea>
+            </mat-form-field>
+            <mat-form-field
+                appearance="outline"
+                floatLabel="always"
+                class="w-100-p"
+            >
+                <mat-label>External Description</mat-label>
+                <textarea
+                    matInput
+                    [(ngModel)]="formContract.external_desc"
+                    placeholder="External Description"
+                    name="desc"
+                    rows="2"
+                >
+                </textarea>
+            </mat-form-field>
+            <mat-form-field
+                appearance="outline"
+                floatLabel="always"
+                class="w-100-p"
+            >
+                <mat-label>Alasan</mat-label>
+                <textarea
+                    matInput
+                    [(ngModel)]="formContract.alasan"
+                    placeholder="Alasan"
+                    rows="2"
+                >
+                </textarea>
+            </mat-form-field>
+        </div>
+
+        <div
+            style="
+                width: 100%;
+                padding: 15px;
+                max-height: 800px !important;
+                overflow: auto;
+            "
+            fxLayout="column"
+            fxLayoutAlign="start start"
+        >
+            <div
+                fxLayout="row"
+                fxLayoutAlign="start center"
+                fxLayoutGap="5px"
+                style="width: 100%"
+            >
+                <div class="lineborder"></div>
+                <h1 class="subjudul">Sample Details</h1>
+            </div>
+            <div
+                fxLayoutAlign="space-between center"
+                fxLayoutGap="10px"
+                style="width: 100%"
+            >
+                <span>Jumlah Sample</span>
+                <button
+                    mat-stroked-button
+                    (click)="paste('all')"
+                    *ngIf="this.copydata.length > 0"
+                >
+                    Paste All
+                </button>
+                <mat-button-toggle-group>
+                    <input
+                        disabled
+                        [(ngModel)]="numbersample"
+                        placeholder="Tambah Jumlah Sample"
+                    />
+                    <mat-button-toggle value="tambah" (click)="tambah()">
+                        <mat-icon>add</mat-icon>
+                    </mat-button-toggle>
+                    <mat-button-toggle value="kurang" (click)="sampleremove()">
+                        <mat-icon>remove</mat-icon>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+            <div style="overflow: auto; width: 100%; max-height: 600px">
+                <table class="sample-table" *ngIf="this.numbersample > 0">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>No Sample</th>
+                            <th>Sample Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody
+                        *ngFor="
+                            let item of [].constructor(this.numbersample);
+                            let i = index
+                        "
+                    >
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>
+                                {{ this.formContract.sample[i]?.no_sample }}
+                            </td>
+                            <td>
+                                <textarea
+                                    style="width: 100%"
+                                    [(ngModel)]="
+                                        this.formContract.sample[i].nama_sample
+                                    "
+                                ></textarea>
+                            </td>
+                            <td>
+                                <div
+                                    fxLayout="row"
+                                    fxLayoutAlign="center center"
+                                    fxLayoutGap="2px"
+                                >
+                                    <button
+                                        mat-icon-button
+                                        [matMenuTriggerFor]="menu"
+                                    >
+                                        <mat-icon> more_vert </mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <div
+                                            fxLayout="row"
+                                            fxLayoutAlign="center center"
+                                        >
+                                            <button
+                                                mat-icon-button
+                                                (click)="details(i)"
+                                                title="Details"
+                                                [disabled]="
+                                                    this.setAddParameter
+                                                "
+                                            >
+                                                <mat-icon>launch</mat-icon>
+                                            </button>
+                                            <button
+                                                mat-icon-button
+                                                (click)="copy(i)"
+                                                title="Copy"
+                                            >
+                                                <mat-icon>
+                                                    insert_drive_file</mat-icon
+                                                >
+                                            </button>
+                                            <button
+                                                mat-icon-button
+                                                (click)="paste(i)"
+                                                title="Paste"
+                                            >
+                                                <mat-icon>file_copy</mat-icon>
+                                            </button>
+                                        </div>
+                                    </mat-menu>
+
+                                    <button
+                                        mat-icon-button
+                                        color="warn"
+                                        (click)="delete(i)"
+                                    >
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div
+        fxFlex="100"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="5px"
+        style="width: 100%"
+    >
+        <h1 class="subjudul">Price Details</h1>
+        <div class="lineborder"></div>
+    </div>
+    <table class="pricing-table" style="width: 100%; margin: 15px">
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Total Biaya Pengujian
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        style="width: 200px; color: black !important"
+                        disabled
+                        [(ngModel)]="this.formContract.totalhargakontrak"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Discount
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <input
+                        type="text"
+                        matInput
+                        [(ngModel)]="this.formContract.discount_conv"
+                        (keyup)="setHasilDiscount()"
+                        [disabled]="
+                            this.mouStatusPengujian.length > 1 ? true : false
+                        "
+                        style="margin-right: 10px; width: 50px"
+                    />
+                    <span style="margin-right: 50px">% </span>
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        [(ngModel)]="this.formContract.discount_price"
+                        style="width: 200px"
+                        (keyup)="setDiscount()"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Biaya Sampling
+                <button mat-icon-button (click)="gotosampling()">
+                    <mat-icon>error</mat-icon>
+                </button>
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        disabled
+                        style="width: 200px; color: black !important"
+                        [(ngModel)]="this.formContract.biayasample"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Biaya AKG
+                <button mat-icon-button (click)="gotoakg()">
+                    <mat-icon>error</mat-icon>
+                </button>
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        disabled
+                        style="width: 200px; color: black !important"
+                        [(ngModel)]="this.formContract.biayaakg"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Subtotal
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        disabled
+                        currencyMask
+                        [(ngModel)]="this.formContract.totaltanpappn"
+                        style="width: 200px; color: black !important"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                PPN
+                {{
+                    (
+                        (this.formContract.ppn /
+                            this.formContract.totaltanpappn) *
+                        100
+                    ).toFixed()
+                }}
+                %
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        disabled
+                        currencyMask
+                        [(ngModel)]="this.formContract.ppn"
+                        style="width: 200px; color: black !important"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Total Keseluruhan
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        disabled
+                        [(ngModel)]="this.formContract.subtotal"
+                        style="width: 200px; color: black !important"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Uang Muka
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <span>Rp.</span>
+                    <input
+                        type="text"
+                        matInput
+                        currencyMask
+                        [(ngModel)]="this.formContract.uangmuka"
+                        style="width: 200px; color: black !important"
+                        (keyup)="setsisapembayaran()"
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                    />
+                </div>
+            </td>
+        </tr>
+        <!-- <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Voucher
+                <button mat-icon-button (click)="gotoModalVoc()">
+                    <mat-icon>error</mat-icon>
+                </button>
+            </td>
+            <td style="text-align: right">
+                <div
+                    style="
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        align-items: center;
+                    "
+                >
+                    <mat-chip-list
+                        class="example-chip"
+                        *ngIf="this.formContract.voucher"
+                        formControlName="id_voucher"
+                    >
+                        <mat-chip
+                            class="example-box"
+                            *ngFor="let o of vouchertype"
+                            removable="true"
+                            (removed)="remove(o)"
+                        >
+                            {{ o.voucher_name }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                    <div style="width: 20px"></div>
+                    <span>{{
+                        this.formContract.voucher.toLocaleString()
+                    }}</span>
+                </div>
+            </td>
+        </tr> -->
+        <tr>
+            <td colspan="2" style="text-align: left; font-weight: bold">
+                Sisa Pembayaran
+            </td>
+            <td style="text-align: right">
+                Rp.
+                {{
+                    this.formContract.sisapembayaran > 0
+                        ? this.formContract.sisapembayaran.toLocaleString()
+                        : 0
+                }}
+            </td>
+        </tr>
+    </table>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxFlexAlign="center"
+        fxLayoutGap="10px"
+        style="margin: 10px"
+    >
+        <button mat-raised-button color="primary" (click)="saving()">
+            Save
+        </button>
+        <button mat-raised-button color="warn" (click)="cancel()">
+            Cancel
+        </button>
+    </div>
+</div>
+<ngx-spinner
+    bdColor="rgb(255,255,255)"
+    size="medium"
+    color="#230243"
+    type="ball-clip-rotate-multiple"
+    [fullScreen]="false"
+>
+</ngx-spinner>

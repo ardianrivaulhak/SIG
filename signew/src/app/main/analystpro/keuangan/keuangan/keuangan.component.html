@@ -1,0 +1,348 @@
+<div id="keuangan" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary-700"></div>
+    <!-- / TOP BACKGROUND -->
+
+   <!-- CENTER -->
+   <div class="center">
+
+      <!-- HEADER -->
+      <div class="header primary-700"
+      fxLayout="column" fxLayoutAlign="center center"
+      fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-24 mb-md-0"
+            fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            insert_drive_file
+          </mat-icon>
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              Finance
+          </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+      <div class="search-wrapper mx-32 mx-md-0" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+        <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon>search</mat-icon>
+            <input 
+            (input)="onSearchChange($event.target.value)"
+            #filter 
+            placeholder="Marketing Number" > 
+        </div>
+    </div>
+    <!-- / SEARCH -->  
+    
+    <!-- ADD BUTTON -->
+    <div style="display: flex; justify-content: center; align-items: center;" *ngIf="this.access.length > 0">
+        
+
+        <button mat-icon-button color="white" (click)="clickFilter(true)" *ngIf="this.searchFilter == false">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+        <button mat-icon-button color="white" (click)="clickFilter(false)" *ngIf="this.searchFilter == true ">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+
+        <button mat-mini-fab color="white" [matMenuTriggerFor]="menu" style="margin-left: 10px;">
+            <mat-icon>library_add</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu"> 
+            <button mat-menu-item [routerLink]="'/analystpro/keuangan/add'" >
+              <mat-icon>file_copy</mat-icon>
+              <span>New Invoice</span>
+            </button> 
+            <button mat-menu-item (click)="gotoModulExcel()" >
+                <mat-icon>file_copy</mat-icon>
+                <span>Export Invoide</span>
+            </button>  
+        </mat-menu>
+    </div>
+    <!-- / ADD BUTTON --> 
+    </div>
+    <!-- / HEADER -->
+
+      <!-- CONTENT CARD -->
+    <div class="content-card" style="height: 70vh; overflow-y: auto;">
+        
+        <div class="search-filter" *ngIf="this.searchFilter == true"  [@animate]="{value:'*',params:{y:'100%'}}" >
+            <mat-grid-list cols="3" rowHeight='2:0.5' style="margin-top: 10px; margin-bottom:-20px;">
+                
+               <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataStatus" 
+                    bindLabel="name" 
+                    bindValue="id" 
+                    [clearable]="false"
+                    [(ngModel)]="selectStatus"  
+                    placeholder="Select Status Invoince" 
+                    (change)="getValStatus($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.name}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+    
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataUser" 
+                    bindLabel="employee_name" 
+                    bindValue="user_id" 
+                    [clearable]="false"  
+                    placeholder="Select User" 
+                    (change)="getValUser($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.employee_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.employee_name}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+    
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataInvoce" 
+                    bindLabel="no_invoice" 
+                    bindValue="id_inv_header" 
+                    [clearable]="false"  
+                    placeholder="Select Invoice" 
+                    (change)="getValInvoce($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.no_invoice}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.no_invoice}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataCustomer" 
+                    bindLabel="customer_name" 
+                    bindValue="id_customer" 
+                    [clearable]="false" 
+                    placeholder="Select Customer" 
+                    (change)="getValCustomer($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.customer_name}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.customer_name}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile> 
+    
+            </mat-grid-list>
+            <mat-grid-list cols="4" rowHeight='2:0.5' > 
+
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataCategory" 
+                    bindLabel="title" 
+                    bindValue="category_code" 
+                    [clearable]="false" 
+                    placeholder="Select Contract Category" 
+                    (change)="getValCategory($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.title}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.title}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile> 
+
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataTglfaktur" 
+                    bindLabel="tgl_faktur" 
+                    bindValue="id_inv_header" 
+                    [clearable]="false" 
+                    placeholder="Select Tgl.Faktur" 
+                    (change)="getValTglfaktur($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.tgl_faktur}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.tgl_faktur}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataTgljatuhtempo" 
+                    bindLabel="tgl_jatuhtempo" 
+                    bindValue="id_inv_header" 
+                    [clearable]="false" 
+                    placeholder="Select Tgl.Jatuh Tempo" 
+                    (change)="getValTgljatuhtempo($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.tgl_jatuhtempo}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.tgl_jatuhtempo}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+
+                <mat-grid-tile>
+                    <ng-select 
+                    appendTo="body" 
+                    [items]="dataContract" 
+                    bindLabel="contract_no" 
+                    bindValue="id_kontrakuji" 
+                    [clearable]="false"  
+                    placeholder="Select Contract" 
+                    (change)="getValContract($event)" 
+                    dropdownPosition="bottom" 
+                    style="display: flex; justify-content: center; align-items: center; width: 90%;margin-left: 20px;margin-top: 20px;">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.contract_no}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.contract_no}}
+                        </ng-template>
+                    </ng-select> 
+                </mat-grid-tile>
+    
+            </mat-grid-list>
+                    
+
+        </div>
+
+        <mat-table class="cert-table" #table [dataSource]="dataKeuangan" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.dataKeuangan.length > 0"> 
+
+           
+            <!-- Column -->
+            <ng-container matColumnDef="no_invoice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="no_invoice">Invoice</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ a.no_invoice }}">{{ a.no_invoice }}</span>
+                        <span matTooltip="{{ a.contract_no }}"
+                            style="color: f5f5f5; font-size: 10px;">{{ a.contract_no }}
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="nama_prisipal">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="nama_prisipal">Customer / PIC</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ a.customer_name }}">{{a.customer_name}}</span>
+                        <span class="text-truncate" style="color: f5f5f5; font-size: 10px; font-style: italic;" matTooltip="{{ a.contact_person }}">{{a.contact_person}}</span>
+                    </div>  
+                </mat-cell>
+            </ng-container>
+
+            
+            <!-- Column -->
+            <ng-container matColumnDef="no_po">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="no_po">Purchase Number</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p style="font-size: 12px;" class="text-truncate" >{{!a.no_po ? ' - ' : a.no_po}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="tgl_faktur">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_faktur"> <span class="material-icons"> date_range</span> Invoice Date</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate"> {{a.tgl_faktur | date}}</p>  
+                </mat-cell>
+            </ng-container> 
+
+            <!-- Column -->
+            <ng-container matColumnDef="tgl_jthTempo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_jthTempo"><span class="material-icons"> date_range</span> Due Date</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p class="text-truncate"> {{a.tgl_jatuhtempo | date}}</p> 
+                </mat-cell>
+            </ng-container>  
+
+            <!-- Column -->
+            <ng-container matColumnDef="other_ref">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="other_ref">Description</mat-header-cell>
+                <mat-cell *matCellDef="let a">
+                    <p matTooltip="{{a.other_ref}}" style="font-size: 12px;" class="text-truncate" >{{a.other_ref}}</p>
+                </mat-cell>
+            </ng-container> 
+
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="icon" >Action</mat-header-cell>
+                <mat-cell *matCellDef="let a; let indexOfelement=index;">
+                    <div fxFlex="row" fxLayoutAlign="end center">
+                        <button mat-icon-button color="primary"  class="btn-icon-control" matTooltip="Details" aria-label="Sample"  [routerLink]="'/analystpro/keuangan/'+a.id">
+                            <mat-icon>folder_open
+                            </mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let a; columns: displayedColumns;" class="contract" matRipple >
+            </mat-row>
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.dataKeuangan.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.dataKeuangan.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        <mat-paginator #paginator
+            [length]="total"
+            [pageIndex]="from"
+            [pageSize]="to"
+            [hidePageSize]="true"
+            [showFirstLastButtons]="true"
+            (page) = "paginated($event)">
+
+        </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+    
+</div>

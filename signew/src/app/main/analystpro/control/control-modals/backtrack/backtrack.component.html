@@ -1,0 +1,85 @@
+<div class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50"
+        *ngIf="load"
+    >
+    </mat-progress-bar>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> Back Tracks </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <mat-grid-list cols="1" rowHeight="100px" style="margin-bottom: 100px">
+            <mat-grid-tile colspan="1">
+                <ng-select
+                    appendTo="body"
+                    [items]="datacontract"
+                    bindLabel="contract_no"
+                    bindValue="id_kontrakuji"
+                    [(ngModel)]="noKontrak"
+                    (scrollToEnd)="onScrollToEnd('no_kontrak')"
+                    (search)="onsearchselect($event, 'kontrak')"
+                    appearance="outline"
+                    placeholder="Select Contract"
+                    dropdownPosition="bottom"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                    "
+                >
+                    <ng-template
+                        ng-option-tmp
+                        let-item="item"
+                        let-index="index"
+                    >
+                        {{ item.contract_no }}
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        {{ item.contract_no }}
+                    </ng-template>
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile colspan="1">
+                <mat-form-field
+                    appearance="outline"
+                    floatLabel="always"
+                    class="w-100-p"
+                >
+                    <mat-label>Reason</mat-label>
+                    <textarea matInput [(ngModel)]="reasons"></textarea>
+                    <mat-error> Reason is Required </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+
+    <div
+        mat-dialog-actions
+        class="m-0 p-16"
+        fxLayout="row"
+        fxLayoutAlign="end center"
+    >
+        <button
+            mat-flat-button
+            color="accent"
+            aria-label="Submit"
+            (click)="saveForm()"
+        >
+            Submit
+        </button>
+        <button
+            mat-flat-button
+            color="warn"
+            aria-label="Close"
+            (click)="closeModal(true)"
+        >
+            Close
+        </button>
+    </div>
+</div>

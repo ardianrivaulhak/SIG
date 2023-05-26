@@ -1,0 +1,92 @@
+<div id="invoice-finance"  class="page-layout simple" style="overflow: auto; height: 600px;">
+    <div class="content">        
+        <mat-card>
+            <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                <form name="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="50">
+                        <mat-label>Invoice Number</mat-label>
+                        <input matInput 
+                        #filter 
+                        name="invoice_number"
+                        placeholder="Invoce Number">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="24">
+                        <mat-label>PO Number</mat-label>
+                        <input matInput 
+                        #filter 
+                        name="po_number"
+                        placeholder="PO Number">
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="24">
+                        <mat-label>PO Number</mat-label>
+                        <input matInput 
+                        #filter 
+                        name="po_number"
+                        placeholder="PO Number">
+                    </mat-form-field>                        
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="19">
+                        <mat-label>PO Number</mat-label>
+                        <input matInput 
+                        #filter 
+                        name="po_number"
+                        placeholder="PO Number">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex="19" fxHide fxShow.gt-xs>
+                        <mat-label>Invoice Date</mat-label>
+                        <input matInput [matDatepicker]="picker"  name="invoice_date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="38">
+                        <mat-label>PO Number</mat-label>
+                        <input matInput 
+                        #filter 
+                        name="po_number"
+                        placeholder="PO Number">
+                    </mat-form-field> 
+
+                    <button mat-raised-button color="accent"  fxFlex="10"  fxFlex.xs="23" style="height: 42px; width:250px; margin-top: -13px;" >
+                        Search
+                    </button>
+                    <button mat-raised-button color="warn" fxFlex="10"  fxFlex.xs="23" style="height: 42px; width: 100%; margin-top: -13px;" >
+                        Reset
+                    </button>
+
+                </div>
+               </form>
+
+            </div>
+        </mat-card><br>
+        <mat-card>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-weight: bold; color: #696969;" fxHide fxShow.gt-md>Invoice Product </span>     
+                </div>
+                <div>
+                    <!-- <mat-paginator #paginator
+                    [length]="total"
+                    [pageIndex]="from"
+                    [pageSize]="to"
+                    [hidePageSize]="true"
+                    [showFirstLastButtons]="true"
+                    (page) = "paginated($event)"
+                    style="font-size: 10px;">
+        
+                    </mat-paginator> -->
+                </div>
+            </div>
+            
+           
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label>
+                <mat-icon>search</mat-icon>Search For A Customers</mat-label
+            >
+            <input
+                matInput
+                [(ngModel)]="this.datasent.search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+        <div style="margin-left: 42%">
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                matTooltip="Add Employee"
+                [routerLink]="'/analystpro/customers/add'"
+            >
+                <span>Add Customer</span>
+            </button>
+        </div>
+        <div>
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                matTooltip="Export"
+                [matMenuTriggerFor]="menu2"
+            >
+                <span>Export Customer</span>
+            </button>
+        </div>
+        <mat-menu #menu2="matMenu">
+            <!-- Item-menu yang diinginkan -->
+            <button mat-menu-item (click)="exportExcel()">Export Data</button>
+
+            <!-- Item-menu lainnya -->
+        </mat-menu>
+    </div>
+
+    <!-- / TABLE -->
+
+    <div id="table-scroll">
+        <table
+            class="demo"
+            style="width: 100%; overflow: hidden; border: black"
+        >
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center">No</th>
+                    <th style="width: 150px; text-align: center">
+                        Customer Code
+                    </th>
+                    <th style="width: 150px; text-align: center">
+                        Customer Name
+                    </th>
+                    <th style="width: 150px; text-align: center">Termin</th>
+                    <th style="width: 150px; text-align: center">City</th>
+                    <th style="width: 150px; text-align: center">ID</th>
+                    <th style="width: 170px; text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of customersData; let a = index">
+                    <td style="text-align: center">{{ a + 1 }}</td>
+
+                    <td style="text-align: center">
+                        {{ row.kode_customer }}
+                        <button
+                            mat-icon-button
+                            (click)="getInfo(row.id_customer)"
+                        >
+                            <mat-icon>info</mat-icon>
+                        </button>
+                    </td>
+                    <td style="text-align: left">{{ row.customer_name }}</td>
+                    <!-- <td>asdqwe</td> -->
+                    <td style="text-align: center">
+                        {{
+                            row.termin
+                                ? row.termin == "rowash"
+                                    ? row.termin
+                                    : row.termin + " Hari"
+                                : "-"
+                        }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ row.city ? row.city.city_name : "-" }}
+                    </td>
+                    <td style="text-align: center">
+                        {{
+                            row.customer_npwp.length > 0
+                                ? "Avaliable"
+                                : "Not Set"
+                        }}
+                    </td>
+                    <td style="text-align: center">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button
+                                mat-menu-item
+                                [routerLink]="
+                                    '/analystpro/customers/detail/' +
+                                    row.id_customer
+                                "
+                            >
+                                <span>Details</span>
+                            </button>
+                            <button
+                                *ngIf="this.access[0].update > 0"
+                                mat-menu-item
+                                [routerLink]="
+                                    '/analystpro/customers/' + row.id_customer
+                                "
+                            >
+                                <span>Edit</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="deleteLab(row.id)"
+                                *ngIf="this.access[0].delete > 0"
+                            >
+                                <span>Delete</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+</mat-card>

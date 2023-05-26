@@ -1,0 +1,125 @@
+.ng-select {
+    padding-bottom: 0px !important;
+    font-size: 12px !important;
+}
+
+.ng-value-container {
+    .ng-value {
+      white-space: normal !important;
+    }
+  }
+
+mat-form-field.mat-form-field{
+    font-size: 12px;
+}
+.mat-form-field-wrapper{
+    padding-bottom: 0px !important;
+} 
+
+.box-photo {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+    margin: 5px;
+    cursor: pointer;
+}
+.mat-column-no {
+    flex: 0 0 5%;
+}
+mat-table {
+    width: 100%;
+}
+
+.mat-cell {
+    font-size: 10px;
+}
+
+.lab {
+    cursor: pointer;
+}
+
+.parameter-modal{
+    background-color: red;
+}
+
+// .mat-card-header{
+//     background-color: rgb(30, 33, 41) !important;
+//     color: navajowhite !important;
+//     padding:5px !important;
+//   }
+  
+//    .mat-card{
+//     padding:0 !important;
+//   }
+  
+//   .mat-card-content{
+//     padding:5px !important;
+//   }
+
+.mat-header-cell {
+    text-align: center;
+    // background-color: rgb(30, 33, 41);
+    // color: navajowhite !important;
+  }
+
+.div-paketparameter{
+    padding: 10px;
+    width: 100%;
+    font-size: 12px;
+    border: 1px solid #e9e9e9;
+    background-color: #f3f3f3;
+    height: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.div-paketparameter-jumlah {
+    padding: 10px;
+    width: 100%;
+    font-size: 12px;
+    border: 1px solid #e9e9e9;
+    background-color: #f3f3f3;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-paketparameter-price {
+    padding: 10px;
+    width: 100%;
+    font-size: 12px;
+    border: 1px solid #e9e9e9;
+    background-color: #f3f3f3;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+
+.mat-column-no {
+    flex: 0 1 80px;
+}
+
+// .mat-column-lab {
+//     justify-content: center;
+
+// }
+
+// .mat-column-lod {
+//     flex: none;
+//     width: 120px;
+//     justify-content: center;
+// }
+
+// .mat-column-status {
+//     flex: none;
+//     width: 120px;
+//     justify-content: center;
+// }

@@ -1,0 +1,32 @@
+<div  class="dialog-content-wrapper mat-primary m-0">
+    <form name="teamForm"  class="product w-100-p" fxLayout="column" fxFlex>
+    <h1 mat-dialog-title>Change Team</h1>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>       
+        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+            <mat-select 
+            name="team"
+            [(ngModel)]="sendData.team"
+            placeholder="Select Team"
+            class="select-me"
+            style="display: flex;
+            justify-content: center;
+            align-items: center;
+            color:white !important;">
+            <mat-option *ngFor="let groupdata of groupdata" [value]="groupdata.id">
+                {{ groupdata.group_name }}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button  color="primary" aria-label="Submit" (click)="saveForm()">
+          SUBMIT
+        </button>
+        <button mat-stroked-button 
+        color="primary"  aria-label="Close" (click)="closeModal(true)" >
+            CLOSE
+        </button>
+    </div>
+    </form>
+  </div>

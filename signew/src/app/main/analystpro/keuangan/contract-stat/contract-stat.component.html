@@ -1,0 +1,284 @@
+<div id="contract-stat"  class="page-layout simple">
+    <div class="content">        
+        <mat-card >
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <form name="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="50">
+                            <mat-label>Contract Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="this.dataSent.marketing"
+                            name="marketing"
+                            placeholder="Invoce Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="24">
+                            <mat-label>PO Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="this.dataSent.ponumber"
+                            name="ponumber"
+                            placeholder="PO Number">
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex="24" fxHide fxShow.gt-xs>
+                            <mat-label>Contract Date</mat-label>
+                            <input matInput [matDatepicker]="picker"  [(ngModel)]="this.dataSent.contractdate" name="contractdate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>                   
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        
+                        <mat-form-field appearance="outline" style="font-size: 12px" fxFlex="19">
+                            <mat-label>Category</mat-label>
+                                <mat-select placeholder="Category"
+                                name="category"
+                                (clear)="reset('category')"
+                                class="select-me"
+                                [(ngModel)]="this.dataSent.category"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; width: 100%;
+                                color:white !important;">
+                                <mat-option *ngFor="let contractcategory of contractcategory" [value]="contractcategory.id">
+                                   ( {{ contractcategory.category_code }} ) {{ contractcategory.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px" fxFlex="19" fxHide fxShow.gt-xs>
+                            <mat-label>Status Fin</mat-label>
+                              <mat-select                   
+                                class="select-me"
+                                name="status"                                
+                                [(ngModel)]="this.dataSent.status"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; 
+                                color:white !important;">
+                                <mat-option *ngFor="let status_invoice of status_invoice" [value]="status_invoice.id">
+                                    {{ status_invoice.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <ng-select 
+                        appearance="outline"
+                        appendTo="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        bindValue="id_customer"                         
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        fxFlex="38" fxHide fxShow.gt-xs
+                        [clearable]="false" 
+                        placeholder="Select Customer" 
+                        name="customers"                        
+                        [(ngModel)]="this.dataSent.customers"
+                        dropdownPosition="bottom" 
+                        style="display: flex; justify-content: center; align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select> 
+
+                        <button mat-raised-button color="accent"  fxFlex="10"  fxFlex.xs="23" style="height: 42px; width:250px; margin-top: -13px;" (click)="searchButton()">
+                            Search
+                        </button>
+                        <button mat-raised-button color="warn" fxFlex="10"  fxFlex.xs="23" style="height: 42px; width: 100%; margin-top: -13px;" (click)="cancelSearchMark()">
+                            Reset
+                        </button>
+
+                    </div>
+                   </form>
+
+                </div>
+        </mat-card>
+        <mat-card style="margin-top: -35px;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-weight: bold; color: #696969;" fxHide fxShow.gt-md>Finder Finance | </span>
+                      <button mat-icon-button color="white" 
+                        class="contract-certficate"
+                        matTooltip="Add Invoce"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        [routerLink]="'/analystpro/finance-invoice/add'"
+                        style="margin-left: -2px;">
+                            <mat-icon>library_add</mat-icon>
+                     </button>
+        
+                </div>
+                <div>
+                    <mat-paginator #paginator
+                    [length]="total"
+                    [pageIndex]="from"
+                    [pageSize]="to"
+                    [hidePageSize]="true"
+                    [showFirstLastButtons]="true"
+                    (page) = "paginated($event)"
+                    style="font-size: 10px;"
+                    *ngIf="this.total > 0">
+        
+                    </mat-paginator>
+                </div>
+            </div>
+            
+           
+        </mat-card>
+        <mat-card>
+            
+             <!-- / SEARCH FILTER -->
+             <mat-table class="cert-table" #table [dataSource]="datainvoice" matSort (matSortChange)="sortData($event)"
+             [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.datainvoice.length > 0">
+             
+             <!-- Column -->
+             <ng-container matColumnDef="contract_no">
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract Number</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice">
+                     <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ datainvoice.contract_no }}">{{ datainvoice.contract_no }}</span>
+                        <span matTooltip="{{ datainvoice.category}}" style="font-size: 10px;">{{ datainvoice.category }}</span>
+                    </div>
+                 </mat-cell>
+             </ng-container>
+ 
+              <!-- Column -->
+              <ng-container matColumnDef="customer_name">
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="customer_name">Customer</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ datainvoice.customer_name }}">{{ datainvoice.customer_name }}</span>
+                        <span class="text-truncate" matTooltip="{{ datainvoice.contact_person }}"
+                            style="color: f5f5f5; font-size: 10px; font-style: italic;">{{ datainvoice.contact_person }}
+                        </span>
+                    </div>
+
+                     
+                 </mat-cell>
+             </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="hold">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="hold">Hold</mat-header-cell>
+                <mat-cell *matCellDef="let datainvoice">
+                    <div fxLayout="column">
+                        <span class="text-truncate"
+                         style="color: #911F27; font-size: 10px; margin-top: 5px;" matTooltip="hold" *ngIf="this.datainvoice.hold == 'Y'"><mat-icon style="font-size: 20px;">lock</mat-icon>
+                         </span>
+                         <span class="text-truncate"
+                         style="color: #3DB2FF; font-size: 10px; margin-top: 5px;" matTooltip="unhold" *ngIf="this.datainvoice.hold == 'N'"><mat-icon style="font-size: 20px;">lock_open</mat-icon>
+                         </span>
+                     </div>
+                </mat-cell>
+            </ng-container>
+ 
+              <!-- Column -->
+              <ng-container matColumnDef="total">
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="total">Total</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice">
+                     <div fxLayout="column">
+                         <span class="text-truncate" matTooltip="{{ datainvoice.total.toLocaleString() }}">
+                             Rp. {{ datainvoice.total.toLocaleString() }}
+                         </span>
+                     </div>
+                 </mat-cell>
+             </ng-container>
+ 
+              <!-- Column -->
+              <ng-container matColumnDef="payment">
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="payment">Payment</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice">
+                     <div fxLayout="column">
+                         <span class="text-truncate" matTooltip="{{ datainvoice.payments.toLocaleString() }}">
+                             Rp. {{ datainvoice.payments.toLocaleString() }}
+                         </span>
+                     </div>
+                 </mat-cell>
+             </ng-container>
+ 
+               <!-- Column -->
+               <ng-container matColumnDef="status_invoice">
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="status_invoice">Invoice</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice">
+                         <div class="box-normal" *ngIf="this.datainvoice.invoice_status == 1" >
+                             <p class="text-truncate" matTooltip="already">already</p>
+                         </div>
+                         <div class="box-very-urgent" *ngIf="this.datainvoice.invoice_status == 0 || this.datainvoice.invoice_status == NULL" >
+                             <p class="text-truncate" matTooltip="not yet">not yet</p>
+                         </div>
+                         <div class="box-very-urgent" *ngIf="this.datainvoice.invoice_status == 2" >
+                            <p class="text-truncate" matTooltip="submission">submission</p>
+                        </div>
+                 </mat-cell>
+             </ng-container>
+ 
+              <!-- Column -->
+              <ng-container matColumnDef="action" >
+                 <mat-header-cell *matHeaderCellDef mat-sort-header="icon" fxHide fxShow.gt-md>Action</mat-header-cell>
+                 <mat-cell *matCellDef="let datainvoice; let indexOfelement=index;" fxHide fxShow.gt-md>
+                     <div fxFlex="row" fxLayoutAlign="center">
+                        <button mat-icon-button color="primary"  class="btn-icon-control" matTooltip="Detail" aria-label="Sample" (click)="goDetail(datainvoice.id)">
+                            <mat-icon>folder</mat-icon>
+                        </button>
+                         <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                         (click)="$event.stopPropagation();">
+                             <mat-icon  class="secondary-text">more_vert</mat-icon>
+                         </button>
+                         <mat-menu #moreMenu="matMenu">
+                             <button mat-menu-item aria-label="copy" (click)="holdButton('N', datainvoice.id)" *ngIf="this.datainvoice.hold == 'Y' && !this.notshowing"  style="background-color : #64C9CF;">
+                                 <mat-icon style="color:white;">check_circle</mat-icon>
+                                 <span style="color:white;">Unhold</span>
+                             </button>
+                             <button mat-menu-item aria-label="copy" (click)="holdButton('Y', datainvoice.id)" *ngIf="this.datainvoice.hold == 'N' && !this.notshowing" style="background-color : #FF3D68;">
+                                 <mat-icon>highlight_off</mat-icon>
+                                 <span>Hold</span>
+                             </button>
+                             <button mat-menu-item aria-label="update" (click)="openPdf(datainvoice.id,'preview')">
+                                 <mat-icon>insert_drive_file</mat-icon>
+                                 <span>Contract</span>
+                             </button>
+                             <button mat-menu-item aria-label="update" (click)="openPerforma(datainvoice.id,'preview')">
+                                <mat-icon>insert_drive_file</mat-icon>
+                                <span>Performa</span>
+                            </button>
+                            <div>
+                                <button mat-menu-item aria-label="update" (click)="approve(datainvoice.id)" *ngIf="datainvoice.invoice_status == 2">
+                                    <mat-icon>check</mat-icon>
+                                    <span>Approve Revision</span>
+                                </button>
+                            </div>
+                         </mat-menu>
+                     </div>
+                 </mat-cell>
+             </ng-container>
+ 
+             <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+             <mat-row *matRowDef="let datainvoice; columns: displayedColumns;" 
+             class="standart"
+             matRipple>
+             </mat-row>
+         </mat-table>
+ 
+         
+
+        </mat-card>
+
+        <div *ngIf="loadingfirst && this.datainvoice.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.datainvoice.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+    </div>
+
+</div>

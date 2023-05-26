@@ -1,0 +1,21 @@
+@import "src/@fuse/scss/fuse";
+
+#download-screen {
+    display: flex;
+    width: 100%;
+    background-color: #fff;
+    z-index: 99999;
+    pointer-events: none;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    span {
+        color: #0cc3be;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 15px;
+        position: absolute;
+        bottom: 30px;
+    }
+}

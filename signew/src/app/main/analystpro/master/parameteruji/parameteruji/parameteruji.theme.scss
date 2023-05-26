@@ -1,0 +1,118 @@
+.green-status {
+    // width: 30%;
+    // height: 20px;
+    background-color: rgb(186, 253, 189);
+    display: flex;
+    // justify-content: center;
+
+    .text-truncate {
+        color: #1a1919;
+        font-size: 10px;
+        text-align: center;
+    }
+}
+
+.red-status {
+    width: 30%;
+    height: 20px;
+    background-color: #ffcfcf;
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+
+    .text-truncate {
+        color: rgb(24, 22, 22);
+        font-size: 10px;
+        text-align: center;
+    }
+}
+
+.border-search {
+    width: 75%;
+    height: 40px;
+    // border-radius: 20px;
+    border: 1px solid lightgray;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 12px !important;
+}
+
+ng-select {
+    width: 100%;
+}
+
+.box-normal {
+    width: 90px;
+    height: 20px;
+    border-radius: 15px;
+    background-color: #036f33;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .text-truncate {
+        color: #ffffff;
+        font-size: 10px;
+    }
+}
+
+.box-danger {
+    width: 90px;
+    height: 20px;
+    border-radius: 15px;
+    background-color: #66000a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .text-truncate {
+        color: #ffffff;
+        font-size: 10px;
+    }
+}
+
+.box-warn {
+    width: 120px;
+    height: 20px;
+    border-radius: 15px;
+    background-color: #857100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .text-truncate {
+        color: #ffffff;
+        font-size: 10px;
+    }
+}
+
+th {
+    border: 1px solid #ddd;
+    padding: 5px;
+    font-size: 11px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #292d38;
+    color: white;
+}

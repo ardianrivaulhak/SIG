@@ -1,0 +1,216 @@
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;" *ngIf="this.datasample.length > 0">
+    <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Sample Information</div>
+    <div style="border-bottom: 2px solid #fbfbfb;"></div>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+        <mat-tab-group *ngIf="this.datasample.length > 0">
+            <mat-tab>
+
+                <ng-template mat-tab-label >
+                    <mat-icon (click)="clickTab(false)">assignment_ind</mat-icon>
+                    <span (click)="clickTab(false)">&nbsp; Sample</span>
+                </ng-template>
+                <h2 style="font-weight:bolder; margin-bottom:30px;">Contract Information</h2>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Contract Number</span>
+                        <p style="font-size:11px;">{{ this.datasample[0].kontrakuji.contract_no }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Category</span>
+                        <p style="font-size:11px;">{{ datasample[0].kontrakuji.contract_category.title }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Customer</span>
+                        <p style="font-size:11px;">{{ datasample[0].kontrakuji.customers_handle.customers.customer_name }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Contact Person</span>
+                        <p style="font-size:11px;">{{ this.datasample[0].kontrakuji.customers_handle.contact_person.name }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Phone/Mobile</span>
+                        <p style="font-size:11px;">{{  this.datasample[0].kontrakuji.customers_handle.telp == '-' ? '-' : '+62' + this.datasample[0].kontrakuji.customers_handle.telp }} / {{ this.datasample[0].kontrakuji.customers_handle.phone == '-' ? '-' : '+62' + this.datasample[0].kontrakuji.customers_handle.phone }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="60">                    
+                        <span style="font-weight: 700;">Address</span>
+                        <p style="font-size:11px;">{{ this.datasample[0].kontrakuji.cust_address.address }}</p>
+                    </div>
+                </div>
+
+                <h2 style="font-weight:bolder; margin-bottom:30px;">Sample Information</h2>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Sample Number</span>
+                        <p style="font-size:11px;">{{ this.datasample[0].no_sample }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Sample Name</span>
+                        <p style="font-size:11px;">{{ datasample[0].sample_name }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Bacth Number</span>
+                        <p style="font-size:11px;">{{ this.datasample[0].batch_number }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Sample Code</span>
+                        <p style="font-size:11px;">{{ datasample[0].kode_sample }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Start Date</span>
+                        <p style="font-size:11px;">{{ datasample[0].tgl_input | date: 'fullDate' }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">End Date</span>
+                        <p style="font-size:11px;">{{ datasample[0].tgl_selesai | date: 'fullDate'  }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Input Sample</span>
+                        <p style="font-size:11px;">{{ datasample[0].tgl_input | date: 'fullDate'  }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Factory</span>
+                        <p style="font-size:11px;">{{ datasample[0].nama_pabrik }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Submission</span>
+                        <p style="font-size:11px;">{{ datasample[0].no_notifikasi }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Registrasi</span>
+                        <p style="font-size:11px;">{{ datasample[0].no_registrasi }}</p>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 20px;">
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Principal Code</span>
+                        <p style="font-size:11px;">{{ datasample[0].no_principalcode }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Production Date	</span>
+                        <p style="font-size:11px;">{{ datasample[0].tgl_produksi | date: 'fullDate'  }}</p>
+                    </div>
+                    <div  fxFlex="30">                    
+                        <span style="font-weight: 700;">Expired Date</span>
+                        <p style="font-size:11px;">{{ datasample[0].tgl_kadaluarsa | date: 'fullDate'  }}</p>
+                    </div>
+                </div>
+
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon (click)="clickTab(true)">assignment</mat-icon>
+                    <span (click)="clickTab(true)">&nbsp; Parameters</span>
+                </ng-template>
+                <mat-table class="sample-cert-table" #table [dataSource]="dataparameter" matSort (matSortChange)="sortData($event)"
+                [@animate]="{value:'*',params:{delay:'120ms',y:'-25px'}}" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+    
+                    <!-- Column -->
+                    <ng-container matColumnDef="parameter_id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="parameter_id">ID</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.parameteruji.name_id }}">{{ dataparameter.parameteruji.name_id }}</p>
+                        </mat-cell>
+                    </ng-container>
+    
+                    <!-- Column -->
+                    <ng-container matColumnDef="parameter_en">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="parameter_en">EN</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.parameteruji.name_id }}">{{ dataparameter.parameteruji.name_id }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="hasiluji">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="hasiluji">AVG</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.hasiluji }}">{{ dataparameter.hasiluji }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="simplo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="simplo">Simplo</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.simplo }}">{{ dataparameter.simplo }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="duplo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="duplo">Duplo</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.duplo }}">{{ dataparameter.duplo }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="triplo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="triplo">Triplo</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.triplo }}">{{ dataparameter.triplo }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="standart">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="standart">Standart</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.standart == null ? ' ' : dataparameter.standart.nama_standart  }}">{{ dataparameter.standart == null ? ' ' : dataparameter.standart.nama_standart }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="lod">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="lod">LOD</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.lod == null ? ' ' : dataparameter.lod.nama_lod }}">{{ dataparameter.lod == null ? ' ' : dataparameter.lod.nama_lod }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="unit">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="unit">Unit</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.unit == null ? ' ' : dataparameter.unit.nama_unit }}">{{ dataparameter.unit == null ? ' ' : dataparameter.unit.nama_unit }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- Column -->
+                     <ng-container matColumnDef="metode">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="metode">Metode</mat-header-cell>
+                        <mat-cell *matCellDef="let dataparameter">
+                            <p class="text-truncate" matTooltip="{{ dataparameter.metode == null ? ' ' : dataparameter.metode.metode }}">{{ dataparameter.metode == null ? ' ' : dataparameter.metode.metode }}</p>
+                        </mat-cell>
+                    </ng-container>
+    
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                    <mat-row *matRowDef="let dataSampleLab; columns: displayedColumns;"
+                    class="standart"
+                    matRipple>
+    
+                    </mat-row>
+                </mat-table>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    <div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+        <button mat-stroked-button 
+        fxFlex="12"  fxFlex.xs="12"
+        style="margin-right:50px; width:250px;"
+        color="primary" (click)="closeDialog(true)" aria-label="Close">
+            Close
+        </button>
+    </div>
+</div>

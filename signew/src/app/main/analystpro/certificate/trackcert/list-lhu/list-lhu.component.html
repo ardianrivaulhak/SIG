@@ -1,0 +1,32 @@
+<div  class="dialog-content-wrapper mat-primary m-0">
+    <h1 mat-dialog-title>List LHU</h1>
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>  
+        <div *ngIf="this.certData.length > 0" style="width: 100%;">
+            <div fxLayout="row" 
+            fxLayoutAlign="space-between center"
+            *ngFor="let item of this.certData" style="margin-bottom: 10px;" >
+                <div fxLayout="column" fxLayoutAlign="center start" >
+                    <span style="font-size: 11px; font-weight: bold;">{{ item.lhu_number }}</span>
+                    <span style="font-size: 10px;">{{ item.sample_name }}</span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" >
+                    <a (click)="goCertificate(item.id, 'ID')"><img style="width: 20px; margin-top:10px;" src="assets/images/flags/indonesia.svg"/></a>&nbsp;
+                    <a (click)="goCertificate(item.id, 'EN')">  <img style="width: 20px; margin-top:10px;" src="assets/images/flags/uk.svg"/></a> 
+                </div>
+           </div>
+        </div> 
+
+          <div *ngIf="this.certData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+    </div>
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-stroked-button 
+        color="primary"  
+        aria-label="Close" 
+        (click)="closeModal(true)" >
+            CLOSE
+        </button>
+    </div>
+  </div>

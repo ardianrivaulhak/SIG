@@ -1,0 +1,1354 @@
+<div
+    *ngIf="loading"
+    style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+        width: 100%;
+    "
+>
+    <img style="width: 10%" src="assets/images/gif/loading.gif" />
+    <span>Please Wait</span>
+</div>
+<mat-dialog-content *ngIf="!loading" class="mat-typography" style="width: 100%; height: 500px" id="formform">
+    <div
+        fxLayout="column"
+        fxLayoutAlign="start start"
+        style="width: 100%; overflow: auto"
+        *ngIf="this.ready"
+    >
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            style="width: 100%"
+        >
+            <h2 class="subjudul">
+                Sample Information (
+                {{
+                    this.formSample.no_sample
+                        ? this.formSample.no_sample
+                        : this.formSample.sample_name
+                }}
+                )
+            </h2>
+            <div class="lineborder"></div>
+        </div>
+
+        <mat-grid-list
+            cols="4"
+            rowHeight="100px"
+            gutterSize="10px"
+            style="width: 100%"
+        >
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Kode Sample</mat-label>
+                    <input matInput [(ngModel)]="formSample.kode_sample" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appearance="outline"
+                    [items]="tujuanpengujian"
+                    bindLabel="name"
+                    appendTo="body"
+                    bindValue="id"
+                    placeholder="Tujuan Pengujian"
+                    [(ngModel)]="formSample.tujuanpengujian"
+                    (clear)="resetCalculations('tujuanpengujian')"
+                    dropdownPosition="bottom"
+                >
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appearance="fill"
+                    [items]="statuspengujiandata"
+                    bindLabel="status"
+                    appendTo="body"
+                    bindValue="id"
+                    placeholder="Status Pengujian"
+                    [(ngModel)]="formSample.statuspengujian"
+                    dropdownPosition="bottom"
+                    (change)="getValPengujian($event)"
+                    [clearable]="false"
+                >
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                    appearance="fill"
+                    appendTo="body"
+                    [items]="subCatalogueData"
+                    [(ngModel)]="formSample.subcatalogue"
+                    bindLabel="sub_catalogue_name"
+                    bindValue="id_sub_catalogue"
+                    placeholder="Select Kategori Sample"
+                    dropdownPosition="bottom"
+                    (scrollToEnd)="OnScrollEnd('subcatalogue')"
+                    (search)="onSearchi($event, 'subcatalogue')"
+                    (clear)="resetAll('subcatalogue')"
+                >
+                    <ng-template
+                        ng-option-tmp
+                        let-item="item"
+                        let-index="index"
+                    >
+                        <div title="{{ item.sub_catalogue_name }}">
+                            <b>{{ item.sub_catalogue_code }}</b
+                            >&nbsp;-&nbsp;{{ item.sub_catalogue_name }}
+                        </div>
+                    </ng-template>
+                    <ng-template ng-label-tmp let-item="item">
+                        <div title="{{ item.sub_catalogue_name }}">
+                            <b>{{ item.sub_catalogue_code }}</b
+                            >&nbsp;-&nbsp;{{ item.sub_catalogue_name }}
+                        </div>
+                    </ng-template>
+                </ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important"
+                >
+                    <mat-label>Tanggal Input</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="tgl_input"
+                        [(ngModel)]="formSample.tgl_input"
+                        disabled
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="tgl_input">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker
+                        #tgl_input
+                        disabled="false"
+                    ></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important"
+                >
+                    <mat-label>Tanggal Selesai</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="tgl_selesai"
+                        [(ngModel)]="formSample.tgl_selesai"
+                        disabled
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="tgl_selesai"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #tgl_selesai
+                        disabled="false"
+                    ></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important"
+                >
+                    <mat-label>Tanggal Produksi</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="tglprod"
+                        [(ngModel)]="formSample.tgl_produksi"
+                        disabled
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="tglprod">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #tglprod disabled="false"></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important"
+                >
+                    <mat-label>Tanggal Kadaluarsa</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="tgl_kadaluarsa"
+                        [(ngModel)]="formSample.tgl_kadaluarsa"
+                        disabled
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="tgl_kadaluarsa"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                        #tgl_kadaluarsa
+                        disabled="false"
+                    ></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Factory Name</mat-label>
+                    <input matInput [(ngModel)]="formSample.factoryname" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="
+                        resize: none;
+                        width: 95% !important;
+                        align-self: center;
+                    "
+                >
+                    <mat-label>Factory Address</mat-label>
+                    <textarea
+                        matInput
+                        [(ngModel)]="formSample.factory_address"
+                        placeholder="Factory Address"
+                        rows="1"
+                    >
+                    </textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Trade Mark</mat-label>
+                    <input matInput [(ngModel)]="formSample.trademark" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Lot Number</mat-label>
+                    <input matInput [(ngModel)]="formSample.lotno" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Jenis Kemasan</mat-label>
+                    <input matInput [(ngModel)]="formSample.jeniskemasan" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Batch Number</mat-label>
+                    <input matInput [(ngModel)]="formSample.batchno" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>No Notifikasi</mat-label>
+                    <input matInput [(ngModel)]="formSample.no_notifikasi" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>No Pengajuan</mat-label>
+                    <input matInput [(ngModel)]="formSample.no_pengajuan" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>No Registrasi</mat-label>
+                    <input matInput [(ngModel)]="formSample.no_registrasi" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>No Principal Code</mat-label>
+                    <input matInput [(ngModel)]="formSample.no_principalCode" />
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="width: 95% !important; align-self: center"
+                >
+                    <mat-label>Certificate Info</mat-label>
+                    <mat-select [(ngModel)]="formSample.certificate_info">
+                        <mat-option value="1">Draft</mat-option>
+                        <mat-option value="0">Release</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field
+                    appearance="outline"
+                    style="
+                        resize: none;
+                        width: 95% !important;
+                        align-self: center;
+                    "
+                >
+                    <mat-label>Keterangan Lain</mat-label>
+                    <textarea
+                        matInput
+                        [(ngModel)]="formSample.ket_lain"
+                        placeholder="Ket. Lain"
+                        rows="1"
+                    >
+                    </textarea>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <div
+            fxFlex="100"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            style="width: 100%"
+        >
+            <h2 class="subjudul">Parameter Info</h2>
+            <div class="lineborder"></div>
+        </div>
+
+        <mat-tab-group
+            color="warn"
+            class="mat-elevation-z4"
+            mat-align-tabs="end"
+            style="width: 100%; align-self: center; min-height: 400px"
+        >
+            <mat-tab label="Non Package">
+                <div style="width: 100%; padding: 5px; min-height: 400px">
+                    <mat-grid-list cols="4" rowHeight="100px">
+                        <mat-grid-tile>
+                            <ng-select
+                                appendTo="body"
+                                [items]="dataFormatHasil"
+                                appearance="outline"
+                                bindLabel="id"
+                                bindValue="hasil"
+                                placeholder="Select Format Hasil"
+                                dropdownPosition="bottom"
+                                [(ngModel)]="np.formathasil"
+                                (change)="getValformatHasil($event)"
+                                style="width: 90%; align-self: center"
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                >
+                                    {{ item.hasil }}
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    {{ item.hasil }}
+                                </ng-template>
+                            </ng-select>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <ng-select
+                                appendTo="body"
+                                [items]="dataParameter"
+                                bindLabel="name_id"
+                                appearance="outline"
+                                bindValue="id"
+                                placeholder="Select Parameter Uji"
+                                dropdownPosition="bottom"
+                                [(ngModel)]="np.parameteruji"
+                                (scrollToEnd)="OnScrollEnd('parameteruji')"
+                                (change)="getValParameter($event)"
+                                (search)="
+                                    onSearchParameter('parameteruji', $event)
+                                "
+                                (clear)="clearSelect('parameteruji')"
+                                (close)="clearSelect('parameteruji')"
+                                style="width: 90%; align-self: center"
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                >
+                                    <div title="{{ item.name_id }}">
+                                        <b>{{ item.name_id }}</b>
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <div title="{{ item.name_id }}">
+                                        <b>{{ item.name_id }}</b>
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <ng-select
+                                appendTo="body"
+                                [items]="dataParameterPrice"
+                                appearance="outline"
+                                bindLabel="id"
+                                bindValue="price"
+                                placeholder="Select Price"
+                                dropdownPosition="bottom"
+                                (change)="getValPrice($event)"
+                                [(ngModel)]="np.price"
+                                (clear)="clearSelect('parameteruji')"
+                                (close)="clearSelect('parameterprice')"
+                                style="width: 90%; align-self: center"
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                >
+                                    {{ item.price.toLocaleString() }}
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    {{ item.price.toLocaleString() }}
+                                </ng-template>
+                            </ng-select>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <button
+                                mat-mini-fab
+                                color="primary"
+                                title="Add Parameter"
+                                (click)="tambahnonpaket()"
+                                [disabled]="buttononpaket"
+                            >
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="warn"
+                                title="Delete Parameter"
+                                (click)="deletenonpaket()"
+                            >
+                                <mat-icon>delete_sweep</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="accent"
+                                title="Undo All"
+                                (click)="undoAllParameter()"
+                                [disabled]="
+                                    this.temporary.nonpaket.length > 0
+                                        ? false
+                                        : true
+                                "
+                            >
+                                <mat-icon>playlist_add_check</mat-icon>
+                            </button>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+
+                    <table
+                        class="parameter"
+                        *ngIf="this.formSample.nonpaket.length > 0"
+                    >
+                        <thead>
+                            <tr>
+                                <th>Act</th>
+                                <th>Parameter Name</th>
+                                <th>Lab</th>
+                                <th>Type</th>
+                                <th>Format Hasil</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody
+                            *ngFor="
+                                let u of this.formSample.nonpaket;
+                                let i = index
+                            "
+                        >
+                            <tr>
+                                <td>
+                                    <div
+                                        fxLayoutAlign="center center"
+                                        style="width: 100%"
+                                    >
+                                        <button
+                                            mat-icon-button
+                                            color="warn"
+                                            title="Delete Parameter"
+                                            (click)="deleteParameterUji(i)"
+                                        >
+                                            <mat-icon>delete_sweep</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td>{{ u.parametername }}</td>
+                                <td>{{ u.nama_lab }}</td>
+                                <td>{{ u.parametertype }}</td>
+                                <td>{{ u.formathasil }}</td>
+                                <td>
+                                    <div
+                                        fxLayoutAlign="end center"
+                                        style="width: 100%"
+                                    >
+                                        {{ u.price.toLocaleString() }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <mat-list
+                        *ngIf="this.formSample.nonpaket.length < 1"
+                        style="width: 100%"
+                    >
+                        <mat-list-item style="width: 100%">
+                            <div
+                                fxLayout="row"
+                                fxLayoutAlign="center center"
+                                style="width: 100%"
+                            >
+                                <span>Tidak ada Non Paket Parameter</span>
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
+                    <div
+                        style="width: 100%"
+                        fxLayoutAlign="end center"
+                        fxLayout="row"
+                    >
+                        <span
+                            style="
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 10px;
+                            "
+                            >Total Harga Rp.
+                            {{
+                                this.getTotalNonPaket() > 0
+                                    ? this.getTotalNonPaket().toLocaleString()
+                                    : 0
+                            }}</span
+                        >
+                    </div>
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Temporary Deleted Parameter
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    Deleted Parameter :
+                                    {{ this.temporary.nonpaket.length }}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <table class="parameter">
+                                <thead>
+                                    <tr>
+                                        <th>Act</th>
+                                        <th>Parameter Name</th>
+                                        <th>Lab</th>
+                                        <th>Type</th>
+                                        <th>Format Hasil</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngFor="
+                                        let x of this.temporary.nonpaket;
+                                        let z = index
+                                    "
+                                >
+                                    <tr>
+                                        <td>
+                                            <div
+                                                fxLayoutAlign="center center"
+                                                style="width: 100%"
+                                            >
+                                                <button
+                                                    mat-icon-button
+                                                    color="warn"
+                                                    title="Undo"
+                                                    (click)="bringback(z)"
+                                                >
+                                                    <mat-icon>undo</mat-icon>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>{{ x.parametername }}</td>
+                                        <td>{{ x.nama_lab }}</td>
+                                        <td>{{ x.parametertype }}</td>
+                                        <td>{{ x.formathasil }}</td>
+                                        <td>
+                                            <div
+                                                fxLayoutAlign="end center"
+                                                style="width: 100%"
+                                            >
+                                                {{ x.price.toLocaleString() }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </mat-tab>
+            <mat-tab label="Package">
+                <div style="width: 100%; padding: 5px; min-height: 400px">
+                    <mat-grid-list cols="4" rowHeight="100px">
+                        <mat-grid-tile colspan="2">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="dataPaketuji"
+                                bindLabel="nama_paketuji"
+                                bindValue="id"
+                                placeholder="Select Paket"
+                                dropdownPosition="bottom"
+                                (scrollToEnd)="OnScrollEnd('paketparameter')"
+                                [(ngModel)]="pp.paketuji"
+                                (search)="
+                                    onSearchParameter('paketparameter', $event)
+                                "
+                                (clear)="clearSelect('paketparameter')"
+                                (close)="clearSelect('paketparameter')"
+                                style="width: 95%; align-self: center"
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                    style="z-index: 1000 !important"
+                                >
+                                    <div title="{{ item.nama_paketuji }}">
+                                        <b>{{ item.nama_paketuji }}</b
+                                        >&nbsp;-&nbsp;{{
+                                            item.price
+                                                ? item.price.toLocaleString()
+                                                : 0
+                                        }}
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <div title="{{ item.nama_paketuji }}">
+                                        <b>{{ item.nama_paketuji }}</b
+                                        >&nbsp;-&nbsp;{{
+                                            item.price
+                                                ? item.price.toLocaleString()
+                                                : 0
+                                        }}
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </mat-grid-tile>
+                        <mat-grid-tile>
+                            <button
+                                mat-mini-fab
+                                color="primary"
+                                title="Add Package"
+                                (click)="tambahpaket()"
+                            >
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="warn"
+                                title="Delete Package"
+                                (click)="deletepaket()"
+                                [disabled]="disabledPackageDelete"
+                            >
+                                <mat-icon>delete_sweep</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="accent"
+                                title="{{
+                                    this.check % 2 == 0 ? 'Uncheck' : 'Check'
+                                }} All Package"
+                                (click)="checkallpackage('package')"
+                                [disabled]="
+                                    this.formSample.paketparameter.length > 0
+                                        ? false
+                                        : true
+                                "
+                            >
+                                <mat-icon>playlist_add_check</mat-icon>
+                            </button>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <div *ngIf="this.formSample.paketparameter.length > 0">
+                        <mat-accordion
+                            class="example-headers-align"
+                            multi
+                            *ngFor="
+                                let a of this.formSample.paketparameter;
+                                let i = index
+                            "
+                        >
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <div
+                                        fxFlex
+                                        fxLayout="row"
+                                        fxLayoutAlign="center center"
+                                        style="width: 100%; font-size: 12px"
+                                    >
+                                        <div
+                                            style="flex: 2"
+                                            fxLayout="row"
+                                            fxLayoutAlign="space-between center"
+                                            fxLayoutGap="5px"
+                                        >
+                                            <mat-checkbox
+                                                style="font-size: 12px"
+                                                class="checkbox-control"
+                                                color="primary"
+                                                [checked]="a.checked"
+                                                (change)="
+                                                    checkedPackage(
+                                                        $event.checked,
+                                                        a,
+                                                        i
+                                                    )
+                                                "
+                                                >&nbsp;</mat-checkbox
+                                            >
+                                            <div
+                                                fxLayout="row"
+                                                fxLayoutAlign="space-between start"
+                                                style="width: 100%"
+                                                fxLayoutGap="10px"
+                                            >
+                                                <div
+                                                    style="flex: 2"
+                                                    fxLayoutAlign="start start"
+                                                    fxLayout="row"
+                                                    fxLayoutGap="5px"
+                                                >
+                                                    <span
+                                                        style="
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{ a.paketcode }}</span
+                                                    >
+                                                    <span>-</span>
+                                                    <div
+                                                        title="{{
+                                                            a.paketname
+                                                        }}"
+                                                        style="
+                                                            width: 400px;
+                                                            white-space: nowrap;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;
+                                                        "
+                                                    >
+                                                        <span>{{
+                                                            a.paketname
+                                                        }}</span>
+                                                    </div>
+                                                </div>
+                                                <span style="flex: 0.2"
+                                                    >(
+                                                    {{ a.parameter.length }}
+                                                    )</span
+                                                >
+                                            </div>
+                                        </div>
+                                        <div
+                                            fxLayout="row"
+                                            fxLayoutGap="5px"
+                                            fxLayoutAlign="space-between center"
+                                            style="flex: 1; margin-right: 10px"
+                                        >
+                                            <div style="margin-right: 5px">
+                                                <span>{{
+                                                    a.discount == 1
+                                                        ? "Get Disc"
+                                                        : "Didn`t get Disc"
+                                                }}</span>
+                                            </div>
+                                            <span
+                                                >Rp.
+                                                {{
+                                                    a.price
+                                                        ? a.price.toLocaleString()
+                                                        : 0
+                                                }}</span
+                                            >
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel-header>
+
+                                <mat-grid-list cols="7" rowHeight="100px">
+                                    <mat-grid-tile colspan="0.5">
+                                        <button
+                                            mat-mini-fab
+                                            color="warn"
+                                            title="Delete Package"
+                                            (click)="deletepaket(a)"
+                                        >
+                                            <mat-icon>delete_sweep</mat-icon>
+                                        </button>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile
+                                        (click)="sortData(i)"
+                                        style="cursor: pointer"
+                                    >
+                                        <span style="font-weight: bold"
+                                            >Paramater Name</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Lod</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Lab</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Metode</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Standart</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Satuan</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-divider></mat-divider>
+                                </mat-grid-list>
+
+                                <mat-grid-list
+                                    cols="7"
+                                    rowHeight="100px"
+                                    *ngFor="let b of a.parameter; let z = index"
+                                >
+                                    <mat-grid-tile>
+                                        <button
+                                            mat-icon-button
+                                            color="warn"
+                                            title="Delete Package"
+                                            (click)="
+                                                deletepaketdetailfunc(i, z, b)
+                                            "
+                                        >
+                                            <mat-icon>delete_sweep</mat-icon>
+                                        </button>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div
+                                            style="
+                                                width: 80%;
+                                                text-align: left;
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            {{ b.parametername }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            <span>{{
+                                                b.lod ? b.lod : "-"
+                                            }}</span>
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{ b.lab ? b.lab : "-" }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{ b.metode ? b.metode : "-" }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{ b.standart ? b.standart : "-" }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{ b.unit ? b.unit : "-" }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-divider></mat-divider>
+                                </mat-grid-list>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div
+                        style="width: 100%"
+                        fxLayoutAlign="end center"
+                        fxLayout="row"
+                    >
+                        <span
+                            style="
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 10px;
+                            "
+                            >Total Harga Paket
+                            {{
+                                this.getTotalPaketParameter() > 0
+                                    ? this.getTotalPaketParameter().toLocaleString()
+                                    : 0
+                            }}</span
+                        >
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Special Package">
+                <div style="width: 100%; padding: 5px">
+                    <mat-grid-list cols="4" rowHeight="100px">
+                        <mat-grid-tile colspan="2">
+                            <ng-select
+                                appearance="outline"
+                                appendTo="body"
+                                [items]="dataPaketPKM"
+                                bindLabel="package_name"
+                                bindValue="mstr_specific_package_id"
+                                placeholder="Select Special Package"
+                                dropdownPosition="bottom"
+                                (scrollToEnd)="OnScrollEnd('paketPKM')"
+                                [(ngModel)]="pkmval"
+                                (search)="onSearchi($event,'paketPKM')"
+                                (clear)="clearSelect('paketPKM')"
+                                (close)="clearSelect('paketPKM')"
+                                style="width: 100%; align-self: center"
+                            >
+                                <ng-template
+                                    ng-option-tmp
+                                    let-item="item"
+                                    let-index="index"
+                                >
+                                    <div title="{{ item.package_name }}">
+                                        <b>{{ item.package_code }}</b
+                                        >&nbsp;-&nbsp;{{ item.package_name }}
+                                    </div>
+                                </ng-template>
+                                <ng-template ng-label-tmp let-item="item">
+                                    <div title="{{ item.package_name }}">
+                                        <b>{{ item.package_code }}</b
+                                        >&nbsp;-&nbsp;{{ item.package_name }}
+                                    </div>
+                                </ng-template>
+                            </ng-select>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile>
+                            <button
+                                mat-mini-fab
+                                color="primary"
+                                title="Add Package"
+                                (click)="tambahpaketpkm()"
+                            >
+                                <mat-icon>add_circle_outline</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="warn"
+                                title="Delete Package"
+                                (click)="deletepaketpkm()"
+                                [disabled]="disabledPackageDeletePkm"
+                            >
+                                <mat-icon>delete_sweep</mat-icon>
+                            </button>
+                            <div style="width: 10px"></div>
+                            <button
+                                mat-mini-fab
+                                color="accent"
+                                title="{{
+                                    this.checkpkm % 2 == 0 ? 'Uncheck' : 'Check'
+                                }} All Special Package"
+                                (click)="checkallpackage('pkm')"
+                                [disabled]="
+                                    this.formSample.paketpkm.length > 0 ? false : true
+                                "
+                            >
+                                <mat-icon>playlist_add_check</mat-icon>
+                            </button>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                    <div *ngIf="this.formSample.paketpkm.length > 0">
+                        <mat-accordion
+                            class="example-headers-align"
+                            multi
+                            *ngFor="let ab of this.formSample.paketpkm; let i = index"
+                        >
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <div
+                                        style="
+                                            display: flex;
+                                            flex-direction: row;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            width: 90%;
+                                            font-size: 12px;
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: flex-start;
+                                                align-items: center;
+                                                flex: 2;
+                                                height: 100%;
+                                            "
+                                        >
+                                            <mat-checkbox
+                                                style="font-size: 12px"
+                                                class="checkbox-control"
+                                                color="primary"
+                                                [checked]="ab.checked"
+                                                (change)="
+                                                    checkAllpkm(
+                                                        $event.checked,
+                                                        ab,
+                                                        i
+                                                    )
+                                                "
+                                                >&nbsp;</mat-checkbox
+                                            >
+                                            <div
+                                                fxLayout="row"
+                                                fxLayoutAlign="space-between start"
+                                                style="width: 100%"
+                                                fxLayoutGap="5px"
+                                            >
+                                                <div
+                                                    style="flex: 3"
+                                                    fxLayoutAlign="start start"
+                                                    fxLayout="row"
+                                                    fxLayoutGap="5px"
+                                                >
+                                                    <span
+                                                        style="
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{
+                                                            ab.packagecode
+                                                        }}</span
+                                                    >
+                                                    <span>-</span>
+                                                    <div
+                                                        title="{{
+                                                            ab.packagename
+                                                        }}"
+                                                        style="
+                                                            width: 400px;
+                                                            white-space: nowrap;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;
+                                                        "
+                                                    >
+                                                        <span>{{
+                                                            ab.packagename
+                                                        }}</span>
+                                                    </div>
+                                                </div>
+                                                <span style="flex: 0.2"
+                                                    >(
+                                                    {{ ab.subpackage.length }}
+                                                    )</span
+                                                >
+                                            </div>
+                                        </div>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: space-between;
+                                                align-items: center;
+                                                flex: 1;
+                                            "
+                                        >
+                                            <div style="margin-right: 5px">
+                                                <span>{{
+                                                    ab.discount == 1
+                                                        ? "Get Disc"
+                                                        : "Didn`t get Disc"
+                                                }}</span>
+                                            </div>
+                                            <span
+                                                >Rp.
+                                                {{
+                                                    this.getSubpackagePrice(
+                                                        ab
+                                                    ).toLocaleString()
+                                                }}</span
+                                            >
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel-header>
+
+                                <mat-grid-list cols="7" rowHeight="100px">
+                                    <mat-grid-tile colspan="0.5">
+                                        <button
+                                            mat-mini-fab
+                                            color="warn"
+                                            title="Delete Package"
+                                            (click)="deletepaketpkm(ab)"
+                                        >
+                                            <mat-icon>delete_sweep</mat-icon>
+                                        </button>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Paramater Name</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Lab</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Metode</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Satuan</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold">n</span>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <span style="font-weight: bold"
+                                            >Price</span
+                                        >
+                                    </mat-grid-tile>
+                                    <mat-divider></mat-divider>
+                                </mat-grid-list>
+
+                                <mat-grid-list
+                                    cols="7"
+                                    rowHeight="100px"
+                                    *ngFor="
+                                        let b of ab.subpackage;
+                                        let z = index
+                                    "
+                                >
+                                    <mat-grid-tile>
+                                        <button
+                                            mat-icon-button
+                                            color="warn"
+                                            title="Delete Package"
+                                            (click)="
+                                                deletepaketpkmdetailfunc(b, ab)
+                                            "
+                                        >
+                                            <mat-icon>delete_sweep</mat-icon>
+                                        </button>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div
+                                            style="
+                                                width: 80%;
+                                                text-align: left;
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            {{ b.subpackage_name }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{
+                                                b.detail_specific[0].lab
+                                                    .nama_lab
+                                                    ? b.detail_specific[0].lab
+                                                          .nama_lab
+                                                    : "-"
+                                            }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{
+                                                b.detail_specific[0].metode
+                                                    ? b.detail_specific[0]
+                                                          .metode.metode
+                                                    : "-"
+                                            }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter">
+                                            {{
+                                                b.detail_specific[0].unit
+                                                    ? b.detail_specific[0].unit
+                                                          .nama_unit
+                                                    : "-"
+                                            }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter-jumlah">
+                                            {{ b.jumlah }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-grid-tile>
+                                        <div class="div-paketparameter-price">
+                                            Rp.
+                                            {{ b.price.toLocaleString() }}
+                                        </div>
+                                    </mat-grid-tile>
+                                    <mat-divider></mat-divider>
+                                </mat-grid-list>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                    <div
+                        style="
+                            padding: 5px;
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: center;
+                            margin-right: 10px;
+                            margin-top: 10px;
+                        "
+                    >
+                        <span
+                            style="
+                                font-weight: bold;
+                                font-size: 14px;
+                                margin: 10px;
+                            "
+                            >Total Harga Special Package Rp.
+                            {{
+                                this.getTotalPaketPkm() > 0
+                                    ? this.getTotalPaketPkm().toLocaleString()
+                                    : 0
+                            }}</span
+                        >
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="!loading">
+    <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="10px"
+        style="width: 100%"
+    >
+        <table style="width: 400px; margin: 10px; border: 1px solid #ddd">
+            <tr>
+                <td>Total Harga Sample</td>
+                <td></td>
+                <td>:</td>
+                <td>Rp.</td>
+                <td align="right">
+                    {{
+                        this.setTotal() > 0
+                            ? this.setTotal().toLocaleString()
+                            : 0
+                    }}
+                </td>
+            </tr>
+            <tr>
+                <td>Discount</td>
+                <td>
+                    <div
+                        style="
+                            width: 100%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 3px;
+                        "
+                    >
+                        <input
+                            [(ngModel)]="this.formSample.discount_conv"
+                            (keyup)="convertingdisc($event.target.value)"
+                            style="
+                                padding: 0px;
+                                width: 40px;
+                                text-align: center;
+                                border: 1px solid #cfcfcf;
+                            "
+                        />
+                        %
+                    </div>
+                </td>
+                <td>:</td>
+                <td>Rp.</td>
+                <td align="right">
+                    <input
+                        currencyMask
+                        [options]="{
+                            prefix: '',
+                            thousands: '.',
+                            precision: 0
+                        }"
+                        [(ngModel)]="this.formSample.discount_sample"
+                        style="padding: 0px"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td>Total Keseluruhan</td>
+                <td></td>
+                <td>:</td>
+                <td>Rp.</td>
+                <td align="right">
+                    {{
+                        (
+                            this.setTotal() - this.formSample.discount_sample
+                        ).toLocaleString()
+                    }}
+                </td>
+            </tr>
+        </table>
+        <div>
+            <button mat-raised-button color="primary" (click)="savedata()">
+                Save
+            </button>
+            <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+        </div>
+    </div>
+</mat-dialog-actions>

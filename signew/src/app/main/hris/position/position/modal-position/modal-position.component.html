@@ -1,0 +1,96 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="postForm"
+        class="product w-100-p"
+        fxLayout="column"
+        [formGroup]="postForm"
+        fxFlex
+    >
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label>Position</mat-label>
+            <input
+                matInput
+                placeholder="Put Position Name"
+                formControlName="position_name"
+            />
+        </mat-form-field>
+        <ng-select
+            appendTo="body"
+            [items]="dataposition"
+            bindLabel="position_name"
+            bindValue="id_position"
+            appearance="legacy"
+            formControlName="head_position"
+            placeholder="Put Superior Name"
+            appearance="outline"
+            dropdownPosition="bottom"
+            (scrollToEnd)="onScrollToEnd('position')"
+            (search)="onsearchselect($event, 'position')"
+        >
+        </ng-select>
+
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label style="color: black">Division</mat-label>
+            <mat-select
+                formControlName="id_div"
+                placeholder="Set Division"
+                (selectionChange)="setValue($event)"
+            >
+                <mat-option [value]="o.id_div" *ngFor="let o of datadiv">{{
+                    o.division_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label style="color: black">Sub Division</mat-label>
+            <mat-select
+                formControlName="id_subdiv"
+                placeholder="Set Sub Division"
+            >
+                <mat-option
+                    [value]="o.id_subagian"
+                    *ngFor="let o of datasub"
+                    >{{ o.name }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+            *ngIf="this.company_id == 1"
+        >
+            <mat-label style="color: black">Company</mat-label>
+            <mat-select
+                formControlName="company_name"
+                placeholder="Set Company"
+            >
+                <mat-option [value]="o.id" *ngFor="let o of sisterCompany">{{
+                    o.company_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="serviceAct()">
+            Save
+        </button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

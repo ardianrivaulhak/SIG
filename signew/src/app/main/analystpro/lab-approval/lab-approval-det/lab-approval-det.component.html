@@ -1,0 +1,470 @@
+<div
+    id="lab-pengujian"
+    class="page-layout carded fullwidth inner-scroll"
+    style="overflow: auto"
+    *ngIf="this.originaldata.length > 0"
+>
+    <!-- CENTER -->
+    <div class="center" style="background-color: white; min-height: 90vh">
+        <!-- HEADER -->
+        <div style="height: 10px"></div>
+        <mat-expansion-panel
+            (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false"
+        >
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ panelOpenState ? "Hide " : "Show " }} - <span style="font-weight: bold;">{{this.originaldata[0].transaction_sample.kontrakuji.contract_no}} ( {{this.originaldata[0].transaction_sample.kontrakuji.customers_handle.customers.customer_name}} ) / {{this.originaldata.length}} Parameter</span>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+                <mat-grid-tile>
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="dataselectstatusuji"
+                        bindLabel="name"
+                        bindValue="id"
+                        placeholder="Status Pengujian"
+                        (change)="getValStatusPengujian($event)"
+                        [(ngModel)]="statusuji"
+                        dropdownPosition="bottom"
+                        style="
+                            width: 100%;
+                        "
+                    >
+                    </ng-select>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <ng-select
+                    appearance="outline"
+                    appendTo="body"
+                    [items]="dataparameter"
+                    bindLabel="name"
+                    bindValue="id"
+                    placeholder="Parameter Name"
+                    (change)="getValParameter($event)"
+                    [(ngModel)]="parameter"
+                    dropdownPosition="bottom"
+                    style="
+                        width: 100%;
+                    "
+                >
+                </ng-select>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <ng-select
+                        appearance="outline"
+                        appendTo="body"
+                        [items]="datasample"
+                        multiple="true"
+                        bindLabel="nosample"
+                        bindValue="id"
+                        placeholder="No Sample"
+                        (change)="getValSample($event)"
+                        dropdownPosition="bottom"
+                        [(ngModel)]="sample"
+                        style="
+                            width: 100%;
+                        "
+                    >
+                    </ng-select>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-button-toggle-group>
+                        <button [disabled]="checkdata" mat-raised-button (click)="savedata()">Save (
+                            {{ this.jumlahcheck > 0 ? this.jumlahcheck : 0 }} )</button>
+                        <!-- <mat-button-toggle value="save" [disabled]="checkdata">Save (
+                            {{ this.jumlahcheck > 0 ? this.jumlahcheck : 0 }} )</mat-button-toggle> -->
+                            <button [disabled]="checkdata" mat-raised-button (click)="approvesample()">Send</button>
+                            <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="menu2"
+                        >
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu2="matMenu">
+                            <button
+                                mat-menu-item
+                                (click)="downloadfile()"
+                            >
+                                <span>Download</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="_fileInput.click()"
+                            >
+                                <span>Upload</span>
+                            </button>
+                        </mat-menu>
+                    </mat-button-toggle-group>
+                </mat-grid-tile>
+                <mat-grid-tile colspan="2">
+                    <div class="memo-internal">
+                         <p class="title">Memo Internal</p>
+                         <div class="isi" *ngFor="let a of memointernal">
+                             <span>• {{a.desc}}</span>
+                         </div>
+                     </div>
+                 </mat-grid-tile>
+                 <mat-grid-tile colspan="2">
+                     <div class="memo-internal">
+                          <p class="title">Memo Kendali</p>
+                          <div class="isi" *ngFor="let z of memokendali">
+                              <span>• {{z.desc}}</span>
+                          </div>
+                      </div>
+                  </mat-grid-tile>
+            </mat-grid-list>
+
+        </mat-expansion-panel>
+
+        <div style="height: 10px"></div>
+        <!-- CONTENT CARD -->
+        <div
+                class="content inner-scroll"
+                style="
+                    max-height: 72vh;
+                    overflow: auto;
+                    scrollbar-width: thin;
+                    width: auto;
+                "
+            >
+                <table id="lab-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mat-checkbox
+                                    class="checkbox-control"
+                                    color="primary"
+                                    [disabled]="disablecheck"
+                                    [checked]="testingcheck"
+                                    (change)="checkAll($event.checked, 'all')"
+                                ></mat-checkbox>
+                            </th>
+                            <th>Sample Name</th>
+                            <th>Matriks</th>
+                            <th>Lab Est</th>
+                            <th (click)="sortData(i,'hasil')" style="cursor: pointer;">Hasil Uji</th>
+                            <th>AR</th>
+                            <th>Simplo</th>
+                            <th>Duplo</th>
+                            <th>Triplo</th>
+                            <th>Desc</th>
+                            <th>Satuan</th>
+                            <th>Metode</th>
+                            <th>Lod</th>
+                            <th>Standart</th>
+                            <th (click)="sortData(i,'lab')" style="cursor: pointer;">Lab</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="
+                    let a of datatransaksi; let i = index;">
+                        <tr>
+                            <td>
+                                <mat-checkbox
+                                [(ngModel)]="a.checked"
+                                [disabled]="a.conditionlabdone.length < 1 ? true : false"
+                                (change)="checkAll($event.checked, a, i)"
+                            ></mat-checkbox>
+                            </td>
+                        
+                            <td>
+                                <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: column;
+                                        justify-content: flex-start;
+                                        align-items: flex-start;
+                                        width: 200px;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            display: flex;
+                                            flex-direction: row;
+                                            justify-content: center;
+                                            align-items: center;
+                                        "
+                                    >
+                                        <span
+                                            style="
+                                                color: rgb(65, 105, 225);
+                                                cursor: pointer;
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                            "
+                                            (click)="goToModalPhoto(a)"
+                                            >{{ a.transaction_sample.no_sample }}</span
+                                        >
+                                        <div style="width: 5px"></div>
+                                        <span style="font-size: 12px">-</span>
+                                        <div style="width: 5px"></div>
+                                        <span
+                                            style="
+                                                font-size: 11px;
+                                                font-weight: bold;
+                                                color: #000;
+                                            "
+                                            >{{
+                                                a.transaction_sample.statuspengujian.name
+                                            }}</span
+                                        >
+                                        <div style="width: 5px"></div>
+                                        <div style="background: #0063ff;
+                                                    width: 60px;
+                                                    display: flex;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                    height: 1.6rem;
+                                                    color: #fff;
+                                                    font-weight: bold;
+                                                    border-radius: 10px;"><span
+                                                        style="
+                                                            font-size: 10px;
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{
+                                                            a.transaction_sample.tujuanpengujian.name
+                                                        }}</span
+                                                    ></div>
+                                    </div>
+                                    <div
+                                        style="
+                                            white-space: nowrap;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;
+                                            width: 200px;
+                                        "
+                                        title="{{ a.sample_name }}"
+                                    >
+                                        <span
+                                            style="
+                                                font-size: 11px;
+                                                font-weight: bold;
+                                            "
+                                        >
+                                            {{ a.transaction_sample.sample_name }}
+                                        </span>
+                                    </div>
+                                    <span
+                                        style="
+                                            font-size: 11px;
+                                            font-weight: bold;
+                                            color: #b60303;
+                                        "
+                                        *ngIf="!a.position"
+                                        >{{ a.parameteruji_one.name_id }}</span
+                                    >
+
+                                    <span
+                                        style="
+                                            font-size: 11px;
+                                            font-weight: bold;
+                                            color: #b60303;
+                                        "
+                                        *ngIf="a.position"
+                                        >{{ a.parameteruji_one.name_id }} -
+                                        {{ a.position }}</span
+                                    >
+                                </div>
+                            </td>
+                            <td>
+                                <div style="width: 100px;">
+                                    <span style="
+                                        font-size: 11px;
+                                        font-style: italic;">{{a.transaction_sample.subcatalogue.sub_catalogue_name}}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div style="width: 100px;">
+                                    <span style="
+                                        font-size: 11px;
+                                        text-align: center;">{{a.transaction_sample.tgl_estimasi_lab}}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100px; font-size: 12px"
+                                >
+                                    <mat-label>Hasil</mat-label>
+                                    <input
+                                        matInput
+                                        [(ngModel)]="a.hasiluji"
+                                    />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100px; font-size: 12px"
+                                >
+                                    <mat-label>AR</mat-label>
+                                    <input
+                                        matInput
+                                        [(ngModel)]="a.actual_result"
+                                    />
+                                </mat-form-field>
+                            </td>
+                          
+                     
+                            <td>
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100px; font-size: 12px"
+                                >
+                                    <mat-label>Simplo</mat-label>
+                                    <input matInput [(ngModel)]="a.simplo" />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100px; font-size: 12px"
+                                >
+                                    <mat-label>Duplo</mat-label>
+                                    <input matInput [(ngModel)]="a.duplo" />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field
+                                    appearance="fill"
+                                    style="width: 100px; font-size: 12px"
+                                >
+                                    <mat-label>Triplo</mat-label>
+                                    <input matInput [(ngModel)]="a.triplo" />
+                                </mat-form-field>
+                            </td>
+                            <td>
+                                <mat-form-field
+                                appearance="fill"
+                                style="width: 100px; font-size: 12px"
+                            >
+                                <mat-label>Desc</mat-label>
+                                <input matInput [(ngModel)]="a.desc" />
+                            </mat-form-field>
+                            </td>
+                            <td>
+                                <div style="width: 150px">
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="datasatuan"
+                                        bindLabel="nama_unit"
+                                        bindValue="id"
+                                        [(ngModel)]="a.id_unit"
+                                        placeholder="Select Unit"
+                                        dropdownPosition="bottom"
+                                        style="width: 100%"
+                                        required
+                                    >
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="width: 300px">
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="datametode"
+                                        bindLabel="metode"
+                                        bindValue="id"
+                                        [(ngModel)]="a.id_metode"
+                                        placeholder="Select Metode"
+                                        dropdownPosition="bottom"
+                                        style="width: 100%; margin: 5px"
+                                        required
+                                    >
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="width: 100px">
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="datalod"
+                                        bindLabel="nama_lod"
+                                        bindValue="id"
+                                        [(ngModel)]="a.id_lod"
+                                        placeholder="Select LOD"
+                                        [loading]="loading"
+                                        dropdownPosition="bottom"
+                                        style="width: 200px; margin: 5px"
+                                        required
+                                    >
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="width: 250px">
+                                    <ng-select
+                                        appearance="fill"
+                                        appendTo="body"
+                                        [items]="datastandart"
+                                        bindLabel="nama_standart"
+                                        bindValue="id"
+                                        [(ngModel)]="a.id_standart"
+                                        placeholder="Select Standard"
+                                        dropdownPosition="bottom"
+                                        style="width: 200px; margin: 5px"
+                                        required
+                                    >
+                                    </ng-select>
+                                </div>
+                            </td>
+                            <td>
+                                <p
+                                    class="text-truncate"
+                                    style="font-size: 10px; font-weight: bold"
+                                >
+                                    {{
+                                        a.lab.nama_lab
+                                            ? a.lab.nama_lab
+                                            : "-"
+                                    }}
+                                </p>
+                            </td>
+                            <td>
+                                <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="menu"
+                            >
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="info(a, i)"
+                                >
+                                    <span>Information</span>
+                                </button>
+                            </mat-menu>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    <!-- End CENTER -->
+</div>
+<input
+    #_fileInput
+    hidden
+    id="selectedfile"
+    type="file"
+    (change)="onFileChange($event)"
+/>
+
+<ngx-spinner
+        bdColor="rgba(255,255,255,1)"
+        size="medium"
+        color="#000"
+        type="ball-clip-rotate-multiple"
+        [fullScreen]="false"
+    ></ngx-spinner>

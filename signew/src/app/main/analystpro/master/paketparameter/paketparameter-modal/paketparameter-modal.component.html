@@ -1,0 +1,190 @@
+<div *ngIf="SubPaketForm" style="margin-top: 20px;">
+    <div *ngIf="this.detail === true">
+        <mat-card-title>
+            Form Detail
+        </mat-card-title>
+
+        <mat-card-content >
+            <hr style="color: white;">
+            <form name="SubPaketForm" [formGroup]="SubPaketForm"> 
+                <mat-grid-list cols="2" rowHeight="90px">  
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datalab"
+                            bindLabel="nama_lab" bindValue="id" (scrollToEnd)="onScrollToEnd('lab')" 
+                            placeholder="Select Lab" formControlName="id_lab"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_lab}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_lab}}
+                            </ng-template>
+                        </ng-select>     
+                   </mat-grid-tile>
+                   <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datastandart"
+                            bindLabel="nama_standart" bindValue="id" (scrollToEnd)="onScrollToEnd('standart')" 
+                            placeholder="Select Standart" formControlName="id_standart"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_standart}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_standart}}
+                            </ng-template>
+                        </ng-select>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="2" rowHeight="90px"> 
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="dataMetode"
+                            bindLabel="metode" bindValue="id" (scrollToEnd)="onScrollToEnd('metode')" 
+                            placeholder="Select Metode" formControlName="id_metode"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.metode}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.metode}}
+                            </ng-template>
+                        </ng-select>                      
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="dataunit"
+                            bindLabel="nama_unit" bindValue="id" (scrollToEnd)="onScrollToEnd('unit')" 
+                            placeholder="Select Unit" formControlName="id_unit"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_unit}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_unit}}
+                            </ng-template>
+                        </ng-select>                
+                   </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="1" rowHeight="90px"> 
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datalod"
+                                        bindLabel="nama_lod" bindValue="id" (scrollToEnd)="onScrollToEnd('lod')" 
+                                        placeholder="Select Lod" formControlName="id_lod"
+                                        dropdownPosition="bottom"
+                                        style="width: 90%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            {{item.nama_lod}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            {{item.nama_lod}}
+                                        </ng-template>
+                                    </ng-select> 
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="1" rowHeight="70px">
+                    <mat-grid-tile>
+                        <button mat-raised-button class="save-product-button" style="width: 100%; color: white; background-color: #039be5;"
+                        [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}" (click)="saveFrom()">
+                        <mat-icon>save</mat-icon>
+                        <span> Save</span>
+                        </button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+            </form>
+        </mat-card-content>
+    </div>
+
+
+
+    <div *ngIf="this.detail === false">
+        <mat-card-title>
+            Form Detail
+        </mat-card-title>
+
+        <mat-card-content >
+            <hr style="color: white;">
+            <form name="SubPaketForm" [formGroup]="SubPaketForm"> 
+                <mat-grid-list cols="2" rowHeight="90px">  
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datalab"
+                            bindLabel="nama_lab" bindValue="id" (scrollToEnd)="onScrollToEnd('lab')" 
+                            placeholder="Select Lab" formControlName="id_lab" [disabled]="true"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_lab}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_lab}}
+                            </ng-template>
+                        </ng-select>     
+                   </mat-grid-tile>
+                   <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datastandart"
+                            bindLabel="nama_standart" bindValue="id" (scrollToEnd)="onScrollToEnd('standart')" 
+                            placeholder="Select Standart" formControlName="id_standart" [disabled]="true"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_standart}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_standart}}
+                            </ng-template>
+                        </ng-select>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="2" rowHeight="90px"> 
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="dataMetode"
+                            bindLabel="metode" bindValue="id" (scrollToEnd)="onScrollToEnd('metode')" 
+                            placeholder="Select Metode" formControlName="id_metode" [disabled]="true"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.metode}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.metode}}
+                            </ng-template>
+                        </ng-select>                      
+                    </mat-grid-tile>
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="dataunit"
+                            bindLabel="nama_unit" bindValue="id" (scrollToEnd)="onScrollToEnd('unit')" 
+                            placeholder="Select Unit" formControlName="id_unit" [disabled]="true"
+                            dropdownPosition="bottom"
+                            style="width: 80%;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.nama_unit}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.nama_unit}}
+                            </ng-template>
+                        </ng-select>                
+                   </mat-grid-tile>
+                </mat-grid-list>
+                <mat-grid-list cols="1" rowHeight="90px"> 
+                    <mat-grid-tile>
+                        <ng-select appearance="outline" appendTo="body" [items]="datalod"
+                                        bindLabel="nama_lod" bindValue="id" (scrollToEnd)="onScrollToEnd('lod')" 
+                                        placeholder="Select Lod" formControlName="id_lod" [disabled]="true"
+                                        dropdownPosition="bottom"
+                                        style="width: 90%;">
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            {{item.nama_lod}}
+                                        </ng-template>
+                                        <ng-template ng-label-tmp let-item="item">
+                                            {{item.nama_lod}}
+                                        </ng-template>
+                                    </ng-select> 
+                    </mat-grid-tile>
+                </mat-grid-list> 
+
+            </form>
+        </mat-card-content>
+    </div>
+</div>

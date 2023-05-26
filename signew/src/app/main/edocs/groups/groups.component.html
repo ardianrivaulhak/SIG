@@ -1,0 +1,108 @@
+<div id="groups"  class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content"> 
+        <mat-card class="mat-elevation-z0"  style="width: 90%; margin: 20px auto 10px auto;">
+            <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                <form name="documentsForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="100">
+                            <mat-label>Group Name</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="group_name"
+                            placeholder="group name"
+                            [(ngModel)]="this.datasent.namegroup">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button color="primary"  
+                        fxFlex="15"  fxFlex.xs="15" 
+                        style="height: 40px; 
+                        width:250px; 
+                        margin-right:15px;"
+                        (click)="search()" >
+                            Search
+                        </button>
+                        <button mat-stroked-button color="primary" 
+                        fxFlex="15" fxFlex.xs="15" 
+                        style="height: 40px;"
+                        (click)="reset()">
+                            Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </mat-card>
+        <mat-card class="mat-elevation-z0"  style="width: 90%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="font-size: 18px; font-weight: bolder; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Groups</span>
+                </div>
+               <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                    <button mat-icon-button color="white" 
+                        class="contract-certficate"
+                        matTooltip="Add Group"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        (click)="addMember()"
+                        >
+                            <mat-icon>library_add</mat-icon>
+                    </button>
+               </div>
+            </div>
+            <mat-table class="documents-table" #table [dataSource]="groupData" matSort (matSortChange)="sortData($event)"
+                [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.groupData.length > 0"> 
+
+            
+                <!-- Column -->
+                <ng-container matColumnDef="groups">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="groups">Group Name</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.group_name }}"> {{ a.group_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="user">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="user">User Create</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.employee.employee_name }}">{{ a.employee.employee_name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="created">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="created">Creating Date</mat-header-cell>
+                    <mat-cell *matCellDef="let a">
+                        <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ a.created_at | date }}"> {{ a.created_at | date }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container> 
+
+                <!-- Column -->
+                <ng-container matColumnDef="action" >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="icon" >Action</mat-header-cell>
+                    <mat-cell *matCellDef="let a; let indexOfelement=index;">
+                        <div >                            
+                            <button mat-icon-button color="primary"  
+                            class="btn-icon-control"
+                            (click)="gotoDetails(a.id)"
+                            matTooltip="Launch"  
+                            aria-label="Sample">
+                                <mat-icon>launch</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let a; columns: displayedColumns;" class="documents" matRipple >
+                </mat-row>
+            </mat-table>
+            
+        </mat-card>
+    </div>
+</div>

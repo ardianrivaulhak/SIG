@@ -1,0 +1,93 @@
+<h1>Revisi Data AKG</h1>
+<div mat-dialog-content>
+    <div
+        style="
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        "
+    >
+        <ng-select
+            appendTo="body"
+            [items]="datakg"
+            style="width: 60%"
+            (clear)="reset()"
+            appearance="fill"
+            bindLabel="akg_name"
+            bindValue="id"
+            placeholder="Select Akg"
+            (change)="getVal($event)"
+            dropdownPosition="bottom"
+            required
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                {{ item.akg_name }} - {{ item.price }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                {{ item.akg_name }} - {{ item.price }}
+            </ng-template>
+        </ng-select>
+        <mat-form-field style="width: 20%" appearance="outline">
+            <mat-label>Jumlah</mat-label>
+            <input matInput type="number" [(ngModel)]="jumlah" />
+        </mat-form-field>
+        <button mat-raised-button (click)="satuin()" color="warn">
+            Tambah
+        </button>
+    </div>
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Akg Name</th>
+                <th>Price</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let o of akgcombine; let i = index">
+            <tr>
+                <td>{{i + 1}}</td>
+                <td>{{o.akg_name}}</td>
+                <td>{{o.price}}</td>
+                <td>{{o.jumlah}}</td>
+                <td>{{o.total.toLocaleString()}}</td>
+                <td>
+                    <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="deleterow(i)"
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    "
+                >
+                    <!-- <mat-icon>delete-outline</mat-icon> -->
+                    <svg-icon
+                        src="assets/icons/custom/close.svg"
+                        [svgStyle]="{
+                            'width.px': 20,
+                            fill: '#b80606 ',
+                            display: 'flex',
+                            'align-self': 'center'
+                        }"
+                    >
+                    </svg-icon>
+                </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: space-between">
+    <!-- <button mat-button mat-dialog-close>Close</button> -->
+    <span>Total Rp. {{ this.akgtotal.toLocaleString() }}</span>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-button color="primary" (click)="saveData()">Save</button>
+        <button mat-button color="accent" (click)="close()">Close</button>
+    </div>
+</div>

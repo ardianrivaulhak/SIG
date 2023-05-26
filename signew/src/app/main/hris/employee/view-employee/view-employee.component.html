@@ -1,0 +1,320 @@
+<div
+    fxFlex
+    fxLayout="column"
+    fxLayoutAlign="center start"
+    fxLayoutGap="20px"
+    *ngIf="this.dataemployee.length > 0"
+>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+            <h1>Employment</h1>
+            <button
+                mat-mini-fab
+                color="warn"
+                (click)="addnew(this.dataemployee[0])"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+        <img class="gender-border" [src]="setPhoto(this.dataemployee[0])" />
+    </div>
+    <div class="lineborder"></div>
+    <table class="empl">
+        <tr>
+            <td>Nama</td>
+            <td>{{ this.dataemployee[0].employee_name }}</td>
+        </tr>
+        <tr>
+            <td>Lama Kerja</td>
+            <td>
+                {{
+                    this.dataemployee[0].tgl_masuk
+                        ? this.getDifference(this.dataemployee[0])
+                        : "-"
+                }}
+            </td>
+        </tr>
+        <tr>
+            <td>Jabatan</td>
+            <td>
+                {{
+                    this.dataemployee[0].position
+                        ? this.dataemployee[0].position.position_name
+                        : "-"
+                }}
+                {{ this.dataemployee[0].subagian.name }}
+            </td>
+        </tr>
+        <tr>
+            <td>Bagian</td>
+            <td>{{ this.dataemployee[0].bagian.division_name }}</td>
+        </tr>
+        <tr>
+            <td>Dept.</td>
+            <td>{{ this.dataemployee[0].dept.dept_name }}</td>
+        </tr>
+        <tr>
+            <td>Status Karyawan</td>
+            <td>
+                {{
+                    this.dataemployee[0].id_employee_status == 1
+                        ? "Tetap"
+                        : this.dataemployee[0].id_employee_status == 2
+                        ? "Kontrak"
+                        : this.dataemployee[0].id_employee_status == 3
+                        ? "Honorer"
+                        : "PKL / Magang"
+                }}
+            </td>
+        </tr>
+        <tr>
+            <td>Level</td>
+            <td>{{ this.dataemployee[0].level.level_name }}</td>
+        </tr>
+        <tr>
+            <td>Tgl Tetap</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Pendidikan</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>
+                <div
+                    style="
+                        display: flex;
+                        width: 100%;
+                        justify-content: flex-start;
+                        align-items: center;
+                        gap: 5px;
+                    "
+                >
+                    <span>0{{ this.dataemployee[0].phone }}</span
+                    ><img
+                        src="assets/icons/wa.png"
+                        (click)="testa()"
+                        style="cursor: pointer; width: 30px"
+                    />
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="lineborder"></div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+        <h4>Detail Level</h4>
+        <!-- <button
+            mat-mini-fab
+            color="warn"
+            *ngIf="this.detailevel.length > 0"
+            (click)="addmoreemployementlevel()"
+        >
+            <mat-icon>add</mat-icon>
+        </button> -->
+    </div>
+    <table class="empl" *ngIf="this.detailevel.length > 0">
+        <thead>
+            <tr>
+                <th>Act</th>
+                <th>Level</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Desc</th>
+            </tr>
+        </thead>
+        <tbody
+            *ngFor="let x of this.detailevel; let i = index"
+            style="font-size: 12px"
+        >
+            <tr>
+                <td>
+                    <div
+                        fxFlex
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        fxLayoutGap="2px"
+                    >
+                        <button
+                            mat-icon-button
+                            color="accent"
+                            (click)="addmoreemployementlevel(x)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="deleteemployementlevel(x)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+                <td>{{ x.level.level_name }}</td>
+                <td>{{ this.changingdate(x.from) }}</td>
+                <td>{{ x.to ? this.changingdate(x.to) : "Now" }}</td>
+                <td>{{ x.desc }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <div
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            *ngIf="this.detailevel.length < 0"
+        >
+            <medium>Please Wait ...</medium>
+        </div>
+        <button
+            mat-stroked-button
+            color="primary"
+            (click)="addmoreemployementlevel()"
+        >
+            Add Level Detail
+        </button>
+    </div>
+    <div class="lineborder"></div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+        <h4>Detail Jabatan</h4>
+    </div>
+    <table class="empl" *ngIf="this.detailEmployeement.length > 0">
+        <thead>
+            <tr>
+                <th>Act</th>
+                <th>Dept</th>
+                <th>Division</th>
+                <th>Position</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Desc</th>
+            </tr>
+        </thead>
+        <tbody
+            *ngFor="let z of this.detailEmployeement; let i = index"
+            style="font-size: 12px"
+        >
+            <tr>
+                <td>
+                    <div
+                        fxFlex
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        fxLayoutGap="2px"
+                    >
+<button
+                            mat-icon-button
+                            color="accent"
+                            (click)="addmoreemployementdet(z)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="deleteemployementdet(z)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+                <td>{{ z.dept.dept_name }}</td>
+                <td>
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            justify-content: flex-start;
+                        "
+                    >
+                        <span>{{ z.bagian.division_name }}</span>
+                        <span>{{ z.subagian.name }}</span>
+                    </div>
+                </td>
+                <td>
+                    {{ z.position.position_name }}
+                </td>
+                <td>{{ this.changingdate(z.from) }}</td>
+                <td>{{ z.to ? this.changingdate(z.to) : "Now" }}</td>
+                <td>{{ this.getDifference(z) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <button
+            mat-stroked-button
+            color="primary"
+            (click)="addmoreemployementdet()"
+        >
+            Add Employement Detail
+        </button>
+    </div>
+    <div class="lineborder"></div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+        <h4>Detail Status</h4>
+    </div>
+    <table class="empl" *ngIf="this.detailstatus.length > 0">
+        <thead>
+            <tr>
+                <th>Act</th>
+                <th>Status</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Desc</th>
+            </tr>
+        </thead>
+        <tbody
+            *ngFor="let y of this.detailstatus; let i = index"
+            style="font-size: 12px"
+        >
+            <tr>
+                <td>
+                    <div
+                        fxFlex
+                        fxLayout="row"
+                        fxLayoutAlign="center center"
+                        fxLayoutGap="2px"
+                    >
+                        <button
+                            mat-icon-button
+                            color="accent"
+                            (click)="addmoreemployementstatus(y)"
+                        >
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            color="warn"
+                            (click)="deleteemployementstatus(y)"
+                        >
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
+                <td>{{ y.employee_status.status }}</td>
+                <td>{{ this.changingdate(y.from) }}</td>
+                <td>{{ y.to ? this.changingdate(y.to) : "Now" }}</td>
+                <td>{{ y.desc }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div
+        fxLayout="column"
+        fxLayoutAlign="center center"
+    >
+        <button
+            mat-stroked-button
+            color="primary"
+            (click)="addmoreemployementstatus()"
+        >
+            Add Level Detail
+        </button>
+    </div>
+</div>

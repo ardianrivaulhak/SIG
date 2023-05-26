@@ -1,0 +1,1005 @@
+<div style="height: 100%; overflow: auto; padding: 0px 20px">
+    <ngx-spinner
+        bdColor="rgba(255,255,255,1)"
+        size="medium"
+        color="#000"
+        type="ball-clip-rotate-multiple"
+        [fullScreen]="false"
+    ></ngx-spinner>
+    <mat-grid-list cols="5" rowHeight="70px" gutterSize="5px">
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="datacontractcategory"
+                bindLabel="title"
+                bindValue="id_contract_category"
+                placeholder="Select Category"
+                dropdownPosition="bottom"
+                [(ngModel)]="datasentContract.contractcategory"
+                (change)="setValueContract($event)"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="3">
+            <div fxLayout="row" fxLayoutAlign="center center" fxFlex>
+                <div class="border-search">
+                    <input
+                        type="text"
+                        [placeholder]="returntext()"
+                        (keyup.enter)="searching()"
+                        [(ngModel)]="searchinput"
+                        style="width: 100%; text-align: center"
+                    />
+                </div>
+                <div style="width: 20px"></div>
+                <button
+                    mat-mini-fab
+                    color="primary"
+                    (click)="searching()"
+                    style="align-self: center"
+                >
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+        </mat-grid-tile>
+        <!-- <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="datasample"
+                bindLabel="no_sample"
+                multiple="true"
+                bindValue="id"
+                placeholder="Select No Sample"
+                [(ngModel)]="datasentParameter.sample"
+                (search)="onsearchselect($event, 'sample')"
+                (change)="setValSample($event)"
+                (scrollToEnd)="onScrollToEndSelect('sample')"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="dataparameter"
+                bindLabel="name_id"
+                bindValue="id"
+                multiple="true"
+                placeholder="Select Parameteruji"
+                [(ngModel)]="datasent.parameteruji"
+                (search)="onsearchselect($event, 'parameter')"
+                (change)="setValSample($event)"
+                (scrollToEnd)="onScrollToEndSelect('parameter')"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile> -->
+        <mat-grid-tile>
+            <button mat-raised-button (click)="onRefresh()">
+                <span style="color: rgb(104, 146, 19)">Refresh</span>
+            </button>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Estimasi Lab</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="datasent.estimasi_lab"
+                    (dateChange)="tglEstimasiLabChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <!-- <mat-grid-tile>
+            <mat-form-field appearance="fill" style="width: 100%; font-size: 12px;">
+                <mat-label>Prep Approve</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    [(ngModel)]="datasent.tgl_approval"
+                    (dateChange)="tglApprovalChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile> -->
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Select Status Pengujian</mat-label>
+                <mat-select
+                    (selectionChange)="setStatusPengujian($event)"
+                    [disabled]="this.datasent.approve == '4' ? true : false"
+                >
+                    <mat-option value="all">All</mat-option>
+                    <mat-option
+                        *ngFor="let o of datastatuspengujian"
+                        [value]="o.id"
+                        >{{ o.name }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Select Status Lab</mat-label>
+                <mat-select (selectionChange)="setStatusLab($event)" value="0">
+                    <mat-option value="0">Get Sample</mat-option>
+                    <mat-option value="1">Lab Process</mat-option>
+                    <mat-option value="2">Lab Done</mat-option>
+                    <mat-option value="4">Complain</mat-option>
+                    <mat-option value="3" disabled>Kendali Approve</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Status Contract</mat-label>
+                <mat-select
+                    (selectionChange)="setStatusContract($event)"
+                    [(ngModel)]="datasent.rev"
+                >
+                    <mat-option value="all"> All </mat-option>
+                    <mat-option value="0"> New </mat-option>
+                    <mat-option value="1"> Revisi </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                appearance="outline"
+                [items]="dataparameter"
+                bindLabel="name_id"
+                bindValue="id"
+                placeholder="Select Parameteruji"
+                [(ngModel)]="datasent.id_parameteruji"
+                (search)="onsearchselect($event, 'parameter')"
+                (change)="setValParameterUji($event)"
+                (scrollToEnd)="onScrollToEndSelect('parameter')"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 12px;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div
+                style="
+                    width: 100%;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 20px;
+                "
+            >
+                <span style="width: 200px">Total Parameter: </span>
+                <mat-spinner
+                    [diameter]="20"
+                    *ngIf="this.totalgetsample == null"
+                ></mat-spinner>
+                <span *ngIf="this.totalgetsample !== null">{{
+                    this.totalgetsample
+                        ? this.totalgetsample.toLocaleString()
+                        : 0
+                }}</span>
+                <div style="width: 20px"></div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4">
+            <div style="width: 100%; display: flex; justify-content: flex-end">
+                <mat-button-toggle-group
+                    name="fontStyle"
+                    aria-label="Font Style"
+                >
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        [disabled]="this.statuschecked > 0 ? false : true"
+                        (click)="actionSave()"
+                    >
+                        Save ( {{ this.statuschecked }} )
+                    </button>
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        [disabled]="this.statuschecked > 0 ? false : true"
+                        (click)="approveLab()"
+                        *ngIf="this.datasent.approve !== '4'"
+                    >
+                        {{
+                            this.datasent.approve == 2 ? "Unapprove" : "Approve"
+                        }}
+                        ( {{ this.statuschecked }} )
+                    </button>
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        [disabled]="this.statuschecked > 0 ? false : true"
+                        (click)="approveLab()"
+                        *ngIf="this.datasent.approve == '4'"
+                    >
+                        Save & Approve ( {{ this.statuschecked }} )
+                    </button>
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        (click)="exportExcelAnalyst('spk')"
+                        *ngIf="this.datasent.approve !== '4'"
+                    >
+                        Export to Analyst
+                    </button>
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        [matMenuTriggerFor]="afterMenu"
+                    >
+                        Download
+                    </button>
+                    <mat-menu #afterMenu="matMenu" xPosition="after">
+                        <button
+                            mat-menu-item
+                            (click)="exportExcelAnalyst('formathasil')"
+                        >
+                            Format Hasil By Tgl Estimasi Lab
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="exportExcelAnalyst('kontrakuji')"
+                            *ngIf="this.datasent.approve !== '4'"
+                        >
+                            Format Hasil By Kontrak Uji
+                        </button>
+                        <button
+                            mat-menu-item
+                            (click)="exportparameterinfo()"
+                            [disabled]="
+                                ['2'].includes(this.datasent.approve)
+                                    ? false
+                                    : true
+                            "
+                        >
+                            Acc Parameter
+                        </button>
+                    </mat-menu>
+                    <input
+                        #_fileInput
+                        hidden
+                        type="file"
+                        (change)="onFileChange($event)"
+                    />
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        (click)="_fileInput.click()"
+                    >
+                        Import Hasil Uji
+                    </button>
+                </mat-button-toggle-group>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <button
+        mat-stroked-button
+        color="warn"
+        style="
+            width: 70px;
+            border-radius: 0px;
+            font-size: 10px;
+            margin-bottom: 10px;
+        "
+        *ngIf="this.copydataparameter.length > 0"
+        (click)="pasteall()"
+    >
+        Paste All
+    </button>
+    <form *ngIf="labdataparameter" [formGroup]="labdataparameter">
+        <div
+            style="
+                max-height: 70vh;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                width: auto;
+            "
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollUpDistance]="1.5"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll($event)"
+            [scrollWindow]="false"
+        >
+            <table
+                id="customers"
+                *ngIf="
+                    this.labdataparameter.controls.parameter['controls']
+                        .length > 0
+                "
+            >
+                <thead>
+                    <tr>
+                        <th width="2%">
+                            <mat-checkbox
+                                class="checkbox-control"
+                                color="primary"
+                                (change)="checkAll($event.checked, 'all')"
+                            ></mat-checkbox>
+                        </th>
+                        <th width="2%">Action</th>
+                        <th width="5%">Status</th>
+                        <th width="5%">
+                            {{
+                                this.datasent.approve == "4"
+                                    ? "Complain"
+                                    : "Sample Name"
+                            }}
+                        </th>
+                        <th width="5%" *ngIf="this.datasent.approve == '4'">
+                            Expectation
+                        </th>
+                        <th width="5%">Hasil Uji</th>
+                        <th width="5%" *ngIf="this.datasent.approve == '4'">
+                            Complain Result
+                        </th>
+                        <th width="5%" *ngIf="this.datasent.approve == '4'">
+                            Complain AR Result
+                        </th>
+                        <th width="5%">Satuan</th>
+                        <th width="5%" *ngIf="this.datasent.approve !== '4'">
+                            Simplo
+                        </th>
+                        <th width="5%" *ngIf="this.datasent.approve !== '4'">
+                            Duplo
+                        </th>
+                        <th width="5%" *ngIf="this.datasent.approve !== '4'">
+                            Triplo
+                        </th>
+                        <th width="5%">Estimasi Lab</th>
+                        <th width="5%" *ngIf="this.datasent.approve !== '4'">
+                            Group / Team
+                        </th>
+                        <th width="10%">Metode</th>
+                        <th width="5%">Lod</th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="parameter">
+                    <tr
+                        *ngFor="
+                            let d of this.labdataparameter.controls.parameter[
+                                'controls'
+                            ];
+                            let e = index
+                        "
+                        [formGroupName]="e"
+                    >
+                        <td align="center">
+                            <mat-checkbox
+                                formControlName="checked"
+                                (change)="checkAll($event.checked, d, e)"
+                            ></mat-checkbox>
+                        </td>
+                        <td>
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="copydata(d.value, e)"
+                                    *ngIf="this.datasent.approve !== '4'"
+                                >
+                                    <span>Copy</span>
+                                </button>
+                                <button
+                                    *ngIf="
+                                        d.value.prepstatusgo == 0 ||
+                                        d.value.prep_status == 2
+                                    "
+                                    mat-menu-item
+                                    (click)="setuji(d.value, 1)"
+                                >
+                                    <span>Set Uji Ulang</span>
+                                </button>
+                                <button
+                                    *ngIf="
+                                        d.value.prepstatusgo == 0 ||
+                                        d.value.prep_status == 1
+                                    "
+                                    mat-menu-item
+                                    (click)="setuji(d.value, 2)"
+                                >
+                                    <span>Set Tidak Uji Ulang</span>
+                                </button>
+                                <button
+                                    *ngIf="this.datasent.approve == '4'"
+                                    mat-menu-item
+                                    (click)="openMemo(d.value)"
+                                >
+                                    <span>Memo</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="pastedata(d.value, e)"
+                                    *ngIf="this.datasent.approve !== '4'"
+                                    [disabled]="
+                                        copydataparameter.length > 0
+                                            ? false
+                                            : true
+                                    "
+                                >
+                                    <span>Paste</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    *ngIf="this.datasent.approve !== '4'"
+                                    (click)="info(d.value, e)"
+                                >
+                                    <span>Information</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="memo(d.value, e)"
+                                    *ngIf="this.datasent.approve !== '4'"
+                                >
+                                    <span>Memo</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="memointernal(d.value, e)"
+                                    *ngIf="this.datasent.approve !== '4'"
+                                >
+                                    <span>Memo Internal</span>
+                                </button>
+                            </mat-menu>
+                        </td>
+                        <td height="92">
+                            <div
+                                fxFlex
+                                fxLayout="row"
+                                fxLayoutAlign="space-between center"
+                                style="height: 100%"
+                            >
+                                <div
+                                    fxFlex
+                                    fxLayout="column"
+                                    fxLayoutAlign="center start"
+                                >
+                                    <span style="font-size: 9px">{{
+                                        d.value.inserted_at
+                                    }}</span>
+                                    <div
+                                        fxLayout="row"
+                                        fxLayoutAlign="center start"
+                                        fxLayoutGap="10px"
+                                    >
+                                        <span
+                                            style="color: black; font-size: 9px"
+                                        >
+                                            {{ d.value.status_pengujian }}
+                                        </span>
+                                        <div
+                                            class="prepstatus"
+                                            *ngIf="
+                                                this.datasent.approve == 4 &&
+                                                d.value.prep_status == 0
+                                            "
+                                        >
+                                            <span style="font-size: 9px"
+                                                >Investigate</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="prepstatus-uji"
+                                            *ngIf="
+                                                this.datasent.approve == 4 &&
+                                                d.value.prep_status == 1
+                                            "
+                                        >
+                                            <span style="font-size: 9px"
+                                                >Uji Ulang</span
+                                            >
+                                        </div>
+                                        <div
+                                            class="prepstatus"
+                                            *ngIf="
+                                                this.datasent.approve == 4 &&
+                                                d.value.prep_status == 2
+                                            "
+                                        >
+                                            <span style="font-size: 9px"
+                                                >Tidak uji ulang</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    fxLayout="row"
+                                    fxLayoutAlign="center center"
+                                >
+                                    <div
+                                        *ngIf="this.datasent.approve !== '4'"
+                                        [ngClass]="{
+                                            labcome:
+                                                !d.value.conditionlabprocess &&
+                                                !d.value.conditionlabprocess,
+                                            labprocess:
+                                                d.value.conditionlabprocess &&
+                                                !d.value.conditionlabdone,
+                                            labdone: d.value.conditionlabdone
+                                        }"
+                                    ></div>
+                                    <div
+                                        *ngIf="this.datasent.approve == '4'"
+                                        [ngClass]="{
+                                            labcome: [0, 2].includes(
+                                                d.value.prepstatusgo
+                                            ),
+                                            labdone:
+                                                ![0, 2].includes(
+                                                    d.value.prepstatusgo
+                                                ) || d.value.prep_status == 2
+                                        }"
+                                    ></div>
+                                    <div style="width: 3px"></div>
+                                    <button
+                                        mat-icon-button
+                                        [mdePopoverTriggerFor]="appPopover"
+                                        mdePopoverTriggerOn="click"
+                                        #popoverTrigger="mdePopoverTrigger"
+                                    >
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+                                    <mde-popover
+                                        #appPopover="mdePopover"
+                                        [mdePopoverOverlapTrigger]="false"
+                                    >
+                                        <mat-card style="max-width: 400px">
+                                            <mat-card-content>
+                                                <div
+                                                    *ngIf="
+                                                        this.datasent
+                                                            .approve !== '4'
+                                                    "
+                                                    style="
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: center;
+                                                        align-items: flex-start;
+                                                    "
+                                                >
+                                                    <div
+                                                        style="
+                                                            display: flex;
+                                                            flex-direction: row;
+                                                            align-items: center;
+                                                            gap: 5px;
+                                                        "
+                                                    >
+                                                        <span
+                                                            style="
+                                                                color: rgb(
+                                                                    65,
+                                                                    105,
+                                                                    225
+                                                                );
+                                                                cursor: pointer;
+                                                                font-size: 10px;
+                                                                font-weight: bold;
+                                                            "
+                                                            (click)="
+                                                                goToDetailContract(
+                                                                    d.value
+                                                                        .id_kontrakuji
+                                                                )
+                                                            "
+                                                            >{{
+                                                                d.value
+                                                                    .contract_no
+                                                            }}</span
+                                                        >
+                                                        <div
+                                                            style="
+                                                                background: #0063ff;
+                                                                width: 60px;
+                                                                display: flex;
+                                                                justify-content: center;
+                                                                align-items: center;
+                                                                height: 2rem;
+                                                                color: #fff;
+                                                                font-weight: bold;
+                                                                border-radius: 10px;
+                                                            "
+                                                        >
+                                                            <span
+                                                                style="
+                                                                    font-size: 10px;
+                                                                    font-weight: bold;
+                                                                "
+                                                                >{{
+                                                                    d.value
+                                                                        .tujuanpengujian
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        style="height: 5px"
+                                                    ></div>
+                                                    <span
+                                                        style="
+                                                            font-size: 10px;
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{
+                                                            d.value.info
+                                                        }}</span
+                                                    >
+                                                </div>
+                                                <div
+                                                    *ngIf="
+                                                        this.datasent.approve ==
+                                                        '4'
+                                                    "
+                                                    style="
+                                                        display: flex;
+                                                        flex-direction: column;
+                                                        justify-content: center;
+                                                        align-items: flex-start;
+                                                    "
+                                                >
+                                                    <div
+                                                        style="
+                                                            display: flex;
+                                                            flex-direction: row;
+                                                            align-items: center;
+                                                            gap: 5px;
+                                                        "
+                                                    >
+                                                        <span
+                                                            style="
+                                                                color: rgb(
+                                                                    65,
+                                                                    105,
+                                                                    225
+                                                                );
+                                                                cursor: pointer;
+                                                                font-size: 10px;
+                                                                font-weight: bold;
+                                                            "
+                                                            (click)="
+                                                                goToDetailContract(
+                                                                    d.value
+                                                                        .id_kontrakuji
+                                                                )
+                                                            "
+                                                            >{{
+                                                                d.value
+                                                                    .contract_no
+                                                            }}</span
+                                                        >
+                                                    </div>
+                                                    <div
+                                                        style="height: 5px"
+                                                    ></div>
+                                                    <span
+                                                        style="
+                                                            font-size: 10px;
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{
+                                                            d.value.customer
+                                                        }}</span
+                                                    >
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </mde-popover>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div
+                                style="
+                                    display: flex;
+                                    width: 100%;
+                                    justify-content: flex-start;
+                                    align-items: center;
+                                    gap: 5px;
+                                "
+                            >
+                                <span
+                                    style="
+                                        font-size: 10px;
+                                        font-weight: bold;
+                                        color: blueviolet;
+                                        cursor: pointer;
+                                    "
+                                    (click)="goToModalPhoto(d.value.id_sample)"
+                                    >{{
+                                        this.datasent.approve !== "4"
+                                            ? d.value.no_sample
+                                            : d.value.complain_no
+                                    }}
+                                    {{
+                                        this.datasent.approve == "4"
+                                            ? ""
+                                            : " - " + d.value.status_contract
+                                    }}</span
+                                >
+                                <div
+                                    *ngIf="this.datasent.approve == '4'"
+                                    style="
+                                        background: #0063ff;
+                                        width: 60px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        height: 2rem;
+                                        color: #fff;
+                                        font-weight: bold;
+                                        border-radius: 10px;
+                                    "
+                                >
+                                    <span
+                                        style="
+                                            font-size: 10px;
+                                            font-weight: bold;
+                                        "
+                                        >{{ d.value.no_sample }}</span
+                                    >
+                                </div>
+                            </div>
+                            <br />
+                            <span style="font-size: 10px; font-weight: bold"
+                                >{{ d.value.name_id }} {{ d.value.position }} -
+                                {{ d.value.sub_catalogue_name }}</span
+                            >
+                        </td>
+                        <td *ngIf="this.datasent.approve == '4'">
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Expectation</mat-label>
+                                <textarea
+                                    matInput
+                                    formControlName="expectation"
+                                ></textarea>
+                            </mat-form-field>
+                        </td>
+                        <td align="center">
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Hasiluji</mat-label>
+                                <input matInput formControlName="hasiluji" />
+                            </mat-form-field>
+                        </td>
+                        <td align="center" *ngIf="this.datasent.approve == '4'">
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Complain Result</mat-label>
+                                <input
+                                    matInput
+                                    formControlName="complain_result"
+                                />
+                            </mat-form-field>
+                        </td>
+                        <td align="center" *ngIf="this.datasent.approve == '4'">
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Complain AR Result</mat-label>
+                                <input
+                                    matInput
+                                    formControlName="complain_arresult"
+                                />
+                            </mat-form-field>
+                        </td>
+                        <td align="center">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="dataunit"
+                                bindLabel="nama_unit"
+                                bindValue="id_unit"
+                                placeholder="Select Satuan"
+                                dropdownPosition="bottom"
+                                formControlName="id_unit"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 90%;
+                                    font-size: 12px;
+                                "
+                            >
+                            </ng-select>
+                        </td>
+                        <td
+                            align="center"
+                            *ngIf="this.datasent.approve !== '4'"
+                        >
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Simplo</mat-label>
+                                <input matInput formControlName="simplo" />
+                            </mat-form-field>
+                        </td>
+                        <td
+                            align="center"
+                            *ngIf="this.datasent.approve !== '4'"
+                        >
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Duplo</mat-label>
+                                <input matInput formControlName="duplo" />
+                            </mat-form-field>
+                        </td>
+                        <td
+                            align="center"
+                            *ngIf="this.datasent.approve !== '4'"
+                        >
+                            <mat-form-field
+                                appearance="fill"
+                                style="width: 90%; font-size: 12px"
+                            >
+                                <mat-label>Triplo</mat-label>
+                                <input matInput formControlName="triplo" />
+                            </mat-form-field>
+                        </td>
+                        <td align="center">
+                            <span>{{ d.value.tgl_estimasi_lab }}</span>
+                        </td>
+                        <td
+                            align="center"
+                            *ngIf="this.datasent.approve !== '4'"
+                        >
+                            <span>{{ d.value.group }}</span>
+                        </td>
+                        <td align="center">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="datametode"
+                                bindLabel="metode"
+                                bindValue="id_metode"
+                                placeholder="Select Metode"
+                                dropdownPosition="bottom"
+                                formControlName="id_metode"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 90%;
+                                    font-size: 12px;
+                                "
+                            >
+                            </ng-select>
+                        </td>
+                        <!-- <td align="center">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="datastandart"
+                                bindLabel="nama_standart"
+                                bindValue="id_standart"
+                                placeholder="Select Standart"
+                                dropdownPosition="bottom"
+                                formControlName="id_standart"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 90%;
+                                    font-size: 12px;
+                                "
+                            >
+                            </ng-select>
+                        </td> -->
+                        <td align="center">
+                            <ng-select
+                                appendTo="body"
+                                appearance="outline"
+                                [items]="datalod"
+                                bindLabel="nama_lod"
+                                bindValue="id_lod"
+                                placeholder="Select Lod"
+                                dropdownPosition="bottom"
+                                formControlName="id_lod"
+                                style="
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    width: 90%;
+                                    font-size: 12px;
+                                "
+                            >
+                            </ng-select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div
+                *ngIf="
+                    this.labdataparameter.controls.parameter['controls']
+                        .length < 1
+                "
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    flex-direction: column;
+                "
+            >
+                <img
+                    style="width: 20%"
+                    src="assets/images/gif/selectfile.gif"
+                />
+                <span>Data Not found</span>
+            </div>
+        </div>
+    </form>
+    <div style="height: 30px"></div>
+</div>

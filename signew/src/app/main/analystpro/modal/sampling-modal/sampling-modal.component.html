@@ -1,0 +1,152 @@
+
+<h1 mat-dialog-title>Set Biaya Sampling</h1>
+<div mat-dialog-content>
+  
+    <mat-grid-list cols="2" rowHeight="100px" gutterSize="5px">
+        <mat-grid-tile>
+            <mat-form-field style="width: 100%;" appearance="fill">
+                <mat-label>Biaya Sampling</mat-label>
+                <mat-select (selectionChange)="getValDataSampling($event.value)">
+                    <mat-option *ngFor="let d of datasampling" [value]="d">{{d.sampling_name}} - {{d.price.toLocaleString()}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        
+  
+        <mat-grid-tile>
+            <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+                <mat-form-field style="width: 60%;" appearance="outline">
+                    <mat-label>Jumlah</mat-label>
+                    <input matInput type="number" [(ngModel)]="jumlah" />
+                </mat-form-field>
+                <button
+                    mat-flat-button
+                    style="width: 30%; margin: 5px; height: 60px"
+                    color="primary"
+                    (click)="satuin()"
+                >
+                    <span>Tambah</span>
+                </button>
+            </div>
+            
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <mat-table #table [dataSource]="samplingcombine" fusePerfectScrollbar>
+        <!-- Position Column -->
+        <ng-container matColumnDef="no">
+            <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+            <mat-cell *matCellDef="let a; let i=index">
+                <p class="text-truncate">{{i+1}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="samplingname">
+            <mat-header-cell *matHeaderCellDef>Sampling Data
+            </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{a.sampling_name}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="price">
+            <mat-header-cell *matHeaderCellDef>Price
+            </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{a.price.toLocaleString()}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="jumlah">
+            <mat-header-cell *matHeaderCellDef>Jumlah
+            </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{a.jumlah}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef>Total
+            </mat-header-cell>
+            <mat-cell *matCellDef="let a">
+                <p class="text-truncate">{{a.total.toLocaleString()}}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                Action
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index">
+                <button mat-icon-button color="primary" (click)="deleterow(i)" style="display: flex; justify-content: center; align-items: center;">
+                    <!-- <mat-icon>delete-outline</mat-icon> -->
+                    <svg-icon src="assets/icons/custom/close.svg"
+                        [svgStyle]="{ 'width.px':20, 'fill': '#b80606 ', 'display': 'flex', 'align-self':'center' }">
+                    </svg-icon>
+                </button>
+            </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true">
+        </mat-header-row>
+        <mat-row *matRowDef="let a; columns: displayedColumns;">
+        </mat-row>
+    </mat-table>
+    <mat-expansion-panel style="margin: 5px 0px">
+        <mat-expansion-panel-header>
+          <mat-panel-description>
+            Information
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-grid-list cols="2" rowHeight="100px" gutterSize="5px">
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Metode</mat-label>
+                    <input matInput [(ngModel)]="metodeModel">
+                  </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <ng-select
+                        appearance="fill"
+                        appendTo="body"
+                        [items]="employee"
+                        bindLabel="employee_name"
+                        bindValue="employee_id"
+                        (scrollToEnd)="onScrollToEnd('email')"
+                        (search)="onSearchi($event, 'email')"
+                        (clear)="reset()"
+                        (change)="getValue($event, 'email')"
+                        placeholder="Select PIC Sampling"
+                        [(ngModel)]="employeeModel"
+                        dropdownPosition="bottom"
+                        style="width: 100%"
+                    ></ng-select>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Lokasi</mat-label>
+                    <input matInput [(ngModel)]="lokasiModel">
+                  </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Kondisi</mat-label>
+                    <textarea
+                            matInput
+                            rows="1"
+                            [(ngModel)]="kondisiModel"
+                        ></textarea>
+                  </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+      </mat-expansion-panel>
+
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: space-between; margin-top: 10px;">
+  <!-- <button mat-button mat-dialog-close>Close</button> -->
+  <span>Total Sampling Rp. {{this.samplingtotal.toLocaleString()}}</span>
+  <button mat-button (click)="this.closeModal()">Save</button>
+</div>

@@ -1,0 +1,27 @@
+<div *ngIf="this.datashowlateyesterday.length > 0" fxFlex fxLayout="column" fxLayoutAlign="center center" style="width: 50%; gap: 10px; overflow: auto;"  >
+    <table *ngIf="this.datashowlateyesterday.length > 0" mat-table [dataSource]="this.datashowlateyesterday" class="mat-elevation-z8">
+    <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let a; let i = index">
+            {{ i + 1 }}
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="employee_name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.employee?.employee_name }}</td>
+    </ng-container>
+    <ng-container matColumnDef="total_late">
+        <th mat-header-cell *matHeaderCellDef>Total Terlambat</th>
+        <td mat-cell *matCellDef="let element">{{ element.total_late }}</td>
+    </ng-container>
+    <ng-container matColumnDef="division_name">
+        <th mat-header-cell *matHeaderCellDef>Divisi</th>
+        <td mat-cell *matCellDef="let element">{{ element.employee?.bagian.division_name }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+</div>
+<div *ngIf="this.datashowlateyesterday.length === 0" style="width: 65%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+    <medium>Please Wait ...</medium>
+</div>

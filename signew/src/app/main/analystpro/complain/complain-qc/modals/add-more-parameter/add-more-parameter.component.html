@@ -1,0 +1,74 @@
+<div
+    style="
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+    "
+>
+    <mat-form-field appearance="fill">
+        <mat-label>Complain Result</mat-label>
+        <input matInput [(ngModel)]="datasent.complain_result" />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Actual Result Complain</mat-label>
+        <input matInput [(ngModel)]="datasent.complain_arresult" />
+    </mat-form-field>
+    <ng-select
+        appendTo="body"
+        appearance="outline"
+        [items]="dataunit"
+        bindLabel="nama_unit"
+        bindValue="id"
+        placeholder="Select Satuan"
+        dropdownPosition="bottom"
+        [(ngModel)]="datasent.id_unit"
+        (change)="getValue($event, 'unit')"
+    >
+    </ng-select>
+    <ng-select
+        appendTo="body"
+        appearance="outline"
+        [items]="datametode"
+        bindLabel="metode"
+        bindValue="id"
+        placeholder="Select Metode"
+        dropdownPosition="bottom"
+        [(ngModel)]="datasent.id_metode"
+        (change)="getValue($event, 'metode')"
+    >
+    </ng-select>
+    <ng-select
+        appendTo="body"
+        appearance="outline"
+        [items]="datastandart"
+        bindLabel="nama_standart"
+        bindValue="id"
+        placeholder="Select Standart"
+        dropdownPosition="bottom"
+        [(ngModel)]="datasent.id_standart"
+        (change)="getValue($event, 'standart')"
+    >
+    </ng-select>
+    <ng-select
+        appendTo="body"
+        appearance="outline"
+        [items]="datalod"
+        bindLabel="nama_lod"
+        bindValue="id"
+        placeholder="Select LOD"
+        dropdownPosition="bottom"
+        [(ngModel)]="datasent.id_lod"
+        (change)="getValue($event, 'lod')"
+    >
+    </ng-select>
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%; gap:10px">
+        <button mat-stroked-button color="primary" (click)="save('add')">
+            Save
+        </button>
+        <button mat-stroked-button color="warn" (click)="save('close')">
+            Cancel
+        </button>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<div *ngIf="this.userForm" style="width: 100%; padding: 20px" fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form [formGroup]="userForm">
+        <ng-select
+            appendTo="body"
+            [items]="employee_data"
+            bindLabel="employee_name"
+            appearance="outline"
+            (scrollToEnd)="onScrollToEnd('employee')"
+            bindValue="employee_id"
+            placeholder="Select Employee"
+            (clear)="reset('employee')"
+            (search)="onSearch($event)"
+            formControlName="id_employee"
+            dropdownPosition="bottom"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            "
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                <b>{{ item.nik }}</b
+                >&nbsp;-&nbsp;{{ item.employee_name }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <b>{{ item.nik }}</b
+                >&nbsp;-&nbsp;{{ item.employee_name }}
+            </ng-template>
+        </ng-select>
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Division</mat-label>
+            <mat-select formControlName="divisi">
+                <mat-option
+                    *ngFor="let o of divisiondata"
+                    value="{{ o.id_div }}"
+                    >{{ o.division_name }}</mat-option
+                >
+            </mat-select>
+        </mat-form-field>
+    </form>
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <button mat-raised-button (click)="action('save')">Save</button>
+        <div style="width: 20px"></div>
+        <button mat-raised-button (click)="action('exit')">Cancel</button>
+    </div>
+</div>

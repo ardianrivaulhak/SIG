@@ -1,0 +1,115 @@
+<mat-grid-list cols="2" rowHeight="100px" gutterSize="10px" >
+    <mat-grid-tile>
+        <ng-select
+            appearance="outline"
+            appendTo="body"
+            style="width: 100%"
+            [items]="datacust"
+            [(ngModel)]="datasave.idcust"
+            bindLabel="customer_name"
+            bindValue="id_customer"
+            placeholder="Select Customer"
+            (search)="onSearchi($event, 'customer')"
+            (change)="getVal($event, 'customer')"
+            (clear)="resetAll('customer')"
+            (close)="resetAll('customer')"
+            (scrollToEnd)="onScrollToEnd($event, 'customer')"
+            dropdownPosition="bottom"
+        >
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+                <b>{{ item.kode_customer }}</b
+                >&nbsp;-&nbsp;{{ item.customer_name }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+                <b>{{ item.kode_customer }}</b
+                >&nbsp;-&nbsp;{{ item.customer_name }}
+            </ng-template>
+        </ng-select>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <ng-select 
+    appearance="outline" 
+    appendTo="body" 
+    style="width: 100%;"
+    [items]="dataemployee"
+    [(ngModel)]="datasave.idsales"  
+    bindLabel="employee_name" 
+    bindValue="employee_id"
+    placeholder="Select AE" 
+    (search)="onSearchi($event,'pic')"
+    (change)="getVal($event,'pic')"
+    (clear)="resetAll('pic')"
+    (close)="resetAll('pic')"
+    (scrollToEnd)="onScrollToEnd($event,'pic')"
+    dropdownPosition="bottom">
+    
+  </ng-select>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>From</mat-label>
+            <input matInput [(ngModel)]="datasave.from" [matDatepicker]="picker">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <mat-form-field appearance="fill">
+            <mat-label>To</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="datasave.to">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+        <mat-form-field appearance="fill">
+            <mat-label>Salesforcast</mat-label>
+        <input
+            type="text"
+            matInput
+            currencyMask
+            [(ngModel)]="datasave.salesforcast"
+            [options]="{
+                prefix: '',
+                thousands: '.',
+                precision: 0
+            }"
+        />
+    </mat-form-field>
+    </mat-grid-tile>
+</mat-grid-list>
+<table id="customers">
+<thead>
+    <tr>
+        <th>No</th>
+        <th>Status</th>
+        <th>Values</th>
+        <th>Discount</th>
+    </tr>
+</thead>
+<tbody *ngFor="let a of datasave.detailmou; let i=index">
+    <tr>
+        <td>{{i+1}}</td>
+        <td>{{a.status}}</td>
+        <td>
+            <mat-form-field appearance="fill">
+                <mat-label>Values</mat-label>
+                <input matInput [(ngModel)]="a.values">
+                <mat-hint>Input Numbers Only</mat-hint>
+              </mat-form-field>
+        </td>
+        <td><mat-form-field appearance="fill">
+            <mat-label>Disc</mat-label>
+            <input matInput [(ngModel)]="a.disc">
+            <mat-hint>Input Numbers Only</mat-hint>
+          </mat-form-field></td>
+    </tr>
+</tbody>
+</table>
+<div fxLayout="row" fxLayoutAlign="center center" style="margin: 20px">
+    <button mat-raised-button color="primary" (click)="savingdata()" [disabled]="this.loading">
+        <span>{{this.loading ? "Please Wait" : "Save"}}</span>
+    </button>
+    <div style="width: 20px;"></div>
+    <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+</div>

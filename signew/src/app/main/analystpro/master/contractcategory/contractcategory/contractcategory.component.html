@@ -1,0 +1,47 @@
+<mat-card style="margin: 15px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label>
+                <mat-icon>search</mat-icon>Search For Contract
+                Category</mat-label
+            >
+            <input
+                matInput
+                [(ngModel)]="this.datasent.search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+    </div>
+
+    <table class="demo" style="width: 100%; overflow: hidden; border: black">
+        <thead>
+            <tr>
+                <th style="width: 200px; text-align: center">Title</th>
+                <th style="width: 150px; text-align: center">Category Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of contractCategoryData; let rowIndex = index">
+                <td style="text-align: center">
+                    {{ row.title }}
+                </td>
+                <td style="text-align: center">
+                    {{ row.category_code }}
+                </td>
+            </tr>
+        </tbody>
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </table>
+</mat-card>

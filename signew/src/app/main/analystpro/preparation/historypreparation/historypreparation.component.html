@@ -1,0 +1,233 @@
+<div id="historypreparation" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg primary-700"></div>
+    <!-- / TOP BACKGROUND -->
+ 
+   <!-- CENTER -->
+   <div class="center">
+
+      <!-- HEADER -->
+      <div class="header primary-700"
+      fxLayout="column" fxLayoutAlign="center center"
+      fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+      <!-- APP TITLE -->
+      <div class="logo mb-24 mb-md-0"
+            fxLayout="row" fxLayoutAlign="start center">
+          <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+            compare
+          </mat-icon>
+          <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+              History Preparation
+          </span>
+      </div>
+      <!-- / APP TITLE -->
+
+      <!-- SEARCH -->
+        <div class="search-wrapper mx-32 mx-md-0" style="width: 500px;background-color: white;" [@animate]="{value:'*',params:{delay:'150ms',x:'-25px'}}">
+            <div style="background-color: white; margin-top: 6px;" class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon style="color: #000000">search</mat-icon>
+                <input 
+                (input)="onSearchChange($event.target.value)"
+                #filter 
+                placeholder="Search Marketing Number" > 
+            </div>
+        </div>
+        <!-- / SEARCH -->
+        <!-- ADD BUTTON -->
+        <div style="display: flex; justify-content: center; align-items: center;">
+            <button mat-mini-fab color="primary" (click)="clickFilter(true)" *ngIf="this.searchFilter == false">
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="clickFilter(false)" *ngIf="this.searchFilter == true">
+                <mat-icon>filter_list</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" style="margin-left: 10px;" (click)="ReportModals()">
+                <mat-icon>date_range</mat-icon>
+            </button>
+        </div>
+    <!-- / ADD BUTTON --> 
+    </div>
+    <!-- / HEADER -->
+
+      <!-- CONTENT CARD -->
+    <div class="content-card" style="height: 70vh; overflow-y: auto;">
+        <mat-progress-bar
+            color="primary"
+            mode="indeterminate"
+            value="50" *ngIf="load">
+        </mat-progress-bar>
+        <div class="search-filter" *ngIf="this.searchFilter == true"  [@animate]="{value:'*',params:{y:'100%'}}">
+        <mat-grid-list cols="3" rowHeight='2:0.5' style="margin-top: 10px; margin-bottom:-20px;">
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Company</mat-label>
+                    <input matInput 
+                        (input)="searchCompany($event.target.value)" (clear)="reset('company')">
+                    <mat-icon matSuffix>dehaze</mat-icon>
+                </mat-form-field>
+               
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Category</mat-label>
+                      <mat-select placeholder="Category"
+                       (selectionChange)="searchCategory($event)"
+                       (clear)="reset('category')"
+                        class="select-me"
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center; width: 100%;
+                        color:white !important;">
+                        <mat-option *ngFor="let contractcategory of contractcategory" [value]="contractcategory.id">
+                            {{ contractcategory.title }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>dehaze</mat-icon>
+                  </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Memo</mat-label>
+                    <input matInput 
+                        (input)="searchInformation($event.target.value)" (clear)="reset('memo')">
+                    <mat-icon matSuffix>dehaze</mat-icon>
+                </mat-form-field>
+               
+            </mat-grid-tile>
+
+        </mat-grid-list>   
+        </div>
+        <mat-table class="lab-table" #table [dataSource]="preparationData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.preparationData.length > 0">
+    
+            <!-- Column -->
+            <ng-container matColumnDef="sample_name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="sample_name">Sample Name</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData">
+                    <p matTooltip="{{ preparationData.sample_name }}"  style="white-space: normal;" class="text-truncate isi">{{ preparationData.sample_name }}</p>
+                </mat-cell>
+            </ng-container> 
+
+            <!-- Column -->
+            <ng-container matColumnDef="no_sample">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="no_sample">Sample Number</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ preparationData.no_sample }}">{{ preparationData.no_sample }}</span>
+                        <span class="text-truncate" matTooltip="{{ preparationData.catalogue }}"
+                            style="color: f5f5f5; font-size: 10px; font-style: italic;">{{ preparationData.catalogue }}</span>
+                        </div>
+                </mat-cell>
+            </ng-container> 
+
+              <!-- Column -->
+              <ng-container matColumnDef="contract_no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract Number</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData" >
+                    <p matTooltip="{{preparationData.contract_no}}" style="text-overflow: unset; padding-right: 100px;" class="text-truncate isi">
+                        {{preparationData.contract_no}}</p>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData" >
+                    <div class="box-normal" *ngIf="preparationData.id_statuspengujian == 1">
+                        <p class="text-truncate" matTooltip="Normal">Normal</p>
+                    </div>
+                    <div class="box-urgent" *ngIf="preparationData.id_statuspengujian == 2">
+                        <p class="text-truncate" matTooltip="Urgent">Urgent</p>
+                    </div>
+                    <div class="box-very-urgent" *ngIf="preparationData.id_statuspengujian == 3">
+                        <p class="text-truncate" matTooltip="Very Urgent">Very Urgent</p>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="estimation_lab">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="estimation_lab">Est Lab</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData" >
+                    <p matTooltip="{{preparationData.estimasi_lab | date}}" style="text-overflow: unset;" class="text-truncate isi">
+                        {{preparationData.estimasi_lab | date}}</p>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="user_sample">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="user_sample">User Sample</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData" >
+                    <p matTooltip="{{preparationData.user_smple}}" style="text-overflow: unset; " class="text-truncate isi">
+                        {{preparationData.user_smple}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="desc_sample">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="desc_sample">Desc</mat-header-cell>
+                <mat-cell *matCellDef="let preparationData" >
+                    <p matTooltip="{{preparationData.desc}}" style="text-overflow: unset; white-space: normal;" class="text-truncate isi">
+                        {{preparationData.desc}}</p>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+                <mat-cell *matCellDef="let sampleData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="end center">
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                                (click)="$event.stopPropagation();">
+                            <mat-icon class="secondary-text">drag_indicator</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <button mat-menu-item aria-label="remove" (click)="backToControl(sampleData.id_contract)">
+                                <mat-icon>assignment_return</mat-icon>
+                                <span>To Control</span>
+                            </button> 
+                            
+                        </mat-menu>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let preparationData; columns: displayedColumns;" class="lod" matRipple
+            >
+            </mat-row>
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.preparationData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.preparationData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        <mat-paginator #paginator
+                [length]="total"
+                [pageIndex]="from"
+                [pageSize]="to"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page) = "paginated($event)">
+
+        </mat-paginator>
+
+    </div>
+    <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+    
+</div>

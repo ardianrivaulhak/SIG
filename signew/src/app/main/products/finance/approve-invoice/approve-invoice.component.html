@@ -1,0 +1,213 @@
+<div id="product_invoiceproduct" class="page-layout simple" style="overflow: auto; height: 100%;">
+    <div class="content">
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center"style="margin-bottom: 10px;" >
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Invoice</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Category</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Customer</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Status</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Create By</mat-label>
+                            <input matInput 
+                            #filter 
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button  fxFlex="12"  fxFlex.xs="23" style="margin-right: 10px; background-color: #3AB0FF; color: #fff;"  >
+                            Filter
+                        </button>
+                        <button mat-raised-button  fxFlex="12"  fxFlex.xs="23" style="margin-right: 10px; background-color: #f75b5b; color: #fff;">
+                            Reset
+                        </button>                        
+                    </div>
+                </div>
+            
+        </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-size:16px; font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Approve Invoice Products 
+                    </span>
+                    <span *ngIf="this.checkList.length > 0">&nbsp;|&nbsp; </span>
+                    <button mat-icon-button color="white" 
+                    class="contract-certficate"
+                    matTooltip="No Action"
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="cancelChecklist()"
+                    style="margin-left: -2px;">
+                        <mat-icon>fullscreen_exit</mat-icon>
+                   </button>
+                    <button mat-icon-button color="white" 
+                    class="contract-certficate"
+                    matTooltip="Approve"
+                    *ngIf="this.checkList.length > 0"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="approve()"
+                    style="margin-left: -2px;">
+                        <mat-icon>check_circle</mat-icon>
+                   </button> 
+                </div>
+                <div>
+                </div>
+            </div>
+            <mat-table class="mediartu-table" #table [dataSource]="financeProduct" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar  *ngIf="this.financeProduct.length > 0 && !loadingfirst">
+
+             <!-- Column -->
+             <ng-container matColumnDef="checkbox">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="checkbox">
+                    <mat-checkbox class="example-margin"
+                    (change)="setAll($event.checked)"
+                    (change)="someComplete()"></mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <mat-checkbox class="example-margin" 
+                    [(ngModel)]="financeProduct.completed"
+                    (ngModelChange)="updateAllComplete()"
+                     (change)="checkBox($event.checked, financeProduct.id_product_invoice)"
+                     style="margin-left: 11px;"></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+           
+            <!-- Column -->
+            <ng-container matColumnDef="invoice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="invoice">Invoice</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.no_invoice}}">{{  financeProduct.no_invoice }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="category">Category</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ financeProduct.contract.category.title }}">{{ financeProduct.contract.category.title }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer">Customer</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ financeProduct.customers.customer_name}}">{{financeProduct.customers.customer_name}}</span>
+                        <span class="text-truncate" style="color: f5f5f5; font-size: 10px;" matTooltip="{{ financeProduct.contactpersons.name}}">{{financeProduct.contactpersons.name}}</span>
+                    </div> 
+                </mat-cell>
+            </ng-container>
+
+
+              <!-- Column -->
+              <ng-container matColumnDef="tgl_faktur">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_faktur">Date</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.tgl_faktur | date}}">{{financeProduct.tgl_faktur | date}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+               <!-- Column -->
+               <ng-container matColumnDef="tgl_jatuhtempo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_jatuhtempo">Exp</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.tgl_jatuhtempo | date }}">{{financeProduct.tgl_jatuhtempo | date }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            
+
+             <!-- Column -->
+             <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="user">Create By</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[0].employee.employee_name }}">{{ financeProduct.condition_invoice[0].employee.employee_name }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>    
+    
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="action" fxHide fxShow.gt-md>Action</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                        <button  mat-icon-button color="primary" (click)="openInvoice(financeProduct.id_product_invoice, 'open')">
+                            <mat-icon>picture_as_pdf</mat-icon>
+                        </button>     
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let financeProduct; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+        <div *ngIf="loadingfirst && this.financeProduct.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.financeProduct.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        <div>
+            <mat-paginator
+                [length]="this.total"
+                [pageSize]="this.to"
+                [pageIndex]="this.current_page"
+                hidePageSize="true"
+                (page)="pageEvent = $event; paginated($event)"
+            >
+            </mat-paginator>
+        </div>
+        </mat-card>
+
+    </div>
+</div>

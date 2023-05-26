@@ -1,0 +1,111 @@
+<div id="standartdet" class="page-layout carded fullwidth inner-scroll">
+    <div class="top-bg primary"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center" style="overflow: auto;">
+
+        <!-- HEADER -->
+        <div class="header primary" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/analystpro/standart'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div *ngIf="this.idStandart === 'add'">
+                    <div fxLayout="column" fxLayoutAlign="start start">                    
+                            <div class="text-customer h2">
+                                Add Data
+                            </div>
+    
+                            <div class="subtitle secondary-text">
+                                <span>add new standart uji</span>
+                            </div>                    
+                    </div>
+                </div>
+
+                <div *ngIf="this.idStandart !== 'add'">
+                    <div fxLayout="column" fxLayoutAlign="start start">                    
+                            <div class="text-customer h2">
+                                Edit Data
+                            </div>
+    
+                            <div class="subtitle secondary-text">
+                                <span>edit data standart uji</span>
+                            </div>                    
+                    </div>
+                </div>
+                
+            </div>
+            <button mat-raised-button
+                    class="save-product-button" (click)="saveNewForm()" *ngIf="hide && this.idStandart === 'add'" [disabled]="standartForm.invalid">
+                    <mat-icon>save</mat-icon>
+                    <span>Save</span>
+            </button>
+            <button mat-raised-button
+                    class="save-product-button" (click)="enableForm()" *ngIf="hide && this.idStandart !== 'add'">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+            </button>
+            <button mat-raised-button
+                    class="save-product-button" (click)="disableForm()" *ngIf="!hide && this.idStandart !== 'add'">
+                    <mat-icon>chevron_left</mat-icon>
+                    <span>Cancel</span>
+            </button>
+        </div>
+        <div class="content-card" style="overflow: auto;">
+            <mat-progress-bar
+          color="primary"
+          mode="indeterminate"
+          value="50" *ngIf="load">
+      </mat-progress-bar>
+            <div class="content" *ngIf="standartForm">
+                <form name="standartForm" [formGroup]="standartForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+                       
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Lab Name</mat-label>
+                            <input matInput placeholder="Standart Name"
+                                   name="nama_standart"
+                                   formControlName="nama_standart"
+                                   required minlength="1"
+                                   (input)="validation($event.target.value)">
+                                   <mat-error>
+                                    Standart Name is Require
+                                    </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" floatLabel="always" class="w-100-p">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput placeholder="Description"
+                                              name="ket_standart"
+                                              formControlName="ket_standart"
+                                              rows="2">
+                                    </textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="button-action" fxLayout="row" fxLayoutAlign="center center" *ngIf="!hide">
+                        <button mat-raised-button 
+                        color="accent" 
+                        style="margin-right: 5px;" 
+                        (click)="saveForm()" 
+                        [disabled]="load">
+                        <mat-icon>save</mat-icon>
+                        Save</button>
+
+                        <button mat-raised-button 
+                        color="warn" 
+                        tyle="margin-left: 5px;" 
+                        (click)="deleteForm()" 
+                        [disabled]="load">
+                        <mat-icon>delete</mat-icon>
+                        Delete</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

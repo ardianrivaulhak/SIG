@@ -1,0 +1,64 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <form
+        name="divisionForm"
+        [formGroup]="divisionForm"
+        class="product w-100-p"
+        fxLayout="column"
+        fxFlex
+    >
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+        >
+            <mat-label>Division Name</mat-label>
+            <input
+                matInput
+                placeholder="Put Division Name"
+                formControlName="division_name"
+            />
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+            *ngIf="this.company_id == 1"
+        >
+            <mat-label style="color: black">Departement</mat-label>
+            <mat-select
+                formControlName="dept_id"
+                placeholder="Set Departement"
+            >
+                <mat-option [value]="o.id" *ngFor="let o of datadept">{{
+                    o.dept_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field
+            appearance="outline"
+            floatLabel="always"
+            class="w-100-p"
+            *ngIf="this.company_id == 1"
+        >
+            <mat-label style="color: black">Company</mat-label>
+            <mat-select
+                formControlName="company_name"
+                placeholder="Set Company"
+            >
+                <mat-option [value]="o.id" *ngFor="let o of sisterCompany">{{
+                    o.company_name
+                }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="serviceAct()">
+            Save
+        </button>
+        <div style="width: 30px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

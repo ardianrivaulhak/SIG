@@ -1,0 +1,91 @@
+<div
+    id="boards"
+    class="fuse-navy"
+    fxLayout="column"
+    fxLayoutAlign="start center"
+    fxFlex
+>
+    <div
+        *ngIf="this.me.length > 0"
+        class="header pt-44 pt-md-88"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+        fxFlex="0 0 auto"
+        [@animate]="{ value: '*', params: { delay: '100ms' } }"
+    >
+        <div style="width: 100px; height: 100px">
+            <img
+                class="avatar"
+                style="width: 100px; height: 100px; object-fit: cover"
+                src="{{ this.urlnow }}assets/img/user/{{ this.me[0].photo }}"
+            />
+        </div>
+        <h2>Hai {{ this.me[0].employee_name }}, What Will you do today ?</h2>
+    </div>
+    <div
+        class="board-list"
+        fxFlex="0 0 auto"
+        fxLayout="row wrap"
+        fxLayoutAlign="center center"
+        [@animateStagger]="{ value: '50' }"
+    >
+        <div
+            class="board-list-item"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            [@animate]="{ value: '*', params: { y: '100%' } }"
+            (click)="goto('hris')"
+        >
+            <mat-icon svgIcon="worker" class="s-56"></mat-icon>
+            <!-- <mat-icon class="s-56">account_box</mat-icon> -->
+            <div class="board-name">HRIS</div>
+        </div>
+
+        <div
+            class="board-list-item"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            [@animate]="{ value: '*', params: { y: '100%' } }"
+            (click)="goto('analystpro')"
+        >
+            <mat-icon svgIcon="lab" class="s-56"></mat-icon>
+            <div class="board-name">Analyst Pro</div>
+        </div>
+
+        <div
+            class="board-list-item"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            [@animate]="{ value: '*', params: { y: '100%' } }"
+            (click)="goto('products')"
+        >
+            <mat-icon class="s-56">loyalty</mat-icon>
+            <div class="board-name">Products</div>
+        </div>
+
+        <div
+            class="board-list-item"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            [@animate]="{ value: '*', params: { y: '100%' } }"
+            (click)="goto('edoc')"
+        >
+            <mat-icon svgIcon="agree" class="s-56"></mat-icon>
+            <!-- <mat-icon class="agree">account_box</mat-icon> -->
+            <div class="board-name">E - Documents</div>
+        </div>
+
+        <div
+            class="board-list-item"
+            fxLayout="column"
+            fxLayoutAlign="center center"
+            [@animate]="{ value: '*', params: { y: '100%' } }"
+        >
+            <mat-icon svgIcon="none" class="s-56"></mat-icon>
+            <!-- <mat-icon class="s-56">account_box</mat-icon> -->
+            <div class="board-name">Soon !</div>
+        </div>
+
+        <!-- / BOARD -->
+    </div>
+</div>

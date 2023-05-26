@@ -1,0 +1,251 @@
+<div id="certificate"  class="page-layout simple"  style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content">   
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;">
+            <form name="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="20">
+                            <mat-label>Marketing</mat-label>
+                            <input matInput 
+                            [(ngModel)]="this.dataFilter.marketing"
+                            name="marketing"
+                            #filter 
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="20">
+                            <mat-label>LHU</mat-label>
+                            <input matInput 
+                            [(ngModel)]="this.dataFilter.lhu"
+                            name="lhu"
+                            #filter 
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="10">
+                            <mat-label>LHU Date</mat-label>
+
+                            <input matInput [matDatepicker]="picker"   [(ngModel)]="this.dataFilter.lhu_date" name="lhu_date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+
+                        </mat-form-field>
+        
+                        <ng-select appendTo="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        class="auto-grow"
+                        bindValue="id_customer" 
+                        name="id_customer"
+                        fxFlex="30" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Customer"
+                        dropdownPosition="bottom"  
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        [(ngModel)]="this.dataFilter.customer_name"
+                        [ngModelOptions]="{standalone: true}"
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="10">
+                            <mat-label>Teams</mat-label>
+                            <mat-select 
+                            name="team"
+                            [(ngModel)]="this.dataFilter.team"
+                            placeholder="Select Team"
+                            class="select-me"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color:white !important;">
+                            <mat-option *ngFor="let groupdata of groupdata" [value]="groupdata.id">
+                                {{ groupdata.group_name }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 12px;" fxFlex fxFlex="7">
+                            <mat-label>Hold</mat-label>
+                            <mat-select 
+                            name="team"
+                            [(ngModel)]="this.dataFilter.hold"
+                            placeholder="Select Team"
+                            class="select-me"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color:white !important;">
+                            <mat-option *ngFor="let dataHold of dataHold" [value]="dataHold.id">
+                                {{ dataHold.hold }}
+                            </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+    
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button 
+                        color="primary"  
+                        fxFlex="15"  fxFlex.xs="15" 
+                        (click)="search()"
+                        style="height: 40px; width:250px; margin-right:15px;">
+                            Search
+                        </button>
+                        <button mat-stroked-button 
+                        color="primary" 
+                        fxFlex="15" fxFlex.xs="15"
+                        (click)="cancelSearch()" 
+                        style="height: 40px;" >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div style="margin-bottom:40px;">
+                    <span style="
+                        font-weight: bold; 
+                        color: #696969;" 
+                    fxHide fxShow.gt-md>Tracking Certificate </span>
+                </div>
+               <div style="margin-bottom:40px;" fxLayout="row" fxLayoutAlign="space-evenly center" >
+                
+               </div>
+            </div>
+
+            <mat-table class="cert-table" #table [dataSource]="certData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar *ngIf="this.certData.length > 0">
+
+
+            <!-- Column -->
+            <ng-container matColumnDef="contract_no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract Number</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ certData.contract_no }}" style="margin-top: 5px;">{{ certData.contract_no }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="category_code">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="category_code">Hold</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                    <span class="text-truncate" matTooltip="{{ certData.hold == 'Y' ? 'hold' : 'unhold' }}" 
+                            style="color: #911F27; font-size: 10px;" *ngIf="certData.hold == 'Y'"  ><mat-icon style="font-size: 21px;">lock</mat-icon>
+                        </span>
+                        <span class="text-truncate" matTooltip="{{ certData.hold == 'Y' ? 'hold' : 'unhold' }}"
+                        style="color: #3DB2FF; font-size: 10px;" *ngIf="certData.hold == 'N'" ><mat-icon style="font-size: 21px;">lock_open</mat-icon>
+                        </span>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer_name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer_name">Customer Name</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                   <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{certData.customers_handle.customers.customer_name}}">{{certData.customers_handle.customers.customer_name}}</span>
+                        <span class="text-truncate" matTooltip="{{certData.customers_handle.contact_person.name}}"
+                            style="color: f5f5f5; font-size: 10px; font-style: italic;">{{certData.customers_handle.contact_person.name}}</span>
+                        </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="progress">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="progress">LHU / Sample</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                    <p class="text-truncate" matTooltip="{{certData.condition_contract_cert.length}} / {{certData.count_samplelab.length}}">{{certData.condition_contract_cert.length}} / {{certData.count_samplelab.length}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="desc">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="desc">Desc</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                    <p class="text-truncate" matTooltip="{{certData.desc}}">{{certData.desc}}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="team">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="team">Team</mat-header-cell>
+                <mat-cell *matCellDef="let certData">
+                    <p class="text-truncate" matTooltip="{{certData.condition_contract_cert[0].team.group_name}}">{{certData.condition_contract_cert[0].team.group_name}}</p>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="icon" >Action</mat-header-cell>
+                <mat-cell *matCellDef="let certData; let indexOfelement=index;" >
+                    <div fxFlex="row" fxLayoutAlign="center">
+
+                        <button mat-icon-button 
+                        color="primary"  
+                        class="btn-icon-control"
+                        matTooltip="Sample" 
+                        aria-label="Sample" 
+                        (click)="listLhuinContract(certData.id_kontrakuji)">
+                            <mat-icon>launch </mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="primary"  
+                        class="btn-icon-control"
+                        matTooltip="Sample" 
+                        aria-label="Sample" 
+                        [disabled]="this.notshowing"
+                        (click)="selectTeam(certData.condition_contract_cert[0].id_team, certData.id_kontrakuji)">
+                            <mat-icon>account_box</mat-icon>
+                        </button>
+                        
+                    </div>
+                </mat-cell>
+            </ng-container>
+            
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let certData; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.certData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.certData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        <mat-paginator #paginator
+            [length]="total"
+            [pageIndex]="from"
+            [pageSize]="to"
+            [hidePageSize]="true"
+            [showFirstLastButtons]="true"
+            *ngIf="this.total > 0"
+            (page) = "paginated($event)">
+
+        </mat-paginator>
+        </mat-card>
+    </div>
+</div>

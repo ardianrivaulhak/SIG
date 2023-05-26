@@ -1,0 +1,27 @@
+<mat-form-field appearance="fill">
+    <mat-label>Address</mat-label>
+    <textarea matInput [(ngModel)]="this.address" rows="3"></textarea>
+</mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-label>Notes</mat-label>
+    <textarea matInput [(ngModel)]="this.desc" rows="3"></textarea>
+</mat-form-field>
+
+<div
+    style="
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    "
+>
+    <button
+        mat-raised-button
+        color="primary"
+        (click)="saveNewCustomerTaxAddress()"
+    >
+        Save
+    </button>
+    <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+</div>

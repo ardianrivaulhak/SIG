@@ -1,0 +1,106 @@
+<div *ngIf="this.datainfo.length > 0 && this.hideForm" fxFlex fxLayout="column" fxLayoutAlign="center center">
+    <button mat-raised-button (click)="tambahkententuan()">Edit Info</button>
+    <div style="height: 20px;"></div>
+    <table id="customers">
+        <tr>
+            <th>COA</th>
+            <th>GR</th>
+            <th>PO</th>
+            <th>BA</th>
+            <th>SPK</th>
+            <th>TTB</th>
+            <th>Lunas di awal</th>
+        </tr>
+        <tr *ngFor="let o of datainfo">
+            <td>{{o.coa == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.giro == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.po == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.berita_acara == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.spk == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.ttb == 'Y' ? 'Yes' : 'No'}}</td>
+            <td>{{o.lunas == 'Y' ? 'Yes' : 'No'}}</td>
+        </tr>
+    </table>
+</div>
+<div fxFlex fxLayout="column" fxLayoutAlign="center center" *ngIf="this.datainfo.length < 1 && this.hideForm">
+        <span style="padding: 5px; font-weight: bold;">Tidak Ada info untuk Customer ini</span>
+        <button mat-raised-button (click)="tambahkententuan()">Tambah Ketentuan</button>
+</div>
+
+<div *ngIf="!this.hideForm" fxLayout="column" fxLayoutAlign="center center" style="width: 100%;"> 
+    <mat-grid-list cols="2" rowHeight="100px" gutterSize="10px" style="width: 100%;">
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>COA</mat-label>
+                <mat-select [(ngModel)]="coa">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>GR</mat-label>
+                <mat-select [(ngModel)]="gr">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>PO</mat-label>
+                <mat-select [(ngModel)]="po">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>BA</mat-label>
+                <mat-select [(ngModel)]="ba">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>SPK</mat-label>
+                <mat-select [(ngModel)]="spk">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>TTB</mat-label>
+                <mat-select [(ngModel)]="ttb">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Lunas di Awal</mat-label>
+                <mat-select [(ngModel)]="lunas">
+                  <mat-option value="Y">Yes</mat-option>
+                  <mat-option value="N">No</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <button mat-raised-button color="primary" (click)="saving()">Save</button>
+                <div style="width: 20px;"></div>
+                <button mat-raised-button color="warn" (click)="canceling()">Cancel</button>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>   
+</div>
+
+
+

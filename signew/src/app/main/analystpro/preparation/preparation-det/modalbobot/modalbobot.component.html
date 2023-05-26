@@ -1,0 +1,199 @@
+<div  class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+           Value Sample 
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <mat-dialog-content class="p-24 m-0" fxLayout="column" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+        
+        <mat-card class="example-card" fxLayout="column" fxLayoutAlign="space-around start">
+            <div>
+                <span tyle="font-weight: bold; color: #303030; font-size: 11px;">{{ this.samples.sample.sample_name }}</span>
+            </div>
+            <div class="data-card-identity" fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>{{ this.samples.sample.no_sample }} &nbsp; | </span>
+                    <button mat-icon-button fxHide fxShow.gt-md
+                    matTooltip="Memo Preparation" 
+                    (click)="descriptionInfoModals(this.idsample, 'withID')"
+                    style="margin-left: -10px;">
+                        <mat-icon style="color: #303030;"><mat-icon>info</mat-icon></mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary"  
+                    (click)="this.getModalAddPhoto(this.samples)"
+                    matTooltip="Photo Sample"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>filter</mat-icon>
+                    </button>
+                </div>
+            </div>
+            
+        </mat-card>
+
+        <mat-card class="example-card">
+            <mat-card-title style="font-size: 14px; font-weight: bold;">List Parameter</mat-card-title>
+            <mat-card-content>
+                <mat-table class="lab-table" #table [dataSource]="parameterData" matSort (matSortChange)="sortData($event)"
+                [@animateStagger]="{value:'50'}" >
+                
+                    <!-- Column -->
+                    <ng-container matColumnDef="no">
+                        <mat-header-cell *matHeaderCellDef>No</mat-header-cell>
+                        <mat-cell *matCellDef="let parameterData; let i=index">
+                            <p class="text-truncate">{{i+1}}</p>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <!-- Column -->
+                    <ng-container matColumnDef="name_id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="name_id">Parameter ID</mat-header-cell>
+                        <mat-cell *matCellDef="let parameterData">
+                            <p class="text-truncate" matTooltip="{{ parameterData.parameteruji.name_id }}">{{ parameterData.parameteruji.name_id }}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="name_en">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="name_en">Parameter EN</mat-header-cell>
+                        <mat-cell *matCellDef="let parameterData">
+                            <p class="text-truncate" matTooltip="{{ parameterData.parameteruji.name_en }}">{{ parameterData.parameteruji.name_en }}</p>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <!-- Column -->
+                    <ng-container matColumnDef="nama_lab">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header="nama_lab">Lab</mat-header-cell>
+                        <mat-cell *matCellDef="let parameterData">
+                            <p class="text-truncate" matTooltip="{{ parameterData.lab.nama_lab }}"> {{ parameterData.lab.nama_lab }}</p>
+                        </mat-cell>
+                    </ng-container>
+                
+                    <mat-header-row *matHeaderRowDef="displayedColumnsParam"></mat-header-row>
+                    <mat-row *matRowDef="let parameterData; columns: displayedColumnsParam;"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    </mat-row>
+                
+                </mat-table> 
+            </mat-card-content>
+            <mat-card-actions>
+                <mat-paginator #paginator   
+                [pageIndex]="from"
+                [pageSize]="to"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                [length]="total"
+                (page) = "paginated($event)">
+                </mat-paginator>
+            </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="example-card">
+            <mat-card-title style="font-size: 14px; font-weight: bold;">Value Sample</mat-card-title>
+            <mat-card-content>
+                <mat-table class="value-table" #table [dataSource]="getDataBobots"   >
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="no" >
+                        <mat-header-cell *matHeaderCellDef >No</mat-header-cell>
+                        <mat-cell *matCellDef="let getDataBobots; let i=index">
+                            <p class="text-truncate">{{i+1}}</p>
+                        </mat-cell>
+                    </ng-container>
+        
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="nama_lab">
+                        <mat-header-cell *matHeaderCellDef >Lab
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let getDataBobots">
+                            <p class="text-truncate" matTooltip="{{getDataBobots.lab.nama_lab !== 'null' ?  getDataBobots.lab.nama_lab : 'Tidak ada Nama'}}">{{getDataBobots.lab.nama_lab !== 'null' ?  getDataBobots.lab.nama_lab : 'Tidak ada Nama'}}</p>
+                        </mat-cell>
+                    </ng-container>    
+                    
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="value">
+                        <mat-header-cell *matHeaderCellDef > Value
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let getDataBobots">
+                            <p class="text-truncate">{{getDataBobots.value}}</p>
+                        </mat-cell>
+                    </ng-container>  
+        
+                    <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef>
+                            #
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let getDataBobots">
+                            <button mat-icon-button color="primary" (click)="deleteDataBobot(getDataBobots.id)" style="display: flex; justify-content: center; align-items: center;">
+                                <mat-icon style="color: #b80606;">delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+        
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let getDataBobots; columns: displayedColumns;"
+                    [@animate]="{value:'*',params:{y:'100%'}}">
+                    </mat-row>   
+        
+                </mat-table>
+            </mat-card-content>
+            <mat-card-actions>
+                <mat-paginator #paginator
+                [length]="totalbot"
+                [pageIndex]="frombot"
+                [pageSize]="tobot"
+                [hidePageSize]="true"
+                [showFirstLastButtons]="true"
+                (page) = "paginateBobot($event)">
+            </mat-paginator>
+            </mat-card-actions>
+          </mat-card>
+    </mat-dialog-content>
+
+    
+
+    <mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="space-evenly center" *ngIf="this.addBobotForm" >
+        <form name="addBobotForm" [formGroup]="addBobotForm" class="product w-100-p">
+            <ng-select 
+                appendTo="body" 
+                [items]="labs" 
+                bindLabel="nama_lab" 
+                bindValue="id"
+                (scrollToEnd)="onScrollToEnd('lab')" 
+                placeholder="Select Lab" 
+                dropdownPosition="top" 
+                name="id_lab" 
+                formControlName="id_lab"
+                appearance="outline"
+                fxFlex="45"
+                style="display: flex;
+                        justify-content: center;
+                        align-items: center; 
+                        width: 100%;
+                        margin-top: 5px;
+                        margin-right: 10px;">
+            </ng-select>
+            <mat-form-field   appearance="outline" style="width: 100%; font-size: 11px; margin-top: 10px;margin-right: 10px;" fxFlex="20">
+                <mat-label>Value</mat-label>
+                <input matInput type="number" 
+                name="value" 
+                formControlName="value"  
+                placeholder="Value"  
+                [(ngModel)]="jumlah" 
+                (change)="event($event.target.value)"/>
+            </mat-form-field>
+            <button mat-flat-button color="accent"  fxFlex="15" style="height: 40px; width:250px; margin-top: 15px;"  (click)="saveDataBobot()">
+                Submit
+            </button>
+            <button mat-flat-button color="warn" style="height: 40px; width:250px;  margin-top: 15px;" aria-label="Close" fxFlex="15" (click)="closeModal(true)">
+                  Close
+            </button>
+        </form>
+    </mat-dialog-actions>
+</div>

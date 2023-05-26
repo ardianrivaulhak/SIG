@@ -1,0 +1,16 @@
+<mat-card class="mat-elevation-z0" style="overflow:auto;">            
+    <h3 style="font-weight:bold ; margin-top: 30px;">Document Views</h3>
+    <div fxLayout="column" fxLayoutAlign="start stretch" >
+
+        <mat-card class="mat-elevation-z0" *ngFor="let item of this.viewedData" style="background-color: #CBEDD5; margin-bottom: 5px;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div fxLayout="column" fxLayoutAlign="start start" >
+                    <span style="font-size: 11px;">Viewed Document {{ item.documents.title }} </span>
+                    <span style="font-size: 10px;"> {{ item.created_at | date }}</span>
+                </div>
+                <span style="font-size: 11px;">{{ item.employee.employee_name}}</span>
+            </div>
+        </mat-card>
+
+    </div>
+</mat-card>

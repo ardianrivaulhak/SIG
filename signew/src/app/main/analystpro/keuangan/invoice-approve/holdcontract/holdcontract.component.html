@@ -1,0 +1,59 @@
+<div class="dialog-content-wrapper mat-primary m-0" *ngIf="this.paymentForm" style="overflow-y: hidden;">
+   
+    <form name="paymentForm" [formGroup]="paymentForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+                Hold Contract
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" >
+        <mat-grid-list cols="6" rowHeight='100px'>   
+            <mat-grid-tile colspan="4"> 
+             
+                <ng-select 
+                    appendTo="body" 
+                    [items]="datacontract" 
+                    bindLabel="contract_no" 
+                    bindValue="id_kontrakuji"
+                    appearance="outline"
+                    (scrollToEnd)="onScrollToEnd('no_kontrak')" 
+                    placeholder="Select Contract" 
+                    (change)="getValKontrak($event)" 
+                    (search)="onsearchselect($event,'kontrak')"
+                    formControlName="contract_id"
+                    style="display: flex;
+                        justify-content: center;
+                        align-items: center; width: 95%">
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                            {{item.contract_no}}
+                        </ng-template>
+                        <ng-template ng-label-tmp let-item="item">
+                            {{item.contract_no}}
+                        </ng-template>
+                </ng-select>
+            </mat-grid-tile> 
+            <mat-grid-tile colspan="2"> 
+                <mat-radio-group aria-label="Select an option" formControlName="hold">
+                    <mat-radio-button value="N">NO</mat-radio-button>
+                    <mat-radio-button value="Y">YES</mat-radio-button>
+                  </mat-radio-group>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+    </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-raised-button color="primary" (click)="saveForm()" style="font-weight: 800;">
+          SUBMIT
+        </button>
+        <button mat-button class="mat-primary" aria-label="Close" (click)="closeModal()">
+            CLOSE
+        </button>
+    </div>
+    </form>
+    
+  </div>

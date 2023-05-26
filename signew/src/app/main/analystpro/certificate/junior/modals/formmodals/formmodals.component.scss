@@ -1,0 +1,30 @@
+@import "src/@fuse/scss/fuse";
+
+.certificate-all-dialog{
+    .ng-select .ng-select-container {
+        min-height: 48px;
+        font-size: 12px !important;
+        margin-bottom: 2px;
+      }
+    .mat-tab-label{
+        font-size: 10px !important;
+     } 
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 720px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+}

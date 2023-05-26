@@ -1,0 +1,1137 @@
+<div
+    class="full-profile"
+    style="background-color: #f2f5fc; height: 93vh; overflow: auto"
+    *ngIf="this.dataemployee.length > 0"
+>
+    <div class="profile">
+        <div fxLayout="row" fxLayoutAlign="end start">
+            <button
+                mat-icon-button
+                style="color: white; margin: 10px"
+                (click)="editpersonal(this.dataemployee[0])"
+            >
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+
+        <div
+            class="profile-content"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            fxLayout="row"
+            fxLayoutAlign="start center"
+            fxLayoutGap="5px"
+            *ngIf="this.dataemployee.length > 0"
+        >
+            <img
+                class="profile-pic"
+                [src]="setPhoto(this.dataemployee[0])"
+                style="object-fit: cover"
+            />
+            <div style="padding-left: 40px; height: 200px">
+                <h1 style="color: white">
+                    {{ this.dataemployee[0].employee_name
+                    }}<!-- <mat-icon
+                        style="color: #388e3c"
+                        (click)="editactive(this.dataemployee[0])"
+                        *ngIf="this.dataemployee[0].status == 1"
+                        >check_circle_outline</mat-icon
+                    ><mat-icon
+                        style="color: #c62828"
+                        (click)="editactive(this.dataemployee[0])"
+                        *ngIf="this.dataemployee[0].status == 2"
+                        >highlight_off</mat-icon
+                    > -->
+                </h1>
+                <p style="color: white; margin-top: -15px">
+                    {{ this.dataemployee[0].nik }}
+                </p>
+                <table style="margin-top: 30px;">
+                    <thead>
+                        <tr>
+                            <th
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <mat-icon>room</mat-icon>
+                                <span>{{ this.dataemployee[0].alamat }}</span>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <mat-icon> phone</mat-icon>
+                                <span>+62{{ this.dataemployee[0].phone }}</span>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 10px;
+                                "
+                            >
+                                <mat-icon> mail_outline</mat-icon>
+                                <span>
+                                    {{ this.dataemployee[0].user.email }}</span
+                                >
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div>
+            <button
+                mat-button
+                [matMenuTriggerFor]="companyUser"
+                class="user-button"
+                *ngIf="this.displaymenu"
+            >
+                {{ this.title_button }}
+            </button>
+
+            <mat-menu #companyUser="matMenu" [overlapTrigger]="false">
+                <button
+                    mat-menu-item
+                    *ngFor="let o of datacompany"
+                    (click)="setData(o)"
+                >
+                    {{ o.company_name }}
+                </button>
+            </mat-menu>
+
+            <button
+                style="
+                    width: 10%;
+                    height: 20px;
+                    display: flex;
+                    border-radius: 15px;
+                    margin-top: -20px;
+                    margin-left: 40px;
+                    background-color: #c8e6c9;
+                    color: #388e3c;
+                    text-align: center;
+                    align-items: center;
+                    object-fit: cover;
+                    justify-content: center;
+                    border: thick;
+                "
+                *ngIf="this.dataemployee[0].status == 1"
+                (click)="editactive(this.dataemployee[0])"
+            >
+                Active
+            </button>
+            <button
+                style="
+                    width: 10%;
+                    height: 20px;
+                    display: flex;
+                    border-radius: 15px;
+                    margin-top: -20px;
+                    margin-left: 40px;
+                    background-color: #ffcdd2;
+                    color: #c62828;
+                    text-align: center;
+                    align-items: center;
+                    object-fit: cover;
+                    justify-content: center;
+                    border: thick;
+                "
+                *ngIf="this.dataemployee[0].status == 2"
+                (click)="editactive(this.dataemployee[0])"
+            >
+                Non Active
+            </button>
+        </div>
+    </div>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div
+            fxLayout="row"
+            fxLayoutAlign="start start"
+            style="margin-bottom: 10px"
+        >
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Detail Personal</span
+            >
+        </div>
+        <div fxLayout="row" fxLayoutGap="10">
+            <div fxFlex="35%">
+                <table class="empl" style="border-spacing: 10px">
+                    <tr>
+                        <td style="font-weight: bolder">Name</td>
+                        <td>
+                            {{ this.dataemployee[0].employee_name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Gender</td>
+                        <td>
+                            {{ this.dataemployee[0].gender }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Religion</td>
+                        <td>
+                            {{ this.dataemployee[0].religion }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Marital Status</td>
+                        <td>
+                            {{ this.dataemployee[0].martial_status }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">
+                            Place / Date of Birth
+                        </td>
+                        <td style="text-transform: lowercase">
+                            {{ this.dataemployee[0].city.city_name }},
+                            {{
+                                this.dataemployee[0].tgl_lahir
+                                    | date : "MMMM d, y"
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder">Age</td>
+                        <td>
+                            {{
+                                this.dataemployee[0].tgl_lahir
+                                    ? this.getAge(this.dataemployee[0])
+                                    : "-"
+                            }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div fxFlex="35%">
+                <table class="empl" style="border-spacing: 10px">
+                    <tr>
+                        <td style="font-weight: bolder; width: 50%;">Date of Joining</td>
+                        <td>
+                            {{
+                                changeDate(this.dataemployee[0].tgl_masuk)
+                                    | date : "MMMM d, y"
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder; width: 50%;">Length of working</td>
+                        <td>
+                            {{
+                                this.dataemployee[0].tgl_masuk
+                                    ? this.getDifference(this.dataemployee[0])
+                                    : "-"
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bolder; width: 50%;">Company</td>
+                        <td style="width: 100%; text-transform: capitalize;" >
+                            {{
+                                this.dataemployee[0].sistercompany?.company_name
+                            }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Notes</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addnotes('add')"
+                    class="add-leave"
+                    matTooltip="Add History"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <table id="statuskaryawan" *ngIf="this.dataemployee[0].desc.length > 0">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Info</th>
+                    <th>Act</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let u of this.dataemployee[0].desc; let i = index">
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ u.desc }}</td>
+                    <td>
+                        <div fxLayout="row" fxLayoutAlign="center center">
+                            <button mat-icon-button color="primary" (click)="addnotes(u.id)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="warn" (click)="deletedatanotes(u.id)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Status</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addstatusinfo('add')"
+                    class="add-leave"
+                    matTooltip="Add History"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+        >
+            <mat-table
+                [dataSource]="datahistory"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+                *ngIf="this.datahistory.length > 0"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let i = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        {{ i + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Status
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <span *ngIf="a.status_karyawan == 0">Honorer</span>
+                        <span *ngIf="a.status_karyawan == 1">Kontrak</span>
+                        <span *ngIf="a.status_karyawan == 2">Tetap</span>
+                        <span *ngIf="a.status_karyawan == 3">Non Aktif</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dept">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Dept
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        {{ a.dept.dept_name }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="div">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Div
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.division.division_name }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="subdiv">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Sub Div</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.subdivision.name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="position">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Position</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.position.position_name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="level">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Level</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.level.level_name }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="from">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >From</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ changeDate(a.from) }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="to">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >To</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ changeDate(a.to) }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: right;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: right;
+                        "
+                    >
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            class="btn-icon-control"
+                            matTooltip="Desc"
+                            aria-label="Desc"
+                            (click)="descData(a)"
+                        >
+                            <mat-icon>forum </mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="acthist(a.id, 'edit')"
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="acthist(a.id, 'delete')"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="displayedColumns"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                ></mat-row>
+            </mat-table>
+        </div>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Education</span
+            >
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addstatuseducation('add')"
+                    class="add-leave"
+                    matTooltip="Add History"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+            *ngIf="this.dataeducation.length > 0"
+        >
+            <mat-table
+                [dataSource]="dataeducation"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let z = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        {{ z + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="education">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Education
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <span *ngIf="a.education_id == 0">SD</span>
+                        <span *ngIf="a.education_id == 1">SMP</span>
+                        <span *ngIf="a.education_id == 2">SMA</span>
+                        <span *ngIf="a.education_id == 3">D1</span>
+                        <span *ngIf="a.education_id == 4">D2</span>
+                        <span *ngIf="a.education_id == 5">D3</span>
+                        <span *ngIf="a.education_id == 6">S1</span>
+                        <span *ngIf="a.education_id == 7">S2</span>
+                        <span *ngIf="a.education_id == 8">S3</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="instansi">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Institution
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        {{ a.instansi }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="jurusan">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Major
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.jurusan }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tahun_masuk">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Masuk</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.tgl_masuk }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="tahun_keluar">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Keluar</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div fxLayout="column">
+                            <span>{{ a.tgl_keluar }} </span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <!-- <div fxLayout="column">
+                            <span>{{ a.desc }} </span>
+                        </div> -->
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            class="btn-icon-control"
+                            matTooltip="Desc"
+                            aria-label="Desc"
+                            (click)="descData(a)"
+                        >
+                            <mat-icon>forum </mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row" fxLayoutGap="5px">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="
+                                    actedu(a.id_employee_education, 'edit')
+                                "
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="
+                                    actedu(a.id_employee_education, 'delete')
+                                "
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="columnEducation"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: columnEducation"
+                ></mat-row>
+            </mat-table>
+        </div>
+    </mat-card>
+
+    <mat-card
+        class="mat-elevation-z0 rounded-2x1"
+        style="width: 98%; margin: 15px auto 10px auto; border-radius: 15px"
+    >
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <span
+                style="
+                    font-size: 18px;
+                    font-weight: bolder;
+                    color: #303030;
+                    margin-right: 25px;
+                "
+                fxShow.gt-md
+                >Administrative</span
+            >
+
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                <button
+                    mat-icon-button
+                    color="white"
+                    (click)="addadmininfo('add')"
+                    class="add-leave"
+                    matTooltip="Add Leave"
+                >
+                    <mat-icon>add_box</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div
+            style="overflow-x: auto"
+            fxLayout="row"
+            fxLayoutAlign="space-evenly center"
+            *ngIf="this.dataadministration.length > 0"
+        >
+            <mat-table
+                [dataSource]="dataadministration"
+                class="table-leave"
+                fxFlex="100%"
+                fxFlex.gt-sm="100%"
+            >
+                <ng-container matColumnDef="no">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        No
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let e; let z = index"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        {{ z + 1 }}
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="type">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Type
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            color: black;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <span *ngIf="a.type == 0">KTP</span>
+                        <span *ngIf="a.type == 1">NPWP</span>
+                        <span *ngIf="a.type == 2">Jamsostek</span>
+                        <span *ngIf="a.type == 3">BPJS Kesehatan</span>
+                        <span *ngIf="a.type == 4">Rekening</span>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="value">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        Value
+                    </mat-header-cell>
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: left;
+                                align-items: flex-start;
+                            "
+                        >
+                            <span>{{ a.value }}</span>
+                            <span *ngIf="a.type == 4">{{
+                                a.bank.bank_name
+                            }}</span>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="desc">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: left;
+                        "
+                        >Desc</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: left;
+                        "
+                    >
+                        <!-- <div fxLayout="column">
+                            <span>{{ a.desc }} </span>
+                        </div> -->
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            class="btn-icon-control"
+                            matTooltip="Desc"
+                            aria-label="Desc"
+                            (click)="descData(a)"
+                        >
+                            <mat-icon>forum </mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        style="
+                            color: white;
+                            display: flex;
+                            justify-content: center;
+                        "
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let a"
+                        style="
+                            font-size: smaller;
+                            display: flex;
+                            justify-content: center;
+                        "
+                    >
+                        <div fxLayout="row" fxLayoutGap="5px">
+                            <button
+                                mat-icon-button
+                                color="secondary"
+                                (click)="actadmin(a.id, 'edit')"
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                (click)="actadmin(a.id, 'delete')"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row
+                    *matHeaderRowDef="columnAdministration"
+                ></mat-header-row>
+                <mat-row
+                    *matRowDef="let row; columns: columnAdministration"
+                ></mat-row>
+            </mat-table>
+        </div>
+    </mat-card>
+</div>

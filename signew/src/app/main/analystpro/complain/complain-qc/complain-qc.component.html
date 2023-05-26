@@ -1,0 +1,497 @@
+<div style="height: 100%">
+    <ngx-spinner
+        bdColor="rgba(255,255,255,1)"
+        size="medium"
+        color="#000"
+        type="ball-clip-rotate-multiple"
+        [fullScreen]="false"
+    ></ngx-spinner>
+    <div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="20px"
+        style="margin-bottom: 20px"
+    >
+        <div
+            style="
+                display: flex;
+                justify-content: flex-start;
+                gap: 10px;
+                align-items: center;
+                width: 100%;
+            "
+        >
+            <button mat-raised-button color="primary" (click)="recapcomplain()">
+                Download Recap
+            </button>
+        </div>
+
+        <div style="width: 100%" fxLayoutAlign="end center" fxLayoutGap="20px">
+            <button mat-mini-fab color="primary" (click)="onSearchChange()">
+                <mat-icon>search</mat-icon>
+            </button>
+            <div class="border-search">
+                <input
+                    type="text"
+                    placeholder="Search Complain Number"
+                    (keyup.enter)="onSearchChange($event.target.value)"
+                    [(ngModel)]="datasent.search"
+                    style="width: 100%; text-align: center"
+                />
+            </div>
+        </div>
+    </div>
+    <mat-grid-list cols="5" rowHeight="70px" gutterSize="5px">
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Estimasi Compl</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="datasent.estimasi_lab"
+                    (dateChange)="tglEstimasiLabChange()"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="datalab"
+                bindLabel="nama_lab"
+                bindValue="id"
+                [(ngModel)]="datasent.lab"
+                appearance="fill"
+                (clear)="reset()"
+                placeholder="Select Lab"
+                (change)="getValue($event)"
+                dropdownPosition="bottom"
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                "
+            >
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Status Complain</mat-label>
+                <mat-select
+                    (selectionChange)="setValueStatusCompl($event)"
+                    [(ngModel)]="datasent.statuscomplain"
+                >
+                    <mat-option value="0"> All </mat-option>
+                    <mat-option value="1"> Investigate </mat-option>
+                    <mat-option value="2"> Uji ulang </mat-option>
+                    <mat-option value="3"> Tidak uji ulang </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <ng-select
+                appendTo="body"
+                [items]="datacontract"
+                bindLabel="contract_no"
+                bindValue="id_kontrakuji"
+                appearance="fill"
+                [(ngModel)]="datasent.contract"
+                (scrollToEnd)="onScrollToEnd('no_kontrak')"
+                placeholder="Select Contract"
+                (change)="getValKontrak($event)"
+                (search)="onsearchselect($event, 'kontrak')"
+                dropdownPosition="bottom"
+                style="width: 100%;"
+            >
+                <ng-template ng-option-tmp let-item="item" let-index="index">
+                    {{ item.contract_no }}
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                    {{ item.contract_no }}
+                </ng-template>
+            </ng-select>
+        </mat-grid-tile>
+
+        <mat-grid-tile>
+            <mat-form-field
+                appearance="fill"
+                style="width: 100%; font-size: 12px"
+            >
+                <mat-label>Current Status</mat-label>
+                <mat-select
+                    (selectionChange)="setValueStatusCurrent($event)"
+                    [(ngModel)]="datasent.currentstatus"
+                >
+                    <mat-option value="all"> All </mat-option>
+                    <mat-option value="0"> on Lab </mat-option>
+                    <mat-option value="1"> on Preparation </mat-option>
+                    <mat-option value="2"> Lab Done </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <div
+        style="
+            height: 70vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            width: auto;
+        "
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollUpDistance]="1.5"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll($event)"
+        [scrollWindow]="false"
+    >
+        <table id="customers" *ngIf="ComplainForm.length > 0">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <div
+                            style="
+                                width: 100%;
+                                display: flex;
+                                justify-content: center;
+                            "
+                        >
+                            <mat-checkbox
+                                class="checkbox-control"
+                                color="primary"
+                                (change)="checkAll($event.checked, 'all')"
+                            ></mat-checkbox>
+                        </div>
+                    </th>
+                    <th align="center">Action</th>
+                    <th align="center">Info</th>
+                    <th align="center">Complain Date</th>
+                    <th align="center">Est Date</th>
+                    <th align="center">Info Contract</th>
+                    <th align="center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let a of ComplainForm; let e = index">
+                    <td align="center">
+                        <mat-checkbox
+                            [checked]="a.checked"
+                            (change)="checkAll($event.checked, d, e)"
+                        ></mat-checkbox>
+                    </td>
+                    <td>
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                            <button mat-menu-item (click)="details(a.id_tech)">
+                                <span>Details</span>
+                            </button>
+                            <button
+                                mat-menu-item
+                                (click)="sendMoreDetailResult(a)"
+                            >
+                                <span>Send Result</span>
+                            </button>
+                        </mat-menu>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                gap: 5px;
+                                width: 100%;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: flex-start;
+                                    width: 100%;
+                                    flex-direction: column;
+                                "
+                            >
+                                <span
+                                    style="font-size: 12px; font-weight: bold"
+                                    >{{ a.complain_no }}</span
+                                >
+                                <div
+                                    style="
+                                        width: 10px;
+                                        height: 5px;
+                                        background: rgb(5, 122, 15);
+                                    "
+                                    *ngIf="a.sendingcert.length > 0"
+                                ></div>
+                                <div
+                                    style="
+                                        width: 10px;
+                                        height: 5px;
+                                        background: rgb(146, 17, 0);
+                                    "
+                                    *ngIf="a.sendingcert.length < 1"
+                                ></div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        flex-direction: flex-start;
+                                        width: 100%;
+                                        align-items: center;
+                                    "
+                                ></div>
+                            </div>
+                            <button
+                                mat-icon-button
+                                [mdePopoverTriggerFor]="infochat"
+                                mdePopoverTriggerOn="hover"
+                                #popoverTrigger="mdePopoverTrigger"
+                            >
+                                <mat-icon>message</mat-icon>
+                            </button>
+                            <mde-popover
+                                #infochat="mdePopover"
+                                [mdePopoverOverlapTrigger]="false"
+                            >
+                                <mat-card style="max-width: 400px">
+                                    <mat-card-content>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                flex-direction: column;
+                                                width: 100%;
+                                            "
+                                        >
+                                            <span>{{ a.message_email }}</span>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </mde-popover>
+                        </div>
+                    </td>
+                    <td>
+                        <span style="font-weight: 400; font-size: 12px">{{
+                            a.complain_date | date
+                        }}</span>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                justify-content: space-between;
+                                align-items: center;
+                            "
+                        >
+                            <span style="font-weight: 400; font-size: 12px">{{
+                                a.estimate_date | date
+                            }}</span>
+                            <button
+                                mat-icon-button
+                                color="primary"
+                                (click)="edittanggal(a)"
+                                style="font-size: 12px"
+                            >
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                justify-content: space-between;
+                            "
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    width: 100%;
+                                    justify-content: center;
+                                    align-items: flex-start;
+                                    flex-direction: column;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: flex-start;
+                                        align-items: center;
+                                        gap: 10px;
+                                    "
+                                >
+                                    <span
+                                        (click)="gotophoto(a)"
+                                        style="
+                                            cursor: pointer;
+                                            color: rgb(5, 122, 15);
+                                        "
+                                        >{{ a.no_sample }}</span
+                                    >
+                                </div>
+                                <span>{{ a.sample_name }}</span>
+                                <div
+                                    style="
+                                        display: flex;
+                                        width: 100%;
+                                        justify-content: flex-start;
+                                        gap: 5px;
+                                    "
+                                >
+                                    <span
+                                        (click)="gotocertificate(a)"
+                                        style="
+                                            cursor: pointer;
+                                            color: lightseagreen;
+                                        "
+                                        >{{ a.lhu_number }}</span
+                                    >
+                                    -
+                                    <span
+                                        (click)="gotocontract(a)"
+                                        style="
+                                            cursor: pointer;
+                                            color: rgb(7, 39, 184);
+                                        "
+                                        >{{ a.contract_no }}</span
+                                    >
+                                </div>
+                            </div>
+                            <button
+                                mat-icon-button
+                                [mdePopoverTriggerFor]="appPopover"
+                                mdePopoverTriggerOn="hover"
+                                #popoverTrigger="mdePopoverTrigger"
+                            >
+                                <mat-icon>info</mat-icon>
+                            </button>
+                            <mde-popover
+                                #appPopover="mdePopover"
+                                [mdePopoverOverlapTrigger]="false"
+                            >
+                                <mat-card style="max-width: 400px">
+                                    <mat-card-content>
+                                        <div
+                                            style="
+                                                display: flex;
+                                                flex-direction: column;
+                                                width: 100%;
+                                            "
+                                        >
+                                            <span>{{ a.customer_name }}</span>
+                                            <span>{{ a.email }}</span>
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            </mde-popover>
+                        </div>
+                    </td>
+                    <td align="center">
+                        <div
+                            style="
+                                display: flex;
+                                width: 100%;
+                                justify-content: space-between;
+                                align-items: center;
+                            "
+                        >
+                            <button
+                                mat-icon-button
+                                class="success"
+                                *ngIf="a.status == 2"
+                                style="color: rgb(7, 133, 70)"
+                                [matMenuTriggerFor]="menu2"
+                            >
+                                <mat-icon>check_circle</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                style="color: rgb(185, 182, 0)"
+                                *ngIf="a.status == 1"
+                                [matMenuTriggerFor]="menu2"
+                            >
+                                <mat-icon>directions_run</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                *ngIf="a.status == 0"
+                                [matMenuTriggerFor]="menu2"
+                            >
+                                <mat-icon>warning</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                *ngIf="a.status == 3"
+                                [matMenuTriggerFor]="menu2"
+                            >
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                            <mat-menu #menu2="matMenu">
+                                <button mat-menu-item (click)="approve(a, 0)">
+                                    <span>Pending</span>
+                                </button>
+                                <button mat-menu-item (click)="approve(a, 1)">
+                                    <span>Ongoing</span>
+                                </button>
+                                <button mat-menu-item (click)="approve(a, 2)">
+                                    <span>Done</span>
+                                </button>
+                                <button mat-menu-item (click)="approve(a, 3)">
+                                    <span>Cancel</span>
+                                </button>
+                            </mat-menu>
+                            <button
+                                mat-icon-button
+                                style="color: green"
+                                [disabled]="true"
+                                *ngIf="a.statuscert == 2"
+                            >
+                                <mat-icon>offline_pin</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                style="color: rgb(153, 153, 153)"
+                                [disabled]="true"
+                                *ngIf="a.statuscert == 0"
+                            >
+                                <mat-icon>offline_pin</mat-icon>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div
+            *ngIf="ComplainForm.length < 1"
+            style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                flex-direction: column;
+            "
+        >
+            <img style="width: 20%" src="assets/images/gif/selectfile.gif" />
+            <span>Data Not found</span>
+        </div>
+    </div>
+    <div style="height: 30px"></div>
+</div>

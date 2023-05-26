@@ -1,0 +1,66 @@
+<div fxLayout="row" fxLayoutAlign="space-between center" >
+    <h2 mat-dialog-title style="font-weight: bolder; font-size: 21px; color: #1f3d4d;">File</h2>
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="closeModal()">
+        <mat-icon>cancel</mat-icon>
+    </button>
+</div>
+<mat-dialog-content style="background-color: #D8D9CF; padding:20px;">
+    <h2  style="font-weight: bolder; font-size: 14px; color: #1f3d4d;">File Upload</h2>
+    <div fxLayout="row" fxLayoutAlign="start center" >
+        <input
+            #_fileInput
+            type="file"
+            (change)="uploadGambar($event)"
+            hidden
+        />
+        <button mat-flat-button color="primary" (click)="_fileInput.click()" style="margin-right: 10px;">
+            <mat-icon>cloud_upload</mat-icon>
+            Upload File
+        </button>  
+        <button mat-flat-button color="primary" (click)="webcam()">
+            <mat-icon>camera_enhance</mat-icon>
+            Photo File
+        </button>
+    </div>
+    <br>
+    <h2  style="font-weight: bolder; font-size: 14px; color: #1f3d4d;">All File</h2>
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="dataProduct.length > 0 " >
+        <mat-card  class="mat-elevation-z0" style="margin-bottom: 10px; border: 2px solid white; border-radius: 15px;" *ngFor="let item of dataProduct">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex>
+                <div fxFlex fxFlex="10">
+                    <img src="assets/images/icon/jpg.svg" *ngIf='item.ext == "jpeg"' />
+                    <img src="assets/images/icon/pdf.svg" *ngIf="item.ext == 'pdf'" />
+                </div>
+                <div fxFlex fxFlex="50">
+                    {{ item.filename }}
+                </div>
+                <div fxFlex fxFlex="20">
+                    {{ item.date | date }} 
+                </div>
+                <div fxFlex fxFlex="10">
+                    <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                    (click)="$event.stopPropagation();">
+                        <mat-icon >more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #moreMenu="matMenu">
+                        <button mat-menu-item aria-label="copy" (click)="opendetailphoto(item)">
+                            <mat-icon>visibility</mat-icon>
+                            <span>View</span>
+                        </button>
+                        <br>
+                        <button mat-menu-item aria-label="copy" (click)="deleteAttachment(item)">
+                            <mat-icon style="color:red;">remove_circle</mat-icon>
+                            <span style="color:red;">Remove</span>
+                        </button>
+                    </mat-menu>
+                </div>
+            </div>
+        </mat-card>        
+    </div>
+    
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch" *ngIf="dataProduct.length < 1 " >
+        <mat-card>
+            No Data
+        </mat-card>
+    </div>
+</mat-dialog-content>

@@ -1,0 +1,87 @@
+<div
+    fxFlex
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    style="gap: 10px; width: 100%"
+>
+    <div style="width: 100%;" *ngIf="this.datacs.length > 0">
+    <h3>Dibuat oleh</h3>
+    <table class="customers" style="width: 100%;">
+       <tr>
+        <td>{{this.datacs[0].employee.employee_name}}</td>
+        <td>{{this.datacs[0].inserted_at}}</td>
+       </tr>
+    </table>
+</div>
+
+<div style="width: 100%;" *ngIf="this.dataqc.length > 0">
+    <h3 *ngIf="this.dataqc.length > 0">Quality Control</h3>
+    <table class="customers" *ngIf="this.dataqc.length > 0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>User</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ this.dataqc[0].inserted_at }}</td>
+                <td>{{ this.dataqc[0].status == 1 ? "On Going" : this.dataqc[0].status == 3 ? 'Cancel' : this.dataqc[0].status == 4 ? 'Done' : 'Pending'}}</td>
+                <td>{{ this.dataqc[0].employee.employee_name }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="width: 100%;" *ngIf="this.dataprep.length > 0">
+    <h3 *ngIf="this.dataprep.length > 0">Preparation</h3>
+    <table class="customers" *ngIf="this.dataprep.length > 0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+                <th>User</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ this.dataprep[0].inserted_at }}</td>
+                <td>{{ this.dataprep[0].prep == 4 ? 'Go' : 'Hold'}}</td>
+                <td>{{ this.dataprep[0].employee.employee_name }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div style="width: 100%;" *ngIf="this.datalab.length > 0">
+    <h3 *ngIf="this.datalab.length > 0">Lab</h3>
+    <table class="customers" *ngIf="this.datalab.length > 0" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Confirmation</th>
+                <th>Memo</th>
+                <th>User</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ this.datalab[0].status == 2 ? "Done" : "On Going" }}</td>
+                <td>
+                    {{
+                        this.datalab[0].status_prep == 0
+                            ? "Tidak Uji Ulang"
+                            : "Uji Ulang"
+                    }}
+                </td>
+                <td>{{ this.datalab[0].memo ? this.datalab[0].memo : '-' }}</td>
+                <td>{{ this.datalab[0].employee.employee_name }}</td>
+                <td>{{ this.datalab[0].inserted_at }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    
+</div>

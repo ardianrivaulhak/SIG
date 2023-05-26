@@ -1,0 +1,102 @@
+<div class="begin">
+ 
+  <ng-select 
+    appearance="outline" 
+    appendTo="body" 
+    style="width: 100%;"
+    [items]="datacust"
+    [(ngModel)]="id_cust"  
+    bindLabel="customer_name" 
+    bindValue="id_customer"
+    placeholder="Select Customer" 
+    (search)="onSearchi($event,'customer')"
+    (change)="getVal($event,'customer')"
+    (clear)="resetAll('customer')"
+    (close)="resetAll('customer')"
+    (scrollToEnd)="onScrollToEnd($event,'customer')"
+    dropdownPosition="bottom">
+    <ng-template ng-option-tmp let-item="item" let-index="index">
+        <b>{{item.kode_customer}}</b>&nbsp;-&nbsp;{{item.customer_name}}
+    </ng-template>
+    <ng-template ng-label-tmp let-item="item">
+        <b>{{item.kode_customer}}</b>&nbsp;-&nbsp;{{item.customer_name}}
+    </ng-template>
+  </ng-select>
+
+  <div class="flex-row-center">
+    <mat-form-field appearance="fill" style="width: 45%;">
+      <mat-label>From</mat-label>
+      <input matInput [(ngModel)]="from" [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" style="width: 45%;">
+      <mat-label>To</mat-label>
+      <input matInput [matDatepicker]="picker2" [(ngModel)]="to">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <ng-select 
+    appearance="outline" 
+    appendTo="body" 
+    style="width: 100%;"
+    [items]="dataemployee"
+    [(ngModel)]="id_sales"  
+    bindLabel="employee_name" 
+    bindValue="employee_id"
+    placeholder="Select AE" 
+    (search)="onSearchi($event,'pic')"
+    (change)="getVal($event,'pic')"
+    (clear)="resetAll('pic')"
+    (close)="resetAll('pic')"
+    (scrollToEnd)="onScrollToEnd($event,'pic')"
+    dropdownPosition="bottom">
+    
+  </ng-select>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Salesforcast</mat-label>
+<input
+    type="text"
+    matInput
+    currencyMask
+    [(ngModel)]="salesforcast"
+    [options]="{
+        prefix: '',
+        thousands: '.',
+        precision: 0
+    }"
+/>
+</mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Desc</mat-label>
+    <textarea matInput [(ngModel)]="desc"></textarea>
+  </mat-form-field>
+
+    <div class="flex-row-center-center">
+      <mat-form-field appearance="fill">
+        <mat-label>Discount</mat-label>
+        <input matInput [(ngModel)]="disc">
+        <mat-hint>Input Numbers Only</mat-hint>
+      </mat-form-field>
+      <div style="width: 20px;"></div>
+      
+      <button mat-flat-button class="buttons" color="primary" [disabled]="this.loading" (click)="savingdata()">
+        <div *ngIf="!this.loading">Save</div>
+        <div
+            *ngIf="this.loading"
+            style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+            "
+        >
+            <span style="margin-left: 10px">Please Wait</span>
+        </div>
+      </button>
+    </div>
+</div>

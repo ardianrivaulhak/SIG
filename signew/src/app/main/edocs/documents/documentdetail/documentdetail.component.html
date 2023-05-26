@@ -1,0 +1,489 @@
+<div id="documents" *ngIf="this.documentData"  class="page-layout simple"  style="height: 100%; overflow: auto; background-color: #f7f7f7;">
+    <div class="content"> 
+        <mat-card class="mat-elevation-z0"  style="width: 85%; margin: 20px auto 10px auto;">
+            <mat-card-title>
+                <strong>{{ this.documentData.master_document.document_name }}</strong>
+            </mat-card-title>
+            <h3 style="font-weight:bold; font-size:18px;">Document Identity</h3>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Document Title</span>
+                    <p style="font-size:11px;">{{ this.documentData.title }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Document Number</span>
+                    <p style="font-size:11px;">{{ this.documentData.document_number }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Issue Number</span>
+                    <p style="font-size:11px;">{{ this.documentData.issue_number }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Date of Issue</span>
+                    <p style="font-size:11px;">{{ this.documentData.date_of_issue  | date }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Revision Number</span>
+                    <p style="font-size:11px;">{{ this.documentData.revision_number }}</p>
+                </div>
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Date of Revision</span>
+                    <p style="font-size:11px;">{{ this.documentData.date_of_revision | date }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+                <div  fxFlex="25">                    
+                    <span style="font-weight: 700;">Total Pages</span>
+                    <p style="font-size:11px;">{{ this.documentData.total_pages }}</p>
+                </div>
+                <div  fxFlex="75">                    
+                    <span style="font-weight: 700;">Information</span>
+                    <p style="font-size:11px;">{{ this.documentData.information }}</p>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" style="margin-top: 50px;">
+                <div  fxFlex="30">                    
+                    <span style="font-weight: 700;">Actions</span>
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <button mat-icon-button 
+                        color="primary" 
+                        (click)="viewersDocument(this.documentData)"
+                        matTooltip="view list users" >
+                            <mat-icon  matBadgeColor="warn">visibility</mat-icon>
+                        </button>
+                        <button mat-icon-button 
+                        color="primary" 
+                        (click)="gotoAccess()"
+                        matTooltip="list received" >
+                            <mat-icon  matBadgeColor="accent">people</mat-icon>
+                        </button>
+                        <button mat-icon-button 
+                        color="primary" 
+                        (click)="updateModals(this.documentData)"
+                        matTooltip="Update Document" >
+                            <mat-icon >settings</mat-icon>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </mat-card>
+
+        <mat-card class="mat-elevation-z0" [ngStyle]="{'openAttachmentTab': this.tabAtachment === null ? '#fff' : '#e1e1e1'}"  style="width: 85%; margin: 20px auto 10px auto;">
+            <h3 style="font-weight:bold ; margin-top: 30px;">Attachments</h3>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorAmandement}" (click)="openAttachmentTab('amandement')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">assessment</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;" >
+                            Amandement 
+                            <mat-icon>keyboard_arrow_right</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorDocument}" (click)="openAttachmentTab('documents')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">folder</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;">
+                        Documents
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                    </div>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorFlowchart}" (click)="openAttachmentTab('flowcharts')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">pie_chart</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;">
+                            Flowchart
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorAmandementForm}" (click)="openAttachmentTab('amandement_form')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">chrome_reader_mode</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;">
+                            Amandement Form
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorForm}" (click)="openAttachmentTab('forms')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">insert_drive_file</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;">
+                            Form
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+                <mat-card class="mat-elevation-z0" fxFlex fxFlex="16" [ngStyle]="{'background-color' : bgColorChangeHistory}" (click)="openAttachmentTab('history')">
+                    <mat-card-content>
+                        <mat-icon style="font-size: 100px;color:#678983; font-weight: bold;">change_history</mat-icon>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="color:#678983; font-weight: bold;">
+                            Change History
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                        </div>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+
+            <div style="width: 20%; 
+            margin-left: auto; 
+            margin-right: auto; 
+            margin-top: auto; 
+            margin-bottom: 
+            auto; display: 
+            block; 
+            text-align: center;"
+            *ngIf="this.tabAtachment == null">
+                <img  src="assets/images/gif/notfound.gif" />
+                <small>No Select Data</small>
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'amandement'">
+                
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Document Amandement</h3>
+                    <button mat-icon-button 
+                    (click)="updateOtherAttachment(2)"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+               
+
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.amandementData.length > 0">
+                    <mat-card-content *ngFor="let amandement of this.amandementData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center"  >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" (click)="openDocument(amandement)">
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" >{{ amandement.inheritance_document.title }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.amandement.active == 1" (click)="atciveattachment(0, amandement.id)">
+                                <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.amandement.active == 0" (click)="atciveattachment(1, amandement.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                    </button>
+                                <button mat-icon-button 
+                                (click)="updateAttachmentModals(amandement)"
+                                    matTooltip="update">
+                                    <mat-icon style="color:#678983;">create</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="deleteAttachment(amandement.id, 'amandement')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.amandementData.length < 1">
+                    <div style="width: 20%; 
+                                margin-left: auto; 
+                                margin-right: auto; 
+                                margin-top: auto; 
+                                margin-bottom: auto; 
+                                display: block; 
+                                text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'documents'">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Documents</h3>
+                    <input
+                    #_fileInput
+                    type="file"
+                    matTooltip="Add Document"
+                    (change)="uploadDocument($event, 'documents', '')"
+                    hidden
+                    />
+                    <button mat-icon-button 
+                    (click)="_fileInput.click()"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.documentsData.length > 0">
+                    <mat-card-content *ngFor="let doc of this.documentsData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" (click)="openDocument(doc)">{{ doc.filename}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.doc.active == 1" (click)="atciveattachment(0, doc.id)">
+                                <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.doc.active == 0" (click)="atciveattachment(1, doc.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                    </button>
+                                <button mat-icon-button 
+                                    (click)="deleteAttachment(documentsData.id, 'documents')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.documentsData.length < 1">
+                    <div style="width: 20%; 
+                    margin-left: auto; 
+                    margin-right: auto; 
+                    margin-top: auto; 
+                    margin-bottom: 
+                    auto; display: 
+                    block; 
+                    text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'flowcharts'">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Flowchart</h3>
+                    <button mat-icon-button 
+                    (click)="updateOtherAttachment(3)"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.flowchartData.length > 0">
+                    <mat-card-content *ngFor="let flowchart of this.flowchartData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" (click)="openDocument(flowchart)">{{ flowchart.inheritance_document.title }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.flowchart.active == 1" (click)="atciveattachment(0, flowchart.id)">
+                                    <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.flowchart.active == 0" (click)="atciveattachment(1, flowchart.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="updateAttachmentModals(flowchart)"
+                                    matTooltip="update">
+                                    <mat-icon style="color:#678983;">create</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="deleteAttachment(flowchart.id, 'flowchart')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>  
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.flowchartData.length < 1">
+                    <div style="width: 20%; 
+                    margin-left: auto; 
+                    margin-right: auto; 
+                    margin-top: auto; 
+                    margin-bottom: 
+                    auto; display: 
+                    block; 
+                    text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>          
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'forms'">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Form</h3>
+                    <button mat-icon-button 
+                    (click)="updateOtherAttachment(4)"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.formData.length > 0">
+                    <mat-card-content *ngFor="let form of this.formData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" (click)="openDocument(form)">{{ form.inheritance_document.title }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.form.active == 1" (click)="atciveattachment(0, form.id)">
+                                    <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.form.active == 0" (click)="atciveattachment(1, form.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="updateAttachmentModals(form)"
+                                    matTooltip="update">
+                                    <mat-icon style="color:#678983;">create</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="deleteAttachment(form.id, 'form')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>  
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.formData.length < 1">
+                    <div style="width: 20%; 
+                    margin-left: auto; 
+                    margin-right: auto; 
+                    margin-top: auto; 
+                    margin-bottom: 
+                    auto; display: 
+                    block; 
+                    text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>          
+            </div>
+            <!-- new  -->
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'amandement_form'">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Amandement Form</h3>
+                    <button mat-icon-button 
+                    (click)="updateOtherAttachment(6)"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.amandementFormData.length > 0">
+                    <mat-card-content *ngFor="let amandementform of this.amandementFormData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" (click)="openDocument(amandementform)">{{ amandementform.inheritance_document.title }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.amandementform.active == 1" (click)="atciveattachment(0, amandementform.id)">
+                                    <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.amandementform.active == 0" (click)="atciveattachment(1, amandementform.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="updateAttachmentModals(amandementform)"
+                                    matTooltip="update">
+                                    <mat-icon style="color:#678983;">create</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="deleteAttachment(amandementform.id, 'amandement_form')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>  
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.formData.length < 1">
+                    <div style="width: 20%; 
+                    margin-left: auto; 
+                    margin-right: auto; 
+                    margin-top: auto; 
+                    margin-bottom: 
+                    auto; display: 
+                    block; 
+                    text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>          
+            </div>
+
+            <div fxLayout="column" fxLayoutAlign="start start" *ngIf="this.tabAtachment == 'history'">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%;" >
+                    <h3 style="font-weight:600 ; margin-top: 30px;">Change History</h3>
+                    <button mat-icon-button 
+                    (click)="updateOtherAttachment(5)"
+                    style="margin-right: 20px;"
+                    color="primary">
+                    <mat-icon>add_box</mat-icon>
+                    </button>
+                </div>
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.historiesData.length > 0">
+                    <mat-card-content *ngFor="let history of this.historiesData">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <img src="assets/images/icon/pdf.svg" style="width: 50px;"/>
+                                <span style="color:#678983 ;" (click)="openDocument(history)">{{ history.inheritance_document.title }}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.history.active == 1" (click)="atciveattachment(0, history.id)">
+                                    <mat-icon style="color:#678983" >visibility</mat-icon>
+                                </button>
+                                <button mat-icon-button matTooltip="visibility" *ngIf="this.history.active == 0" (click)="atciveattachment(1, history.id)">
+                                    <mat-icon style="color:#678983">visibility_off</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="updateAttachmentModals(history)"
+                                    matTooltip="update">
+                                    <mat-icon style="color:#678983;">create</mat-icon>
+                                </button>
+                                <button mat-icon-button 
+                                (click)="deleteAttachment(history.id, 'history')"
+                                    matTooltip="remove">
+                                    <mat-icon style="color:red;">delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>  
+                <mat-card class="example-card mat-elevation-z0" fxFlexAlign="stretch" *ngIf="this.historiesData.length < 1">
+                    <div style="width: 20%; 
+                    margin-left: auto; 
+                    margin-right: auto; 
+                    margin-top: auto; 
+                    margin-bottom: 
+                    auto; display: 
+                    block; 
+                    text-align: center;">
+                        <img  src="assets/images/gif/notfound.gif" />
+                        <small>Data Not Found</small>
+                    </div>
+                </mat-card>          
+            </div>
+            
+
+        </mat-card>
+
+        
+
+    </div>
+</div>

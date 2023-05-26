@@ -1,0 +1,75 @@
+<div id="product_lab" class="page-layout simple" style="overflow: auto; height: 100%;" *ngIf="this.dataLab"> 
+    <div class="content" class="mat-elevation-z0">
+        <mat-card class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <span style="font-size:16px; 
+            font-weight: bold; 
+            color: #303030; 
+            margin-right: 25px;" 
+            fxHide fxShow.gt-md> 
+            {{ dataLab.contract_product.contract_number }} 
+            </span><br>
+            <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom:20px;">
+                <div fxFlex="33" >
+                    <h3 style="font-size:14px; font-weight:bold;">Produt Name </h3>
+                    <span style="font-size: 11px;">{{ dataLab.master_media_rtu.product_name }}</span>
+                </div>
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Media Code </h3>
+                    <span style="font-size: 11px;">{{ dataLab.master_media_rtu.kode_media }}</span>
+                </div>
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Catalogue </h3>
+                    <span style="font-size: 11px;">{{ dataLab.master_media_rtu.no_katalog }}</span>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Packaging </h3>
+                    <span style="font-size: 11px;">{{ dataLab.master_media_rtu.kemasan }}</span>
+                </div>
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Unit </h3>
+                    <span style="font-size: 11px;">{{ dataLab.unit }}</span>
+                </div>
+                <div fxFlex="33">
+                   
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Production Date </h3>
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-top: 7px;">
+                        <input matInput  [(ngModel)]="formData.tgl_produksi"   [matDatepicker]="production_date">
+                        <mat-datepicker-toggle matSuffix [for]="production_date"></mat-datepicker-toggle>
+                        <mat-datepicker #production_date></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="33">
+                    <h3 style="font-size:14px; font-weight:bold;">Expirated Date </h3>
+                    <mat-form-field appearance="outline" style="font-size: 11px; margin-top: 7px;">
+                        <input matInput [(ngModel)]="formData.tgl_expired" [matDatepicker]="expired_date">
+                        <mat-datepicker-toggle matSuffix [for]="expired_date"></mat-datepicker-toggle>
+                        <mat-datepicker #expired_date></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="33">
+                   
+                </div>
+            </div>
+            
+        </mat-card>
+        <mat-card  class="mat-elevation-z0" style="width: 90%; margin: 20px auto 10px auto;" >
+            <ckeditor  skin="moono-lisa" [editor]="Editor"   [(ngModel)]="formData.teks"  language="en" (ready)="onReady($event)"></ckeditor>
+            <br>
+            <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-flat-button color="warn" style="margin-right: 10px;">Close</button>
+            <button mat-flat-button color="accent" 
+            [disabled]="load == true"
+            (click)="submit()">
+            <mat-icon *ngIf="load == true"><mat-spinner diameter="20">
+            </mat-spinner></mat-icon>
+            Submit </button>
+            </div>
+        </mat-card>
+    </div>
+</div>

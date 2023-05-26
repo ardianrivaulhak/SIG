@@ -1,0 +1,34 @@
+<div
+    style="
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    "
+>
+    <mat-form-field appearance="outline">
+        <mat-label>Month and Year</mat-label>
+        <input matInput [matDatepicker]="dp" [formControl]="date" />
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker
+            #dp
+            startView="multi-year"
+            (monthSelected)="setMonthAndYear($event, dp)"
+        ></mat-datepicker>
+    </mat-form-field>
+
+    <div
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        style="width: 100%; margin-top: 10px"
+    >
+        <button mat-raised-button color="primary" (click)="close()">
+            Download
+        </button>
+        <div style="width: 20px"></div>
+        <button mat-raised-button color="danger" (click)="close()">
+            Cancel
+        </button>
+    </div>
+</div>

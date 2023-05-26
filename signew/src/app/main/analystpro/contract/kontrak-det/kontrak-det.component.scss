@@ -1,0 +1,171 @@
+@import "src/@fuse/scss/fuse";
+
+.mat-form-field-wrapper{
+    padding-bottom: 0px !important;
+}
+
+.wrapper {
+    height: 300px;
+  }
+  
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .col-sm {
+    width: 70px;
+  }
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    .mat-table {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 1rem;
+        display: table;
+        border-collapse: collapse;
+        margin: 0px;
+    }
+    .mat-row,
+    .mat-header-row {
+        display: table-row;
+    }
+    .mat-cell,
+    .mat-header-cell {
+        word-wrap: initial;
+        display: table-cell;
+        padding: 0px 5px;
+        line-break: unset;
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: middle;
+    }
+  }
+
+app-kontrak-det {
+    overflow: auto;
+    width: 100% !important; 
+    height: 100% !important;
+    padding: 5px !important;
+
+    .mat-column-samplename {
+        flex: 0 1 500px;
+    }
+
+    #kontrakuji {
+        
+        .box-photo {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+            margin: 5px;
+            cursor: pointer;
+        }
+        .sample {
+            width: 100%;
+            align-items: center;
+            input {
+                font-size: 10px;
+                width: 120px !important;
+                height: 100%;
+            }
+        
+            .mat-column-no{
+                max-width: 30px;
+            }
+
+            .mat-column-samplename {
+                flex: 0 1 500px;
+            }
+        
+            .mat-column-nosample{
+                justify-content: center;
+                max-width: 150px;
+            }
+        }
+        .pricing {
+            display: flex;
+            flex-direction: row; 
+            margin: 10px;
+        }
+        
+        .title-pricing {
+            font-weight: bold; 
+            width: 140px
+        }
+        
+        .text-pricing {
+            margin: 0px 5px 0px 5px;
+        }
+        
+        .price-tag {
+            font-size: 12px; 
+            margin-top: 40px; 
+            display: flex; 
+            flex-direction: column;
+        }
+        
+        .pricing-table {
+            border-collapse: collapse;
+            width: 90%; 
+            align-self: center;
+        }
+        
+        // .pricing-table thead tr th {
+        //     text-align: center;
+        // }
+        
+        .pricing-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        
+        .pricing-table tr:nth-child(even){
+            background-color: #f2f2f2;
+        }
+        
+        .pricing-table tr:hover {
+            background-color: #ddd;
+        }
+
+        .contactperson-info {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            background-color: white;
+            height: 100px;
+            z-index: 9999;
+            left: 32%;
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 0px 10px 1px rgba(3,15,145,0.55);
+            span {
+                padding: 5px;
+            }
+        }
+        
+        .row-contactperson-info {
+            display: flex; 
+            flex-direction: row; 
+            width: 50%; 
+            justify-content: space-around;
+            div {
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                padding: 10px;
+            }
+        }
+    }
+}

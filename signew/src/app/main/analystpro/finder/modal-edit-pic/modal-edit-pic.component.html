@@ -1,0 +1,72 @@
+<div
+    *ngIf="disabled"
+    style="
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    "
+>
+    <mat-spinner [color]="'accent'" diameter="20"></mat-spinner>
+    <span style="margin-left: 10px">Please Wait</span>
+</div>
+
+<div *ngIf="!disabled">
+    <ng-select
+        appearance="outline"
+        appendTo="body"
+        [items]="datasales"
+        bindLabel="employee_name"
+        bindValue="employee_id"
+        placeholder="Select Sales / Marketing"
+        [(ngModel)]="clienthandling"
+        dropdownPosition="bottom"
+        style="width: 100%"
+    >
+        <ng-template ng-option-tmp let-item="item" let-index="index">
+            {{ item.employee_name }}
+        </ng-template>
+        <ng-template ng-label-tmp let-item="item">
+            {{ item.employee_name }}
+        </ng-template>
+    </ng-select>
+    <div
+        style="
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        "
+    >
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="save()"
+            *ngIf="!this.loading"
+        >
+            <span>Save</span>
+        </button>
+        <div
+            *ngIf="this.loading"
+            style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: row;
+            "
+        >
+            <mat-spinner [color]="'accent'" diameter="20"></mat-spinner>
+            <span style="margin-left: 10px">Please Wait</span>
+        </div>
+        <button
+            mat-raised-button
+            color="warn"
+            *ngIf="!this.loading"
+            (click)="close()"
+        >
+            Cancel
+        </button>
+    </div>
+</div>

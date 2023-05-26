@@ -1,0 +1,177 @@
+<mat-card style="margin: 15px">
+    <!-- HEADER -->
+
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-form-field
+            appearance="outline"
+            fxFlex="33"
+            style="margin-right: 10px; font-size: 11px"
+        >
+            <mat-label>
+                <mat-icon>search</mat-icon>Search For A Parameter</mat-label
+            >
+            <input
+                matInput
+                [(ngModel)]="this.datasent.search"
+                (input)="onSearchChange($event.target.value)"
+                type="search"
+            />
+        </mat-form-field>
+        <div style="margin-left: 50%">
+            <button
+                mat-flat-button
+                color="primary"
+                style="font-size: 11px"
+                matTooltip="Add Employee"
+                [routerLink]="'/analystpro/paketparameter/add'"
+            >
+                <span>Add Paket</span>
+            </button>
+        </div>
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT CARD -->
+    <div style="height: 500px; overflow: auto; margin-top: 20px">
+        <table
+            class="demo"
+            style="
+                width: 100%;
+                align-content: center;
+                overflow: hidden;
+                border: rgb(8, 8, 8);
+            "
+        >
+            <thead>
+                <tr>
+                    <th style="width: 50px; text-align: center">No</th>
+                    <th style="width: 150px; text-align: center">
+                        Kode Paket Uji
+                    </th>
+                    <th style="width: 150px; text-align: center">Nama Paket</th>
+                    <th style="width: 150px; text-align: center">Price</th>
+                    <th style="width: 150px; text-align: center">Discount</th>
+                    <th style="width: 150px; text-align: center">Status</th>
+                    <th style="width: 170px; text-align: center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of paketparameterData; let a = index">
+                    <td style="text-align: center">{{ a + 1 }}</td>
+                    <td style="text-align: center">
+                        {{ row.kode_paketuji }}
+                    </td>
+                    <td style="text-align: center">
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                width: 100%;
+                                justify-content: center;
+                                align-items: flex-start;
+                            "
+                        >
+                            <span class="text-truncate isi">
+                                {{ row.nama_paketuji }}
+                            </span>
+                            <span
+                                class="text-truncate isi"
+                                style="font-style: italic"
+                                >{{
+                                    row.nama_paketuji_en
+                                        ? row.nama_paketuji_en
+                                        : "-"
+                                }}</span
+                            >
+                        </div>
+                    </td>
+                    <td style="text-align: right">
+                        {{ "Rp. " + row.price.toLocaleString() }}
+                    </td>
+                    <td style="text-align: center">
+                        {{ row.discount == 1 ? "Yes" : "No" }}
+                    </td>
+                    <td style="text-align: center">
+                        <div class="box-urgent" *ngIf="row.status === 0">
+                            <p class="text-truncate">Not Approved</p>
+                        </div>
+                        <div class="box-normal" *ngIf="row.status === 1">
+                            <p class="text-truncate">Approved</p>
+                        </div>
+                    </td>
+                    <td style="text-align: center">
+                        <div *ngIf="this.access.length > 0">
+                            <button mat-icon-button [matMenuTriggerFor]="menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button
+                                    mat-menu-item
+                                    (click)="viewDetails(row.id)"
+                                >
+                                    <span>View Details</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="gotodetail(row.id)"
+                                >
+                                    <span> Edit </span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="setspecial(row.id)"
+                                >
+                                    <span>Set Special Price</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="approvedPaket(row.id)"
+                                    *ngIf="row.status === 0"
+                                    [disabled]="
+                                        this.access[0].approve == 1
+                                            ? false
+                                            : true
+                                    "
+                                >
+                                    <span>Approved</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="unApprovedPaket(row.id)"
+                                    *ngIf="row.status === 1"
+                                    [disabled]="
+                                        this.access[0].approve == 1
+                                            ? false
+                                            : true
+                                    "
+                                >
+                                    <span>Unapproved</span>
+                                </button>
+                                <button
+                                    mat-menu-item
+                                    (click)="deletePaket(row.id)"
+                                    [disabled]="
+                                        this.access[0].delete == 1
+                                            ? false
+                                            : true
+                                    "
+                                >
+                                    <span>Delete</span>
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-paginator
+            #paginator
+            [length]="total"
+            [pageSize]="pageSize"
+            [showFirstLastButtons]="true"
+            (page)="paginated($event)"
+        >
+        </mat-paginator>
+    </div>
+    <!-- / CONTENT CARD -->
+</mat-card>

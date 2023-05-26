@@ -1,0 +1,436 @@
+<div id="certificate-lhu" class="page-layout simple" style="height:600px; overflow: auto;">
+    <div class="content" style="overflow: auto;">
+        <mat-card fxLayoutAlign="space-between center">
+            <div *ngIf="this.contractData.length > 0" style="padding: 10px; margin-top: 20px; margin-left: 10px;" >
+                <span style="font-weight:800; font-size: 14px;"> {{ contractData[0].contract_no }}</span><br>
+                <small style="font-style: italic; font-size: 10px;">{{ contractData[0].contract_category.title  }}</small><br>
+                <span style="font-size: 12px;">{{ contractData[0].customers_handle.customers.customer_name }}</span>
+            </div>
+            <div *ngIf="this.contractData.length > 0" style="margin-right: 20px;">
+                
+                <button mat-icon-button color="white"
+                    class="contract-certficate"
+                    matTooltip="Kendali Report"
+                    aria-label="Example icon button with a filter list icon"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="printForm(contractData[0].id_kontrakuji)"
+                    style="margin-left: -2px;">
+                    <mat-icon>picture_as_pdf</mat-icon>
+                </button>
+    
+                <button mat-icon-button color="white"
+                    class="contract-certficate"
+                    matTooltip="Contract"
+                    aria-label="Example icon button with a filter list icon"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                    (click)="preview()"
+                    style="margin-left: -2px;">
+                    <mat-icon>folder_shared</mat-icon>
+                </button>
+
+                <button mat-icon-button color="white"
+                class="contract-certficate"
+                matTooltip="Attachment Document"
+                aria-label="Example icon button with a filter list icon"
+                [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                (click)="openAttachMent(contractData[0].id_kontrakuji, 'kontrak')"
+                style="margin-left: -2px;">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+            </div>
+        </mat-card>
+        <mat-card style="margin: 0px;" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" >  
+            <div fxLayout="row" fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">          
+                <form name="resultForm" class="product w-100-p" fxLayout="column" fxFlex>
+                    <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" >                     
+                            <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="15" fxHide fxShow.gt-xs>
+                                <mat-label>Status</mat-label>
+                                  <mat-select                  
+                                    class="select-me"
+                                    [(ngModel)]="dataFilter.status"
+                                    name="hold"
+                                    style="display: flex;
+                                    justify-content: center;
+                                    align-items: center; 
+                                    color:white !important;">
+                                    <mat-option *ngFor="let status of status" [value]="status.id">
+                                        {{ status.title }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="30" fxHide fxShow.gt-xs>
+                                <mat-label>Sample Name</mat-label>
+                                <input matInput 
+                                name="sample"
+                                [(ngModel)]="dataFilter.sample_name"
+                                #filter >
+                            </mat-form-field>                        
+                            <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="30">
+                                <mat-label>Sample Number</mat-label>
+                                <input matInput 
+                                name="no_sample"
+                                [(ngModel)]="dataFilter.sample_number"
+                                #filter >
+                            </mat-form-field>
+                            <button mat-flat-button color="accent"  fxFlex="10"  fxFlex.xs="13" style="height: 40px; width:250px; margin-top: -13px;" (click)="searchButton()" >
+                                Search
+                            </button>
+                            <button mat-flat-button color="warn" fxFlex="10"  fxFlex.xs="13" style="height: 40px; width: 100%; margin-top: -13px;" (click)="cancelSearchMark()" >
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-accordion style="width:100%;"  [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                    <mat-expansion-panel [expanded]="true">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title style="font-weight: 800;">
+                          Memo
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div fxLayout="row" fxLayoutAlign="space-evenly center"  *ngIf="this.contractData.length > 0"  >
+                        <!-- <mat-card style="width: 80%; margin-right: 10px; background-color: #E6D5B8;">
+                            <h5 style="font-weight: 800;color: #463735;">Memo Control Lab</h5>
+                            <ul *ngFor="let item of this.contractData[0].description_kendali" style="color: #463735;">
+                                <li style="color: #463735;">{{ item.desc }}</li>
+                            </ul>
+                        </mat-card> -->
+                        <mat-card style="width: 95%; background-color: #E9EFC0;">
+                            <h5 style="font-weight: 800; color: #4E944F;">Memo Internal</h5>
+                            <ul *ngFor="let item of this.contractData[0].description_cs" style="color: #4E944F;">
+                                <li style="color: #4E944F;">{{ item.desc }}</li>
+                            </ul>
+                        </mat-card>
+                      </div>                       
+                    </mat-expansion-panel>
+                  </mat-accordion>
+            </div>
+        </mat-card>
+        <mat-card >
+            <div fxLayout="row" fxLayoutAlign="space-between center" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}" *ngIf="this.contractData.length > 0">
+                <div>
+                    <span style="font-weight: bold; color: #303030;" fxHide fxShow.gt-md>Control Lab Detail &nbsp; | </span>
+                    <button mat-icon-button color="white"
+                        class="contract-certficate"
+                        matTooltip="Kendali Memo"
+                        (click)="descriptionModals(contractData[0].id_kontrakuji)"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}" >
+                        <mat-icon>info</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="white"
+                    *ngIf="this.checkList.length > 0"
+                        class="contract-certficate"
+                        matTooltip="Lab Estimate"
+                        (click)="editSample(sampleData.id, 'checklist')"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}" >
+                        <mat-icon>date_range</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="white"
+                        *ngIf="this.copyEstlab.length > 0"
+                        class="contract-certficate"
+                        matTooltip="Paste All"
+                        (click)="pasteAllEstimateLab(this.contractData[0].id_kontrakuji)"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}" >
+                        <mat-icon>insert_drive_file</mat-icon>
+                    </button>
+        
+                    <button mat-icon-button color="white"                      
+                    *ngIf="this.checkList.length > 0"
+                    class="contract-certficate" 
+                    matTooltip="cancel" 
+                    (click)="cancelApprove()"
+                    [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                        <mat-icon>cancel</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="white" *ngIf="this.checkList.length > 0"
+                        class="contract-certficate"
+                        matTooltip="approve"
+                        (click)="approveSample()"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}"
+                        style="margin-left: -2px;">
+                            <mat-icon>check_circle</mat-icon>
+                    </button>
+                </div>
+
+                <div [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <mat-paginator
+                    [length]="this.total"
+                    [pageSize]="this.to"
+                    [pageIndex]="this.current_page"
+                    hidePageSize="true"
+                    (page)="pageEvent = $event; paginated($event)"
+                >
+                </mat-paginator>
+                </div>
+            </div>
+        </mat-card>
+
+        <mat-card *ngIf="this.sampleData.length > 0" >
+            <mat-table class="control-table" #table [dataSource]="sampleData" matSort (matSortChange)="sortData($event)"
+            [@animate]="{value:'*',params:{delay:'120ms',y:'-25px'}}" fusePerfectScrollbar>
+
+             <!-- Column -->
+             <ng-container matColumnDef="no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>no</mat-header-cell>
+                <mat-cell *matCellDef="let sampleData; let i = index">
+                    <p
+                        class="text-truncate"
+                        matTooltip="{{  + 1 }}"
+                        style="margin-left:15px;"
+                    >
+                        {{ i + 1 }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+                <ng-container matColumnDef="checkbox">
+                    <mat-header-cell
+                        *matHeaderCellDef
+                        ><mat-checkbox
+                            class="example-margin"
+                            (change)="setAll($event.checked)"
+                            (change)="someComplete()"
+                        ></mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let dataSampleLab">
+                        <mat-checkbox
+                            class="example-margin"
+                            [(ngModel)]="dataSampleLab.completed"
+                            (ngModelChange)="updateAllComplete()"
+                            [disabled]="dataSampleLab.disable"
+                            (change)="
+                                checkBox($event.checked, dataSampleLab.id)
+                            "
+                        ></mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="sample_name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Sample Name</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <div fxLayout="column">
+                            <span
+                                class="text-truncate"
+                                matTooltip="{{ sampleData.sample_name }}"
+                                >{{ sampleData.sample_name }}</span
+                            >
+                            <span
+                                class="text-truncate"
+                                matTooltip="{{ sampleData.sub_catalogue }}"
+                                style="
+                                    color: f5f5f5;
+                                    font-style: italic;
+                                "
+                                >{{ sampleData.sub_catalogue }}</span
+                            >
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="no_sample">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Sample Number</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <p
+                            class="text-truncate"
+                            matTooltip="{{ sampleData.no_sample }}"
+                        >
+                            {{ sampleData.no_sample }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="jenis_kemasan">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Sub Catalog</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <p
+                            class="text-truncate"
+                            matTooltip="{{ sampleData.subcatalogue.sub_catalogue_name }}"
+                        >
+                            {{ sampleData.subcatalogue.sub_catalogue_name }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="status_pengujian">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Status</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <div
+                            class="box-normal"
+                            *ngIf="sampleData.id_statuspengujian == 1"
+                        >
+                            <p class="text-truncate" matTooltip="Normal">
+                                Normal
+                            </p>
+                        </div>
+                        <div
+                            class="box-urgent"
+                            *ngIf="sampleData.id_statuspengujian == 2"
+                        >
+                            <p class="text-truncate" matTooltip="Urgent">
+                                Urgent
+                            </p>
+                        </div>
+                        <div
+                            class="box-very-urgent"
+                            *ngIf="sampleData.id_statuspengujian == 3"
+                        >
+                            <p class="text-truncate" matTooltip="Very Urgent">
+                                Very Urgent
+                            </p>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="tgl_input">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Date Input</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <p
+                            class="text-truncate"
+                            matTooltip="{{ sampleData.tgl_input | date }} - {{ sampleData.tgl_selesai | date }}"
+                        >
+                            {{ sampleData.tgl_input | date }} - {{ sampleData.tgl_selesai | date }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="tgl_estimasi_lab">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header
+                        >Estimate</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <p
+                            class="text-truncate"
+                            matTooltip="{{
+                                sampleData.tgl_estimasi_lab | date
+                            }}"
+                        >
+                            {{ sampleData.tgl_estimasi_lab | date }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="status"
+                        >Status</mat-header-cell
+                    >
+                    <mat-cell *matCellDef="let sampleData">
+                        <div *ngIf="sampleData.contract_condition.length > 0">
+                            <mat-icon
+                                role="img"
+                                class="
+                                    mat-icon
+                                    notranslate
+                                    green-fg
+                                    material-icons
+                                    mat-icon-no-color
+                                    ng-star-inserted
+                                "
+                                aria-hidden="true"
+                                data-mat-icon-type="font"
+                                matTooltip="Checked"
+                                >check_circle</mat-icon
+                            >
+                        </div>
+                        <div *ngIf="sampleData.contract_condition.length < 1">
+                            <mat-icon
+                                role="img"
+                                class="
+                                    mat-icon
+                                    notranslate
+                                    secondary-text
+                                    material-icons
+                                    mat-icon-no-color
+                                    ng-star-inserted
+                                "
+                                aria-hidden="true"
+                                data-mat-icon-type="font"
+                                matTooltip="Not Yet"
+                                >check_circle</mat-icon
+                            >
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column -->
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header="action"
+                        >Action</mat-header-cell
+                    >
+                    <mat-cell
+                        *matCellDef="let sampleData; let indexOfelement = index"
+                        fxHide
+                        fxShow.gt-md
+                    >
+                        <div fxFlex="row" fxLayoutAlign="end center">
+                           
+                            <button
+                                mat-icon-button
+                                color="primary"
+                                class="btn-icon-control"
+                                matTooltip="Lab Estimate"
+                                style="margin-right: -10px;"
+                                aria-label="date"
+                                (click)="editSample(sampleData.id, 'nonchecklist')"
+                            >
+                            <mat-icon>date_range</mat-icon>
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="primary"
+                                class="btn-icon-control"
+                                matTooltip="Sample Detail"
+                                aria-label="Sample"
+                                (click)="goDetail(sampleData.id)"
+                            >
+                                <mat-icon>assignment </mat-icon>
+                            </button>
+                          
+                            
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let sampleData; columns: displayedColumns;"
+                class="standart"
+                matRipple>
+                </mat-row>
+            </mat-table>
+        </mat-card>
+
+        <div *ngIf="loadingfirst && this.sampleData.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.sampleData.length === 0" style="width: 15%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+    </div>
+</div>

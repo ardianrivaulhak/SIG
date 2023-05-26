@@ -1,0 +1,29 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+
+    <h3 *ngIf="this.employeename" fxFlexAlign="start"><span style="font-weight: bold;">{{this.employeename}}</span> - <span style="font-style: italic;">{{this.dateinputshow}}</span></h3>
+    <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Set Status Masuk</mat-label>
+        <mat-select [(ngModel)]="status">
+          <mat-option *ngFor="let o of statusattendance" value="{{o.id}}">{{o.status_name.toUpperCase()}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Set Status Pulang</mat-label>
+        <mat-select [(ngModel)]="status_plg">
+          <mat-option *ngFor="let o of statusattendance" value="{{o.id}}">{{o.status_name.toUpperCase()}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+    <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Description</mat-label>
+        <textarea matInput rows="10" [(ngModel)]="description"></textarea>
+      </mat-form-field>
+     
+      <div fxLayout="row" fxLayoutAlign="center center" style="display: flex; align-self: flex-end;">
+          <button mat-raised-button color="primary" (click)="savedata()">{{this.button}}</button>
+          <div style="width: 10px;"></div>
+          <button mat-raised-button color="warn" (click)="exitModal()">Cancel</button>
+      </div>
+</div>

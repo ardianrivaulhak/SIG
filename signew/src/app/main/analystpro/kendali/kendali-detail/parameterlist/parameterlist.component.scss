@@ -1,0 +1,107 @@
+@import "src/@fuse/scss/fuse";
+
+parameter-list {
+    width: 100%;
+
+    .mat-table {
+        background: transparent;
+        box-shadow: none;
+        padding-bottom: 20px;
+
+        .text-value {
+            font-size: 12px !important;
+        }
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            min-height: 64px;
+        }
+
+        .mat-column-icon {
+            flex: 0 0 5% !important;
+            width: 5% !important;
+        }
+
+        .mat-column-id_statuspengujian {
+            flex: 0 0 15% !important;
+            width: 15% !important;
+
+        }
+
+        .mat-form-field-underline {
+            display: none !important;
+        }
+
+        .mat-input-element {
+            font-size:12px !important;
+        }
+
+        
+
+        .box-normal {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color: #2ecc71 ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+             .text-truncate{
+                 color: #eafaf1 ;
+                 font-size: 10px;
+             }
+        }
+
+        .box-urgent {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  #f7dc6f; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color: #7d6608 ;
+                font-size: 10px;
+            }
+        }
+
+        .box-very-urgent {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color:  #e74c3c ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color:  #f2d7d5 ;
+                font-size: 10px;
+            }
+        }
+
+        .box-custom {
+            width: 80%; 
+            height: 20px; 
+            border-radius: 15px; 
+            background-color: #5dade2 ; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+
+            .text-truncate{
+                color:  #eaf2f8;
+                font-size: 10px;
+            }
+        }
+
+        .selected {
+            background-color: #ebf5fb !important;
+        }
+
+    }
+}

@@ -1,0 +1,59 @@
+<div class="dialog-content-wrapper mat-primary m-0" style="overflow: hidden; height: 100%;">
+    <div class="h2 font-weight-800 " style="margin: 20px 0 0 20px;">Report Certificate</div>
+    <div style="border-bottom: 2px solid #fbfbfb;"></div>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar style="overflow: hidden; height: 100%;">
+        <form fxLayout="column" fxLayoutAlign="start"
+        fxFlex="1 0 auto" name="sampleForm" >
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <mat-form-field 
+                    appearance="outline" 
+                    fxFlex="49" 
+                    class="pr-4" 
+                    style="font-size: 11px; margin-right: 10px;">
+                    <mat-label>Month</mat-label>
+                    <mat-select 
+                    name="month"
+                    [(ngModel)]="this.dateData.month">
+                      <mat-option *ngFor="let food of dataBulan" [value]="food.value">
+                        {{food.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field 
+                  appearance="outline" 
+                  fxFlex="49" 
+                  class="pr-4" 
+                  style="font-size: 11px; margin-right: 10px;">
+                  <mat-label>Year</mat-label>
+                  <mat-select
+                  name="year"
+                  [(ngModel)]="this.dateData.year">
+                    <mat-option *ngFor="let food of dataTahun" [value]="food.name">
+                      {{food.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-0" fxLayout="row" fxLayoutAlign="end center" >
+        <button mat-raised-button 
+        fxFlex="30"  fxFlex.xs="30" 
+        color="primary" 
+        style="margin-right:10px; width:250px;" 
+        class="mat-primary" 
+        (click)="exportexcelFaktur()">
+          Submit
+        </button>
+        <button mat-stroked-button 
+        fxFlex="30"  fxFlex.xs="30"
+        style="margin-right:50px; width:250px;" 
+        (click)="closeDialog(true)"
+        aria-label="Close">
+            Close
+        </button>
+    </div>
+</div>

@@ -1,0 +1,148 @@
+<div class="dialog-content-wrapper mat-primary m-0">
+    <mat-progress-bar
+        color="primary"
+        mode="indeterminate"
+        value="50" *ngIf="load">
+    </mat-progress-bar>
+    <mat-toolbar matDialogTitle class="mat-primary m-0">
+        <mat-toolbar-row>
+            <span class="title dialog-title"> 
+               Sample Detail
+            </span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <div *ngIf="this.sampleujiData.length > 0">
+            <mat-card class="example-card" fxLayout="column" fxLayoutAlign="space-around start">
+                <div class="data-card-identity" fxLayout="row" fxLayoutAlign="space-between center">
+                    <div>
+                        <span style="font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>{{ this.sampleujiData[0].no_sample }} &nbsp; | </span>
+                        <button mat-icon-button color="primary"  
+                        matTooltip="Photo Sample"
+                        (click)="this.getModalAddPhoto(this.sampleujiData[0])"
+                        [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}">
+                            <mat-icon>filter</mat-icon>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <mat-paginator
+                            [length]="this.total"
+                            [pageSize]="this.to"
+                            [pageIndex]="this.current_page"
+                            hidePageSize="true"
+                            (page)="pageEvent = $event; paginated($event)"
+                        >
+                        </mat-paginator>
+                        </div>
+                    </div>
+                </div>            
+            </mat-card>
+
+            <mat-card class="example-card">
+                <mat-card-title style="font-size: 14px; font-weight: bold;">Identity Sample</mat-card-title>
+                <mat-card-content>
+                    <table style="width:100%">
+                        <tr>
+                            <td>Contract Number</td>
+                            <td>:</td>
+                            <td>{{ this.sampleujiData[0].kontrakuji.contract_no }}</td>
+                        </tr>
+                        <tr>
+                            <td>Sample Number</td>
+                            <td>:</td>
+                            <td>{{ this.sampleujiData[0].no_sample }}</td>
+                        </tr>
+                        <tr>
+                        <td>Sample Name</td>
+                        <td>:</td>
+                        <td>{{ this.sampleujiData[0].sample_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Memo Control Lab</td>
+                            <td>:</td>
+                            <td *ngIf="this.sampleujiData[0].kontrakuji.description_kendali.length > 0">
+                                <ul *ngFor="let item of this.sampleujiData[0].kontrakuji.description_kendali" style="color: #463735;" >
+                                    <li style="font-size: 12px;">{{ item.desc }}</li>
+                                </ul>
+                            </td>
+                            <td *ngIf="this.sampleujiData[0].kontrakuji.description_kendali.length < 1">
+                                not desc preparation
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Memo Preparation</td>
+                            <td>:</td>
+                            <td *ngIf="this.sampleujiData[0].kontrakuji.description_preparation.length > 0">
+                                <ul *ngFor="let item of this.sampleujiData[0].kontrakuji.description_preparation" style="color: #463735;" >
+                                    <li style="font-size: 12px;">{{ item.desc }}</li>
+                                </ul>
+                            </td>
+                            <td *ngIf="this.sampleujiData[0].kontrakuji.description_preparation.length < 1">
+                                not desc preparation
+                            </td>
+                        </tr>
+                    </table>                  
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="example-card" *ngIf="this.datasample.length > 0">
+                <mat-card-title style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Value Table</mat-card-title>
+                <mat-card-content>
+                    <mat-table class="sampleuji-table" #table [dataSource]="datasample" style="height: 39vh;" fusePerfectScrollbar>
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="no">
+                        <mat-header-cell *matHeaderCellDef style="color: white;">No</mat-header-cell>
+                            <mat-cell *matCellDef="let a; let i=index">
+                                <p class="text-truncate">{{i+1}}</p>
+                            </mat-cell>
+                        </ng-container>
+                
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="nama_lab">
+                            <mat-header-cell *matHeaderCellDef style="color: white;">Nama Lab
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let a">
+                                <p class="text-truncate">{{a.labname.nama_lab}}</p>
+                            </mat-cell>
+                        </ng-container>
+                
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef style="color: white;">Nilai Bobot
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let a" >
+                                <p class="text-truncate">{{a.value}}</p>
+                            </mat-cell>
+                        </ng-container>
+                
+                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true">
+                        </mat-header-row>
+                        <mat-row *matRowDef="let a; columns: displayedColumns;">
+                        </mat-row>
+                    </mat-table>                
+                </mat-card-content>
+            </mat-card>        
+        </div>
+  
+        <!-- <div *ngIf="this.datasample.length < 1" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div> -->
+        </div>
+
+        <div *ngIf="this.sampleujiData.length < 1">
+            <img  src="assets/images/gif/loading.gif"  style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;"/>
+            <small style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">Please Wait ...</small>
+        </div>
+    
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center" >
+        <button mat-flat-button color="accent" (click)="saveForm()" >
+            Approve
+        </button>
+        <button mat-button class="mat-accent" aria-label="Close" (click)="closeModal()" mat-flat-button color="warn">
+            Close
+        </button>
+    </div>
+
+  </div>

@@ -1,0 +1,308 @@
+<div id="control" class="page-layout simple" style="overflow: auto; height: 600px;">
+    <div class="content">
+        <mat-card style="margin: 0px;" >
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="24">
+                            <mat-label>Marketing</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="dataFilter.marketing"
+                            name="marketing"
+                            placeholder="Marketing Number">
+                        </mat-form-field>
+
+                        <ng-select appendTo="body" 
+                        [items]="employee" 
+                        class="auto-grow"
+                        bindValue="user_id" 
+                        bindLabel="employee_name" 
+                        fxFlex="24" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Employee"
+                        [(ngModel)]="dataFilter.user"
+                        name="user"
+                        dropdownPosition="bottom"  
+                        (scrollToEnd)="onScrollToEnd('employee')" 
+                        (search)="onsearchselect($event,'employee')"
+                        (clear)="reset('user')"
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.employee_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.employee_name}}
+                            </ng-template>
+                        </ng-select>  
+        
+                        <ng-select appendTo="body" 
+                        [items]="customersData" 
+                        class="auto-grow"
+                        bindValue="id_customer" 
+                        bindLabel="customer_name" 
+                        fxFlex="35" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Customer"
+                        [(ngModel)]="dataFilter.customer"
+                        name="customer"
+                        dropdownPosition="bottom"  
+                        (scrollToEnd)="onScrollToEnd('customer')" 
+                        (search)="onsearchselect($event,'customer')"
+                        (clear)="reset('customer')"
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select>    
+                        
+                        <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="14">
+                            <mat-label>Category</mat-label>
+                                <mat-select placeholder="Category"
+                                [(ngModel)]="dataFilter.category"
+                                name="category"
+                                (clear)="reset('category')"
+                                class="select-me"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; width: 100%;
+                                color:white !important;">
+                                <mat-option *ngFor="let contractcategory of contractcategory" [value]="contractcategory.id">
+                                   ( {{ contractcategory.category_code }} ) {{ contractcategory.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top:-15px;">
+
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="24">
+                            <mat-label>Sample Name</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="dataFilter.sample_name"
+                            name="sample_name"
+                            placeholder="Sample Name">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="24">
+                            <mat-label>Sample Number</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="dataFilter.sample_number"
+                            name="sample_number"
+                            placeholder="Sample Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="24">
+                            <mat-label>Status Rev</mat-label>
+                                <mat-select placeholder="Category"
+                                [(ngModel)]="dataFilter.status_rev"
+                                name="status_rev"
+                                class="select-me"
+                                (clear)="reset('status_rev')"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; width: 100%;
+                                color:white !important;">
+                                <mat-option *ngFor="let statrev of statrev" [value]="statrev.value">
+                                    {{ statrev.title }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        
+                        <button mat-raised-button color="accent"  fxFlex="12"  fxFlex.xs="23" style="height: 40px; width:250px; margin-top: -13px;" (click)="searchButton()">
+                            Search
+                        </button>
+                        <button mat-raised-button color="warn" fxFlex="12"  fxFlex.xs="23" style="height: 40px; width: 100%; margin-top: -13px;" (click)="cancelSearchMark()">
+                            Reset
+                        </button>
+                        
+                    </div>
+                </div>
+            
+        </form>
+        </mat-card>
+        <mat-card>
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Control Lab &nbsp; | </span>
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Export" (click)="gotoModulExcel()" style="margin-left: -20px;">
+                        <mat-icon style="color: #303030; ">file_copy</mat-icon>
+                    </button>
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Back Track"  (click)="backTrack()">
+                        <mat-icon style="color: #303030; ">settings_backup_restore</mat-icon>
+                    </button>
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Refresh"  (click)="refreshPage()">
+                        <mat-icon style="color: #303030; ">refresh</mat-icon>
+                    </button>
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Cancel"  (click)="cancelApprove()" *ngIf="this.checkList.length > 0">
+                        <mat-icon style="color: #303030; ">cancel</mat-icon>
+                    </button>
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Approve"  (click)="approveContract()" *ngIf="this.checkList.length > 0">
+                        <mat-icon style="color: #303030; ">check_circle</mat-icon>
+                    </button>
+                </div>
+                <div>
+                    <!-- <mat-paginator #paginator
+                    [length]="total"
+                    [pageIndex]="from"
+                    [pageSize]="to"
+                    [hidePageSize]="true"
+                    [showFirstLastButtons]="true"
+                    (page) = "paginated($event)"
+                    style="font-size: 10px;"
+                    *ngIf="this.total > 0">
+        
+                    </mat-paginator> -->
+                    <mat-paginator
+                        [length]="this.total"
+                        [pageSize]="this.to"
+                        [pageIndex]="this.current_page"
+                        hidePageSize="true"
+                        (page)="pageEvent = $event; paginated($event)"
+                    >
+                    </mat-paginator>
+                </div>
+            </div>
+            
+           
+        </mat-card>
+        <mat-card>
+            <mat-table class="control-table" #table [dataSource]="kendaliData" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar  *ngIf="this.kendaliData.length > 0 && !loadingfirst">
+
+           
+            <!-- Column -->
+            <ng-container matColumnDef="checkbox">
+                <mat-header-cell *matHeaderCellDef>#</mat-header-cell>[disabled]="true"
+                <mat-cell *matCellDef="let kendaliData">
+                    <mat-checkbox class="checkbox-control" (change)="setAll($event.checked, kendaliData.id_kontrakuji)"></mat-checkbox>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="statusrev">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="statusrev">Stat</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{kendaliData.contract_info.status == 0 ? 'New' : 'Rev'}}">{{kendaliData.contract_info.status == 0 ? 'New' : 'Rev'}}</span>
+
+                       
+                        </div>
+                </mat-cell>
+            </ng-container>
+           
+            <!-- Column -->
+            <ng-container matColumnDef="contract_no">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="contract_no">Contract</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{kendaliData.contract_no}}">{{kendaliData.contract_no}}</span>
+                        <span class="text-truncate" matTooltip="{{kendaliData.contract_category.title}}"
+                            style="color: f5f5f5; font-size: 9px;">{{ kendaliData.contract_category.title}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer_name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer_name">Customer</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{kendaliData.customers_handle.customers.customer_name}}">{{kendaliData.customers_handle.customers == null ? '' :  kendaliData.customers_handle.customers.customer_name}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+    
+             <!-- Column -->
+            <ng-container matColumnDef="progress">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="progress">Prog</mat-header-cell>
+                <mat-cell *matCellDef="let datacontract">
+                    <div fxLayout="column">
+<!--                         
+                        <div class="box-very-urgent" style="width: 100%;">
+                            <p class="text-truncate" matTooltip="{{ datacontract.status_sample_kendali.length }} / {{  datacontract.count_samplelab.length }}">{{ datacontract.status_sample_kendali.length }} / {{  datacontract.count_samplelab.length }}</p>
+                        </div> -->
+                        <div [ngClass]=" datacontract.status_sample_kendali.length  ==    datacontract.count_samplelab.length  ? 'box-info' : 'box-very-urgent' " >
+                            <p class="text-truncate" matTooltip="{{ datacontract.status_sample_kendali.length }} / {{  datacontract.count_samplelab.length }}">
+                                {{ datacontract.status_sample_kendali.length }} / {{  datacontract.count_samplelab.length }}
+                            </p>
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="cust_service">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="cust_service">CS</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ kendaliData.contract_condition[0].user.employee_name }}">{{ kendaliData.contract_condition[0].user.employee_name }}</span>
+                        <span class="text-truncate" matTooltip="{{ kendaliData.contract_condition[0].inserted_at | date }}"
+                            style="color: f5f5f5; font-size: 8px; font-style: italic; margin-bottom: 10px;">{{ kendaliData.contract_condition[0].inserted_at | date }}
+                        </span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+              <!-- Column -->
+              <ng-container matColumnDef="kendali">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="kendali">Control</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <div fxLayout="column">
+                    <span class="text-truncate" matTooltip="{{ kendaliData.status_sample_kendali.length < 1 ? '-' : kendaliData.status_sample_kendali[0].user.employee_name }}">{{ kendaliData.status_sample_kendali.length < 1 ? '-' : kendaliData.status_sample_kendali[0].user.employee_name }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="desc">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="desc">Memo</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData">
+                    <p class="text-truncate" style="white-space: normal;" matTooltip="{{kendaliData.memo == null ? '-' : kendaliData.memo.desc}}">{{kendaliData.memo == null ? '-' : kendaliData.memo.desc}}</p>
+                </mat-cell>
+            </ng-container>
+    
+            <!-- Column -->
+            <ng-container matColumnDef="icon" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="icon" fxHide fxShow.gt-md>Action</mat-header-cell>
+                <mat-cell *matCellDef="let kendaliData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                        <button mat-icon-button color="primary"  class="btn-icon-control" matTooltip="Sample" aria-label="Sample" (click)="goDetail(kendaliData.id_kontrakuji)" matTooltip="details">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let kendaliData; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.kendaliData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.kendaliData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        </mat-card>
+
+    </div>
+</div>

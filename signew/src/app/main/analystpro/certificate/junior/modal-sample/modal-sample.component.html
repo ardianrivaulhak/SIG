@@ -1,0 +1,173 @@
+<div *ngIf="sampleForm" class="dialog-content-wrapper mat-primary m-0" >
+    <form name="sampleForm" [formGroup]="sampleForm" class="product w-100-p" fxLayout="column" fxFlex>
+    <mat-toolbar matDialogTitle class="primary m-0" *ngIf="this.dataSampleLab.length > 0">
+        <mat-toolbar-row>
+            <span class="title dialog-title">{{ dataSampleLab[0].no_sample }}</span>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+     
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Tanggal Produksi</mat-label>
+                <input matInput [matDatepicker]="tgl_produksi" name="tgl_produksi" formControlName="tgl_produksi">
+                <mat-datepicker-toggle matSuffix [for]="tgl_produksi"></mat-datepicker-toggle>
+                <mat-datepicker #tgl_produksi></mat-datepicker>
+                <mat-error>Tanggal Sample is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Tanggal Kadaluarsa</mat-label>
+                <input matInput [matDatepicker]="tgl_kadaluarsa">
+                <mat-datepicker-toggle matSuffix [for]="tgl_kadaluarsa"></mat-datepicker-toggle>
+                <mat-datepicker #tgl_kadaluarsa></mat-datepicker>
+                <mat-error>Tanggal Sample is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Tanggal Terima</mat-label>
+                <input matInput [matDatepicker]="tanggal_terima">
+                <mat-datepicker-toggle matSuffix [for]="tanggal_terima"></mat-datepicker-toggle>
+                <mat-datepicker #tanggal_terima></mat-datepicker>
+                <mat-error>Tanggal Terima is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                <mat-label>Tanggal Uji Mulai</mat-label>
+                <input matInput [matDatepicker]="tgl_uji_mulai">
+                <mat-datepicker-toggle matSuffix [for]="tgl_uji_mulai"></mat-datepicker-toggle>
+                <mat-datepicker #tgl_uji_mulai></mat-datepicker>
+                <mat-error>Tanggal Uji Mulai is required!</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                <mat-label>Tanggal Uji Selesai</mat-label>
+                <input matInput [matDatepicker]="tgl_uji_selesai">
+                <mat-datepicker-toggle matSuffix [for]="tgl_uji_selesai"></mat-datepicker-toggle>
+                <mat-datepicker #tgl_uji_selesai></mat-datepicker>
+                <mat-error>Last Uji Selesai is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Nama Dagang</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">assessment</mat-icon>
+                <mat-error>Nama Dagang is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>Alamat Pabrik</mat-label>
+                <textarea matInput  required>
+                    
+                </textarea>
+                <mat-error>Alamat Pabrik is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Kode Sample</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                <mat-error>Kode Sample is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>No Batch</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">confirmation_number</mat-icon>
+                <mat-error>No Batch is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Tanggal Sampling</mat-label>
+                <input matInput [matDatepicker]="tgl_sampling">
+                <mat-datepicker-toggle matSuffix [for]="tgl_sampling"></mat-datepicker-toggle>
+                <mat-datepicker #tgl_sampling></mat-datepicker>
+                <mat-error>Tanggal Sampling is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>No LOT</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">confirmation_number</mat-icon>
+                <mat-error>No LOT is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Jenis Pengujian</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                <mat-error>Jenis Pengujian is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Nama Sample</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                <mat-error>Nama Sampleis required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>Keterangan Lain</mat-label>
+                <textarea matInput  required>
+                    
+                </textarea>
+                <mat-error>Keterangan Lain is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                <mat-label>Jenis Kemasan</mat-label>
+                <input matInput required>
+                <mat-icon matSuffix class="secondary-text">description</mat-icon>
+                <mat-error>Jenis Kemasan is required!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="1 0 auto">
+            <mat-form-field appearance="outline" fxFlex="100">
+                <mat-label>Keterangan Sertifikat</mat-label>
+                <textarea matInput  required>
+                    
+                </textarea>
+                <mat-error>Keterangan Sertifikat is required!</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button mat-button (click)="closeModal()" class="mat-accent" aria-label="Close">
+            CLOSE
+        </button>
+        <button mat-raised-button (click)="closeModal()" class="mat-accent" aria-label="Close">
+            <mat-icon matSuffix class="secondary-text" style="color:white;">add_circle_outline</mat-icon>
+            CREATE CERTIFICATE
+        </button>
+    </div>
+    </form>
+</div>

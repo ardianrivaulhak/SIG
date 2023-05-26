@@ -1,0 +1,124 @@
+<div id="invoice" class="compact page-layout simple tabbed" fxLayout="row wrap" style="overflow-y: scroll; height: 100vh; padding-bottom: 45px;">
+    <!-- CONTENT -->
+    <div class="content">
+        <div class="invoice-container" >
+            <div id="pdfKendali" #pdfKendali class="card" style="border-radius: 15px; margin-left: -35px; margin-bottom: 30px; margin-top: -60px;overflow-x: hidden;">
+                    
+                <div class="header" style="display: flex; flex-direction: row ; justify-content: space-around; margin: 60px 50px 50px 60px;">
+                    <div style="flex: 1">
+                    <img src="assets/images/logos/siglog.png" style="width: 100px; height: auto" />
+                    </div>
+                    <div style="display: flex; flex-direction: column; flex: 2">
+                        <span style="font-size: 14px; font-weight: bold;">PT SARASWANTI INDO GENETECH</span>
+                        <span style="font-size: 12px;">Graha SIG Jl. Rasamala No. 20 Taman Yasmin</span>
+                        <span style="font-size: 12px;">Bogor 16113 INDONESIA</span>
+                        <span style="font-size: 12px;">Phone +62 251 7532 348 49 ( Hunting ), 0821 1151 6516</span>
+                        <span style="font-size: 12px;">Fax +62 251 7540 927</span>
+                        <a style="font-size: 12px;" href="http://www.siglaboratory.com">http://www.siglaboratory.com</a>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; flex: 1">
+                        <span style="font-size: 12px;">No. : 26.1/F-PP/SMM-SIG</span>
+                        <span style="font-size: 10px; font-style: italic;">Revisi 6</span>
+                    </div>
+                </div>
+                <div style="height: 30px;"></div>
+                <div class="content" >
+
+                    <div style="display: flex; flex-direction: column; text-align: center;">
+                        <span style="font-size: 16px; font-weight: bold;">FORMULIR SPESIFIKASI PENGUJIAN</span>
+                        <span>No.SIG.INV.F.X.2020.002987</span>
+                    </div> 
+                     
+                    <div style="margin: 20px 20px 20px 60px; padding: 10px;">
+                        <table class="simple invoice-table-footer" >
+                            <tr>
+                              <td style="width: 3%;">-</td>
+                              <td style="width: 55%;">No. Kontrak Uji</td>
+                              <td style="width: 2%;">:</td>
+                              <td >SIG.INV.F.X.2020.002987</td>
+                            </tr>
+                            <tr>
+                              <td>-</td>
+                              <td>Penerima Sample di Laboratorium</td>
+                              <td style="width: 2%;">:</td>
+                              <td >0</td>
+                            </tr>
+                            <tr>
+                              <td>-</td>
+                              <td>Tanggal diterima sample di laboratorium</td>
+                              <td style="width: 2%;">:</td>
+                              <td>21 Oktober 2020</td>
+                            </tr> 
+                        </table>  
+
+                        <table mat-table [dataSource]="dataSource" style="width: 100%; margin-top: 25px; margin-bottom: 25px;">
+                            <ng-container matColumnDef="no">
+                            <th mat-header-cell style="width: 7%;" *matHeaderCellDef> No. </th>
+                            <td mat-cell style="font-size: 11px;" *matCellDef="let element; let i = index;"> {{i+1}} </td>
+                            </ng-container>
+                        
+                            <!-- Name Column -->
+                            <ng-container matColumnDef="sample">
+                            <th mat-header-cell style="width: 10%;" *matHeaderCellDef> No. Sample</th>
+                            <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.sample}} </td>
+                            </ng-container>
+                        
+                            <!-- Weight Column -->
+                            <ng-container matColumnDef="uraian">
+                            <th mat-header-cell *matHeaderCellDef> Jenis Sample</th>
+                            <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.uraian}} </td>
+                            </ng-container>
+                        
+                            <!-- Symbol Column -->
+                            <ng-container matColumnDef="jenis_parameter">
+                            <th mat-header-cell *matHeaderCellDef> Jenis Parameter</th>
+                            <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.jenis_parameter}} </td>
+                            </ng-container>
+            
+                            <ng-container matColumnDef="parameter_uji">
+                            <th mat-header-cell *matHeaderCellDef> Parameter Uji</th>
+                            <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.parameter_uji}}</td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="metode">
+                                <th mat-header-cell *matHeaderCellDef> Metode</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.metode}}</td>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="tgl_estimasi">
+                                <th mat-header-cell *matHeaderCellDef> Tgl. Esetimasi</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.tgl_estimasi}}</td>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="hasil_uji">
+                                <th style="width: 7%;" mat-header-cell *matHeaderCellDef> Hasil Uji</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.hasil_uji}}</td>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="lod">
+                                <th style="width: 6%;" mat-header-cell *matHeaderCellDef> LOD</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.lod}}</td>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="satuan">
+                                <th mat-header-cell *matHeaderCellDef> Satuan</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.satuan}}</td>
+                            </ng-container> 
+
+                            <ng-container matColumnDef="apprv_spv">
+                                <th mat-header-cell *matHeaderCellDef> Approvall SPV</th>
+                                <td mat-cell style="font-size: 11px;" *matCellDef="let element"> {{element.apprv_spv}}</td>
+                            </ng-container> 
+                        
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        </table>
+                    </div> 
+                     
+                </div>
+                <!-- / INVOICE -->
+            </div> 
+            <button mat-raised-button style="width: 95%;background-color: dimgray;" color="warn" (click)="previewInvoice()">Print</button>
+        </div>
+    </div>
+</div>

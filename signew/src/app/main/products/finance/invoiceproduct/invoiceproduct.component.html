@@ -1,0 +1,269 @@
+<div id="product_invoiceproduct" class="page-layout simple" style="overflow: auto; height: 100%; background-color: #f7f7f7;">
+    <div class="content">
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;" >
+            <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+                <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                    <div fxLayout="row" fxLayoutAlign="space-between center"style="margin-bottom: 10px;" >
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Invoice</mat-label>
+                            <input matInput 
+                            #filter 
+                            [(ngModel)]="this.dataFilter.invoice"
+                            name="invoice"
+                            placeholder="Invoice Number">
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="10" fxHide fxShow.gt-xs>
+                            <mat-label>Category</mat-label>
+                              <mat-select placeholder="Category"
+                               name="category"
+                                class="select-me"
+                                [(ngModel)]="dataFilter.category"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; 
+                                color:white !important;">
+                                <mat-option *ngFor="let category of category" [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <ng-select 
+                        appearance="outline"
+                        appendTo="body" 
+                        [items]="dataCustomer" 
+                        bindLabel="customer_name" 
+                        bindValue="id_customer"                         
+                        (search)="onsearchselect($event,'customer')"
+                        (scrollToEnd)="onScrollToEnd('customer')"
+                        fxFlex="39" fxHide fxShow.gt-xs
+                        [clearable]="false" 
+                        placeholder="Select Customer" 
+                        name="customers"
+                        [(ngModel)]="dataFilter.customer"
+                        dropdownPosition="bottom" 
+                        style="display: flex; justify-content: center; align-items: center;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select> 
+                        <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="10" fxHide fxShow.gt-xs>
+                            <mat-label>Status</mat-label>
+                              <mat-select placeholder="Status"
+                               name="status"
+                                class="select-me"
+                                [(ngModel)]="dataFilter.status"
+                                style="display: flex;
+                                justify-content: center;
+                                align-items: center; 
+                                color:white !important;">
+                                <mat-option *ngFor="let status of status" [value]="status.id">
+                                    {{ status.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="19">
+                            <mat-label>Date</mat-label>
+                            <input matInput [matDatepicker]="picker"  [(ngModel)]="dataFilter.date" name="date">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="end center">
+                        <button mat-raised-button  
+                        fxFlex="12" 
+                        fxFlex.xs="23" 
+                        style="margin-right: 10px; background-color: #3AB0FF; color: #fff;"
+                        (click)="filterData()" >
+                            Filter
+                        </button>
+                        <button mat-raised-button  
+                        fxFlex="12"  
+                        fxFlex.xs="23" 
+                        style="margin-right: 10px; background-color: #f75b5b; color: #fff;"
+                        (click)="resetFilter()">
+                            Reset
+                        </button>                        
+                    </div>
+                </div>
+            
+        </form>
+        </mat-card>
+        <mat-card class="mat-elevation-z0"  style="width: 98%; margin: 20px auto 10px auto;">
+            <div fxLayout="row" fxLayoutAlign="space-between center" >
+                <div>
+                    <span style="font-size:16px; font-weight: bold; color: #303030; margin-right: 25px;" fxHide fxShow.gt-md>Invoice Products</span>
+                </div>
+                <div>
+                    <mat-paginator
+                        [length]="this.total"
+                        [pageSize]="this.to"
+                        [pageIndex]="this.current_page"
+                        hidePageSize="true"
+                        (page)="pageEvent = $event; paginated($event)"
+                    >
+                    </mat-paginator>
+                </div>
+            </div>
+            <mat-table class="mediartu-table" #table [dataSource]="financeProduct" matSort (matSortChange)="sortData($event)"
+            [@animateStagger]="{value:'50'}" fusePerfectScrollbar  *ngIf="this.financeProduct.length > 0 && !loadingfirst">
+
+           
+            <!-- Column -->
+            <ng-container matColumnDef="invoice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="invoice">Invoice</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.no_invoice}}">{{  financeProduct.no_invoice }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="category">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="category">Category</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                            <span class="text-truncate" matTooltip="{{ financeProduct.contract==null ? '-' :  financeProduct.contract.category.title }}">{{ financeProduct.contract==null ? '-' : financeProduct.contract.category.title }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+
+             <!-- Column -->
+             <ng-container matColumnDef="customer">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="customer">Customer</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ financeProduct.customers.customer_name}}">{{financeProduct.customers.customer_name}}</span>
+                        <span class="text-truncate" style="color: f5f5f5; font-size: 10px;" matTooltip="{{ financeProduct.contactpersons == null ? '-' : financeProduct.contactpersons.name }}">{{financeProduct.contactpersons == null ? '-' : financeProduct.contactpersons.name}}</span>
+                    </div> 
+                </mat-cell>
+            </ng-container>
+
+
+              <!-- Column -->
+              <ng-container matColumnDef="tgl_faktur">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_faktur">Date</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.tgl_faktur | date}}">{{financeProduct.tgl_faktur | date}}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+               <!-- Column -->
+               <ng-container matColumnDef="tgl_jatuhtempo">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="tgl_jatuhtempo">Exp</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{financeProduct.tgl_jatuhtempo | date }}">{{financeProduct.tgl_jatuhtempo | date }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>
+            
+             <!-- Column -->
+             <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="status">Status</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <div class="box-very-urgent" *ngIf="financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].status == 0 && financeProduct.tgl_faktur == null">
+                            <p class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].created_at | date }}">not yet</p>
+                        </div>
+                        <div class="box-custom" *ngIf="financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].status == 0 && financeProduct.tgl_faktur != null">
+                            <p class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].created_at | date }}">verification</p>
+                        </div>
+                        <div class="box-urgent" *ngIf="financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].status == 1" >
+                            <p class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].created_at | date }}">waiting</p>
+                        </div>
+                        <div class="box-normal" *ngIf="financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].status == 2" >
+                            <p class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].created_at | date }}">approved</p>
+                        </div>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+             <!-- Column -->
+             <ng-container matColumnDef="user">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="user">Create By</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct">
+                    <div fxLayout="column">
+                        <span class="text-truncate" matTooltip="{{ financeProduct.condition_invoice[0].employee.employee_name }}">{{ financeProduct.condition_invoice[0].employee.employee_name }}</span>
+                    </div>
+                </mat-cell>
+            </ng-container>    
+    
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+                <mat-header-cell *matHeaderCellDef mat-sort-header="action" fxHide fxShow.gt-md>Action</mat-header-cell>
+                <mat-cell *matCellDef="let financeProduct; let indexOfelement=index;" fxHide fxShow.gt-md>
+                    <div fxFlex="row" fxLayoutAlign="center center">
+                       
+                        <button mat-icon-button color="primary" [ngStyle]="financeProduct.print == 'Y' ? {'color': '#2C3333'} : {'color': '#f75b5b'}" class="btn-icon-control" matTooltip="Print" (click)="openInvoice(financeProduct.id_product_invoice, 'print')" aria-label="Sample">
+                            <mat-icon>print</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" [matMenuTriggerFor]="moreMenu" aria-label="More"
+                        (click)="$event.stopPropagation();">
+                            <mat-icon  class="secondary-text">more_vert</mat-icon>
+                        </button>
+                        <mat-menu #moreMenu="matMenu">
+                            <button  mat-menu-item aria-label="copy" 
+                            class="btn-icon-control"
+                            matTooltip="Sample"
+                            aria-label="Sample"  
+                            [routerLink]="'/products/finance/'+financeProduct.id_product_invoice"
+                            matTooltip="details">
+                                <mat-icon>edit</mat-icon>
+                                <span>Update</span>
+                            </button>
+                            <button mat-menu-item aria-label="copy" (click)="goToContract(financeProduct.contract.id_product_contract)">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Contract</span>
+                            </button> 
+                            <button mat-menu-item aria-label="copy" (click)="openInvoice(financeProduct.id_product_invoice, 'open')">
+                                <mat-icon>picture_as_pdf</mat-icon>
+                                <span>Pdf</span>
+                            </button>  
+                            <button mat-menu-item aria-label="copy" (click)="addPayments(financeProduct)">
+                                <mat-icon>account_balance</mat-icon>
+                                <span>Payment</span>
+                            </button>                           
+                            <button mat-menu-item aria-label="copy" 
+                            *ngIf="financeProduct.condition_invoice[financeProduct.condition_invoice.length - 1].status == 0 && financeProduct.tgl_faktur != null"
+                            (click)="approvedInvoice(financeProduct)">
+                                <mat-icon>check_circle_outline</mat-icon>
+                                <span>Approve</span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+            <mat-row *matRowDef="let financeProduct; columns: displayedColumns;" 
+            class="standart"
+            matRipple>
+
+            </mat-row>
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.financeProduct.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/loading.gif" />
+            <small>Please Wait ...</small>
+        </div>
+
+        <div *ngIf="!loadingfirst && this.financeProduct.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+            <img  src="assets/images/gif/selectfile.gif" />
+            <small>No Data</small>
+        </div>
+
+        </mat-card>
+
+    </div>
+</div>

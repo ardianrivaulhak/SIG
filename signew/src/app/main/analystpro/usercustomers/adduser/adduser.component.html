@@ -1,0 +1,162 @@
+<div id="useradd" fxLayout="column" fxLayoutAlign="space-between none" >
+    <div>
+        <div  class="formaction" fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-accordion style="width:100%;" [@animate]="{value:'*',params:{delay:'100ms',scale:'0.2'}}">
+                <mat-expansion-panel  [expanded]="expansive">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title style="font-weight: 800;">
+                      Form users
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                    <h2 class="text-title">{{ this.dataform.titleform }}</h2>
+                    <div fxLayout="row" fxLayoutAlign="start center" >
+                        <ng-select appendTo="body" 
+                        [items]="customersData" 
+                        bindLabel="customer_name" 
+                        class="auto-grow"
+                        bindValue="id_customer" 
+                        fxFlex="33" fxHide fxShow.gt-xs
+                        appearance="outline" 
+                        placeholder="Customer"
+                        [(ngModel)]="this.formdata.id_customer"
+                        name="customer"
+                        dropdownPosition="bottom"  
+                        (scrollToEnd)="onScrollToEnd('customer')" 
+                        (search)="onsearchselect($event,'customer')"
+                        style="display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        margin-right: 10px;">
+                            <ng-template ng-option-tmp let-item="item" let-index="index">
+                                {{item.customer_name}}
+                            </ng-template>
+                            <ng-template ng-label-tmp let-item="item">
+                                {{item.customer_name}}
+                            </ng-template>
+                        </ng-select> 
+                        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="33">
+                            <mat-label>Name</mat-label>
+                            <input matInput  name="name"  [(ngModel)]="this.formdata.name" >
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" >
+                        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="33">
+                            <mat-label>Email</mat-label>
+                            <input matInput  name="email"  
+                            [(ngModel)]="this.formdata.email" 
+                            [pattern]="regex_email">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="33">
+                            <mat-label>Password</mat-label>
+                              <input matInput 
+                              [type]=" showPassword ? 'text' : 'password' " 
+                              name="password"
+                              [(ngModel)]="this.formdata.password" 
+                              [pattern]="regex"
+                              [disabled]="editpassword "
+                              #reg="ngModel">
+                              <mat-icon matSuffix 
+                              class="secondary-text" 
+                              (click)="showHidePassword()" 
+                              style="cursor: pointer;">{{this.iconPassword}}</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" style="font-size: 11px; margin-right: 10px;" fxFlex fxFlex="33">
+                            <mat-label>Confirm Password</mat-label>
+                            <input matInput  
+                            name="confirm_password" 
+                            [type]=" showPasswordConfirm ? 'text' : 'password' "  
+                            [(ngModel)]="this.formdata.confirm_password" 
+                            [disabled]="editpassword "
+                            [pattern]="regex"
+                            #gex="ngModel">
+                            <mat-icon matSuffix 
+                            class="secondary-text" 
+                            (click)="showHidePasswordConfirm()" 
+                            style="cursor: pointer;">{{this.iconPasswordConfirm}}</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+                <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+                    <button mat-flat-button color="primary" (click)="addData()" style="margin-right: 10px;" *ngIf="this.dataform.status == 2">Add Data</button> 
+                    <span style="margin-right: 10px;" *ngIf="this.dataform.status == 2">|</span>
+                    <button mat-flat-button color="warn" (click)="resetData()" style="margin-right: 10px;">Reset</button>
+                    <button mat-flat-button color="accent" (click)="saveData()" *ngIf="this.dataform.status == 1">Save Data</button>
+                    <button mat-flat-button color="accent" (click)="updateData()" *ngIf="this.dataform.status == 2">Update Data</button>
+                </mat-card-actions>                 
+                </mat-expansion-panel>
+              </mat-accordion>
+        </div>
+        <mat-card class="card-action" >
+            <mat-card-title>List users customer</mat-card-title>
+            <mat-card-content fxLayout="column" fxLayoutAlign="space-between none">
+                <mat-table class="listuser-table" #table [dataSource]="userData" matSort (matSortChange)="sortData($event)"
+                [@animate]="{value:'*',params:{delay:'120ms',y:'-25px'}}" fusePerfectScrollbar>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="company">
+                        <mat-header-cell *matHeaderCellDef mat-userData-header="company">Customer</mat-header-cell>
+                            <mat-cell *matCellDef="let userData">
+                                <p class="text-truncate" matTooltip="{{ userData.customers == null ? 'no data' : userData.customers.customer_name}}">
+                                    {{userData.customers == null ? 'no data' : userData.customers.customer_name}}
+                                </p> 
+                            </mat-cell>
+                    </ng-container>
+
+                      <!-- Column -->
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-userData-header="name">Name</mat-header-cell>
+                            <mat-cell *matCellDef="let userData">
+                                <p class="text-truncate" matTooltip="{{userData.name}}">{{userData.name}}</p> 
+                            </mat-cell>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef mat-userData-header="email">Email</mat-header-cell>
+                            <mat-cell *matCellDef="let userData">
+                                <p class="text-truncate" matTooltip="{{userData.email}}">{{userData.email}}</p> 
+                            </mat-cell>
+                    </ng-container>
+
+                    <!-- Column -->
+                    <ng-container matColumnDef="created_at">
+                        <mat-header-cell *matHeaderCellDef mat-userData-header="created_at">Created at</mat-header-cell>
+                            <mat-cell *matCellDef="let userData">
+                                <p class="text-truncate" matTooltip="{{ userData.created_at == null ? '-' : userData.created_at | date }}">{{ userData.created_at == null ? '-' : userData.created_at | date }}</p> 
+                            </mat-cell>
+                    </ng-container>
+    
+    
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="action" >
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md></mat-header-cell>
+                        <mat-cell *matCellDef="let userData; let indexOfelement=index;" fxHide fxShow.gt-md>
+                            <button mat-icon-button color="primary"  
+                            class="btn-icon-control" 
+                            aria-label="Example icon button with a menu icon" 
+                            matTooltip="edit" 
+                            (click)="editData(userData)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button color="primary"  
+                            class="btn-icon-control" 
+                            aria-label="Example icon button with a menu icon" 
+                            (click)="deleteData(userData)"
+                            matTooltip="Delete" >
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+    
+    
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                    <mat-row *matRowDef="let userData; columns: displayedColumns;"
+                    class="standart"
+                    matRipple>
+                    </mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

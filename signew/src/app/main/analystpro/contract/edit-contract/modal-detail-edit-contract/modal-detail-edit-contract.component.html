@@ -1,0 +1,207 @@
+<form [formGroup]="sampleForm" *ngIf="sampleForm">
+    <mat-grid-list cols="4" rowHeight="100px" gutterSize="10px">
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Kode Sample</mat-label>
+                <input matInput formControlName="kode_sample" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Tujuan Pengujian</mat-label>
+                <mat-select formControlName="tujuanpengujian">
+                    <mat-option
+                        *ngFor="let o of tujuanpengujianarray"
+                        value="{{ o.id }}"
+                        >{{ o.name }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Status Pengujian</mat-label>
+                <mat-select formControlName="statuspengujian" (selectionChange)="setStatusPengujian($event)">
+                    <mat-option
+                        *ngFor="let o of statuspengujianarray"
+                        value="{{ o.id }}"
+                        >{{ o.status }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <!-- <mat-form-field appearance="fill">
+                <mat-label>Kategori Sample</mat-label>
+                <input matInput formControlName="sub_catalogue" #input>
+              </mat-form-field> -->
+
+            <ng-select
+                appearance="fill"
+                appendTo="body"
+                [items]="subCatalogueData"
+                bindLabel="sub_catalogue_name"
+                bindValue="id_sub_catalogue"
+                formControlName="sub_catalogue"
+                placeholder="Select Kategori Sample"
+                (scrollToEnd)="onScrollToEnd('subcatalogue')"
+                (search)="onSearchi($event, 'subcatalogue')"
+                (clear)="reset()"
+                (change)="getValue($event, 'subcatalogue')"
+                dropdownPosition="bottom"
+                style="width: 100%"
+                required
+            ></ng-select>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Tgl Input</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    formControlName="tgl_input"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker1"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Tgl Selesai</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker2"
+                    formControlName="tgl_selesai"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker2"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Tgl Produksi</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker3"
+                    formControlName="tgl_produksi"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker3"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Tgl Kadaluarsa</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker4"
+                    formControlName="tgl_kadaluarsa"
+                />
+                <mat-datepicker-toggle
+                    matSuffix
+                    [for]="picker4"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Factory Name</mat-label>
+                <input matInput formControlName="nama_pabrik" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Factory Address</mat-label>
+                <input matInput formControlName="alamat_pabrik" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Trademark</mat-label>
+                <input matInput formControlName="nama_dagang" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Lot Number</mat-label>
+                <input matInput formControlName="lot_number" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Jenis Kemasan</mat-label>
+                <input matInput formControlName="jenis_kemasan" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Batch Number</mat-label>
+                <input matInput formControlName="batch_number" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>No Notifikasi</mat-label>
+                <input matInput formControlName="no_notifikasi" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>No Pengajuan</mat-label>
+                <input matInput formControlName="no_pengajuan" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>No Registrasi</mat-label>
+                <input matInput formControlName="no_registrasi" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>No Principal Code</mat-label>
+                <input matInput formControlName="no_principalcode" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="fill">
+                <mat-label>Status Pengujian</mat-label>
+                <mat-select formControlName="certificate_info">
+                    <mat-option
+                        *ngFor="let o of certificateinfoarray"
+                        value="{{ o.id }}"
+                        >{{ o.name }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field appearance="outline">
+                <mat-label>Keterangan Lain</mat-label>
+                <input matInput formControlName="keterangan_lain" #input />
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>
+
+<div
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    style="width: 100%; margin-top: 10px"
+>
+    <span>Harga Sample {{this.sampleForm.controls.sample_price.value ? this.sampleForm.controls.sample_price.value.toLocaleString() : 0}}</span>
+    <div style="width: 10px"></div>
+    <button mat-raised-button color="primary" (click)="saveData()">Save</button>
+    <div style="width: 10px"></div>
+    <button mat-raised-button color="danger" (click)="close()">Cancel</button>
+</div>

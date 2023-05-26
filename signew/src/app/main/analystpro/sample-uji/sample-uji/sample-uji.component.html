@@ -1,0 +1,232 @@
+<div id="sampleuji" class="page-layout simple" style="overflow: auto; height: 600px;">
+  <div class="content">
+      <mat-card style="margin: 0px;" >
+          <form name="resultForm"  class="product w-100-p" fxLayout="column" fxFlex>
+              <div fxLayout="column" fxLayoutAlign="space-evenly none">
+                  <div fxLayout="row" fxLayoutAlign="space-between center" >
+                      <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="50">
+                          <mat-label>Marketing</mat-label>
+                          <input matInput 
+                          #filter 
+                          [(ngModel)]="dataFilter.marketing"
+                          name="marketing"
+                          placeholder="Marketing Number">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="23" fxHide fxShow.gt-xs>
+                        <mat-label>Status</mat-label>
+                          <mat-select                  
+                            class="select-me"
+                            name="status"
+                            [(ngModel)]="dataFilter.status"
+                            style="display: flex;
+                            justify-content: center;
+                            align-items: center; 
+                            color:white !important;">
+                            <mat-option *ngFor="let status of status" [value]="status.id">
+                                {{ status.title }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+       
+                      
+                      <mat-form-field appearance="outline" style="font-size: 11px" fxFlex="25">
+                          <mat-label>Category</mat-label>
+                              <mat-select placeholder="Category"
+                              [(ngModel)]="dataFilter.category"
+                              name="category"
+                              (clear)="reset('category')"
+                              class="select-me"
+                              style="display: flex;
+                              justify-content: center;
+                              align-items: center; width: 100%;
+                              color:white !important;">
+                              <mat-option *ngFor="let contractcategory of contractcategory" [value]="contractcategory.id">
+                                 ( {{ contractcategory.category_code }} ) {{ contractcategory.title }}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div>
+
+                  <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top:-15px;">
+                      <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="36">
+                          <mat-label>Sample Name</mat-label>
+                          <input matInput 
+                          #filter 
+                          name="sample_name"
+                          [(ngModel)]="dataFilter.samplename"
+                          placeholder="Sample Name">
+                      </mat-form-field>      
+                      <mat-form-field appearance="outline" style="font-size: 11px;" fxFlex fxFlex="36">
+                          <mat-label>Sample Number</mat-label>
+                          <input matInput 
+                          #filter 
+                          name="sample_number"
+                          [(ngModel)]="dataFilter.samplenumber"
+                          placeholder="Sample Number">
+                      </mat-form-field>      
+                      <button mat-raised-button color="accent"  fxFlex="12"  fxFlex.xs="23" style="height: 40px; width:250px; margin-top: -13px;" (click)="searchButton()">
+                          Search
+                      </button>
+                      <button mat-raised-button color="warn" fxFlex="12"  fxFlex.xs="23" style="height: 40px; width: 100%; margin-top: -13px;" (click)="cancelSearchMark()">
+                          Reset
+                      </button>                        
+                  </div>
+              </div>            
+      </form>
+      </mat-card>
+      <mat-card>
+          <div fxLayout="row" fxLayoutAlign="space-between center" >
+              <div>
+                  <span style="font-weight: bold; color: #303030; margin-right: 10px;" fxHide fxShow.gt-md>Sample Test &nbsp; | </span>
+               
+                    <button mat-icon-button fxHide fxShow.gt-md matTooltip="Refresh"  (click)="refreshPage()">
+                        <mat-icon style="color: #303030; ">refresh</mat-icon>
+                    </button>                    
+                    <button mat-icon-button color="white"
+                      class="contract-certficate"
+                      matTooltip="Cancel"
+                      (click)="cancelCheckbox()"
+                      *ngIf="this.checkList.length > 0"
+                      [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}" >
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                    <button mat-icon-button color="white"
+                      class="contract-certficate"
+                      matTooltip="Approve"
+                      (click)="ApproveSample()"
+                      *ngIf="this.checkList.length > 0"
+                      [@animate]="{value:'*',params:{delay:'150ms',scale:'0.2'}}" >
+                      <mat-icon>check_circle</mat-icon>
+                  </button>
+              </div>
+              <div>
+                <mat-paginator
+                [length]="this.total"
+                [pageSize]="this.to"
+                [pageIndex]="this.current_page"
+                hidePageSize="true"
+                (page)="pageEvent = $event; paginated($event)"
+            >
+            </mat-paginator>
+              </div>
+          </div>
+          
+         
+      </mat-card>
+      <mat-card>
+        <mat-table class="sample-uji-table" style="height: 70vh;" #table [dataSource]="sampleujiData" [@animateStagger]="{value:'50'}" 
+        matSort (matSortChange)="sortData($event)" fusePerfectScrollbar  *ngIf="this.sampleujiData.length > 0">
+
+          <!-- Column -->
+          <ng-container matColumnDef="checkbox">
+            <mat-header-cell *matHeaderCellDef mat-sort-header="checkbox"><mat-checkbox class="example-margin" 
+                (change)="setAll($event.checked)"
+                (change)="someComplete()"
+              
+                ></mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let dataSampleLab">
+                <mat-checkbox class="example-margin"
+                [(ngModel)]="dataSampleLab.completed"
+                (ngModelChange)="updateAllComplete()"
+                (change)="checkBox($event.checked, dataSampleLab.id)"
+                ></mat-checkbox>
+            </mat-cell>
+        </ng-container>
+
+          <!-- Column -->
+          <ng-container matColumnDef="no_kontrak">
+            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md mat-sort-header="no_kontrak">Contract Number</mat-header-cell>
+            <mat-cell *matCellDef="let sampleujiData" fxHide fxShow.gt-md>
+              <div fxLayout="column">
+                <span class="text-truncate" matTooltip="{{ sampleujiData.kontrakuji.contract_no }}">{{ sampleujiData.kontrakuji.contract_no }}</span>
+                <span class="text-truncate" matTooltip="{{ sampleujiData.kontrakuji.contract_category.title }}"
+                    style="color: f5f5f5; font-size: 10px; font-style: italic;">{{ sampleujiData.kontrakuji.contract_category.title }}
+                </span>
+            </div>
+            </mat-cell>
+          </ng-container>
+
+           <!-- Column -->
+            <ng-container matColumnDef="sample_name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header="sample_name" >Sample Name</mat-header-cell>
+              <mat-cell *matCellDef="let sampleujiData; let i = index;">
+                <div fxLayout="column">
+                <span class="text-truncate"  style="white-space: normal;" matTooltip="{{ sampleujiData.sample_name }}">{{ sampleujiData.sample_name }}</span>
+                <!-- <span class="text-truncate" style="white-space: normal;" matTooltip="{{ sampleujiData.subcatalogue.sub_catalogue_name }}"
+                    style="color: f5f5f5; font-size: 10px; font-style: italic;">{{ sampleujiData.subcatalogue.sub_catalogue_name }}
+                </span> -->
+                </div>
+              </mat-cell>
+            </ng-container>
+            
+            <!-- Column -->
+            <ng-container matColumnDef="no_sample">
+              <mat-header-cell *matHeaderCellDef mat-sort-header="no_sample">Sample Number</mat-header-cell>
+              <mat-cell *matCellDef="let sampleujiData">
+                <p class="text-truncate" matTooltip="{{ sampleujiData.no_sample }}"> {{ sampleujiData.no_sample }}</p>
+              </mat-cell>
+            </ng-container>
+
+            <!-- Column -->
+            <ng-container matColumnDef="test_status">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+              <mat-cell *matCellDef="let sampleujiData">
+                  <div class="box-normal" *ngIf="sampleujiData.id_statuspengujian == 1">
+                      <p class="text-truncate" matTooltip="{{ sampleujiData.statuspengujian.name }}">{{ sampleujiData.statuspengujian.name }}</p>
+                  </div>
+                  <div class="box-urgent" *ngIf="sampleujiData.id_statuspengujian == 2">
+                      <p class="text-truncate" matTooltip="{{ sampleujiData.statuspengujian.name }}">{{ sampleujiData.statuspengujian.name }}</p>
+                  </div>
+                  <div class="box-very-urgent" *ngIf="sampleujiData.id_statuspengujian == 3">
+                      <p class="text-truncate" matTooltip="{{ sampleujiData.statuspengujian.name }}">{{ sampleujiData.statuspengujian.name}}</p>
+                  </div>
+              </mat-cell>
+            </ng-container>
+            
+            <!-- Column -->
+            <ng-container matColumnDef="tgl_input">
+              <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-md mat-sort-header="tgl_input">Input Date - Finish</mat-header-cell>
+              <mat-cell *matCellDef="let sampleujiData" fxHide fxShow.gt-md>
+                  <p class="text-truncate" style="font-size: 11px; white-space: normal;">
+                    {{ sampleujiData.inserted_at | date}} - {{ sampleujiData.inserted_at | date}}
+                  </p>
+              </mat-cell>
+            </ng-container>
+            
+            <!-- Column -->
+            <ng-container matColumnDef="action" >
+              <mat-header-cell *matHeaderCellDef mat-sort-header>Action</mat-header-cell>
+              <mat-cell *matCellDef="let sampleujiData; let i = index;">
+                <button matTooltip="Data Sample" mat-icon-button color="primary" (click)="gotoModulSample(sampleujiData.id,  (this.to * this.current_page) +  i  )" >
+                    <mat-icon>
+                        attach_file
+                    </mat-icon>
+                </button>
+
+            </mat-cell>
+          </ng-container>
+        
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let sampleujiData; columns: displayedColumns;"
+            [@animate]="{value:'*',params:{y:'100%'}}"
+           >
+           </mat-row>
+          
+        </mat-table>
+
+        <div *ngIf="loadingfirst && this.sampleujiData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+          <img  src="assets/images/gif/loading.gif" />
+          <small>Please Wait ...</small>
+      </div>
+
+      <div *ngIf="!loadingfirst && this.sampleujiData.length === 0" style="width: 20%; margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; display: block; text-align: center;">
+          <img  src="assets/images/gif/selectfile.gif" />
+          <small>No Data</small>
+      </div>
+
+      </mat-card>
+
+  </div>
+</div>
