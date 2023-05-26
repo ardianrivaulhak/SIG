@@ -1,0 +1,11 @@
+- hosts: devbend
+  
+  tasks:
+    - name: pull from git
+      git:
+        repo: git@gitlab.com:herddii/sig-api.git
+        dest: /var/www/html/sig-api
+        update: yes
+        version: master
+        force: yes
+        key_file: /root/.ssh/gitlab

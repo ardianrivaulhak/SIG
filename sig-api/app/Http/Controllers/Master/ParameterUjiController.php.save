@@ -1,0 +1,127 @@
+,
+<?php
+namespace App\Http\Controllers\Master;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Master\ParameterUji;
+use Firebase\JWT\JWT;
+use Carbon\Carbon as time;
+
+class ParameterUjiController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function index(Request $request)
+    {
+        $model=ParameterUji::with([
+            'lab',
+            'parametertype'
+        ])->select('*');
+        if($request->has('search')){
+
+            $model=$model->where(\DB::raw('UPPER(name_id)'),'like','%'.$request->input('search').'%');
+            
+        }
+        $model=$model->paginate(25);
+        
+        return response()->json($model);
+    }
+    public function show(Request $request,$id)
+    {
+        $model=ParameterUji::find($id);
+        return response()->json($model);
+    }
+
+    public function update(Request $request,$id){
+        try{
+            $token = $request->bearerToken();
+            $users = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+            $id_user = $users->sub;
+            $data = $request->input('data');
+
+            $parameteruji = ParameterUji::find($id);
+            $parameteruji->name_id = $data['name_id'];
+            $parameteruji->name_en = $data['name_en'];
+            $parameteruji->n = $data['n'];
+            $parameteruji->m = $data['m'];
+            $parameteruji->mm = $data['mm'];
+            $parameteruji->description = $data['description'];
+            $parameteruji->active = $data['active'];
+            $parameteruji->mstr_laboratories_laboratory_id = $data['mstr_laboratories_laboratory_id'];
+            $parameteruji->mstr_laboratories_parametertype_id = $data['mstr_laboratories_parametertype_id'];
+            $parameteruji->hris_employee_id = $data['hris_employee_id'];
+            $parameteruji->update_user = $id_user;
+            $parameteruji->updated_at = time::now();
+            $parameteruji->save();
+            $data=array(
+                'success'=>true,
+                'message'=>'Update Success'
+            );
+            return response()->json($data);
+        } catch(\Exception $e){
+            $data=array(
+                'success'=>false,
+                'message'=>'Update Error'
+            );
+            return response()->json($data);
+        }
+        
+    }
+    public function destroy($id)
+    {
+        $model=ParameterUji::find($id);
+        $del=$model->delete();
+        if($del){
+            $data=array(
+                'success'=>true,
+                'message'=>'Data deleted'
+            );
+        }else{
+            $data=array(
+                'success'=>false,
+                'message'=>'Data failed to deleted'
+            );
+        }
+        return response()->json($data);
+    }
+
+    public function store(Request $request){
+        try{
+            $token = $request->bearerToken();
+            $users = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
+            $id_user = $users->sub;
+            $data = $request->input('data');
+    
+            $parameteruji = new ParameterUji;
+            $parameteruji->name_id = $data['name_id'];
+            $parameteruji->name_en = $data['name_en'];
+            $parameteruji->n = $data['n'];
+            $parameteruji->m = $data['m'];
+            $parameteruji->mm = $data['mm'];
+            $parameteruji->description = $data['description'];
+            $parameteruji->active = $data['active'];
+            $parameteruji->mstr_laboratories_laboratory_id = $data['mstr_laboratories_laboratory_id'];
+            $parameteruji->mstr_laboratories_parametertype_id = $data['mstr_laboratories_parametertype_id'];
+            $parameteruji->hris_employee_id = $data['hris_employee_id'];
+            $parameteruji->insert_user = $id_user;
+            $parameteruji->created_at = time::now();
+            $parameteruji->save();
+            $data=array(
+                'success'=>true,
+                'message'=>'Saving Success'
+            );
+            return response()->json($data);
+        } catch(\Exception $e){
+            $data=array(
+                'success'=>false,
+                'message'=>'Saving Error'
+            );
+            return response()->json($data);
+            // return $e->getMessage();
+        }
+        
+    }
+}

@@ -1,0 +1,1 @@
+<p>Failed Sending Mail, Contract Number :  {{ $contract->contract_no }}</p>
